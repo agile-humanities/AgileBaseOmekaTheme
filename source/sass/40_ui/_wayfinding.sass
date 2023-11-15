@@ -1,0 +1,33 @@
+.wayfinding
+  display: flex
+  align-items: center
+  +font-size(-1)
+  letter-spacing: 0.2px
+  margin: rv($edge_padding_factor) 0
+
+  +bp($desktop)
+    margin-top: 0
+
+  .wayfinding-home
+    height: rv(0)
+    width: auto
+
+  a
+    display: inline-flex
+    align-items: center
+    text-decoration: none
+    color: neutral(70)
+    border-bottom: none
+    font-weight: $normal
+    line-height: 1
+
+    &:after
+      content: '>'
+      padding: 0 rv(-1)
+
+    &:last-child:after
+      display: none
+
+    &:hover,
+    &:focus
+      color: $impact

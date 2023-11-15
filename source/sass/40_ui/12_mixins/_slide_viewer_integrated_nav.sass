@@ -1,0 +1,23 @@
+/**
+ *  @file _slide_viewer_integrated_nav.sass
+ *  @category 60_site_elements
+ *  @description Provides Agile Slide Viewer settings. Meant to be applied to the slide-viewer element
+ *    with an integrated nav. Nav (with next/prev and pagination markers) is centered and anchored to the bottom.
+ */
+
+
+=slide-viewer-integrated-nav-settings()
+  --sequential-nav-justify-content: center
+  --sequential-nav-top: initial
+  --sequential-nav-left: 50%
+  --sequential-nav-right: auto
+  --sequential-nav-bottom: #{rv($mobile_edge_padding_factor)}
+  --sequential-nav-transform: translateX(-50%)
+  --slide-nav-background: none
+  --sequential-nav-background: #{neutral(90)}
+  --sequential-nav-border: 1px solid transparent
+  --sequential-nav-border-radius: #{$ui_border_radius}
+  --sequential-control-spacing: 0
+  --sequential-control-initial-opacity: 0.7
+  --page-marker-margin: 0 #{rv(-3)}
+  --sequential-control-background-size: 75%

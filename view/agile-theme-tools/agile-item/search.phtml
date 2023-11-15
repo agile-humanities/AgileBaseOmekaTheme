@@ -1,0 +1,24 @@
+<?php
+$translate = $this->plugin('translate');
+$this->htmlElement('body')->appendAttribute('class', 'items search');
+?>
+
+<div id="block-<?php echo $this->blockId; ?>" class="title-block reverse region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+    <div container>
+        <h1>Advanced Search</h1>
+        <div class='deck'>
+            Additional search tools for our archive. For the standard search see the browse page.
+        </div>
+    </div>
+</div>
+<form id="advanced-search" method="get" action="<?php echo $this->escapeHtml($this->url(null, ['action' => 'browse'], true)); ?>">
+
+
+<?php echo $this->partial(
+    'common/advanced-search',
+    ['query' => $this->params()->fromQuery(), 'resourceType' => 'item']
+); ?>
+<div id="page-actions">
+    <input class="btn cta" type="submit" name="submit" value="<?php echo $this->escapeHtml($translate('Search')); ?>">
+</div>
+</form>

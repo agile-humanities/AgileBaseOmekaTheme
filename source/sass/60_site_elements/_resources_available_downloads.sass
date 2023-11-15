@@ -1,0 +1,50 @@
+.available-downloads
+  +inset-full()
+  color: $black
+  max-width: 940px
+  border-top: solid #c0c0bf 1px
+
+  .text-content
+    margin-top: rv(4)
+
+    p:first-of-type 
+      color: inherit
+      margin-top: unset
+      font-weight: $bold
+      font-size: clamped(0, 1, 'sml', 'xlrg')
+
+    ul
+      display: flex
+      flex-direction: column
+      align-items: center
+      list-style: none
+     
+      +bp($tablet)
+        
+        padding: unset
+        margin-top: rv(5)
+        display: flex
+        flex-direction: row
+        flex-wrap: wrap
+        align-items: center
+        justify-content: center
+        text-align: left
+
+      li
+        max-width: 400px
+        padding-left: rv(4)
+        font-weight: $bold
+        flex: 1 1 30% /*grow | shrink | basis */
+        font-size: clamped(0, 1, 'sml', 'xlrg')
+        background: url(get_svg_url('icons-black/download-black')) no-repeat center
+        background-position: left 
+        background-size: rv(2) rv(2)
+
+       
+
+        &:hover
+          background: url(get_svg_url('icons-active/download-active')) no-repeat center
+          background-position: left 
+          background-size: rv(2) rv(2)
+      
+   

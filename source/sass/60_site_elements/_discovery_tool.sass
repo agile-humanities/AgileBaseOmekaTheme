@@ -1,0 +1,29 @@
+/*
+   @file _discovery_tool.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description A . */
+
+
+.discovery-tool
+  background: $black
+  padding: rv($mobile_edge_padding_factor)
+
+  h1
+    margin-top: 0
+
+  +bp($desktop)
+    background: none
+    padding: rv($edge_padding_factor)
+
+    &:before
+      z-index: -1
+      content: ''
+      position: absolute
+      top: 0
+      right: 0
+      bottom: 0
+      left: 0
+      background: $black
+      opacity: 0.9

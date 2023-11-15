@@ -1,0 +1,28 @@
+/*
+   @file _map_block.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @description Handles the map block on the homepage. */
+
+
+// targets .marker-container.institution-class div
+// div
+//   +add-institutional-background-from-container('.marker-cluster',0.6)
+
+// New approach
+
+.marker-cluster
+  div
+    background-color: rgba($white,0.8) !important
+
+.leaflet-popup
+  height: 60vh
+  overflow-y: scroll
+
+  .item-info
+    padding-left: rv(-2) !important
+    padding-right: rv(-2) !important
+
+  +bp($tablet)
+    height: 400px
+

@@ -1,0 +1,328 @@
+## 00 GENERAL
+dir_image: "'../img'"
+asset_dirs: "('svg': $dir_image + '/svg','png': $dir_image + '/png', 'jpg': $dir_image + '/jpg')"
+subdir_icons: "'/icons'"
+subdir_marks: "'/marks'"
+logo_path: "map-get($asset_dirs,'svg') + $subdir_marks + '/logo.svg'"
+
+## 00 VISIBILITY CONTROL
+visibility_stack: "('main > div','#secondary-content','#tertiary-content','#quaternary-content','.block-facets-block','#block-responses-profile-feature')"
+remove_visibility_class: true
+visibility_offset: 50
+visibility_threshold: 0.2
+visibility_stack_animation_speed: 0
+visibility_stack_animation_delay: null
+
+## 01 COLOUR AND PATTERNS
+clr1: #00BDD4
+clr2: #BF609B
+clr3: #D98536
+clr4: #315FAA
+clr5: #7DBF60
+clr6: #E1BB0B
+clr7: #E5336D
+clr8: #00171A
+clr9: #000000
+black: $clr8
+white: white
+
+# Neutral aliases
+lightest_neutral: neutral(5)
+lighter_neutral: neutral(30)
+light_neutral: neutral(40)
+neutral: neutral()
+mid_neutral: neutral(60)
+dark_neutral: neutral(70)
+darker_neutral: neutral(80)
+darkest_neutral: neutral(90)
+
+# Background
+bgcolor: $white
+footer_bg: $black
+
+# Colour Aliases
+impact: $clr2
+cta: $clr1
+de_emphasized: $light_neutral
+de_activated: $lighter_neutral
+link_colour: $black
+
+## 02 LAYOUT
+rootsize: 100%
+basesize: 1rem
+base_line_height: 1.4
+blh: $basesize * $base_line_height
+scale: 1.33
+max_width: 1900px
+legible_inset_width: 750px
+
+# Structure
+masthead_height: 60px
+footer_height: 100px
+admin_bar_height: 40px
+admin_bar_tray: 40px // Second-tier admin bar
+masthead_clearance: rv(0)
+masthead_clearance_mobile: rv(-1)
+splash_height_mobile: 50vh
+splash_height_tablet: 50vh
+splash_height_desktop: 100vh
+min_splash_height: 700px
+proportional_width_unit: "math.div(100% - math.div(100,$scale),2)"
+standard_sidebar_width: $proportional_width_unit
+right_sidebar_width: "$standard_sidebar_width * 2"
+left_sidebar_width: $standard_sidebar_width
+
+# Spacing
+mobile_grid_gap_factor: -1
+grid_gap_factor: 0
+block_spacing: 2
+mobile_block_spacing: -2
+edge_padding_factor: 1
+mobile_edge_padding_factor: 0
+
+
+# Breakpoints
+breakpoints: "(xsml: 21em, sml: 30em, med: 46.25em, lrg: 75em, xlrg: 112.5em, xxlrg: 130em)"
+
+stack_breakpoint: 'med'
+tablet_breakpoint: 'med'
+desktop_breakpoint: 'lrg'
+ultrawide_breakpoint: 'xlrg'
+
+stack: $stack_breakpoint
+tablet: $tablet_breakpoint
+desktop: $desktop_breakpoint
+ultrawide: $ultrawide_breakpoint
+
+## 03 TYPOGRAPHY | Note – fonts themselves must be declared elsewhere using load font. See docs.
+# Example: +load_font('IBMPlexMono','ibmplexmono',($normal,$bold),(normal,italic))
+
+font_path: "'../fonts'"
+
+# Font sizing / Fluid type
+basetypesize: 0.9rem
+default-min-bp: sml
+default-max-bp: xlrg
+min_sizefactors: "(base: -1, h1: 3, h2: 2, h3: 1, h4: 0, h5: -1, h6: -1)"
+sizefactors: "(base: 0, h1: 4, h2: 3, h3: 2, h4: 1, h5: 0, h6: 0)"
+line_heights: "(base: $base_line_height, h1: 1, h2: 1.2, h3: 1.2, h4: 1.2, h5: 1.2, h6: 1.2)"
+typescale: "(base: 1, xsml: 1, sml: 1, med:1, lrg: 1, xlrg: 1, xxlrg: 1)"
+paragraph_spacing: "clamped(map-get($min_sizefactors,'base'),map-get($sizefactors,'base'),$default-min-bp,$default-max-bp,map-get($line_heights,base))"
+
+# Fonts
+basefont: "Roboto, Tahoma, Arial, sans-serif"
+headingfont: "'Source Serif',Georgia,serif"
+altfont: "'Source Serif',Georgia,serif"
+codefont: "'IBM Plex Mono', Monaco, Courier New, monospace"
+
+# Tables
+row_header_bg: neutral(10)
+row_border_color: neutral(10)
+row_zebra_stripe_color: neutral(3)
+
+# Deprecated. Use definitions e.g. %h1-font-size
+h1fontsize: "map-get($sizefactors,'h1')"
+h2fontsize: "map-get($sizefactors,'h2')"
+h3fontsize: "map-get($sizefactors,'h3')"
+h4fontsize: "map-get($sizefactors,'h4')"
+h5fontsize: "map-get($sizefactors,'h5')"
+h6fontsize: "map-get($sizefactors,'h6')"
+
+
+## 04 UI | Needs an overhaul
+ui_padding: 8px
+ui_element_height: 50px
+ui_minheight: $ui_element_height
+ui_maxheight: 60px
+ui_compactheight: 40px
+ui_largeheight: 80px
+ui_border_radius: 8px
+ui_border_width: 1px
+ui_border_color: neutral(40)
+ui_hover_border_color: $impact
+ui_checkbox_height: 20px
+ui_element_font_size: rv(0)
+ui_checkbox_label_font_size: rv(-1)
+ui_icon_height: $ui_minheight * 0.4
+ui_select_indicator_size: $ui_icon_height
+
+# mobile ui controls
+
+mobile_overlay_spacing: rv(2)
+ui_mobile_app_controls_footer_height: $masthead_height
+ui_mobile_app_controls_breakpoint: $tablet
+ui_display_controls_icon_size: "$ui_mobile_app_controls_footer_height * 0.5"
+
+# legacy
+border_radius: $ui_border_radius
+mobile_filter_height: rv(5)
+
+#Buttons
+btn_padding: "5px rv(0)"
+btn_border_width: $ui_border_width
+btn_border_radius: $ui_border_radius
+btn_height: $ui_maxheight
+btn_min_width: 200px
+btn_width: 280px
+btn_compactwidth: 180px
+btn_largewidth: 280px
+btn_max_width: 375px
+btn_icon_size: rv(-2)
+
+btn_fontsize: "clamped(0,1)"
+btn_compact_fontsize: "clamped(-1,0)"
+btn_minwidth: 250px
+btn_submit_img_size: $ui_icon_height
+
+btn_color: $black
+btn_bg_color: neutral(20)
+btn_border_color: $ui_border_color
+btn_hover_color: neutral(70)
+btn_hover_border_color: neutral(60)
+btn_hover_bg_color: neutral(40)
+
+btn_submit_color: $white
+btn_submit_bg_color: $cta
+btn_submit_border_width: 0
+btn_submit_border_color: $cta
+btn_submit_hover_color: $white
+btn_submit_hover_border_color: "mix($black,$cta,10%)"
+btn_submit_hover_bg_color: "mix($black,$cta,10%)"
+
+btn_search_color: $black
+btn_search_bg_color: transparent
+btn_search_border_width: $ui_border_width
+btn_search_border_color: $ui_border_color
+btn_search_hover_color: $black
+btn_search_hover_border_color: $ui_hover_border_color
+btn_search_hover_bg_color: neutral(1)
+
+btn_reset_color: neutral(90)
+btn_reset_bg_color: neutral(30)
+btn_reset_border_width: 0
+btn_reset_border_color: neutral(90)
+btn_reset_hover_color: neutral(10)
+btn_reset_hover_bg_color: neutral(90)
+btn_reset_hover_border_color: neutral(90)
+
+
+
+outline_btn_color: $mid_neutral
+outline_btn_hover_color: $ui_hover_border_color
+
+ui_select_width: fit-content
+ui_select_min_width: 200px
+ui_select_max_width: 100%
+
+
+# Animation
+heartbeat: 0.2s
+standard_properties: "translate3d scale opacity background-color"
+base_delay: null
+
+# Aliases
+very_fast: $heartbeat
+fast: $heartbeat * 2
+slow: $heartbeat * 4
+very_slow: $heartbeat * 16
+sluggish: $heartbeat * 32
+
+# Slide Timing
+slide_transition: $slow
+
+
+## 06 SITE ELEMENTS
+
+card_border_radius: $border-radius
+
+# 06 Slide Viewer
+default_next_btn: "'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNi4yNCAzMCI+PGRlZnM+PHN0eWxlPi5ie2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9ImIiIGQ9Ik0xNi4yNCwxNWMwLC4zMi0uMTIsLjYzLS4zNiwuODdMMi4xMSwyOS42NGMtLjQ4LC40OC0xLjI3LC40OC0xLjc1LDAtLjQ4LS40OC0uNDgtMS4yNywwLTEuNzVMMTMuMjUsMTUsLjM2LDIuMTFDLS4xMiwxLjYzLS4xMiwuODQsLjM2LC4zNiwuODQtLjEyLDEuNjMtLjEyLDIuMTEsLjM2TDE1Ljg3LDE0LjEzYy4yNCwuMjQsLjM2LC41NiwuMzYsLjg3WiIvPjwvc3ZnPg=='"
+default_prev_btn: "'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNi4yNCAzMCI+PGRlZnM+PHN0eWxlPi5ie2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9ImIiIGQ9Ik0wLDE1YzAtLjMyLC4xMi0uNjMsLjM2LS44N0wxNC4xMywuMzZjLjQ4LS40OCwxLjI3LS40OCwxLjc1LDAsLjQ4LC40OCwuNDgsMS4yNywwLDEuNzVMMi45OSwxNWwxMi44OSwxMi44OWMuNDgsLjQ4LC40OCwxLjI3LDAsMS43NS0uNDgsLjQ4LTEuMjcsLjQ4LTEuNzUsMEwuMzYsMTUuODdDLjEyLDE1LjYzLDAsMTUuMzIsMCwxNVoiLz48L3N2Zz4='"
+default_slide_item_template: 1
+default_slide_viewer_template: 1
+slide_viewer_padding: rv(0)
+slide_viewer_marker_size: 10px
+slide_viewer_ui_spacing: rv(-1)
+slide_viewer_midpoint: 50%
+slide_viewer_background: $black
+
+page_marker_background: neutral(30)
+page_marker_background_hover: $clr2
+page_marker_background_active: $clr2
+page_marker_border_radius: 50%
+
+page_marker_transform_hover: none
+page_marker_transform_active: none
+page_marker_width: $slide_viewer_marker_size
+page_marker_height: $slide_viewer_marker_size
+
+sequential_control_btn_height: 2rem
+sequential_control_btn_width: 1.5rem
+
+next_btn_background: no-repeat url(#{$default_next_btn})
+previous_btn_background: no-repeat right url(#{$default_prev_btn})
+
+
+slide_content_background: none
+slide_caption_background: none
+slide_item_content_width: 100%
+slide_item_caption_width: 100%
+
+slide_item_portrait_object_fit: contain
+slide_item_portrait_position: center
+slide_item_portrait_slide_padding: 0
+
+slide_item_landscape_object_fit: cover
+slide_item_landscape_position: center
+slide_item_landscape_slide_padding: 0
+
+slide_item_square_object_fit: contain
+slide_item_square_position: center
+slide_item_square_slide_padding: 0
+
+# Extended Styles. Most should be left default.
+slide_nav_bottom: $slide_viewer_padding
+slide_nav_top: initial
+slide_nav_left: initial
+slide_nav_right: initial
+slide_nav_flex_direction: row
+slide_nav_flex_wrap: wrap
+slide_nav_justify_contents: center
+slide_nav_align_items: center
+slide_nav_height: $sequential_control_btn_height
+
+page_marker_margin: 0 $slide_viewer_ui_spacing 0 0
+
+
+# Sequential Slider Nav (next/previous)
+
+sequential_nav_top: 0
+sequential_nav_bottom: 0
+sequential_nav_left: $slide_viewer_padding
+sequential_nav_right: $slide_viewer_padding
+sequential_nav_justify_content: space-between
+sequential_nav_align_items: center
+sequential_control_spacing: $slide_viewer_ui_spacing
+
+# Figure container (content + caption)
+
+slide_item_slide_display: flex
+slide_item_slide_flex_direction: column
+slide_item_slide_flex_grow: 1
+slide_item_slide_width: 100%
+slide_item_slide_height: 100%
+
+slide_item_slide_padding: 0
+slide_item_slide_margin: 0
+
+# Content container (usually contains an image)
+
+slide_item_content_padding: 0
+
+# Caption
+
+slide_item_caption_padding: 0 $slide_viewer_padding
+slide_item_caption_height: auto
+slide_item_caption_position: absolute
+slide_item_caption_bottom: 0
+

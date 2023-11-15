@@ -1,0 +1,162 @@
+<! -- START OF /LAYOUT/LAYOUT.PHTML -->
+<?php
+$escape = $this->plugin('escapeHtml');
+$siteTitle = $site->title();
+$this->htmlElement('html')->setAttribute('lang', $this->lang());
+$this->headMeta()->setCharset('utf-8');
+$this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1');
+$this->headTitle($this->setting('installation_title', 'Omeka S'))->setSeparator(' · ');
+$this->headLink()->prependStylesheet($this->assetUrl('css/vendor.min.css'));
+$this->headLink()->prependStylesheet($this->assetUrl('css/iconfonts.css', 'Omeka'));
+$this->headLink()->appendStylesheet($this->assetUrl('css/style.min.css'));
+$this->headScript()->prependFile($this->assetUrl('js/core.min.js'));
+$this->headScript()->prependFile($this->assetUrl('js/default.min.js'));
+$this->headScript()->prependFile($this->assetUrl('js/global.js', 'Omeka'));
+$this->headScript()->prependFile($this->assetUrl('js/vendor.js'));
+$this->headScript()->prependFile($this->assetUrl('vendor/jquery/jquery.min.js', 'Omeka'));
+
+
+$this->trigger('view.layout');
+$title = $this->pageTitle($site->title());
+$userBar = $this->userBar();
+$sitePermissions = $site->sitePermissions();
+$userLoggedIn = $this->identity() !== null;
+
+//var_dump(get_class_methods($this->identity()->));
+$userName = $userLoggedIn ? $this->identity()->getName() : 'Guest';
+$siteUrl = $site->url();
+$nav = $site->publicNav();
+$container = $nav->getContainer();
+$activePage = $nav->findActive($container);
+
+/*  Search page 1 doesn't exist out of the box. Refactor
+if ($activePage && key_exists('page',$activePage) && is_object($activePage['page']) && $activePage['page']->route === 'search-page-1') {
+  $this->headTitle('Browse the collection');
+}
+*/
+
+// Add the page slug as a body class in case it’s needed for styling.
+
+if ($activePage && method_exists($activePage['page'],'getParams') && array_key_exists('page-slug',$activePage['page']->getParams())) {
+    $this->htmlElement('body')->appendAttribute('class', $activePage['page']->getParams()['page-slug']);
+}
+
+if (!empty($this->userBar())) {
+    $this->htmlElement('body')->appendAttribute('class','has-admin-bar');
+}
+
+?>
+<?= $this->doctype(); ?>
+<?= $this->htmlElement('html'); ?>
+    <head>
+        <?= $this->headMeta(); ?>
+        <?= $this->headTitle(); ?>
+        <?= $this->headLink(); ?>
+        <link rel="icon" type="image/png" href=<?= $this->assetUrl('img/png/favicon/favicon.png'); ?>>
+        <?= $this->headStyle(); ?>
+        <?= $this->headScript(); ?>
+    </head>
+
+    <?= $this->htmlElement('body'); ?>
+        <div class="full"><?= $userBar; ?> </div>
+        <header class="full">
+          <div>
+            <div id="identity" aria-label='<?= $escape($siteTitle); ?>'>
+              <a href="<?= $site->url() ?>">
+                <?php if ($this->themeSetting('logo')): ?>
+                  <img src="<?= $this->themeSettingAssetUrl('logo'); ?>" alt="<?= $escape($siteTitle); ?>" />
+                <?php else: ?>
+                  <img src="<?= $this->assetUrl("img/svg/marks/logo.svg"); ?>" alt="<?= $escape($siteTitle); ?>" />
+                <?php endif; ?>
+              </a>
+            </div>
+              <!--DESKTOP MENU START-->
+              <nav class="desktop-nav" aria-label="Main navigation for <?= $siteTitle ?>">
+                  <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' =>2]); ?>
+              </nav>
+              <!--DESKTOP MENU END-->
+
+              <!--MOBILE MENU START-->
+              <div class="mobile-menu" aria-label='Mobile Menu'>
+                  <div class="mobile-menu-header">
+                    <a class="nav-hamburger" href="#" title="Menu"><img alt='mobile menu' src=<?= $this->assetUrl('img/svg/icons/hamburger.svg'); ?>></a>
+                  </div>
+                  <div class="mobile-container">
+                      <div class="mobile-close">
+                          <p>Close</p>
+                      </div>
+                      <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' =>2]); ?>
+
+                      <!--MOBILE SEARCH FORM START-->
+                      <div class="mobile-search">
+                        <?= $this->partial('common/search-form', ['query' => $this->params()->fromQuery(), 'resourceType' => 'user','searchType' => 'browser']); ?>
+                      </div>
+                  <!--MOBILE SEARCH FORM END-->
+                  </div>
+              </div>
+            </div>
+            <!--MOBILE MENU END-->
+
+        </header>
+
+
+        <section id='splash' class='full empty'></section>
+        <section id='primary-content' class='region'>
+            <div>
+                <main id="'main-content">
+                  <div id='content-stack' contentstack>
+                    <?= $this->content; ?>
+                  </div>
+                </main>
+            </div>
+        </section>
+        <section class='full' role="region" >
+          <div>
+            <div id='secondary-content' class="tier-container"></div>
+          </div>
+        </section>
+        <section id='feature-tier-1' class='full' role="region" style="display:none">
+          <div>
+            <div id='feature-tier-1-content' class="tier-container"></div>
+          </div>
+        </section>
+        <section id='feature-tier-2' class='full' role="region" style="display:none">
+          <div>
+            <div id='feature-tier-2-content' class="tier-container"></div>
+          </div>
+        </section>
+        <section id='feature-tier-2' class='full' role="region" style="display:none">
+          <div>
+            <div id='feature-tier-2-content' class="tier-container"></div>
+          </div>
+        </section>
+        <footer class="full">
+          <section class="footer-content">
+            <div class="mark-container">
+              <?php if ($this->themeSetting('logo')): ?>
+                <img src="<?= $this->themeSettingAssetUrl('logo'); ?>" alt="<?= $escape($siteTitle); ?>" />
+              <?php else: ?>
+                <?= $escape($siteTitle); ?>
+              <?php endif; ?>
+            </div>
+            <div class="footer-main">
+              <div class="footer--text">
+                <?php if (!empty($this->themeSetting('footer'))): ?>
+                  <?= $this->themeSetting('footer') ; ?>
+                  <hr class="horizontal">
+                <?php endif; ?>
+              </div>
+              <div class="footer--links">
+                <?php if (!empty($this->themeSetting('footer_links'))): ?>
+                  <?= $this->themeSetting('footer_links'); ?>
+                <?php endif; ?>
+              </div>
+            </div>
+            <div class="footer--logo">
+              <!-- No logos -->
+            </div>
+          </section>
+        </footer>
+    </body>
+</html>
+<! -- END OF /LAYOUT/LAYOUT.PHTML -->

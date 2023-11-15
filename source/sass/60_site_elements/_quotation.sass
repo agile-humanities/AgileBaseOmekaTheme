@@ -1,0 +1,25 @@
+.quotation
+  font-family: $headingfont
+  color: $white
+  font-weight: $extrabold
+  padding: rv(3)
+  margin-top: rv(2)
+  font-size: clamped(0, 2, 'sml', 'xlrg')
+
+  blockquote
+    margin: 0 auto
+    padding: rv(3)
+
+    h2
+      color: $white
+
+    cite
+      border-top: 1px solid $white
+      padding-top: rv(0)
+      display: block
+      font-family: $basefont
+      font-weight: $thin
+      font-size: clamped(-1, 0, 'sml', 'xlrg')
+
+    a
+      @extend %inline-anchor-reverse

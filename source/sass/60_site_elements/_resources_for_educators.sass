@@ -1,0 +1,54 @@
+/**
+ *  @file _resources_for_educators.sass
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description Styles for homepage "Resources for Educators" block. */
+
+.resources-for-educators
+  +inset-full()
+  padding: rv($mobile_edge_padding_factor)
+  color: $white
+  padding: rv(1)
+
+  +bp($tablet)
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: rv(6)
+
+  .text-content
+    +bp($tablet)
+      flex-basis: calc(50% - #{rv(1)})
+      margin-right: rv(1)
+
+    +bp($desktop)
+      flex-basis: calc(50% - #{rv(2)})
+      margin-right: rv(2)
+
+
+    h2
+      color: inherit
+      margin-top: unset
+
+  ul
+    list-style: none
+    padding: unset
+    padding-left: rv(2)
+
+    +bp($tablet)
+      flex-basis: calc(30% - #{rv(1)})
+      margin-left: rv(1)
+      margin-top: unset
+      padding: 0
+
+    +bp($desktop)
+      flex-basis: calc(35% - #{rv(4)})
+      margin-left: rv(2)
+
+    li
+      font-weight: $bold
+      font-size: clamped(0, 3, 'sml', 'xlrg')
+
+      &:last-of-type
+        margin: unset
+

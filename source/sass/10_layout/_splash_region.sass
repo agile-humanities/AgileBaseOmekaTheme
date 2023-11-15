@@ -1,0 +1,35 @@
+/** 
+ *  @file _main_content.sass 
+ *  @category 10_layout
+ *  @theme LOCAL
+ *  @description Structures the <main> content stack. 
+ * For additional paragraph sytling sere 60_elements/paragraphs **/
+
+
+
+body
+  > header + section
+    padding-top: 0 !important
+
+#splash
+  +standard_edge_padding
+  width: 100%
+  height: fit-content
+
+
+  // height: calc(100vh - #{$masthead_height} - #{$masthead_clearance_mobile})
+
+  +bp($desktop)
+    height: calc(100vh - #{$masthead_height} - (#{$masthead_clearance} * 2) - #{rv($edge_padding_factor)})
+
+    > *
+      height: 100%
+      min-height: $min_splash_height
+
+.has-admin-bar
+  #splash
+    height: fit-content
+    // height: calc(100vh - #{$masthead_height} -  #{$masthead_clearance_mobile} - #{$admin_bar_height})
+
+    +bp($desktop)
+        height: calc(100vh - #{$masthead_height}  - #{$admin_bar_height} - (#{$masthead_clearance} * 2) - #{rv($edge_padding_factor)})

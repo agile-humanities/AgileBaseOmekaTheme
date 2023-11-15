@@ -1,0 +1,171 @@
+/**
+ *  @file _form_elements.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *  @description Define various form elements.
+ *
+ **/
+
+
+/** HERE ARE SOME CLASSES THAT MUST BE SUPPORTED
+  *
+  * TYPES:
+  * standard|Standard
+  * link|Internal Link
+  * outline|Outline
+  * cta|Call to action
+  * feature-cta|Feature CTA
+  * ghost|Ghost
+  * emphatic-ghost|Emphatic ghost
+  *
+  * SIZING:
+  * compact|Size: compact
+  * large|Size: large
+  *
+  * OVERLAYS
+  * overlay-dark|Overlay: dark background
+  * overlay-light|Overlay: light background
+  * overlay-colour|Overlay: yellow background
+  *
+  */
+// “trigger” class used by Drupal for its contextual menus. “MuiButtonBase used for Mirador.
+button:not(.trigger,.MuiButtonBase-root)
+  @extend %button
+
+input:focus
+  outline: none !important
+  border-color: $clr2
+
+input[type='text'],
+input[type='email'],
+textarea#edit-message,
+input[type='password'],
+input[type="search"],
+input[type="number"]
+  @extend %input-text
+
+*[type="submit"] //Button
+  @extend %button-submit
+
+input[type="search"]::-webkit-search-cancel-button
+  -webkit-appearance: none
+  display: inline-block
+  width: 20px
+  height: 20px
+  margin-left: 10px
+  background: url(get_svg_url('icons/close-grey')) no-repeat center
+  +close-icon-hover
+
+input[type="checkbox"],
+input[type="radio"]
+  padding: unset
+  cursor: pointer
+
+input[type="checkbox"]
+  appearance: none
+  border-radius: unset
+  border: 1px solid $ui_border_color
+  height: $ui_checkbox_height
+  width: $ui_checkbox_height
+  background-color: transparent !important
+  display: inline-block
+  vertical-align: middle
+  float: left
+  margin: 0
+
+  &:hover
+    background-color: $clr2 !important
+
+  &:checked
+    background-color: $clr2 !important
+
+  & + label
+    display: block
+    vertical-align: middle
+    padding: calc((#{$ui_checkbox_height} - #{rv(-1)}) * 0.5) 0 0 calc(#{$ui_checkbox_height} + #{rv(-1)}) // Align to to middle of checkbox, left to width of checkbox plus a gap. Top calculates the height of the checkboxes, less the size of the label, divided by two
+    line-height: $ui_checkbox_height
+    +font-size(-1)
+    font-weight: $normal
+
+input[type="radio"]
+  appearance: none
+  border: 1px solid neutral(20)
+  border-radius: 50%
+  height: $ui_checkbox_height
+  width: $ui_checkbox_height
+  background-color: white
+  display: inline-block
+  vertical-align: middle
+
+  &:hover,
+  &:checked
+    box-shadow: inset 0 0 0 3px white !important
+    background-color: neutral(20)
+
+// Select2 handles pulldowns via js/selectStylesSupport
+// Currently set to use <select> element values to determine sizing
+
+select
+  width: $ui_select_width
+  min-width: $ui_select_min_width
+  max-width: $ui_select_max_width
+
+label + input
+  margin-top: 0 // “Open” style does not require label separation
+
+fieldset, details
+  border: none
+  padding: unset
+  overflow-y: hidden
+  transition: all $heartbeat ease-in-out
+
+  // Open accordion styles
+
+  &.open, &[open]
+    legend::after, summary::after
+      content: url(../img/svg/icons/accordion-collapse-icon.svg)
+
+  legend, summary
+    font-size: $ui_checkbox_label_font_size
+    font-weight: $bold
+    width: 100%
+    position: relative
+
+    // General and closed accordion styles
+    &::after
+      content: url(../img/svg/icons/accordion-open-icon.svg)
+      position: absolute
+      width: 8px
+      right: 0
+      transition: transform 0.3s ease-in-out
+
+  summary
+    list-style-type: none
+legend
+  padding: 0 rv(-2) 0 0
+  color: neutral(80)
+  font-weight: $bold
+
+label
+  @extend %value-label
+
+label.option
+  font-family: $basefont
+  font-weight: $normal
+
+input.js-form-type-search + input.js-form-submit
+  display: inline-flex
+  margin-left: rv(0)
+
+// This also seems too broad. What in particular are we trying to make a column? Buttons?
+
+.form-item:not(fieldset, .js-form-type-checkbox, .js-form-type-search, .js-form-item-rendered-item)
+  padding-bottom: rv(1)
+  display: flex
+  flex-direction: column
+
+
+.webform-element-description
+  +font-size(-1)
+  font-weight: $semibold
+

@@ -1,0 +1,50 @@
+/**
+ *  @file _homepage_splash.sass
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description Variables and mixins to drive patterns. */
+
+
+// Gradients
+
+$gradient_dark_90: linear-gradient(0deg, #{neutral(90)} 0%, #{neutral(100)} 100%)
+$gradient_dark_90_eased: linear-gradient(0deg, #{neutral(90)} 0%, #{neutral(95)} 15%, #{neutral(100)} 30%, #{neutral(100)} 100%)
+$gradient_dark_80_eased: linear-gradient(0deg, #{neutral(80)} 0%, #{neutral(90)} 20%, #{neutral(100)} 40%, #{neutral(100)} 100%)
+$gradient_dark_70_eased: linear-gradient(0deg, #{neutral(70)} 0%, #{neutral(80)} 20%, #{neutral(90)} 40%, #{neutral(100)} 100%)
+$gradient_dark_70_eased_rev: linear-gradient(180deg, #{neutral(70)} 0%, #{neutral(80)} 20%, #{neutral(90)} 40%, #{neutral(100)} 100%)
+$gradient_dark_90_eased_rev: linear-gradient(180deg, #{neutral(90)} 0%, #{neutral(95)} 15%, #{neutral(100)} 30%, #{neutral(100)} 100%)
+$gradient_dark_95_eased: linear-gradient(0deg, #{neutral(95)} 0%, #{neutral(97)} 15%, #{neutral(100)} 30%, #{neutral(100)} 100%)
+
+
+// Superimposes a pattern graphic above a background. $pattern must be supplied.
+=pattern($pattern: transparent, $background: $white,  $pattern_opacity: 5, $bg_position: bottom, $pattern_position: top)
+  position: relative
+  background: $background
+  background-size: 100%
+  background-position: $bg_position
+  z-index: 0
+
+  &:before
+    content: ''
+    display: block
+    position: absolute
+    z-index: -1
+    background: $pattern
+    background-size: 200%
+    background-position: $pattern_position
+    background-repeat: no-repeat
+    opacity: $pattern_opacity
+    mix-blend-mode: multiply
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    pointer-events: none
+
+    +bp($tablet)
+      background-size: 150%
+
+    +bp($desktop)
+      background-size: cover
+
+

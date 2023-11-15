@@ -1,0 +1,88 @@
+<! -- START OF /AGILE-THEME-TOOLS/AGILE-ITEM/BROWSE.PHTML -->
+<?php
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$this->htmlElement('body')->appendAttribute('class', 'browse card-view');
+// $cardViewer = $this->plugin('card');
+$plugins = $this->getHelperPluginManager();
+$api = $plugins->get('api');
+$partial = $plugins->get('partial');
+
+
+$query = $this->params()->fromQuery();
+$itemSetShow = isset($itemSet);
+if ($itemSetShow):
+    $this->htmlElement('body')->appendAttribute('class', 'item-set');
+    $query['item_set_id'] = $itemSet->id();
+endif;
+$sortHeadings = [
+    [
+        'label' => $translate('Sort by Title'),
+        'value' => 'dcterms:title'
+    ],
+    // [
+    //     'label' => $translate('Identifier'),
+    //     'value' => 'dcterms:identifier'
+    // ],
+    // [
+    //     'label' => $translate('Class'),
+    //     'value' => 'resource_class_label'
+    // ],
+    // [
+    //     'label' => $translate('Sort by Date'),
+    //     'value' => 'created'
+    // ],
+];
+?>
+<div class='browse-tool'>
+    <div class="page-header">
+        <div id="block-<?php echo $this->blockId; ?>" class="title-block reverse region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+            <div container>
+                <h1>Search</h1>
+                    <div class='deck'>
+                        Lorem ipsum dolor sit amet. This text will need to be supplied and added to the theme.
+                    </div>
+                </div>
+        </div>
+            <div class="browse-search-form">
+                <?php echo $this->partial('common/search-form'); ?>
+            </div>
+            <?php echo $this->hyperlink($translate('Advanced Search'), $this->url('site/resource', ['controller' => 'item', 'action' => 'search'], ['query' => $query], true), ['class' => 'advanced-search']); ?>
+        </div>
+    </div>
+    
+    <?php echo $this->searchFilters(); ?>
+    
+    <div class="top-bar-ui">
+      
+        <div class="browse-controls">
+            <h3>Results</h3>
+            <div class='sort-selector'>
+                <?php echo $this->sortSelector($sortHeadings); ?>
+                
+            </div>        
+
+        </div>
+    </div>
+    
+
+        <div class="browser browser-container">
+            <ul class="list">
+                <?php foreach ($items as $item): ?>
+                  <?=
+                  $partial('agile-item/card', [
+                  'containerElement' => 'li',
+                  'cardStyle' => 'list-item',
+                  'item' => $item
+                  ]) ?>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+
+            <?php echo ($itemSetShow) ? '</div>' : ''; ?>
+            <div class="bottom-bar-ui">
+                <?php echo $this->pagination(); ?>
+            </div>
+        </div>
+</div>
+<! -- END OF /AGILE-THEME-TOOLS/AGILE-ITEM/BROWSE.PHTML -->

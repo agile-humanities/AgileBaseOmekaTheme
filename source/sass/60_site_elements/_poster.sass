@@ -1,0 +1,78 @@
+/**
+ *  @file _poster.sass
+ *  @category 60_site_elements
+ *  @description Styling for poster block */
+
+
+.poster
+  min-height: 34rem
+  width: 100%
+  padding: rv($mobile_edge_padding_factor) !important
+  position: relative
+  background: set-color(1)
+  color: $white
+
+
+  +bp($tablet)
+    padding: rv($edge_padding_factor) !important
+
+  .poster-container
+    text-align: left
+    width: 100%
+    padding-top: rv(8)
+    word-wrap: break-word
+    overflow: hidden
+
+
+    +bp($tablet)
+      padding-top: 0
+      width: 80%
+
+    .pathways-mobile-bg
+      position: absolute
+      top: 0
+      left: 0
+      width: 80%
+
+      +bp($tablet)
+        display: none
+
+    .poster-title
+      font-family: $headingfont
+      font-size: clamped(3, 4, 'sml', 'xlrg')
+
+    .poster-text
+      position: relative
+      z-index: 1
+      color: $white
+      font-size: clamped(0, 2, 'sml', 'xlrg')
+      +line-height(1.25)
+
+      a
+        @extend %inline-anchor-reverse
+
+  .image-container
+    width: 100%
+    position: relative
+    z-index: 1
+
+    figure.figure-landscape
+      +proportional-height(100%,0.75)
+
+      img
+        object-fit: cover
+
+  .pathways-bg
+
+    +bp($tablet)
+      display: block
+      max-height: 32rem
+      z-index: 0
+      width: auto
+      position: absolute
+      bottom: 0
+      right: 0
+      pointer-events: none
+
+
+

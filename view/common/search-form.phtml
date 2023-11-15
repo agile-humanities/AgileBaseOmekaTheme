@@ -1,0 +1,30 @@
+<?php
+$translate = $this->plugin('translate');
+$searchType = $searchType ?? $this->siteSetting('search_type', 'sitewide');
+$searchValue = $this->escapeHtml($this->params()->fromQuery('fulltext_search', ''));
+$name = 'fulltext_search';
+$searchMainPage = $this->siteSetting('advancedsearch_main_config');
+/** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
+$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
+
+switch ($searchType) {
+    case 'cross-site':
+        $searchAction = $this->url('site/cross-site-search', ['action' => 'results'], true);
+    // break; // only site search supported
+    case 'browser':
+    case 'sitewide':
+    default:
+        $searchAction = isset($searchAction) ? $searchAction : $searchConfig->siteUrl();
+        $searchValue = $this->escapeHtml($this->params()->fromQuery('q', ''));
+        $name='q';
+}
+?>
+
+<!-- BEGIN SEARCH FORM TEMPLATE  common/search-form.phtml -->
+<form action="<?= $searchAction ?>" id="search-form">
+    <input type="text" name="<?= $name ?>" value="<?php echo $searchValue; ?>"
+           placeholder="<?php echo $translate('Search'); ?>"
+           aria-label="<?php echo $translate('Search'); ?>">
+    <button aria-label="<?php echo $translate('Submit search'); ?>" type="submit" tabindex="0"></button>
+</form>
+<!-- END SEARCH FORM TEMPLATE -->

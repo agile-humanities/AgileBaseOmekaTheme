@@ -1,0 +1,101 @@
+/**
+  *  @file _pagination.sass
+  *  @category 40_ui
+  *  @theme LOCAL
+  *  @description Styling for the common/pagination.phtml template.
+  *    Note that these styles are not used for the slide viewer, whose slide pagination is built in to a web component.
+  *    They do emulate it though. See 60_site_elements/_slide_viewer for the other implementation.
+  *
+  **/
+
+
+$pagination_ui_gap: rv(-2)
+$pagination_bullet_size: rv(-3)
+
+.pagination
+  display: flex
+  margin: 0 auto
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  background: neutral(70)
+  border: 1px solid transparent
+  border-radius: $ui_border_radius
+  width: fit-content
+  padding: $pagination_ui_gap
+  color: $white
+
+  .for-js
+    display: none
+
+.pagination--label
+  margin: rv(-1) auto
+  text-align: center
+  @extend %s-normal-k
+
+
+.pagination--arrows
+  display: flex
+  align-items: center
+
+  a
+    &.o-icon-prev, &.o-icon-next
+      &:before
+        content: none // Override default
+
+  & + .pagination--bullets
+    margin-left: rv(2)
+
+  .pagination--label
+    margin: 0 rv(2)
+  
+  img
+    height: rv(2)
+    width: auto
+
+.pagination--bullets
+  list-style-type: none
+  display: flex
+  justify-content: center
+  padding: 0
+  margin: 0
+
+  & + .pagination--arrows
+    margin-left: rv(2)
+
+  li
+    margin: 0 $pagination_ui_gap 0 0
+
+    &:last-child
+      margin-right: 0
+
+  a
+    content: ''
+    display: flex
+    flex-direction: column
+    align-items: center
+    color: $white
+    text-decoration: none
+
+   
+    span
+      line-height: 1
+      padding-top: rv(-3)
+
+    &:before
+      content: ''
+      display: block
+      height: $pagination_bullet_size
+      width: $pagination_bullet_size
+      background-color: $white
+      border: 1px solid $white
+      border-radius: 50%
+    
+    &:focus
+      color: $white  
+
+    &:hover, &.active
+      color: $white
+
+      &:before
+        background-color: $impact

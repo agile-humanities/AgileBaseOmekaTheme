@@ -1,0 +1,30 @@
+/**
+ *  @file _item_listing_block.sass
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description Handles the Item Listing With Introduction block */
+
+
+.item-listing
+  @extend %browser-container
+  padding: rv($mobile_edge_padding_factor) !important
+  color: $white
+
+  .title-area + .listing
+    margin-top: rv($edge_padding_factor) * 2
+
+  h2
+    color: inherit
+
+  +bp($tablet)
+    padding: rv($edge_padding_factor) !important
+
+  ul
+    @extend %card-grid
+
+  .browse-title
+    width: 100%
+    margin-bottom: rv(1)
+
+    span
+      color: $impact

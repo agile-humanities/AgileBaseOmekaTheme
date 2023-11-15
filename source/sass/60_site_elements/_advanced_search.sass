@@ -1,0 +1,248 @@
+/*
+   @file _advanced_search.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @description Handles the Advanced Search Page */
+
+#advanced-search-form
+  margin-bottom: rv(6)
+
+
+
+  #resource-class,
+  #item-sets ~ div.field
+    display: none
+
+  #fulltext_search
+    margin-bottom: initial
+
+  .value
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    flex-wrap: wrap
+    margin-top: rv(4)
+    +bp($tablet)
+      margin-top: 0
+
+    span.select2
+      flex-grow: 2
+
+    .query-text
+      width: 100%
+      margin-top: rv(1)
+      margin-bottom: rv(2)
+
+    .select1 //made up class to unite non .select2 forms
+      font-size: .77rem
+      font-weight: $normal
+      padding: 0
+      height: 28px
+      flex-grow: 2
+      padding-left: 8px
+      background: url(get_svg_url('icons-black/drop-down-black')) no-repeat 98%
+      background-size: 10px 5px
+      background-color: $white
+      border-radius: 4px
+      margin: 0
+
+    .chosen-container
+      display: none
+      border: solid green 2px
+/*
+   @file _advanced_search.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @description Handles the Advanced Search Page */
+
+#advanced-search
+  margin-bottom: rv(6)
+
+
+
+  #resource-class,
+  #item-sets ~ div.field
+    display: none
+
+  #fulltext_search
+    margin-bottom: initial
+
+  .value
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    flex-wrap: wrap
+    margin-top: rv(4)
+    +bp($tablet)
+      margin-top: 0
+
+    span.select2
+      flex-grow: 2
+
+    .query-text
+      width: 100%
+      margin-top: rv(1)
+      margin-bottom: rv(2)
+
+    .select1 //made up class to unite non .select2 forms
+      font-size: .77rem
+      font-weight: $normal
+      padding: 0
+      height: 28px
+      flex-grow: 2
+      padding-left: 8px
+      background: url(get_svg_url('icons-black/drop-down-black')) no-repeat 98%
+      background-size: 10px 5px
+      background-color: $white
+      border-radius: 4px
+      margin: 0
+
+    .chosen-container
+      display: none
+      border: solid green 2px
+
+
+
+
+  .inputs
+    padding: 1rem
+    background-color: $lightest_neutral
+    border-top: 1px solid $mid_neutral
+    border-bottom: 1px solid $mid_neutral
+    margin: 0 auto 1rem auto
+    position: relative
+    +bp($tablet)
+      padding: 4rem rv(1)
+      position: relative
+
+    #fulltext_search,
+    .query-text
+      @extend %search-form-textfield
+      background-image: url(get_svg_url('icons-grey/search-grey'))
+      background-size: $btn_submit_img_size
+      background-repeat: no-repeat
+      background-position: 99%
+
+      &:hover
+        background-image: url(get_svg_url('icons-active/search-active'))
+
+
+    .button-container
+      position: absolute
+      top: 10px
+      right: 0
+      margin-bottom: rv(2)
+      +bp(tablet)
+        margin-bottom: 0
+
+      button
+        cursor: pointer
+        height: 15px
+        width: 15px
+        padding: rv(-1)!important
+        color: $mid_neutral
+
+
+  .field
+    margin-bottom: rv(1)
+  #page-actions
+    display: flex
+    flex-direction: row
+    justify-content: center
+    +bp($tablet)
+      justify-content: end
+
+  input[type="checkbox"]
+    display: initial
+    width: initial
+    margin-bottom: initial
+
+
+  .field-meta
+    position: relative
+    height: rv(4)!important
+    background-color: $lightest_neutral
+
+    span, label
+      display: inline-block
+      font-weight: $normal
+      font-size: rv(1)
+      font-family: $headingfont
+      padding: rv(0)
+
+
+#item-sets
+  border: solid yellow 1px
+  display: none
+
+  .inputs
+    padding: 1rem
+    background-color: $lightest_neutral
+    border-top: 1px solid $mid_neutral
+    border-bottom: 1px solid $mid_neutral
+    margin: 0 auto 1rem auto
+    position: relative
+    +bp($tablet)
+      padding: 4rem rv(1)
+      position: relative
+
+    #fulltext_search,
+    .query-text
+      @extend %search-form-textfield
+      background-image: url(get_svg_url('icons-grey/search-grey'))
+      background-size: $btn_submit_img_size
+      background-repeat: no-repeat
+      background-position: 99%
+
+      &:hover
+        background-image: url(get_svg_url('icons-active/search-active'))
+
+
+    .button-container
+      position: absolute
+      top: 10px
+      right: 0
+      margin-bottom: rv(2)
+      +bp(tablet)
+        margin-bottom: 0
+
+      button
+        cursor: pointer
+        height: 15px
+        width: 15px
+        padding: rv(-1)!important
+        color: $mid_neutral
+
+
+  .field
+    margin-bottom: rv(1)
+
+  #page-actions
+    display: flex
+    flex-direction: row
+    justify-content: center
+    +bp($tablet)
+      justify-content: end
+
+  input[type="checkbox"]
+    display: initial
+    width: initial
+    margin-bottom: initial
+
+
+  .field-meta
+    position: relative
+    height: rv(4)!important
+    background-color: $lightest_neutral
+
+    span, label
+      display: inline-block
+      font-weight: $normal
+      font-size: rv(1)
+      font-family: $headingfont
+      padding: rv(0)
+
+
+#item-sets
+  border: solid yellow 1px
+  display: none

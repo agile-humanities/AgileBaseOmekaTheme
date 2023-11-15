@@ -1,0 +1,67 @@
+/** 
+ *  @file _item_showcase.sass 
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description Handles styling of items showcase. */
+
+
+.item-showcase.card
+  background: #9575b2
+  
+  .image-container,
+  .item-info
+    border-top-width: 10px
+    border-top-style: solid
+    border-color: #9575b2
+
+  .container-with-tabs-and-panels
+    background: neutral(5)
+
+    
+.item-showcase,
+.rights
+  .download-icons
+    justify-content: flex-end
+
+    p
+      padding-right: rv(1)
+      margin-top: 0
+      font-size: rv(-1)
+      color: neutral(30)
+
+    .download-item
+      display: inline-flex
+      background-position: left 
+      background-size: rv(1) rv(1)
+
+      a 
+        background: url(get_svg_url('icons-grey/download-grey')) no-repeat center
+        @include icon-position
+      
+        &:hover,
+        &:focus
+          background: url(get_svg_url('icons-active/download-active')) no-repeat center
+          @include icon-hover
+
+    .download-metadata
+      display: inline-flex
+      background-position: left 
+      background-size: rv(1) rv(1)
+
+      a 
+        background: url(get_svg_url('icons-grey/download-metadata-grey')) no-repeat center
+        @include icon-position
+        margin-right: 0
+       
+        &:hover,
+        &:focus
+          background: url(get_svg_url('icons-active/download-metadata-active')) no-repeat center
+          @include icon-hover
+       
+
+      
+ 
+
+
+   
+    

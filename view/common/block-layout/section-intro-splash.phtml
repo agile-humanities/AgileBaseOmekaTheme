@@ -1,0 +1,47 @@
+<!-- BEGIN TEMPLATE: /common/block-layout/section-intro-splash.phtml -->
+<div id="block-<?php echo $this->blockId; ?>" class="section-intro-block title-block region <?php echo $this->regionClass; ?>  <?php echo $titleSlideTextAlignment ?>" data-target-region-id="<?php echo $this->targetID; ?> ">
+  <div class="title-area">
+    <div class='introductory-text'>
+      <?php if (!empty($titleSlideTitle)): ?>
+        <h1><?php echo $titleSlideTitle; ?></h1>
+      <?php endif; ?>
+      <?php if (!empty($titleSlideIntro)): ?>
+        <?php echo $titleSlideIntro; ?>
+      <?php endif; ?>
+    </div>
+  </div>
+  <?php if (count($attachments) > 0): ?>
+    <div class="items">
+      <?php foreach ($attachments as $attachment): ?>
+        <?php
+            $item = $attachment->item();
+        ?>
+        <?php if ($item):
+            $media = $attachment->media() ?: $item->primaryMedia();
+            if ($media):
+        ?>
+        <div class="item resource">
+          <figure>
+              <?php echo $item->linkRaw($this->thumbnail($media,$thumbnailType)); ?>
+              <?php $caption = $attachment->caption() ? $attachment->caption() : $item->value('dcterms:description') ?>
+              <?php
+                if ($this->showTitleOption == 'item_title') {
+                  $caption = "<h3>{$item->title()}</h3>" . $caption;
+                } else if ($this->showTitleOption == 'media_title') {
+                  $caption = "<h3>{$media->title()}</h3>" . $caption;
+                }
+              ?>
+              <?php if ($caption): ?>
+                <figcaption><?= $caption; ?></figcaption>
+              <?php endif; ?>
+          </figure>
+        </div>
+        <?php endif; ?>
+        <?php endif; ?>
+      <?php endforeach; ?>
+    </div>
+  <?php endif; ?>
+</div>
+<!-- END TEMPLATE: /common/block-layout/section-intro-splash.phtml -->
+
+

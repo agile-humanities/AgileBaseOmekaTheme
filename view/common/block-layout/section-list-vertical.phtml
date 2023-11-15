@@ -1,0 +1,38 @@
+<div id="block-<?php echo $this->blockId; ?>" class="section-list section-list-vertical region <?php echo $this->regionClass; ?> <?php echo $this->classes ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+    <?php if ($this->hasTitle): ?>
+        <h2><?php echo $this->title; ?></h2>
+    <?php endif; ?>
+    <?php if ($this->hasIntroduction): ?>
+        <div class='block-introduction'>
+            <?php echo $this->introduction; ?>
+        </div>
+    <?php endif; ?>
+    <?php if ($this->hasPages): ?>
+        <div class="card-container">
+            <ul class="cards list">
+                <?php foreach($this->pages as $page): ?>
+                    <li class='item'>
+                        <a title="See <?php echo $page['o:title']; ?>" href='<?= $page['o:url']; ?>'>
+                            <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('representativeImage',$page['embeddedBlocks'])): ?>
+                                <?= $page['embeddedBlocks']['representativeImage'][0]; ?>
+                            <?php endif; ?>
+                            <div class="item-info">
+                                <div class="item-label">Exhibit</div>
+                                <h3 class="item-title"><?php echo $page['o:title']; ?></h3>
+                                <div class="item-description">
+                                    <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('byline',$page['embeddedBlocks'])): ?>
+                                        <?= $page['embeddedBlocks']['byline'][0]; ?>
+                                    <?php endif; ?>
+                                    <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('excerpt',$page['embeddedBlocks'])): ?>
+                                        <?= $page['embeddedBlocks']['excerpt'][0]; ?>
+                                    <?php endif; ?>
+                                </div>
+                                <div class='more'>See this exhibit</div>
+                            </div>
+                        </a>
+                    </li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+</div>

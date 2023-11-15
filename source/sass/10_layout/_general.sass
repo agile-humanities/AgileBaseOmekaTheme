@@ -1,0 +1,25 @@
+/** 
+ *  @file _general.sass 
+ *  @category 10_layout
+ *  @theme LOCAL
+ *  @description Additional classes for general layout. **/
+ 
+body
+  min-height: 100vh
+  display: flex
+  flex-direction: column
+  justify-content: flex-start
+
+// Empty class is removed by AgileThemeTools module if block is assigned. Remove for non-Omeka sites.
+// TODO: move to Agile Theme Tools module
+
+section.empty
+  display: none
+
+  // Remove extra padding when splash is empty
+  
+  + section
+    padding-top: 0
+
+    main
+      padding-top: 0

@@ -1,0 +1,79 @@
+<?php
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$this->htmlElement('body')->appendAttribute('class', 'item resource show');
+$embedMedia = $this->siteSetting('item_media_embed', false);
+$itemMedia = $item->media();
+?>
+
+
+<?php $this->trigger('view.show.before'); ?>
+<div class='item-container'>
+  <div class='item-viewer'>
+    <?php 
+      if ($this->universalViewer($item)):
+        echo $this->universalViewer($item);   
+      else:
+        if ($embedMedia && $itemMedia): ?>
+          <div class="media-embeds">
+          <?php foreach ($itemMedia as $media):
+              echo $media->render();
+          endforeach;
+          ?>
+          </div>
+      <?php endif; ?>
+    <?php endif; ?>
+  </div>
+  <div class='item-info'>
+    <header>
+      <?php echo $this->pageTitle($item->displayTitle(), 2); ?>
+    </header>
+    <div class='subtitle'>Subtitle to come</div>
+    <div class='description'>
+      Description to come. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper   suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+    </div>
+    <div class='key-metadata'><!-- to come --></div>
+    <div class='rights'>
+      <div class='rights-statement'>
+      </div>
+      <div class='download-item'>
+        <a class='icon-ui' target="_blank" href='<?php echo $item->primaryMedia()->originalUrl()?>' download>
+            <img alt='thick arrow pointing downward' class='download-img' src='<?php echo $this->assetUrl('img/svg/icon/download.svg')?>'>
+            <span>Download Item</span>
+        </a>
+      </div>
+    </div>
+  </div>  
+</div>
+<div class='item-metadata-block'>
+  <header>
+    <h3>Full Metadata</h3>
+    <div class='title'><?php echo $item->displayTitle(); ?></div>
+  </header>
+  <div class='metadata-list'>
+    <?php echo $item->displayValues(); ?>
+    <div class="property">
+        <?php $itemSets = $item->itemSets(); ?>
+        <?php if (count($itemSets) > 0): ?>
+        <div class="metadata-label"><?php echo $translate('Item sets'); ?></div> 
+        <?php foreach ($itemSets as $itemSet): ?>
+        <div class="value"><a href="<?php echo $escape($itemSet->url()); ?>"><?php echo $itemSet->displayTitle(); ?></a></div>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+  </div>
+</div>
+
+<?php
+$page = $this->params()->fromQuery('page', 1);
+$property = $this->params()->fromQuery('property');
+$subjectValues = $item->displaySubjectValues($page, 25, $property);
+?>
+<?php if ($subjectValues): ?>
+<div id="item-linked">
+    <h3><?php echo $translate('Linked resources'); ?></h3>
+    <?php echo $subjectValues; ?>
+</div>
+<?php endif; ?>
+
+<?php //$this->trigger('view.show.after'); ?>

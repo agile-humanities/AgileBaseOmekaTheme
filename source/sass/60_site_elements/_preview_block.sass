@@ -1,0 +1,43 @@
+/*
+   @file _preview_block.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description The preview block displays assets in a grid.  */
+
+
+
+
+/**
+ *  RELATED ITEMS
+ */
+
+.preview-block
+  @extend %browser-container
+  padding: rv($mobile_edge_padding_factor) !important
+
+  h2
+    margin: 0 0 rv($edge_padding_factor) 0
+
+  +bp($tablet)
+    padding: rv($edge_padding_factor) !important
+
+  ul
+    @extend %card-grid
+
+  .browse-title
+    width: 100%
+    margin-bottom: rv(1)
+
+    span
+      color: $impact
+
+  .browse--collections
+    margin-top: rv(1)
+    width: 100%
+    padding-bottom: rv($edge_padding_factor)
+    display: flex
+    align-items: center
+
+    a
+      margin-right: rv(2)

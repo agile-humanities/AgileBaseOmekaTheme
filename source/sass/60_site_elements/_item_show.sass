@@ -1,0 +1,214 @@
+/**
+ *  @file _item_show.sass
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description Styles the item page. The template is located at ./view/agile-theme-tools/agile-item/show.[html */
+
+
+// =======================
+// SASS VARIABLES
+// =======================
+
+// $column_gap_calc: calc(50% - (#{$column_gap}/2)) 1fr
+
+// =======================
+// ITEM CONTAINER
+// =======================
+
+.item-container
+  margin-bottom: rv($block_spacing)
+  display: flex
+  flex-direction: column-reverse
+
+  +bp($tablet)
+    max-width: 100%
+
+  +bp($desktop)
+    $item_container_object_spacing: rv($edge_padding_factor)
+    display: grid
+    grid-template-columns: 100%
+    grid-template-columns: calc(50% - #{$item_container_object_spacing * 0.5}) calc(50% - #{$item_container_object_spacing * 0.5}) // using this instead of 1fr because Universal Viewer is miscalculating its size
+    grid-column-gap: $item_container_object_spacing
+    max-width: 100%
+
+  // transcription links
+
+  .transcription-link
+    margin-top: rv(-1)
+
+  .transcription-link a
+    text-decoration: underline
+    font-size: font-value(0)
+
+  .transcription-link a:hover,
+  .transcription-link a:focus
+    color: $clr3
+    border-bottom: none
+
+
+// =======================
+// ITEM VIEWER & ITEM INFO
+// =======================
+
+.item-viewer
+  width: 100%
+  border-top-width: 10px
+  border-top-style: solid
+
+  .media-render
+    width: 100%
+    +proportional-height(100%,.5625)
+    background: black
+    display: flex
+    justify-content: center
+    align-items: center
+    +standard_edge_padding
+
+    iframe
+      +proportional-height(100%,.5625)
+
+
+.item-info
+  .key-metadata
+    margin-top: rv(-1)
+
+    .metadata-list
+      +separated_row(1,1,1px) // the last argument adds a rule between each grid line as a pseudo-element
+
+      +bp($tablet)
+        +separated_row(3,$edge_padding_factor,1px)
+
+      +bp($desktop)
+        +separated_row(5,$edge_padding_factor,1px)
+
+      .metadata-label
+        padding-top: rv(-1)
+
+  .informations-panel
+    max-height: rv(12)
+    overflow: scroll
+    overflow-x: hidden
+
+
+  h1
+    margin-bottom: 0
+    word-wrap: break-word
+
+  h1 + .description, .subtitle + .description
+    margin-top: rv(-1)
+
+  .metadata-list
+    +bp($desktop)
+      padding-bottom: rv($edge_padding_factor)
+      border-bottom: 1px solid neutral(30)
+
+
+
+.container-with-tabs-and-panels
+  .contributor
+    margin-top: rv(1)
+    font-style: italic
+    font-size: rv(2)
+
+
+// =======================
+// RIGHTS
+// =======================
+
+.rights
+  display: flex
+  flex-direction: column
+  padding-top: rv(-1)
+  align-items: flex-start
+
+
+  +bp($desktop)
+    align-items: flex-start
+
+
+
+// =======================
+// FULL METADATA
+// =======================
+
+.item-metadata-block
+  background-color: neutral(90)
+  color: $white
+  max-width: 100%
+  padding: rv($mobile_edge_padding_factor) !important
+  position: relative
+  overflow: hidden
+
+  a
+    @extend %inline-anchor-reverse
+    text-decoration: none
+    &:hover
+      color: $clr1
+
+
+  +bp($desktop)
+    padding: rv($edge_padding_factor)  !important
+
+  .metadata-list
+    //Breakpoints
+    +separated_row(1,$mobile_edge_padding_factor,1px) // the last argument adds a rule between each grid line as a pseudo-element
+
+    +bp($tablet)
+      +separated_row(3,$edge_padding_factor,1px)
+
+    +bp($desktop)
+      +separated_row(6,$edge_padding_factor,1px)
+
+  h2
+    color: $white
+    margin-top: 0
+    font-family: $basefont
+  span
+    font-style: italic
+
+
+  // this will enforce padding below the rule
+
+  .property > *:first-child
+    padding-top: rv($mobile_edge_padding_factor)
+
+    +bp($desktop)
+      padding-top: rv($edge_padding_factor)
+
+
+
+/**
+  ITEM W/ METADATA EXHIBIT BLOCK
+ **/
+
+.item-with-metadata
+  .item-metadata-block
+    &:before
+      background: none
+
+    .subject-title
+      color: $black
+      text-decoration: underline
+
+      &:hover, &.focus
+        color: $clr2
+
+
+
+/**
+ *  RELATED ITEMS
+ */
+
+#related-items
+  @extend %browser-container
+  padding: rv($mobile_edge_padding_factor) !important
+
+  +bp($tablet)
+    padding: rv($edge_padding_factor) !important
+
+  .browse-title
+    width: 100%
+    margin-bottom: rv(1)
+
+    span
+      color: $impact

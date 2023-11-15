@@ -1,0 +1,62 @@
+/**
+ *  @file _form_elements_select_2.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *  @description Localized styles for Select 2 JS library.
+ *   Also see /js/selectStylesSupport.js
+ *
+ **/
+
+.select2-container.select2-container--default
+  transition: none
+  align-self: flex-start
+
+  &:hover .select2-selection--single,
+  &:focus .select2-selection--single
+    text-decoration: none
+
+  .select2-selection--single, .select2-selection--multiple
+    height: $ui_minheight
+    border-radius: $ui_border_radius
+    border-width: $ui_border_width
+    border-color: $ui_border_color
+    border-style: solid
+    display: flex
+    align-items: center
+    justify-content: space-between
+    background-color: transparent
+    // .select2-selection__rendered
+    //   padding-left: 0
+
+    .select2-selection__rendered
+      padding: $ui_padding
+
+    .select2-selection__arrow
+      position: relative
+      background: url(get_svg_url('icons/down-arrow-black')) no-repeat center
+      background-size: $ui_select_indicator_size
+      background-position: right $ui_padding center
+      flex-grow: 1
+
+      b
+        display: none
+
+  .select2-selection--multiple
+    border-radius: $ui_border_radius $ui_border_radius 0 0
+    position: relative
+    background: url(get_svg_url('icons/down-arrow-black')) no-repeat center
+    background-size:  $ui_select_indicator_size
+    background-position: right $ui_padding center
+
+
+  .select2-results__option--highlighted.select2-results__option--selectable,
+  .select2-results__option--selected
+    background-color: neutral(10)
+    color: $black
+
+  li
+    margin-bottom: unset
+
+  .select2-dropdown
+    border: 1px solid $ui_border_color
+    border-top: none

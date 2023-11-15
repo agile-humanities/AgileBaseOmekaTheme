@@ -1,0 +1,41 @@
+<?php
+$translate = $this->plugin('translate');
+$partial = $this->plugin('partial');
+$searchMainPage = $this->siteSetting('advancedsearch_main_config');
+/** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
+$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
+
+?>
+<div class="preview-block">
+  <?php if ($this->heading): ?>
+  <h2><?php echo $this->heading; ?></h2>
+  <?php endif; ?>
+
+  <ul class="preview masonry-grid resource-list search-results-list grid">
+    <?php
+    $headingTerm = $this->siteSetting('browse_heading_property_term');
+    $bodyTerm = $this->siteSetting('browse_body_property_term');
+    foreach ($this->resources as $resource):
+    ?>
+          <?= $partial('agile-item/card', [
+            'item' => $resource,
+            'containerElement' => 'li',
+            'classes' => $this->resourceType
+          ]) ?>
+    <?php endforeach; ?>
+  </ul>
+
+  <?php
+  if ($this->linkText):
+      /*
+      echo $this->hyperlink($this->linkText, $this->url(
+          'site/resource', ['controller' => $this->resourceType, 'action' => 'browse'], ['query' => $this->query], true
+      ));
+      */
+    ?>
+
+    <div class="browse--collections"><a class="intro-browse--all" href="<?= $searchConfig->siteUrl() ?>">Browse all</a></div>
+  <?php
+  endif;
+  ?>
+</div>

@@ -1,0 +1,40 @@
+/** 
+ *  @file _heading.sass 
+ *  @category 30_typography
+ *  @theme LOCAL
+ *  @description Define headings H1-H6, plus any subclasses. 
+ *
+ **/
+
+
+
+h1
+  &.display, &.title
+    @extend %xxxl-alt-bold-k
+    line-height: 1
+
+.subtitle
+  @extend %xxl-alt-normal-k
+  line-height: 1
+
+h3, h4, h5, h6
+  font-family: $basefont
+  font-weight: $medium
+
+h3
+  margin-bottom: rv(-3)
+
+.item-label, .content-label
+  + h3
+    margin: rv(-3) 0
+
+h5
+  color: neutral(70)
+
+h6
+  color: neutral(60)
+
+
+[contentstack] h2
+  margin-bottom: 0
+  font-size: clamped(3,2)

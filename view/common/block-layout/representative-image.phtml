@@ -1,0 +1,14 @@
+<?php
+$item = $attachment->item();
+
+$media = null;
+
+if ($item) {
+    $media = $attachment->media() ?: $item->primaryMedia();
+}
+
+$caption = $attachment->caption();
+?>
+<figure>
+   <?= $this->thumbnail($media,$thumbnailType) ?>
+</figure>

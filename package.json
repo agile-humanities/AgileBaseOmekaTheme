@@ -1,0 +1,20 @@
+{
+  "name": "ctc-19-theme",
+  "version": "1.0.0",
+  "description": "Theme for the Cretivity in the Time of COVID-19 project.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://agile.git.beanstalkapp.com/ctc-19.git"
+  },
+  "author": "Agile Humanities Agency",
+  "license": "MIT",
+  "dependencies": {
+    "masonry-layout": "^4.2.2",
+    "stop14-themesystem-legacy": "^1.2.2",
+    "superfish": "^1.7.10"
+  }
+}

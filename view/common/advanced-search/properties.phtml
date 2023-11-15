@@ -1,0 +1,112 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var array $query
+ */
+
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$escape = $plugins->get('escapeHtml');
+$propertySelect = $plugins->get('propertySelect');
+$setting = $plugins->get('setting');
+$siteSetting = $plugins->get('siteSetting');
+
+$isSiteRequest = $this->status()->isSiteRequest();
+$applyTemplates = $isSiteRequest ? $siteSetting('advancedsearch_apply_templates') : false;
+$usedTerms = $isSiteRequest ? $siteSetting('advancedsearch_restrict_used_terms', true) : $setting('advancedsearch_restrict_used_terms', true);
+
+// Prepare the property queries.
+$properties = $query['property'] ?? [];
+$properties = array_filter($properties, function ($value) {
+    return isset($value['text']) ? '' !== trim($value['text']) : true;
+});
+if (!$properties) {
+    $properties[] = [];
+}
+
+if (isset($query['search'])) {
+    unset($properties[0]['joiner']);
+    array_unshift($properties, [
+        'property' => '',
+        'type' => 'in',
+        'text' => $query['search'],
+    ]);
+}
+
+$queryOption = function ($value, array $search, $key, $text) {
+    $selected = null;
+    if (isset($search[$key]) && $value === $search[$key]) {
+        $selected = ' selected';
+    }
+    return sprintf('<option value="%s"%s>%s</option>', $value, $selected, $text);
+};
+$queryText = function (array $search, $engine) use ($escape, $translate) {
+    $text = $search['text'] ?? null;
+    return sprintf('<input type="text" class="query-text" name="%s" value="%s" aria-label="%s">',
+        $escape("property[$engine][text]"),
+        $escape($text),
+        $escape($translate('Query text')));
+};
+?>
+
+<!-- PROPERTIES TEMPLATE common/advanced-search/properties.phtml -->
+
+<div id="property-queries" class="field removable multi-value" role="group" aria-labelledby="by-value-label">
+    <div class="field-meta">
+        <span id="by-value-label" class="label"><?php echo $translate('Search by value'); ?></span>
+      
+    </div>
+    <div class="inputs">
+        <?php
+        $engine = 0;
+        foreach ($properties as $property):
+            $stem = "property[$engine]";
+        ?>
+        <div class="value">
+            <select class="joiner select2 select1" name="<?php echo $escape($stem . '[joiner]'); ?>">
+                <?php echo $queryOption('and', $property, 'joiner', $translate('AND')); ?>
+                <?php echo $queryOption('or', $property, 'joiner', $translate('OR')); ?>
+            </select>
+            <?php echo $propertySelect([
+                'name' => $stem . '[property]',
+                'attributes' => [
+                    'class' => 'select2 select1',
+                    'value' => $property['property'] ?? null,
+                    'aria-label' => $translate('Property'),
+                ],
+                'options' => [
+                    'empty_option' => 'Select an Option...', // @translate
+                    'apply_templates' => $applyTemplates,
+                    'used_terms' => $usedTerms,
+                ],
+            ]); ?>
+            <select class="query-type chosen-select select1" name="<?php echo $escape($stem . '[type]'); ?>" aria-label="<?php echo $translate('Query type'); ?>">
+                <?php echo $queryOption('eq', $property, 'type', $translate('is exactly')); ?>
+                <?php echo $queryOption('neq', $property, 'type', $translate('is not exactly')); ?>
+                <?php echo $queryOption('in', $property, 'type', $translate('contains')); ?>
+                <?php echo $queryOption('nin', $property, 'type', $translate('does not contain')); ?>
+                <?php echo $queryOption('sw', $property, 'type', $translate('starts with')); ?>
+                <?php echo $queryOption('nsw', $property, 'type', $translate('does not start with')); ?>
+                <?php echo $queryOption('ew', $property, 'type', $translate('ends with')); ?>
+                <?php echo $queryOption('new', $property, 'type', $translate('does not end with')); ?>
+                <?php echo $queryOption('res', $property, 'type', $translate('is resource with ID')); ?>
+                <?php echo $queryOption('nres', $property, 'type', $translate('is not resource with ID')); ?>
+                <?php echo $queryOption('ex', $property, 'type', $translate('has any value')); ?>
+                <?php echo $queryOption('nex', $property, 'type', $translate('has no values')); ?>
+                <?php echo $queryOption('lex', $property, 'type', $translate('is a linked resource')); ?>
+                <?php echo $queryOption('nlex', $property, 'type', $translate('is not a linked resource')); ?>
+                <?php echo $queryOption('lres', $property, 'type', $translate('is linked with resource with ID')); ?>
+                <?php echo $queryOption('nlres', $property, 'type', $translate('is not linked with resource with ID')); ?>
+            </select>
+            <?php echo $queryText($property, $engine); ?>
+            <div class="button-container">
+                <button type="button" class="add-value o-icon-add" aria-label="<?php echo $translate('Add new value'); ?>" title="<?php echo $translate('Add new value'); ?>"></button>
+                <button type="button" class="o-icon-delete remove-value" aria-label="<?php echo $translate('Remove value'); ?>" title="<?php echo $translate('Remove value'); ?>"></button>
+            </div>
+            <?php $engine++; endforeach; ?>
+        </div>
+       
+    </div>
+</div>
+
+<!-- END PROPERTIES TEMPLATE -->

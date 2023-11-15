@@ -1,0 +1,79 @@
+/** 
+ *  @file _section_list.sass 
+ *  @category 60_site_elements
+ *  @description Tweaking the default UV viewer. */
+
+.uv
+  background-color: $black !important
+   
+  .headerPanel
+    color: $white !important
+    
+    .options
+      background-color: neutral(95) !important
+  
+    
+  .overlays
+    background: rgba($black,0.5) !important
+    
+  .leftPanel, .rightPanel
+    background: neutral(95) !important
+    
+  .rightPanel
+    main
+      color: $white !important
+
+  .attribution
+    display: none !important
+
+  .middle
+    padding: rv(2)
+
+    .scroll
+      label
+        font-size: rv(-1)
+      .locale
+        select#locale
+          height: 28px
+          padding: 0
+          background: url(get_svg_url('icons-black/drop-down-black')) no-repeat 98%
+          background-size: 10px 5px
+          background-color: $white
+          border-radius: 4px
+          padding-left: 8px
+          font-weight: $normal
+
+    
+    
+.uv .centerPanel .content .attribution
+  display: none!important
+.uv .centerPanel .content .viewer .paging.btn
+  min-width: auto
+.uv .btn
+  height: unset
+  justify-content: unset
+  width: unset
+  min-width: unset
+.uv .headerPanel .centerOptions .autocompleteText
+  border: 0
+  min-height: unset
+  text-align: center
+.uv
+  a.go
+    &.btn-primary
+      border-color: $black
+      background-color: $black
+
+.uv .headerPanel .centerOptions .search .searchText
+  text-align: center
+  min-height: unset 
+  
+.uv 
+  .search
+    input
+      height: 30px !important
+      width: 30px !important
+      padding: 0 !important
+
+      margin-top: 0 !important
+      border-radius: 0 !important

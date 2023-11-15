@@ -1,0 +1,218 @@
+/**
+ *  @file _header.sass
+ *  @category 10_layout
+ *  @theme LOCAL
+ *  @description Defines page header and navigation areas. */
+
+ //DESKTOP NAVIGATION//
+
+body > header
+  +standard_edge_padding()
+  width: 100%
+
+  > div
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    width: 100%
+    height: $masthead_height
+    position: relative
+    padding-bottom: $masthead_clearance
+    border-bottom: solid #c0c0bf 1px
+
+#identity
+  height: 100%
+  a
+    display: inline-flex
+    height: 100%
+
+  img
+    height: 100%
+    width: auto
+
+
+.desktop-nav
+  display: none
+
+  +bp($desktop)
+    display: flex
+
+  > ul
+    +horizontal_list()
+    list-style-type: none
+    font-weight: $bold
+
+    > li
+      list-style-type: none
+      padding-right: rv(1)
+
+      &.active > a
+        color: $cta
+        border-bottom: 1px solid $cta
+
+      > a:hover, > a:focus
+        color: $impact
+        border-bottom: 1px solid $impact
+
+.has-sub-menu
+  position: relative
+  > a
+
+    &:after
+      content: ''
+      position: relative
+      display: inline-flex
+      justify-content: center
+      background: url(get_svg_url('icons-black/down-arrow-black')) no-repeat center
+      background-size: contain
+      background-position: top 2px // cheat
+      margin-left: rv(-3)
+      height: rv(-1)
+      width: rv(-1)
+
+
+  > ul
+    display: none
+    position: absolute
+    font-weight: $normal
+    text-transform: capitalize
+    list-style-type: none
+    top: 15px
+    font-size: rv(-1)
+    text-align: center
+    padding: rv(-2)
+    z-index: 1
+    background-color: $white
+    border: solid #c0c0bf 1px
+
+    > li
+      +line-height(1.25)
+      background-color: $white
+
+
+      > a
+        text-decoration: none
+        color: $black
+
+
+        &:hover,
+        &:focus
+          border-bottom: none
+          color: $clr2
+
+// MOBILE NAVIGATION //
+
+.mobile-menu
+
+  +bp($desktop)
+    display: none
+
+
+  .mobile-close
+    display: inline-block
+    font-size: rv(0)
+    cursor: pointer
+
+    p
+      &:after
+        content: ''
+        position: relative
+        display: inline-flex
+        justify-content: center
+        background: url(get_svg_url('icons-black/down-arrow-black')) no-repeat center
+        background-size: contain
+        background-position: top 2px // cheat
+        margin-left: rv(-3)
+        height: rv(-1)
+        width: rv(-1)
+
+
+
+  .mobile-menu-header
+    padding-top: 0 rv($mobile_edge_padding_factor)
+    display: flex
+    justify-content: space-between
+    align-items: center
+    min-height: rv(5)
+    border-bottom: solid #c0c0bf 1px
+    position: relative
+
+    .mobile-mark
+      img
+        height: rv(5)
+        width: rv(10)
+        transform: translateY(#{rv(-1) * -1})
+
+    .nav-hamburger
+      img
+        height: rv(3)
+        width: rv(3)
+
+
+  .mobile-container
+    display: none
+    position: absolute
+    left: 0
+    background-color: $white
+    opacity: 0.95
+    height: calc(100vh - rv(5))
+    +standard_edge_padding()
+    width: 100%
+    z-index: 1
+
+    > ul
+      margin: 0
+      padding: rv(0)
+      list-style-type: none
+      text-align: right
+      font-size: rv(0)
+      font-weight: $bold
+      text-transform: uppercase
+      position: relative
+
+      > li
+        margin-bottom: 0
+
+        > a
+          text-decoration: none
+          color: $black
+
+
+          &:hover,
+          &:focus
+            border-bottom: none
+            color: $clr2
+
+    .mobile-search
+      padding: rv(0)
+      form
+        input
+          height: rv(0)
+          width: 100%
+          margin: 0 auto
+
+
+
+
+    .mobile-has-sub-menu
+
+      > ul
+        list-style-type: none
+        font-weight: $normal
+        text-transform: capitalize
+        margin: 0
+
+        >li
+          +line-height(1.25)
+          margin: 0
+          font-size: rv(-1)
+
+          > a
+            text-decoration: none
+
+
+
+.nav-icons
+  display: none!important
+
+

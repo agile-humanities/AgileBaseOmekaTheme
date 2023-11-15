@@ -1,0 +1,32 @@
+/*
+   @file _asset.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description Assets are media elements outside of the item archive.  */
+
+
+.assets
+
+  .caption
+    text-align: center
+
+  img + .caption
+    margin-top: rv($edge_padding_factor)
+
+  &.left
+    +bp($tablet)
+      width: 32.8%
+      float: left
+      margin: 0 0 0 rv($edge_padding_factor)
+
+  &.right
+    +bp($tablet)
+      width: 32.8%
+      float: right
+      margin: 0 rv($edge_padding_factor) 0 0
+
+  &.center
+    +bp($tablet)
+      width: 50%
+      margin: 0 auto rv($edge_padding_factor) auto

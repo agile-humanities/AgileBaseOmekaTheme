@@ -1,0 +1,51 @@
+.reference-block
+	h3
+		text-transform: capitalize
+
+	.tree //REFERENCE TREE EXHIBIT
+		li	
+			margin-bottom: 0
+			padding: 0
+
+			.no-resource // title
+				text-transform: normal
+
+			.expander // omeka div
+				display: none
+
+			.expanded // li container
+				margin-top: 0
+
+
+
+
+	.reference-pagination //REFERENCE EXHIBIT
+		background: $white
+
+		.pagination-list
+			background: $white
+
+			li.pagination-range
+				display: inline-block
+
+				a
+					display: inline-flex
+					justify-content: center
+					align-items: center
+					height: rv(3)
+					width: rv(3)
+					padding: rv(-3)
+					padding-top: calc(#{rv(-3)} + 4px) // Vertical centering off. Will take too much to refactor original styling to fix.
+					color: neutral(80)
+					border-color: neutral(80)
+					border-radius: 3px
+					transform: translateX(1px)
+
+				a:hover
+					color: $white
+					background: $impact
+					
+
+
+
+				

@@ -1,0 +1,223 @@
+/** 
+ *  @file _browse.sass 
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description Styles for the Browse page.
+ *
+ *  DEPRECATED: Not loaded. Left for reference from previous implementations.
+ */
+
+:root
+  --mobile-controls-container-height: 90px
+
+.for-js,
+.bottom-bar-ui
+  display: none
+
+.browser
+  background: neutral(4)
+  +standard_edge_padding()
+
+  card-grid
+    --grid-row-gap: #{rv(2)}
+    --grid-column-gap: #{rv(2)}
+
+
+.browse footer
+  padding-bottom: calc(var(--mobile-controls-container-height) + #{rv(0)})
+  +bp($tablet)
+    padding-bottom: rv(2)
+
+.page-header
+  +bp($tablet)
+    position: relative
+
+.browse-search-form
+  margin: rv(2) 0 rv(-2)
+
+.top-bar-ui
+  border-bottom: 1px solid $lightest_neutral
+  padding-bottom: rv(0)
+  padding-top: rv(-6)
+  +bp($tablet)
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding-top: rv(2)
+
+.browse-controls
+  margin-top: rv(-1)
+  +bp($tablet)
+    display: flex
+    column-gap: rv(-1)
+    margin-top: unset
+  +bp($desktop)
+    column-gap: rv(2)
+
+.top-bar-ui .page-bullets
+  +bp($tablet)
+    display: none
+
+select[name="sort_by"]
+  display: none
+
+.browse-controls .pagination
+  display: none
+  +bp($tablet)
+    display: flex
+    align-items: center
+    line-height: 0
+    column-gap: rv(-1)
+    justify-content: flex-end
+
+.page-number
+  font-size: font-value(-1)
+  text-align: center
+  color: $light_neutral
+
+.page-number.active
+  color: $clr3
+
+.page-input-top
+  text-transform: uppercase
+  color: $neutral
+  font-size: font-value(-1)
+  margin: unset
+  +bp($tablet)
+    width: 130px
+    min-width: 75%
+    color: $black
+
+.browse-controls .view-options
+  display: none
+  +bp($tablet)
+    display: flex
+    align-items: center
+
+.mobile-browse-controls .page-input-top
+  color: $lighter_neutral
+
+.mobile-browse-controls 
+    background-color: $black
+    position: fixed
+    max-width: unset
+    width: 100%
+    bottom: 0
+    z-index: 10
+    left: 0
+    padding: rv(-3)
+    +bp($tablet)
+      display: none
+
+#primary-content > * > * > .mobile-browse-controls
+  margin: 0
+
+.mobile-browse-controls .pagination
+  display: flex
+  justify-content: space-between
+  align-items: center
+  margin-bottom: rv(-3)
+
+.mobile-browse-controls .page-number
+  display: none
+
+.mobile-browse-controls .page-detail
+  display: block
+
+.mobile-browse-controls .page-arrows .button
+  color: $lightest_neutral
+
+
+
+.view-button
+  all: unset
+  height: auto
+  width: rv(1)
+  position: relative
+  cursor: pointer  
+
+.bottom-bar-ui
+  +bp($tablet)
+    display: flex
+    justify-content: flex-end
+    padding-top: rv(1)
+    border-top: 1px solid $lightest_neutral
+
+.bottom-bar-ui .page-input-top
+  +bp($tablet)
+    display: none
+
+.bottom-bar-ui .pagination
+  display: flex
+  column-gap: rv(-1)
+
+.mobile-browse-controls .view-button
+  opacity: 0.6
+
+.card-view-btn::before
+  content: url('../img/svg/icon/card-view-neutral.svg')
+
+.card-view .card-view-btn::before
+  +bp($tablet)
+    content: url('../img/svg/icon/card-view.svg')
+
+.list-view .list-view-btn::before
+  +bp($tablet)
+    content: url('../img/svg/icon/list-view.svg')
+
+.card-view .mobile-browse-controls .card-view-btn::before
+  content: url('../img/svg/icon/card-view-reverse.svg')
+
+.card-view .mobile-browse-controls .card-view-btn,
+.list-view .mobile-browse-controls .list-view-btn
+  opacity: 1
+
+.list-view-btn
+  width: calc(#{rv(1)} + 5px)
+  height: calc(#{rv(1)} + 8px)
+  margin-left: rv(-3) 
+
+.list-view-btn::before
+  content: url('../img/svg/icon/list-view-neutral.svg')
+  display: block
+  width: calc(#{rv(1)} + 3px)
+
+.list-view .mobile-browse-controls .list-view-btn::before
+  content: url('../img/svg/icon/list-view-reverse.svg')
+    
+.list-view .item-label,
+.list-view .figcaption-link
+  display: none
+
+.list-view .item-info .item-label,
+.list-view .item-info .item-description
+  display: block
+
+.list-view .card
+  display: flex
+  column-gap: rv(-1)
+
+.list-view .item-thumbnail
+  flex-basis: 33.3%
+  width: 33.3%
+
+.list-view .item-thumbnail a:focus,
+.list-view .item-thumbnail a:hover
+  border-bottom: none
+
+.list-view .item-info
+  flex-basis: 66.6%
+  width: 66.6%
+
+.list-view .item-title
+  @include line-clamp(1)
+
+.list-view .item-info .item-description
+  @include line-clamp(1)
+  font-size: font-value(-1)
+  +bp($desktop)
+    @include line-clamp(3)
+
+  
+
+

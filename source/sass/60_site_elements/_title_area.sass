@@ -1,0 +1,29 @@
+/*
+   @file _title_area.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description Handles two title blocks – the standard one and the Regional Title block. */
+
+.title-block
+
+  +reversed
+    > div
+      +standard-edge-padding
+
+  h1
+    margin-top: 0
+
+  +reversed
+    h1, .deck, p, h2, h3
+      color: $white
+
+  *:last-child
+    margin-bottom: 0
+
+  a
+    @extend %inline-anchor-reverse
+
+  .deck > p
+    @extend .deck
+

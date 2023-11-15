@@ -1,0 +1,168 @@
+/*
+   @file _slide_viewer.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description Handles slide-viewer web component. Common to both the homepage_introduction and slideshow_block components. */
+
+@use 'sass:math'
+
+// Ensure that slick calculates the right with based on the main container size
+.slideviewer-container,
+.slide-container,
+slide-viewer,
+.slick-slider,
+.slick-list
+  width: 100%
+
+.slideviewer-container
+    position: relative
+    flex-direction: column-reverse
+    background: $black
+
+    +bp($desktop)
+      display: flex
+      flex-direction: row-reverse
+      flex-wrap: nowrap
+      align-items: center
+
+
+slide-viewer
+  background-size: cover
+  background-color: neutral(3)
+  height: 80vh
+  --sequential-nav-justify-content: center
+  --sequential-nav-top: initial
+  --sequential-nav-left: 50%
+  --sequential-nav-right: auto
+  --sequential-nav-bottom: #{rv($mobile_edge_padding_factor)}
+  --sequential-nav-transform: translateX(-50%)
+  --slide-nav-background: none
+  --sequential-nav-background: #{neutral(90)}
+  --sequential-nav-border: 1px solid transparent
+  --sequential-nav-border-radius: #{$ui_border_radius}
+  --sequential-control-spacing: 0
+  --sequential-control-initial-opacity: 0.7
+  --page-marker-margin: 0 #{rv(-3)}
+  --sequential-control-background-size: 75%
+
+  +bp($desktop)
+    background-color: transparent
+    height: 100%
+
+  .slick-slide > div, .slick-slide .card > a
+    display: flex
+    flex-direction: column
+    justify-content: center
+    height: 100%
+
+  .slick-track
+    +bp($desktop)
+      display: flex
+      align-items: center
+
+
+slide-item
+  isolation: isolate
+  p:last-of-type
+      margin-bottom: rv(-5)
+
+  .card
+
+    .item-info
+      background: neutral(3)
+
+    +bp($desktop)
+      background: $white
+
+  .img-portrait
+    padding: rv($mobile_edge_padding_factor) !important
+
+    +bp($desktop)
+      padding: rv(0) !important
+
+  &.title-slide
+    +slide-item-template(3)
+    --slide-item-slide-flex-direction: row
+    position: relative
+    perspective: 8px
+    perspective-origin: 50%
+    color: $white
+
+    h2, .deck, .item-label
+      color: inherit
+    p
+      @extend %s-normal-k
+      color: $white
+
+      &:last-of-type
+        margin-bottom: 0
+
+    img
+      border-radius: $card-border-radius
+
+  [slot="slide-content"]
+    position: relative
+    z-index: 0
+    +gradient-overlay-slide()
+
+  $integrated_nav_height: 34px
+
+  [slot='slide-caption']
+    $element_spacing: rv(0)
+    margin: rv($mobile_edge_padding_factor)
+    padding-top: rv($mobile_edge_padding_factor)
+    padding-bottom: calc(#{rv($mobile_edge_padding_factor)} + #{$integrated_nav_height}) // cheat: actual height of nav
+    margin-top: 0
+    border-top: 1px solid $white
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
+    color: $white
+
+    *
+      color: inherit
+
+    h2, h3
+      margin-top: 0
+
+    +bp($desktop)
+      margin: rv($edge_padding_factor)
+      padding-bottom: calc(#{rv($edge_padding_factor)} + #{$integrated_nav_height}) // cheat: actual height of nav
+
+    .btn
+      +font-size(0)
+      color: $white
+      border-color: $white
+      width: fit-content
+
+
+    p + .btn
+      margin-top: $element_spacing
+
+  &:after
+    content: ''
+    position: absolute
+    width: rv(10)
+    height: rv(10)
+    pointer-events: none
+    background-size: contain
+    top: math.div(rv(10),-4)
+    left: math.div(rv(10),-4)
+    z-index: 1
+    opacity: 0
+
+  &.element-ready
+    &:after
+      transform: translateZ(0px)
+      animation: animateZ 2s ease-out
+      opacity: 1
+
+
+@keyframes animateZ
+  from
+    transform: translateZ(6px)
+  to
+    transform: translateZ(0px)
+
+

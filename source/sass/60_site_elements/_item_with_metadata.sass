@@ -1,0 +1,38 @@
+/** 
+ *  @file _item_with_metadata.sass 
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description Handles styling of metadata of items. */
+
+.item-info
+  .item-link
+    a
+      margin-top: 0
+      margin-bottom: rv(1)
+
+  summary 
+    overflow-x: hidden
+
+.item-with-metadata
+  background: neutral(5)  
+
+  a.media:hover,
+  a.media:focus
+    border-bottom: none
+
+  .tabs
+    display: flex
+    justify-content: flex-end
+  
+  .info-tab
+    margin-right: 0
+
+  .item-metadata-block
+    background: neutral(5)
+    padding: 0!important
+    
+
+    .metadata-label
+      font-size: font-value(-1)
+      font-weight: $bold
+      text-transform: capitalize

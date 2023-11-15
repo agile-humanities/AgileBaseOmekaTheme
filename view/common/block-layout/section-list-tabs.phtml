@@ -1,0 +1,39 @@
+<div id="block-<?php echo $this->blockId; ?>" class="item-list section-list section-list-tabs region <?php echo $this->regionClass; ?> <?php echo $this->classes ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+    <?php if ($this->hasTitle): ?>
+        <h2><?php echo $this->title; ?></h2>
+    <?php endif; ?>
+    <div class='list-container'>
+        <?php if ($this->hasIntroduction): ?>
+            <div class='block-introduction'>
+                <?php echo $this->introduction; ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($this->hasPages): ?>
+            <div class='desktop-page-list'>
+                <ul class='tab-ui desktop-page-list'>
+                    <?php foreach($this->pages as $page): ?>
+                        <li class='tab-control'>
+                            <a class='item-list-link<?php echo $page['o:active'] ? ' active' : ''; ?>' href='<?php echo $page['o:url']; ?>'><?php echo $page['o:title']; ?></a>
+
+                        </li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+        <?php if ($this->hasPages): ?>
+            <div class='mobile-page-list'>
+                <ul class='tab-ui'>
+                    <?php foreach($this->pages as $page): ?>
+                        <li class='mobile-page-control<?php echo $page['o:active'] ? ' active' : ''; ?>'>
+                            <?php if ($page['o:active']) :?>
+                                <span><?php echo $page['o:title']; ?><span class='page-list-arrow active-arrow'>></span></span>
+                            <?php else: ?>
+                                <a class='mobile-item-list-link' href='<?php echo $page['o:url']; ?>'><?php echo $page['o:title']; ?></a>
+                            <?php endif; ?>
+                        </li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

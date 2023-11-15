@@ -1,0 +1,56 @@
+/* mobile tab styling */
+
+.desktop-page-list
+    display: none
+    +bp($stack)
+        display: flex
+
+.mobile-page-list
+    +bp($stack)
+        display: none
+
+    .tab-ui
+        border-top: 1px neutral(30) solid
+        font-weight: bold
+        text-transform: uppercase
+        flex-direction: column
+
+        .mobile-page-control 
+            font-size: rv(0)
+            padding-left: 0
+            font-weight: $bold
+            list-style: none
+            z-index: 3
+
+            a 
+                color: neutral(30)
+                font-weight: $bold
+            :hover
+                color: $clr3
+                cursor: pointer
+
+        .active
+            span
+                display: flex
+                flex-direction: row
+                align-items: center
+                justify-content: space-between
+
+            .page-list-arrow
+                transform: rotate(90deg)
+                display: inline-block
+                color: neutral(30)
+                font-size: rv(0)
+                text-dectoration: none
+            
+
+            :hover
+                border-bottom: none
+
+                
+
+.site-page-pagination
+    display: none
+
+
+

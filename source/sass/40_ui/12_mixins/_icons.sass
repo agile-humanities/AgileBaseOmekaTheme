@@ -1,0 +1,151 @@
+// Social Media Icons
+
+$fb_icon: no-repeat url(get_svg_url('icons/facebook-black'))
+$insta_icon: no-repeat url(get_svg_url('icons/instagram-black'))
+$twitter_icon: no-repeat url(get_svg_url('icons/twitter-black'))
+
+
+// Overlay Menu Icons
+$project_icon: no-repeat url(get_svg_url('icons/projects-transparent'))
+$user_icon: no-repeat url(get_svg_url('icons/user-transparent'))
+$admin_icon: no-repeat url(get_svg_url('icons/admin-transparent'))
+$menu_icon: no-repeat url(get_svg_url('icons/menu-transparent'))
+
+
+// Browser control icons
+
+$card_icon: no-repeat url(get_svg_url('icons/grid-view-icon'))
+$card_icon_active: no-repeat url(get_svg_url('icons/grid-view-icon-active'))
+$masonry_icon: no-repeat url(get_svg_url('icons/mosaic-view-icon'))
+$masonry_icon_active: no-repeat url(get_svg_url('icons/mosaic-view-icon-active'))
+$grid_icon: no-repeat url(get_svg_url('icons/grid-view-icon'))
+$grid_icon_active: no-repeat url(get_svg_url('icons/grid-view-icon-active'))
+$list_icon: no-repeat url(get_svg_url('icons/list-view-icon'))
+$list_icon_active: no-repeat url(get_svg_url('icons/list-view-icon-active'))
+$filter_icon: no-repeat url(get_svg_url('icons/filter-icon'))
+$filter_icon_active: no-repeat url(get_svg_url('icons/filter-icon-active'))
+$filter_icon_reverse: no-repeat url(get_svg_url('icons/filter-icon-reverse'))
+
+$filter_arrow_icon: no-repeat url(get_svg_url('icons/filter-arrow-icon'))
+$filter_arrow_icon_active: no-repeat url(get_svg_url('icons/filter-arrow-icon-active'))
+// Button Icons
+
+$submit_arrow: no-repeat url(get_svg_url('icons/right-arrow-black'))
+$submit_arrow_reversed: no-repeat url(get_svg_url('icons/right-arrow-white'))
+$submit_arrow_hover: $submit_arrow_reversed
+$search_icon: no-repeat url(get_svg_url('icons/search-black'))
+$search_icon_hover: no-repeat url(get_svg_url('icons/search-black'))
+$search_submit_icon: no-repeat url(get_svg_url('icons/search-grey'))
+$search_submit_icon_hover: no-repeat url(get_svg_url('icons/search-black'))
+
+$more_arrow: no-repeat url(get_svg_url('icons/arrow-right-ui'))
+$more_arrow_hover: no-repeat url(get_svg_url('icons/arrow-right-ui'))
+// Form Icons
+$close_icon: no-repeat url(get_svg_url('icons/close-icon'))
+
+
+// Icon Mixins
+
+=card-view-icon($size: $ui_display_controls_icon_size, $position: right center)
+  +background-icon($card_icon,$size, $position)
+
+  &:hover, &.active
+    +background-icon($card_icon_active,$size, $position)
+
+=masonry-view-icon($size: $ui_display_controls_icon_size, $position: right center)
+  +background-icon($masonry_icon,$size, $position)
+
+  &:hover, &.active
+    +background-icon($masonry_icon_active,$size, $position)
+
+=grid-view-icon($size: $ui_display_controls_icon_size, $position: right center)
+  +background-icon($grid_icon,$size, $position)
+
+  &:hover, &.active
+    +background-icon($grid_icon,$size, $position)
+
+
+=list-view-icon($size: $ui_display_controls_icon_size, $position: right center)
+  +background-icon($list_icon,$size,$position)
+
+  &:hover, &.active
+    +background-icon($list_icon_active,$size, $position)
+
+=filter-icon-reverse($size: $ui_display_controls_icon_size)
+  +background-icon($filter_icon_reverse,$size)
+
+  &:hover, &.active
+    +background-icon($filter_icon,$size)
+
+=filter-arrow-icon($size: $ui_display_controls_icon_size, $position: right center)
+  +background-icon($filter_arrow_icon,$size,$position)
+
+  &:hover, &.active
+    +background-icon($filter_arrow_icon_active,$size, $position)
+
+
+=close-icon-hover
+  +form-close($close_icon)
+
+=facebook-icon
+  +icon($fb_icon)
+
+=instagram-icon
+  +icon($insta_icon)
+
+=twitter-icon
+  +icon($twitter_icon)
+
+=submit-arrow
+  +background-icon($submit_arrow_reversed, $btn_icon_size, right rv(-2) center)
+
+=submit-arrow-hover
+  +background-icon($submit_arrow_hover, $btn_icon_size, right rv(-2) center)
+
+=search-icon($size: $btn_icon_size, $offset: 0px)
+  +background-icon($search_submit_icon, $size, right $offset center)
+
+=search-icon-hover($size: $btn_icon_size, $offset: 0px)
+  +background-icon($search_icon_hover, $size, right $offset center)
+
+=reset-icon
+  +background-icon($close_icon,$btn_icon_size, right center)
+
+=more-arrow
+  +arrow-rotate($more_arrow)
+  padding-right: calc(#{$ui_padding} * 0.5 + #{$btn_icon_size} )
+  background-position: right center
+  background-size: $btn_icon_size
+
+  > *
+    transform: translateX(calc(#{$ui_padding * -0.5} + #{($btn_icon_size * 0.5)}))
+
+
+=background-icon ($background: $black, $size: $btn_icon_size, $position: right rv(-8) center)
+  background: $background
+  background-position: $position
+  background-size: $size
+
+// Alias for backwards compatibility
+=button-icon($background: $black, $size: $btn_icon_size)
+  +background-icon($background,$size)
+
+=arrow-rotate ($background: $black, $size: $btn_icon_size)
+  background: $background
+  background-position: right $ui_padding center
+  background-size: $size
+
+
+=icon ($background: $black, $size: rv(0))
+  display: block
+  background: $background
+  height: $size
+  width: $size
+
+=form-close($background: $black)
+  &:hover
+    background: $background
+    display: inline-block
+    width: 20px
+    height: 20px
+    margin-left: 10px

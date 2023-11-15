@@ -1,0 +1,73 @@
+/** 
+ *  @file _item_block_common.sass 
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description Handles common styling of the item_with_showcase and item_with_metadata. */
+
+.item-block
+
+  .image-container
+    +proportional_height($width: 100%,$aspect_ratio: 0.75)
+  
+    .a-landscape
+      img
+        object-fit: cover
+  
+    .a-portrait
+      img
+        object-fit: contain
+      
+        height: 100%
+        padding: rv(-2) 0
+        margin: 0 auto
+
+  .wrapper
+    margin: 0 rv(0)
+  
+  .panels
+    padding-bottom: rv(0)
+  
+  .tab
+    display: inline-block
+    color: $white
+    text-transform: uppercase
+    font-size: font-value(-1)
+    margin: 1.5%
+    font-weight: $semibold
+    margin-bottom: -2px
+    text-decoration: none
+  
+  .description-tab,
+  .info-tab
+    text-decoration: none
+  
+  .tabs > a:hover
+    border-bottom: 4px solid $clr3
+    
+  h3
+    margin-top: 0
+  
+  h3 > a
+    color: $white
+    text-decoration: none
+
+    &:hover,
+    &:focus
+      border-bottom-color: $white
+
+  .caption
+    color: $white
+  
+  .description-text
+    @extend .caption
+    
+  .viewitem-link
+    color: $white
+    
+    > a
+      color: $white
+      text-decoration: none
+      text-transform: uppercase
+      font-weight: $bold
+      font-size: font-value(-1)
+      border-bottom: 1px solid $white

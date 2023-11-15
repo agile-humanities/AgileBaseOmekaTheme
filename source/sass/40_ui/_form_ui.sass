@@ -1,0 +1,148 @@
+/**
+ *  @file _form_ui.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *  @description Define various form user interface elements.
+ *
+ **/
+
+
+input,
+select,
+textarea
+  display: block
+  height: $ui_element_height
+  padding: $ui_padding
+  border: 1px solid $lighter_neutral
+  font-family: $basefont
+  font-size: $ui_element_font_size
+
+input,
+textarea
+  border-radius: $ui_border_radius
+
+textarea
+  height: unset
+
+::placeholder
+  +font-size(0)
+  color: $darker_neutral
+  opacity: 1
+  font-family: $basefont
+
+select
+  border-radius: $ui_border_radius
+  -webkit-appearance: none
+  -moz-appearance: none
+  appearance: none
+  background: url(../img/svg/icons/down-arrow-black.svg) no-repeat calc(100% - #{$ui_padding}) center
+  background-size: auto rv(0)
+  padding-right: calc(#{rv(0)} + (#{$ui_padding} * 3))
+  font-weight: $bold
+
+option
+  font-weight: $normal
+  background-color: white
+  color: black
+
+// !important flag overrides built-in form stylesheets
+
+input[type="text"]
+  height: $ui_element_height !important
+  padding: $ui_padding
+  border-radius: $ui_border_radius !important
+  max-width: 100%
+
+input[type="checkbox"],
+input[type="radio"]
+  padding: unset
+  cursor: pointer
+
+input[type="checkbox"]
+  appearance: none
+  border-radius: unset
+  border: 1px solid $lighter_neutral
+  height: $ui_checkbox_height
+  width: $ui_checkbox_height
+  background-color: white
+  display: inline-block
+  vertical-align: middle
+  float: left
+  margin: 0
+
+  &:hover,
+  &:checked
+    position: relative
+
+    &::after
+      content: url('../img/svg/icons/check-mark-black.svg')
+      position: absolute
+      width: rv(-1)
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%) scale(0.75)
+
+  // Fix alignment of checkbox labels
+
+  & + label
+    font-size: $ui_checkbox_label_font_size
+    display: block
+    vertical-align: middle
+    padding-top: calc((#{$ui_checkbox_height} - #{rv(0)}) * 0.5) // Align to to middle of checkbox, left to width of checkbox plus a gap. Top calculates the height of the checkboxes, less the size of the label, divided by two
+    padding-right: 0
+    padding-bottom: 0
+    padding-left: calc(#{$ui_checkbox_height} + #{rv(0)})
+    line-height: $ui_checkbox_height
+    font-weight: $normal
+
+input[type="radio"]
+  appearance: none
+  border: 1px solid $lighter_neutral
+  border-radius: 50%
+  height: $ui_checkbox_height
+  width: $ui_checkbox_height
+  background-color: white
+  display: inline-block
+  vertical-align: middle
+
+  &:hover,
+  &:checked
+    box-shadow: inset 0 0 0 3px white !important
+    background-color: $lighter_neutral
+
+// Submit Button
+
+button[type='submit']
+  @extend %button-submit
+
+// Search field
+// See 40_ui/_search_form
+
+fieldset, details
+  border: none
+  padding: unset
+  overflow-y: hidden
+  transition: all $heartbeat ease-in-out
+
+  // Open accordion styles
+
+  &.open, &[open]
+    legend::after, summary::after
+      content: url(../img/svg/icons/accordion-collapse-icon.svg)
+
+  legend, summary
+    font-size: $ui_checkbox_label_font_size
+    font-weight: $bold
+    width: 100%
+    position: relative
+
+    // General and closed accordion styles
+    &::after
+      content: url(../img/svg/icons/accordion-open-icon.svg)
+      position: absolute
+      width: 8px
+      right: 0
+      transition: transform 0.3s ease-in-out
+
+  summary
+    list-style-type: none

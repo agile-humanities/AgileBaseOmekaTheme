@@ -1,0 +1,38 @@
+<?php
+if ($attachment !== false) {
+    $item = $attachment->item();
+
+    $media = null;
+
+    if ($item) {
+        $media = $attachment->media() ?: $item->primaryMedia();
+    }
+
+    $caption = $attachment->caption();
+
+}
+
+?>
+<div id="block-<?php echo $this->blockId; ?>" class="poster  region <?php echo $this->thumbnailType; ?> <?php echo $this->regionClass; ?> <?php echo $this->colourScheme; ?> <?php echo $this->textTreatment; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+  <?php if ($attachment !== false && $media): ?>
+    <div class="image-container item resource">
+      <figure>
+        <?php if (isset($this->block->page_title) && isset($this->block->page_url)): ?>
+          <?php printf('<a href="%s" title="Visit %s’s Profile">%s</a>',$this->block->page_url, $this->block->page_title, $this->thumbnail($media,$thumbnailType));  ?>
+        <?php else: ?>
+          <?php echo $this->thumbnail($media,$thumbnailType); ?>
+        <?php endif; ?>
+      </figure>
+    </div>
+  <?php endif; ?>
+  <div class="poster-container">
+    <?php if(!empty($this->title)): ?>
+      <div class="poster-title">
+        <?php echo $this->title; ?>
+      </div>
+        <?php endif; ?>
+      <div class="poster-text">
+        <?php echo $this->html; ?>
+      </div>
+  </div>
+</div>

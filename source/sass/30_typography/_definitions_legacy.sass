@@ -1,0 +1,250 @@
+/**
+ *  @file _definitions_legacy.sass
+ *  @category 30_typography
+ *  @theme LOCAL
+ *  @description Experiment in non-semantic type definitions. Phasing this out.
+ *
+ **/
+
+
+
+// Extra small sizes
+
+%xs-normal-k
+  +font-size(-1)
+  font-weight: $normal
+  color: $black
+  @extend %has-reversed
+
+%xs-normal-k-70
+  @extend %xs-normal-k
+  color: neutral(70)
+
+%xs-normal-k-30
+  @extend %xs-normal-k
+  color: neutral(30)
+
+%xs-normal-k-0
+  @extend %xs-normal-k
+  color: $white
+
+%xs-bold-k
+  @extend %xs-normal-k
+  font-weight: $medium
+
+%xs-bold-k-cap
+  @extend %xs-bold-k
+  text-transform: uppercase
+
+
+// Small sizes
+
+%s-normal-k
+  +font-size(-1)
+  font-weight: $normal
+  color: $black
+  @extend %has-reversed
+
+%s-normal-k-70
+  @extend %s-normal-k
+  color: neutral(70)
+
+%s-normal-k-30
+  @extend %s-normal-k
+  color: neutral(30)
+
+%s-normal-k-0
+  @extend %s-normal-k
+  color: $white
+
+%s-bold-k
+  @extend %s-normal-k
+  font-weight: $medium
+
+%s-bold-k-cap
+  @extend %s-bold-k
+  text-transform: uppercase
+
+// Medium sizes
+
+%m-normal-k
+  +font-size(map-get($sizefactors,'base'))
+  font-weight: $normal
+  color: $black
+  @extend %has-reversed
+
+%m-semibold-k
+  @extend %m-normal-k
+  font-weight: $semibold
+
+%m-bold-k
+  @extend %m-normal-k
+  font-weight: $medium
+
+%m-normal-k-70
+  @extend %m-normal-k
+  color: neutral(70)
+
+%m-normal-k-30
+  @extend %m-normal-k
+  color: neutral(30)
+
+%m-normal-k-0
+  @extend %m-normal-k
+  color: $white
+
+// Small to medium fluid
+
+%sm-normal-k-fluid
+  font-size: clamped(-1,map-get($sizefactors,'base'))
+  font-weight: $normal
+  color: $black
+  @extend %has-reversed
+
+// Large sizes
+
+%l-normal-k
+  +font-size(1)
+  font-weight: $normal
+  color: $black
+  @extend %has-reversed
+
+%l-semibold-k
+  @extend %l-normal-k
+  font-weight: $semibold
+
+%l-bold-k
+  @extend %l-normal-k
+  font-weight: $medium
+
+%l-bold-k-cap
+  @extend %l-bold-k
+  text-transform: uppercase
+
+// Extra Large sizes
+
+%xl-normal-k
+  +font-size(2)
+  font-weight: $normal
+  color: $black
+  @extend %has-reversed
+
+%xl-semibold-k
+  @extend %xl-normal-k
+  font-weight: $semibold
+
+%xl-bold-k
+  @extend %xl-normal-k
+  font-weight: $medium
+
+%xl-alt-normal-k
+  @extend %xl-normal-k
+  font-family: $altfont
+
+%xl-alt-bold-k
+  @extend %xl-alt-normal-k
+  font-weight: $medium
+
+%xl-alt-bold-accent
+  @extend %xl-bold-k
+  font-family: $altfont
+  color: $impact
+
+%xl-alt-normal-k-fluid
+  @extend %xl-normal-k
+  font-family: $altfont
+  font-size: clamped(0,2)
+
+
+// Magic Mike
+
+%xxl-alt-normal-k
+  +font-size(4)
+  font-weight: $normal
+  color: $black
+  @extend %has-reversed
+
+%xxl-alt-medium-k
+  @extend %xxl-alt-medium-k
+  font-weight: $medium
+
+%xxl-alt-medium-accent
+  @extend %xxl-alt-medium-k
+  color: $impact
+
+%xxl-alt-bold-k
+  @extend %xxl-alt-normal-k
+  font-weight: $medium
+
+%xxl-alt-bold-accent
+  @extend %xxl-alt-bold-k
+  color: $impact
+
+
+// Gigantic
+
+%xxxl-alt-normal-k
+  +font-size(6)
+  font-weight: $normal
+  color: $black
+  font-family: $altfont
+  @extend %has-reversed
+
+%xxxl-alt-bold-k
+  @extend %xxxl-alt-normal-k
+  font-weight: $medium
+
+
+%details-grid
+  +separated_row(2,$mobile_edge_padding_factor)
+
+  +bp($tablet)
+    +separated_row(4,$mobile_edge_padding_factor)
+
+  +bp($desktop)
+    +separated_row(5,$edge_padding_factor)
+
+  +bp($ultrawide)
+    +separated_row(6,$edge_padding_factor)
+
+%tag
+  display: inline-flex
+  background: neutral(80)
+  color: $white
+  +font-size(-1)
+  justify-content: flex-start
+  flex-wrap: wrap
+  align-items: center
+  padding: 3px
+  border: 0
+  height: 100%
+
+  &:hover
+    border: 0
+
+
+  label, .facet-item--label
+    font-size: inherit
+    color: neutral(20)
+    margin-right: rv(-2)
+
+%more
+  +font-size(0)
+  color: $black
+  display: flex
+  flex-direction: row
+  align-items: center
+  justify-content: flex-start
+  border-bottom: 0
+
+  &:hover
+    border-bottom: 0
+    color: $impact
+
+  &:after
+    content: ''
+    margin-left: rv(0) * 0.25
+    height: rv(0) * 0.5
+    width: rv(0) * 0.5
+    background: no-repeat url(get_svg_url('icons/right-arrow-black'))
+    background-size: contain

@@ -1,0 +1,33 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var string $name
+ * @var array $facetValues With value, count, active, label and url when needed.
+ * @var array $options
+ */
+
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
+
+$displayCount = !empty($options['display_count']);
+?>
+<!-- TEMPLATE BEGIN: /search/facet-links.phtml -->
+<ul class="search-facet-items">
+    <?php foreach ($facetValues as $facetValue): ?>
+    <?php
+      $facetClass = urlencode(strtolower(str_replace(' ','-',$facetValue['value'])));
+      
+      if ($facetClass == 'w-%26-l-university') {
+          $facetClass = 'washington-and-lee'; // special case required for styling
+      }
+    ?>
+    <li class="<?= $facetClass ?> <?= $facetValue['active'] ? 'active' : 'inactive' ?>">
+        <a href="<?= $escapeAttr($facetValue['url']) ?>"><?= $escape($facetValue['label']) ?></a>
+        <?php if ($displayCount): ?>
+        (<span class="count"><?= $facetValue['count'] ?></span>)
+        <?php endif; ?>
+    </li>
+    <?php endforeach; ?>
+</ul>
+<!-- TEMPLATE END: /search/facet-links.phtml -->

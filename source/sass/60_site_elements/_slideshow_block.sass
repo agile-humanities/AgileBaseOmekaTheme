@@ -1,0 +1,47 @@
+/*
+   @file _slide_viewer.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description Also see _slide_viewer.sass for common component styles */
+
+
+.slideshow-block
+  +standard_edge_padding
+
+  slide-viewer
+    background: transparent
+    padding: 0
+    padding-bottom: rv(1) // Clearance for controls
+    max-height: 100%
+    --sequential-nav-bottom: 0
+
+    +bp($desktop)
+      padding: rv($edge_padding_factor)
+      padding-bottom: rv(6) // Clearance for controls
+
+
+  slide-item:not(.title-slide)
+    .slide-item-content
+      display: flex
+      flex-direction: column
+      flex-wrap: nowrap
+      justify-content: center
+      height: 100%
+      width: 100%
+
+      +bp($desktop)
+        flex-direction: row
+
+      .caption
+        padding: rv($mobile_edge_padding_factor)
+        padding-top: rv($mobile_edge_padding_factor) * 2
+
+        +bp($desktop)
+          width: calc(32.8% + #{rv($edge_padding_factor)})
+          padding: rv($edge_padding_factor)
+          display: flex
+          align-items: flex-end
+
+        *
+          color: $white

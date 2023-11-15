@@ -1,0 +1,99 @@
+<! -- START OF /COMMON/PAGINATION.PHTML -->
+<?php
+$translate = $this->plugin('translate');
+$previousArrowImgSrc = $this->assetUrl('img/svg/icons/left-arrow-white.svg');
+$previousArrowHoverImgSrc = $this->assetUrl('img/svg/icons/left-arrow-active.svg');
+$nextArrowImgSrc = $this->assetUrl('img/svg/icons/right-arrow-white.svg');
+$nextArrowHoverImgSrc = $this->assetUrl('img/svg/icons/right-arrow-active.svg');
+
+$previousArrowImg = "<img src='{$previousArrowImgSrc}' data-src='{$previousArrowImgSrc}' data-src-active='{$previousArrowHoverImgSrc}' alt='left arrow' />";
+$nextArrowImg = "<img src='{$nextArrowImgSrc}' data-src='{$nextArrowImgSrc}' data-src-active='{$nextArrowHoverImgSrc}' alt='left arrow' />";
+
+$filterBtnImgSrc = $this->assetUrl('img/svg/icons/list-view-white.svg');
+$filterBtnHoverSrc = $this->assetUrl('img/svg/icons/list-view-active.svg');
+$filterBtnImg = "<img src='{$filterBtnImgSrc}' data-src='{$filterBtnImgSrc}' data-src-active='{$filterBtnHoverSrc}' alt='Show search and filter options' />";
+
+?>
+<nav class="pagination" role="navigation">
+<?php if ($totalCount): ?>
+    <?php
+        $from = $offset + 1;
+        $to = ($currentPage < $pageCount) ? $offset + $perPage : $totalCount;
+        $numberOfPages = $totalCount / $perPage;
+        $nextPage = $currentPage !== $pageCount  ? $currentPage + 1 : 1;
+        $prevPage = $currentPage !== 1 ? $currentPage - 1 : $pageCount;
+    ?>
+
+    <span class='for-js number-of-items'><?php echo $totalCount ?></span>
+    <span class='for-js end-item-counter'><?php echo $to ?></span>
+    <span class='for-js start-item-counter'><?php echo $from ?></span>
+    <span class='for-js per-page'><?php echo $perPage ?></span>
+    <span class='for-js pagination--count'><?php echo $pageCount?></span>
+
+    <div class="pagination--arrows">
+        <?php if ($currentPage != 1): ?>
+            <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>","{$pagelessUrl}?page={$prevPage}", 'previous o-icon-prev button',$translate('Previous'), $translate('Previous'),$previousArrowImg); ?>
+        <?php else: ?>
+            <span class="previous explore-left button inactive"></span>
+        <?php endif; ?>
+    </div>
+
+
+    <ul class='pagination--bullets'>
+        <?php if (strpos($pagelessUrl, '?') !== false) : ?>
+            <?php
+                for ($x = 1; $x < $numberOfPages + 1 ; $x++) {
+                    $active = $x === $currentPage ? 'class="active"' : '';
+                    echo "<li><a {$active} data-pageNumber='$x' href='$pagelessUrl&page=$x'><span class='pagination--number'>$x</span></a></li>";
+                }
+            ?>
+        <?php else : ?>
+            <?php
+                for ($x = 1; $x < $numberOfPages + 1 ; $x++) {
+                    $active = $x === $currentPage ? 'class="active"' : '';
+                    echo "<li><a {$active}  data-pageNumber='$x' href='$pagelessUrl?&page=$x'><span class='pagination--number'>$x</span></a></li>";
+                }
+            ?>
+        <?php endif ?>
+    </ul>
+
+    <div class="pagination--arrows">
+        <?php if ($currentPage < $pageCount): ?>
+            <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>", "{$pagelessUrl}?page={$nextPage}", 'next o-icon-next button',$translate('Next'), $translate('Next'),$nextArrowImg); ?>
+        <?php else: ?>
+            <span class="next explore-right button inactive"></span>
+        <?php endif; ?>
+    </div>
+
+<?php else: ?>
+    <?php echo $translate('0 results'); ?>
+<?php endif; ?>
+</nav>
+<div class="pagination--label" <?php echo ($pageCount == 1) ? 'readonly' : ''; ?> aria-label="<?php echo $translate('Page'); ?>">
+    Page <span class="pagination--detail"><?php echo $currentPage; ?> <?php echo sprintf($translate('of %s'), $pageCount); ?></span>
+</div>
+
+<div id="mobile-browse-controls">
+    <a id="mobile-filter-button" title="Show menu"><?= $filterBtnImg ?> Filter and sort results</a>
+    <div class="pagination--mobile">
+        <div class="pagination--arrows">
+            <?php if ($currentPage != 1): ?>
+                <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>","{$pagelessUrl}?page={$prevPage}", 'previous o-icon-prev button',$translate('Previous'), $translate('Previous'),$previousArrowImg); ?>
+            <?php else: ?>
+                <span class="previous explore-left button inactive"></span>
+            <?php endif; ?>
+            <div class="pagination--label" <?php echo ($pageCount == 1) ? 'readonly' : ''; ?> aria-label="<?php echo $translate('Page'); ?>">
+            Page <span class="pagination--detail"><?php echo $currentPage; ?> <?php echo sprintf($translate('of %s'), $pageCount); ?></span>
+            </div>
+            <?php if ($currentPage < $pageCount): ?>
+                <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>", "{$pagelessUrl}?page={$nextPage}", 'next o-icon-next button',$translate('Next'), $translate('Next'),$nextArrowImg); ?>
+            <?php else: ?>
+                <span class="next explore-right button inactive"></span>
+            <?php endif; ?>
+
+        </div>
+
+    </div>
+</div>
+
+<! -- END OF /COMMON/PAGINATION.PHTML -->

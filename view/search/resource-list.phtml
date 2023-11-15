@@ -1,0 +1,60 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ * @var \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchPage
+ * @var \AdvancedSearch\Query $query
+ * @var \AdvancedSearch\Response $response
+ * @var string $title
+ * @var string $resourceName
+ */
+
+$resources = $response->getResources($resourceName);
+// A check is done: when page is not first, the resources may be empty even with results.
+if (!$resources) return;
+
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$assetUrl = $plugins->get('assetUrl');
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
+$thumbnail = $plugins->get('thumbnail');
+$partial = $plugins->get('partial');
+
+// Can be simplified in a public theme.
+$setting = $plugins->get($site ? 'siteSetting' : 'setting');
+
+$siteSlug = $site->slug();
+
+$filterLocale = (bool) $setting('filter_locale_values');
+$siteLang = $plugins->get('lang')();
+$lang = $filterLocale ? $siteLang : null;
+$langValue = $filterLocale ? [$siteLang, ''] : null;
+$untitled = $translate('[Untitled]');
+
+$headingTerm = $setting('browse_heading_property_term');
+$bodyTerm = $setting('browse_body_property_term');
+
+$gridListMode = $searchPage ? $searchPage->subSetting('display', 'grid_list_mode', 'grid') : 'grid';
+$modeClass = $gridListMode === 'list_only' ? 'list' : ($gridListMode === 'grid_only' ? 'grid' : $gridListMode);
+?>
+
+<!-- BEGIN RESOURCE LIST TEMPLATE search/resource-list.phtml -->
+
+<?php if ($title): ?>
+<h3><?= $escape($title) ?></h3>
+<?php endif; ?>
+<ul id='collection-list' class="resource-list search-results-list <?= $modeClass ?>">
+    <?php /** @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource */
+      foreach ($resources as $resource):
+      ?>
+      <?=
+      $partial('agile-item/card', [
+        'containerElement' => 'li',
+        'cardStyle' => 'item',
+        'item' => $resource
+      ]) ?>
+    <?php endforeach; ?>
+</ul>
+
+<!-- END RESOURCE LIST TEMPLATE search/resource-list.phtml -->

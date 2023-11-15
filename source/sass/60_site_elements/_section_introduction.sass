@@ -1,0 +1,70 @@
+/*
+   @file _section_introduction.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description Also see _title_area.sass, which is applied to this block via a class.  */
+
+
+.section-intro-block
+
+  figure
+    position: relative
+
+    a
+      display: block
+
+  figcaption
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
+    background: rgba($black,0.8)
+    color: $white
+    border-top: 1px solid neutral(50)
+    padding: rv($mobile_edge_padding_factor)
+    font-style: normal
+    line-height: 1.4
+
+    h2, h3
+      margin-top: 0
+
+  +bp($desktop)
+    display: flex
+
+    &.left
+      flex-direction: row-reverse
+
+    > *:nth-child(1)
+      flex-grow: 1
+      display: flex
+      flex-direction: column
+      justify-content: flex-end
+      height: 100%
+      padding-bottom: rv($edge_padding_factor) * 3
+
+    > *:nth-child(2)
+      flex-shrink: 0
+      width: 61.8%
+      height: 100%
+
+
+    .item
+      display: none
+      height: 100%
+
+      figure
+        height: 100%
+
+        a
+          height: 100%
+
+        img
+          object-fit: cover
+          height: 100%
+          width: 100%
+
+    .item:first-child
+      display: block
+
+

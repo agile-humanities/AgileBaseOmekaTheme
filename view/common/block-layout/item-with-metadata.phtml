@@ -1,0 +1,67 @@
+<div class="item-with-metadata card">
+  <?php foreach($attachments as $attachment): ?>
+  <div class="item resource">
+  <?php $item = $attachment->item(); ?>
+  <?php if (empty($item)) continue; ?>
+    <div class="resource show">
+      <?php if($item->media()): ?>
+        <div class="media-list image-container">
+        <?php foreach ($item->media() as $media):
+            echo $media->linkRaw($this->thumbnail($media, 'large', ['title' => $media->displayTitle()]), null, ['class' => 'media resource']); endforeach; ?>
+        </div>
+        <?php endif; ?>
+
+      <div class="container-with-tabs-and-panels">
+        <div class="panels wrapper">
+          <div class="description-panel item-info">
+          	<?php $institution = $item->value('vra:placeOfRepository'); if ($institution): ?>
+            <div class="item-label"><?php echo $institution; ?></div>
+          	<?php endif; ?>
+            	<h3><?php echo $item->link($item->displayTitle()); ?></h3>
+              	<?php $caption = $attachment->caption(); if ($caption): ?>
+                <div class="caption"><?php echo $caption; ?></div>
+                <?php endif; ?>
+                <?php $values = $item->value('dcterms:description', ['all' => true]); ?>
+                <?php if ($values): ?>
+                	<p class="description-text">
+                    <?php foreach ($values as $value) { echo $value->asHtml(); }?></p>
+                    <?php endif; ?>
+                  <div class="item-link">
+                    <?php echo $item->link($item->value($this->siteSetting('browse_heading_property_term', 'Find Out More'), ['default' => $this->plugin('translate')('Find Out More')])); ?> <span>></span>
+                  </div>
+									<details>
+										<summary>Metadata</summary>
+                  <div class="item-metadata-block">
+                  	<div class='metadata-list'>
+                    	<?php echo $item->displayValues(); ?>
+                        <div class="property">
+                          <?php $itemSets = $item->itemSets(); ?>
+                          <?php if (count($itemSets) > 0): ?>
+                          <div class="metadata-label">
+														<?php echo $translate("Item sets"); ?>
+													</div>
+                          <?php foreach ($itemSets as $itemSet): ?>
+                          <div class="value">
+														<a class="item-set-link" href="<?php echo $escape($itemSet->url()); ?>">
+													<?php echo $itemSet->displayTitle(); ?></a>
+												</div>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+                      </div>
+                   </div>    
+									</div>
+								</details>
+          		</div>
+                      
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+
+
+

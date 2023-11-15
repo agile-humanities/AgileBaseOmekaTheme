@@ -1,0 +1,27 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var string $name
+ * @var string $value
+ * @var string $label
+ * @var int $count
+ * @var bool $active
+ * @var string $url
+ * @var array $options
+ * @var \Laminas\View\Helper\EscapeHtml $escapeHtml
+ * @var \Laminas\View\Helper\EscapeHtmlAttr $escapeHtmlAttr
+ * @var \Laminas\View\Helper\TranslatorAwareTrait $translate
+ * @var \AdvancedSearch\View\Helper\FacetLabel $facetLabel
+ */
+
+$displayCount = !empty($options['display_count']);
+=?>
+
+<!-- TEMPLATE BEGIN: /search/facet-link.phtml -->
+<span class="<?= $active ? 'active' : 'inactive' ?>">
+    <a href="<?= $escapeHtmlAttr($url) ?>"><?= $escapeHtml($label) ?></a>
+    <?php if ($displayCount): ?>
+    (<span class="count"><?= $count ?></span>)
+    <?php endif; ?>
+</span>
+<!-- TEMPLATE END: /search/facet-link.phtml -->

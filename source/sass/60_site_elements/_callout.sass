@@ -1,0 +1,50 @@
+/** 
+ *  @file _callout.sass 
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description  Handles styling of the callout block. */
+
+
+.callout
+  .callout-text
+    position: relative
+    display: flex
+    justify-content: center
+    align-items: center
+    margin: 0 0 rv(0) 0 
+    
+    p
+      font: $extrabold rv(2) $headingfont
+      line-height: rv(4)
+      margin: 0
+      font-size: clamped(2, 3, 'sml', 'xlrg')
+
+    +bp($tablet)
+      max-width: rv(12)
+      margin: 0 auto    
+   
+ 
+.callout-centre
+  .callout-text
+    max-width: none
+    margin: 0 0 rv($edge_padding_factor) 0
+
+
+.callout-right
+  .callout-text
+ 
+    +bp($tablet)
+      float: right
+      margin: 0 0 0 rv($edge_padding_factor)
+      right: rv(-5)
+
+
+.callout-left
+  .callout-text
+    +bp($tablet)
+      float: left
+      margin: 0 rv($edge_padding_factor) 0 0
+      left: rv(-5)
+
+   
+

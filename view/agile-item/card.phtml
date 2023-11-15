@@ -1,0 +1,91 @@
+<?php
+/**
+ * @file card.phtml
+ * @description Displays a card view for a particular item. Use $this->plugin('cardViewer')->getCard($item) to invoke.
+ * @var $this /Laminas/View/View
+ * @var $containerElement Wrapping element can be passed to card via the View Helper
+ * @var $item Template can handle item or resource objects
+ * @var $resource
+ */
+
+    $translate = $this->plugin('translate');
+    $escape = $this->plugin('escapeHtml');
+    $plugins = $this->getHelperPluginManager();
+
+    try {
+      $textSummary = $this->plugin('textSummary');
+    } catch (Exception $e)  {
+      $textSummary = null;
+    }
+    $thumbnailer = $plugins->get('thumbnail');
+
+    $containerElement = isset($containerElement) ? $containerElement : "div";
+    $this->classes = isset($this->classes) ? $this->classes : '';
+    if (strpos($this->classes, 'card') === false) {
+      $this->classes .= " card";
+    }
+
+    $bodyTerm = $this->siteSetting('browse_body_property_term');
+    $viewItemPageTerm  = $this->siteSetting('browse_view_item_page_term');
+    $untitled = $translate('[Untitled]');
+
+    $contentType = [];
+
+    $cardMode = get_class($item) == 'Omeka\Api\Representation\ItemRepresentation' ? 'item' : 'resource';
+
+    $thumbnailSize = 'large';
+
+    switch($cardMode) {
+      case 'item':
+        $url = $item->url();
+        $altText = $item->value('vra:caption') ?? '';
+        $thumbnail = !empty($altText) ? $this->thumbnail($item, $thumbnailSize,['alt' => $escape(strip_tags($altText))]) : $this->thumbnail($item, $thumbnailSize);
+        $contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item');
+        $viewItemPage = $viewItemPageTerm ? $item->value($viewItemPageTerm, ['default' => $translate('Find Out More')]) : 'Find out more';
+        $heading = $heading ?? $item->displayTitle();
+        $body = $body ?? $item->displayDescription();
+        break;
+      case 'resource':
+        $url = $resource->url();
+
+        $thumbnail = '';
+
+        if (method_exists($resource,'getItem') && $item = $this->getItem()) {
+          $altText = $item->value('vra:caption') ?? '';
+          $thumbnail = !empty($altText) ? $this->thumbnail($item, $thumbnailSize,['alt' => $escape(strip_tags($altText))]) : $this->thumbnail($item, $thumbnailSize);
+        }
+
+        $contentType['value'] = ucfirst(!empty($resource->value('dcterms:type')) ? $resource->value('dcterms:type') : $resource->resourceName());
+        $heading = isset($heading) ? $heading->asHtml() : $escape($resource->displayTitle($untitled, $lang));
+        $viewItemPage = $resource->value($viewItemPageTerm, ['default' => $translate('Find Out More')]);
+        $body = isset($body) ? $body : (isset($bodyTerm) ? $resource->value($bodyTerm, ['lang' => $langValue]) : '');
+        $institution = !empty($resource->value('vra:placeOfRepository')) ? $resource->value('vra:placeOfRepository') : '';
+        if (strpos($this->classes, 'resources') === false) {
+          $this->classes .= " resources";
+        }
+    }
+
+    $heading_fragment = "“" . substr($heading,0,20) . (strlen($heading > 20) ? "... " : ''). "”";
+    $cardStyle = isset($cardStyle) ? $cardStyle : 'card';
+
+?>
+<!-- BEGIN TEMPLATE: /agile-item/card -->
+<<?= $containerElement; ?> class="<?= $cardStyle ?> <?= $this->classes ?>"<?php echo isset($slot) ? " slot={$slot}" : '' ?>>
+    <a href="<?= $url ?>">
+      <figure class="item-thumbnail">
+          <?= $thumbnail ?>
+      </figure>
+      <div class="item-info">
+          <div class="item-label"><?= $contentType['value'] ?></div>
+          <h3 class="item-title"><?= $heading ?></h3>
+          <?php if ($body && $textSummary): ?>
+              <div class="item-description"><?= $textSummary->summarize($escape($body),600); ?></div>
+          <?php elseif($body):?>
+            <div class="item-description"><?= $body; ?></div>
+          <?php endif; ?>
+          <div class="more">Learn more</div>
+
+      </div>
+    </a>
+</<?php print $containerElement; ?> >
+<!-- END TEMPLATE: /agile-item/card -->

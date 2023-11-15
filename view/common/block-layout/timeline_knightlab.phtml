@@ -1,0 +1,209 @@
+<?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SitePageBlockRepresentation $block
+ * @var array $data
+ */
+
+$escape = $this->plugin('escapeHtml');
+$slide_title = !empty($data['heading']) ? $escape($data['heading']) : '';
+?>
+
+<?php if (!empty($data['heading'])): ?>
+    <!--<h2><?= $escape($data['heading']) ?></h2>-->
+<?php endif; ?>
+
+<div id="timeline-<?= $block->id() ?>" style="width: 100%;" class="timeline-cont-wrapper"></div>
+
+<script>
+    jQuery(document).ready(function($) {
+        var centerDate = <?= json_encode($data['center_date']) ?>;
+        // get the location for the json data
+        var jsonTimelineUri = <?= json_encode($this->url('timeline-block', ['block-id' => $block->id()]), 320) ?>
+
+        $.getJSON(jsonTimelineUri, function(data) {
+            // console.log('data ', data);
+            var timelineEvents = new Array();
+
+            for (var i = 0; i < data.events.length; i++) {
+                // Parse the date string into Y, M, D
+                // Assumes YYYY-MM-DD
+                var startDate = parseDate(data.events[i].start);
+
+                // Create the slide object for the record
+                var timelineEntry = {
+                    "text": {
+                        "headline": "<a href=" + data.events[i].link + ">" + data.events[i].title + "</a>"
+                    },
+                    "start_date": {
+                        "year": startDate[0],
+                        "month": startDate[1],
+                        "day": startDate[2]
+                    },
+                };
+
+                // If the item has a description, include it
+                if (data.events[i].description) {
+                    timelineEntry.text["text"] = data.events[i].description;
+                }
+
+                // If the record has an end date, include it
+                if (data.events[i].end) {
+                    var endDate = parseDate(data.events[i].end);
+
+                    timelineEntry["end_date"] = {
+                        "year": endDate[0],
+                        "month": endDate[1],
+                        "day": endDate[2]
+                    };
+                }
+
+                // If the record has a file attachment, include that.
+                // Limits based on returned JSON:
+                // If multiple images are attached to the record, it only shows the first.
+                // If a pdf is attached, it does not show it or indicate it.
+                // If an mp3 is attached in Files, it does not appear.
+                if (data.events[i].image) {
+                    timelineEntry["media"] = {
+                        "url": data.events[i].image,
+                        "thumbnail": data.events[i].image,
+                        "alt": data.events[i].alt
+                    };
+                }
+
+                // Add the slide to the events
+                timelineEvents.push(timelineEntry);
+            }
+
+            // create the collection of slides
+            var slides = {
+                "title": {
+                    "text": {
+                        "headline": "<?= $slide_title ?>",
+                        "text": ''
+                    }
+                },
+                "events": timelineEvents
+            };
+
+            var timelineDivID = 'timeline-<?= $block->id() ?>';
+            var timelineOptions = <?= $data['viewer'] ?>;
+
+            // initialize the timeline instance
+            window.timeline = new TL.Timeline(timelineDivID, slides, timelineOptions);
+
+            function parseDate(entryDateString) {
+                var entryDate = entryDateString;
+
+                var parsedDate = entryDate.split('-');
+
+                var entryYear = parsedDate[0];
+                var entryMonth = parsedDate[1];
+                var entryDay = parsedDate[2].slice(0, 2);
+
+                return [entryYear, entryMonth, entryDay];
+            };
+        });
+    });
+</script>
+
+
+
+<script>
+    //checks every 100ms for img element to load then finds the large size and places it as background splash for timeline
+    
+    var unprocessed=false;
+    
+    var check1 = setInterval(checkTrigger1, 300);
+    var check2 = setInterval(checkTrigger2, 100);
+    
+    
+    
+        
+        $('.tl-slide-content').each(function(){
+          var firstChild = $(this).find('*:first-child');
+          console.log(firstChild.attr('class'));
+        });
+
+    
+    function checkClear2() {
+        clearInterval(check2);
+    }
+        
+    // Asynchronous processing. Each process must set and test for a condition once
+    // processing is complete, as this process will continue to loop for the lifetime
+    // of the browser page.
+
+    
+    function checkTrigger1() {
+      
+      // Loops over the Timeline looking for unprocessed images.
+      // When it finds one, it loads it, clones it to asses the natural image sizes, and adds image ratio classes as necessary.
+
+      
+      $('.tl-media-content').find('img').each(function() {
+        if (!$(this).hasClass('processed')) {
+          var img = $(this);
+          var imgSrc = $(this).attr('src').replace('square','large'); 
+          $(this).attr('src',imgSrc);
+          var cloneImg = new Image();
+          cloneImg.src = imgSrc;          
+          cloneImg.onload = function() {
+            var aspectClass = getImageAspectClass(cloneImg.naturalHeight,cloneImg.naturalWidth);
+            img.closest('.tl-media-content-container').addClass(aspectClass);
+            img.addClass(aspectClass).addClass('processed');
+          };
+        }
+      });   
+      
+      // Add alt-text to thumbnails for compliance.
+            
+      if (typeof $('.tl-timemarker-media').first().attr('alt') == 'undefined') {
+          $('.tl-timemarker-media').each(function() {
+              var description = $(this).closest('.tl-timemarker-content').find('.tl-headline').text();
+              $(this).attr('alt', description + " thumbnail");
+              $(this).attr('aria-hidden','true');
+          });
+      }
+      
+      // Add a class to indicate that the media and text on a slide are in reverse order, an oddity that TimelineJS
+      // introduces when an item contains description text. (??)
+      
+      $('.tl-slide-content').each(function(){
+        if(!$(this).hasClass('order-processed')) {
+          var firstChild = $(this).find('*:first-child');
+          
+          if (typeof firstChild != undefined && firstChild.hasClass('tl-text')) {
+            $(this).addClass('order-reversed');
+          }
+          $(this).addClass('order-processed');
+        }
+      });
+         
+    }
+    
+    // Swap out the first image slide.
+    
+    
+    function checkTrigger2() {
+        var firstImg =   $('.tl-slide:nth-child(2)').find("img");
+        if ( firstImg.length > 0) {
+            var imgSrc = firstImg[0].src
+            getLargeImg = imgSrc.replace("square", "large");
+            $(".tl-slide-titleslide > .tl-slide-background").css("background", "url("+ getLargeImg +") no-repeat center center / cover");
+            $(".tl-slide-titleslide > .tl-slide-background").css("z-index", "1");
+            var title = document.getElementsByTagName("title")[0].innerHTML; //get of page to insert on title slide
+            var regexp = /\·(.*?)\·/; //used to parse title, finds anything between these dots "·"
+            var parsedTitle = regexp.exec(title);
+            //$(".tl-slide-titleslide .tl-slide-content").append("<span>TIMELINE</span>");
+            //$(".tl-slide-titleslide .tl-slide-content").append("<h1>" + parsedTitle[1] + "</h1>");
+            
+            $('.tl-slide').find('img').each(function() {
+              $(this).addClass(getImageAspectClass($(this)[0].naturalHeight,$(this)[0].naturalWidth))
+            });  
+                  
+            checkClear2();
+        }
+    }
+
+</script>

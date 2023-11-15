@@ -1,0 +1,22 @@
+
+<div id="storymap-<?php echo $blockId; ?>" class="storymap"></div>
+
+<script>
+    jQuery(document).ready(function($) {
+        // get the location for the json data
+        var jsonStorymapUri = '<?php echo $this->url('storymap-block', ['block-id' => $blockId]); ?>';
+        $.getJSON(jsonStorymapUri, function(data) {
+            var storymapDivID = 'storymap-<?php echo $blockId; ?>';
+            var storymap_options = <?php echo $data['args']['viewer']; ?>;
+            window.storymap = new VCO.StoryMap(storymapDivID, data, storymap_options);
+        
+        _postProcessStorymap();
+        
+        function _postProcessStorymap() {
+          $('#splash').find('.vco-slide-content').removeAttr('style'); // remove element-level styles to defer to stylesheet
+        }
+
+
+        });
+    });
+</script>

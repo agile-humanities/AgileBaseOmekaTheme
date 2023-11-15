@@ -1,0 +1,96 @@
+/**
+ *  @file _general.sass
+ *  @category 30_typography
+ *  @theme LOCAL
+ *  @description Defines various type classes
+ *
+ **/
+
+
+// Primary Elements
+
+strong
+  font-weight: $medium
+
+p, main li
+  & > a
+    @extend %inline-anchor
+
+
+// TEXT TREATMENTS
+
+.page-title
+  margin-bottom: 0
+
+.reversed, .reverse
+  *
+    color: $white
+
+.compact
+  @extend %s-normal-k
+
+.discreet
+  @extend %s-normal-k
+  line-height: 1.5
+
+.content-label, .item-label
+  @extend %xs-bold-k-cap
+
+figcaption, .caption
+  @extend %s-normal-k
+
+.poster-text
+  @extend %xl-normal-k
+
+.deck
+  @extend %sm-normal-k-fluid
+  line-height: 1.5
+  margin-bottom: rv(0)
+  border-bottom: solid 1px $clr5
+
+
+  p
+    font-size: inherit
+    font-family: inherit
+
+  > *
+    font-size: inherit
+    font-family: inherit
+
+.callout-text
+  @extend %xl-alt-bold-accent
+  line-height: 1.25
+
+label, .label, .metadata-label
+  @extend %s-normal-k-70
+  line-height: 1.25
+
+  @at-root .reversed &
+    color: neutral(30)
+
+.value, .metadata-value
+  @extend %s-normal-k
+  line-height: 1.25
+
+
+.label, .metadata-label
+  & + .value, & + .values, & + .metadata-value
+    margin-top: rv(-4)
+
+.read-more-link, .more
+  @extend %inline-anchor-block
+  @extend %s-bold-k
+  margin-right: rv(-2)
+  margin-top: rv(1)
+
+.more, .more-options
+  @extend %more
+// Separate fields
+
+fieldset, .field
+  + fieldset, + .field
+    margin-top: rv(0)
+
+.form-search
+  + fieldset, + .field
+    margin-top: rv(0)

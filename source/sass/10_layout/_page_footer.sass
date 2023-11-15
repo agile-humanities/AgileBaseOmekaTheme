@@ -1,0 +1,148 @@
+/**
+ *  @file _footer.sass
+ *  @category 10_layout
+ *  @theme LOCAL
+ *  @description Defines page footer and navigation menus. */
+
+
+
+$mark-container-left-padding: rv(2)
+body
+  > footer
+    padding: rv(4) 0 0
+    color: $white
+    background-color: $black
+    margin-top: auto // Always aligns to the bottom of flex container
+    position: relative
+
+    .footer-content
+      display: flex
+      flex-direction: column
+      padding: rv(1)
+
+      +bp($tablet)
+        +inset-full()
+        flex-direction: row
+        padding: rv(1)
+
+
+      .mark-container
+        width: 100%
+        padding: $mark-container-left-padding rv(1) rv(1) $mark-container-left-padding
+
+        position: relative
+
+        &:before
+          content: ''
+          position: absolute
+          height: rv(4)
+          width: rv(4)
+          top: 0
+          left: 0
+
+        +bp($tablet)
+          max-width: 400px
+
+        .pathways-mark
+          width: 100%
+          padding: 0 0 rv(0)
+          position: relative
+
+
+
+        p
+          +line-height(1.25)
+
+
+      .link-container
+        padding: rv(1)
+        width: 100%
+
+        +bp($tablet)
+          display: flex
+          padding: rv(2)
+          width: 50%
+          justify-content: space-around
+
+
+        .link-list
+          list-style: none
+          padding: 0
+
+          .link-title
+            font-size: clamped(0, 1, 'sml', 'xlrg')
+            margin: 0
+            padding: rv(2) 0 0
+
+            +bp($tablet)
+              padding: 0
+
+
+          li
+            font-size: clamped(-1, 0, 'sml', 'xlrg')
+            text-decoration: underline
+            margin: 0
+
+            a
+              @extend %inline-anchor-reverse
+
+$acs-logo-container-size: 150px
+$acs-spacing: rv(0)
+#acs
+  bottom: 0
+  right: 0
+  width: 100%
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  align-items: flex-end
+  justify-content: space-between
+
+
+  +bp($tablet)
+    width: auto
+    justify-content: flex-end
+    position: absolute
+
+  .acs--text
+    padding-left: $mark-container-left-padding
+    padding-bottom: $acs-spacing
+    line-height: 1
+
+    +bp($tablet)
+      text-align: right
+    a
+      @extend %inline-anchor-reverse
+
+  .acs--cutout
+    width: $acs-logo-container-size
+    height: $acs-logo-container-size
+    position: relative
+    margin-left: rv(0)
+    overflow: hidden
+
+    &:before
+      content: ''
+      position: absolute
+      background-color: $white
+      border-radius: 50%
+      width: 200%
+      height: 150%
+      top: 0
+      left: 0
+
+    > a
+      display: flex
+      flex-wrap: nowrap
+      justify-content: flex-end
+      align-items: flex-end
+      width: 100%
+      height: 100%
+
+    img
+      display: block
+      width: 70%
+      height: auto
+      z-index: 1
+      transform: translateX(#{$acs-spacing * -1}) translateY(#{$acs-spacing * -1})
+

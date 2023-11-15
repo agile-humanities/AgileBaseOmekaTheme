@@ -1,0 +1,58 @@
+/*
+   @file _cards.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description Handles card content blocks.  */
+
+main
+  .card, li > .card, li > a.card
+    text-decoration: none
+
+.cards
+  @extend %card-grid
+
+.card
+  display: block
+  background: $white
+  border: 1px solid $ui_border_color
+  border-radius: $card-border-radius
+  border-collapse: collapse
+  overflow: hidden
+
+  a
+    text-decoration: none
+
+  figure
+    overflow: hidden
+    height: 100%
+
+  img
+    transition-duration: $slow
+
+  &:hover
+    img
+      transform: scale3d(1.04,1.04,1.04)
+
+  @at-root .visible &
+    +fadeInUp()
+
+  .item-info
+    +standard_edge_padding()
+    border-top-width: 10px
+    border-top-style: solid
+
+  .item-description
+    @extend %sm-normal-k-fluid
+    line-height: map-get($line_heights,'tight')
+
+  .item-link > a
+    @extend .more
+
+
+/*
+ * Define list item cards
+ */
+
+.list-item
+  @extend %list-item
