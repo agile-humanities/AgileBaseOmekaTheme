@@ -1,61 +1,106 @@
 <?php
-  $translate = $this->plugin("translate");
-  $escape = $this->plugin("escapeHtml");
-  $partial = $this->plugin('partial');
-  $this->htmlElement("body")->appendAttribute("class", "item resource show");
-  $embedMedia = $this->siteSetting("item_media_embed", false);
-  $itemMedia = $item->media();
-  $oEmbed = $itemMedia && $itemMedia[0]->renderer() === 'oembed';
+$translate = $this->plugin("translate");
+$escape = $this->plugin("escapeHtml");
+$partial = $this->plugin('partial');
+$mirador = $this->plugin('mirador');
+$dateHandler = $this->plugin('dateHandler');
+$this->htmlElement("body")->appendAttribute("class", "item resource show");
+$embedMedia = $this->siteSetting("item_media_embed", false);
+$itemMedia = $item->media();
 
-  $institution = !empty($item->value('vra:placeOfRepository')) ? $item->value('vra:placeOfRepository') : 'Item';
-  $institutionClass = urlencode(strtolower(str_replace(' ','-',$institution)));
-  $contentType = [];
-  $contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item');
+$uv = null;
+// Check if UV plugin exists
+try {
+  $uv = $this->plugin('universalViewer');
 
-  $metadata_file_name = "metadata-" . urlencode(strtolower(str_replace(' ','_',$item->title()))) .".json";
+} catch (Exception $exception) {
+  $uv = null;
+}
 
-  $relatedItems = [];
-  $relatedProperties = ['dcterms:subject']; // Array of properties to find related items.
+$oEmbed = $itemMedia && $itemMedia[0]->renderer() === 'oembed';
+$contentType = [];
+$contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item');
 
-  foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $term => $valueDetails) {
-    foreach($valueDetails['values'] as $value) {
-      // Prepare a search query to find items with the same property value
-      $query = [
-        'property' => [
-          [
-            'property' => $value->jsonSerialize()['property_id'],
-            'type' => 'eq',
-            'text' => $value->value(),
-          ],
+$metadata_file_name = "metadata-" . urlencode(strtolower(str_replace(' ','_',$item->title()))) .".json";
+
+$relatedItems = [];
+$relatedProperties = ['dcterms:subject']; // Array of properties to find related items.
+
+/** @var \Omeka\Api\Representation\ValueRepresentation $temporal */
+$temporal = $item->value('dcterms:temporal');
+$year = $temporal ? $dateHandler->render($temporal->value(),'Y') : null;
+$dateHandler->isDate($temporal);
+
+/** @var \Omeka\Api\Representation\ResourceClassRepresentation $resourceClass */
+$resourceClass = $item->resourceClass();
+$resourceClassLabel = $resourceClass->label();
+$label = $resourceClassLabel . ($year ? " {$year}" : '');
+
+// Determine which viewer to use. Note that the UV and Mirador viewers are displayed via the blocks disposition module,
+// which does not give contextual control over which viewer to display. Viewer handling is now done via css
+// @todo: there must be a better way.
+
+$viewer = 'viewer-default';
+
+$uv_media = [
+  'text',
+  'moving image' // Use UV for video right now because current Mirador 3 implementation is crap
+];
+
+if ($uv && in_array(strtolower($resourceClass->label()),$uv_media)) {
+  $viewer = 'viewer-uv';
+} elseif ($mirador) {
+  $viewer = 'viewer-mirador';
+}
+
+$searchMainPage = $this->siteSetting('advancedsearch_main_config');
+/** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
+$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
+
+foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $term => $valueDetails) {
+  foreach($valueDetails['values'] as $value) {
+    // Prepare a search query to find items with the same property value
+    $query = [
+      'property' => [
+        [
+          'property' => $value->jsonSerialize()['property_id'],
+          'type' => 'eq',
+          'text' => $value->value(),
         ],
-      ];
-      $response = $this->api()->search('items',$query);
-      foreach($response->getContent() as $itemRepresentation) {
-        $id = $itemRepresentation->id();
-        // Filter out the current item
-        if ($id !== $item->id()) {
-          // Remove duplicates by providing id as key
-          $relatedItems[$id] = $itemRepresentation;
-        }
+      ],
+    ];
+    $response = $this->api()->search('items',$query);
+    foreach($response->getContent() as $itemRepresentation) {
+      $id = $itemRepresentation->id();
+      // Filter out the current item
+      if ($id !== $item->id()) {
+        // Remove duplicates by providing id as key
+        $relatedItems[$id] = $itemRepresentation;
       }
     }
   }
+}
 ?>
 
 <!-- BEGIN agile-theme-tools/agile-item/show.phtml -->
 
 <?php $this->trigger("view.show.before"); ?>
-<div class='item-container  <?= $institutionClass; ?>'>
-  <div class='item-viewer'>
-    <?php if ($this->universalViewer($item) && !$oEmbed):
-      echo $this->universalViewer($item);
-    elseif (($embedMedia && $itemMedia) || $oEmbed): ?>
+<div class='item-container'>
+  <div class='item-viewer <?= $viewer ?>'>
+    <?php
+    // Default viewer
+    if ($viewer === 'viewer-default' && (($embedMedia && $itemMedia) || $oEmbed)): ?>
       <div class="media-embeds">
         <?php foreach ($itemMedia as $media):
           echo $media->render();
         endforeach; ?>
       </div>
-    <?php endif; ?>
+    <?php
+    // Will display both Mirador and UV. UV must be suppressed via CSS.
+    else:
+      $this->trigger("view.show.after");
+    endif;
+    ?>
   </div>
   <div class='item-info item-text'>
     <div class="wayfinding">
@@ -63,7 +108,7 @@
       <a href="<?php echo $site->siteUrl(); ?>/browse">Browse the collection</a>
     </div>
     <header>
-      <div class="item-label"><?php echo((!empty($institution) ? $institution . ' | ' : '') . $contentType['value']); ?></div>
+      <div class="item-label"><?= $contentType['value']; ?></div>
       <?php echo $this->pageTitle($item->displayTitle(), 1); ?>
     </header>
     <?php if ($item->value('dcterms:alternative')): ?>
@@ -71,10 +116,10 @@
         <?php echo($item->value('dcterms:alternative')); ?>
       </div>
     <?php endif; ?>
-    
-   
+
+
       <div class="container-with-tabs-and-panels">
-      
+
         <div class="tabs">
           <a class="tab description-tab active-tab">Description</a> |
           <a class="tab info-tab">Transcription</a>
@@ -117,32 +162,11 @@
             </div>
             <div class='rights'>
               <p class="metadata-label">Download</p>
-              <div class=download-icons>
-                <?php if ($item->primaryMedia()): ?>
-                <div class='download-item'>
-                  <?php
-                  // See https://stackoverflow.com/a/64719808/16534002
-                  $primary_media = $item->primaryMedia()->originalUrl();
-                  $url_parts = $primary_media ? explode('/',$primary_media) : [];
-                  $file_name = array_pop($url_parts);
-                  $dl_attribute = !empty($file_name) ? ' download="'. $file_name .'"' : '';
-
-                  ?>
-                  <a class='icon-ui' title="Download item" href='<?php echo $item
-                    ->primaryMedia()
-                    ->originalUrl(); ?>' <?php echo $dl_attribute; ?>>
-                    <span class="screen-reader-text">Download item</span>
-                    Item
-                  </a>
-                </div>
-                <?php endif; ?>
-                <div class='download-metadata'>
-                  <a class='icon-ui' title="Download metadata" target="_blank" type='application/json' href='<?php echo $item->apiUrl(); ?>' download='<?php echo $metadata_file_name; ?>'>
-                    <span class="screen-reader-text">Download metadata</span>
-                    Metadata
-                  </a>
-                </div>
-              </div>
+              <?php if ($item->primaryMedia()):  // Download item ?>
+                <?= $partial('agile-item/download-item-block', [
+                  'item' => $item,
+                ]) ?>
+              <?php endif; ?>
             </div>
             <?php if (!empty($item->value("dcterms:rights"))): ?>
               <div class='rights-statement'>
@@ -157,7 +181,7 @@
               <?php echo $item->value("vra:text"); ?>
             <?php else: ?>
               <p class="no-transcription">Transcription not available.</p>
-            <?php endif; ?>   
+            <?php endif; ?>
           </div>
         </div>
       </div>
@@ -167,7 +191,7 @@
   <header>
     <h2>Full Metadata</h2>
   </header>
-  
+
   <div class='metadata-list reversed'>
     <?php echo $item->displayValues(); ?>
     <div class="property">

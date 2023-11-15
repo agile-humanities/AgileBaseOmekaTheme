@@ -12,19 +12,18 @@
 
     a
       font-size: rv(-1)
-      font-weight: $bold
       color: neutral(60)
 
       &:hover, &.active-tab
-        color: neutral(100)
+        color: $black
 
 
 // @todo: The following styles may not be used in this build
 
 
-.tab-ui 
+.tab-ui
   $tab_underscore_width: 5px
-  
+
   padding: 0
   color: $black
   width: 100%
@@ -32,7 +31,7 @@
   flex-direction: row
   justify-content: flex-end
   position: relative
-  
+
   &:before
     content: ''
     border-bottom: 1px neutral(30) solid
@@ -41,7 +40,7 @@
     bottom: $tab_underscore_width * 0.5 //center with underscore
     z-index: -1
 
-  .tab-control 
+  .tab-control
     list-style-type: none
     +font-size(0)
     margin-left: rv(1)
@@ -52,16 +51,15 @@
       text-transform: uppercase
       text-decoration: none
       display: block
-      
+
       &:hover, &.active
         border-bottom: $tab_underscore_width solid $clr3
-        
+
       &:hover
         color: $clr3
 
       &.active
         color: $black
-    
 
 
-    
+
