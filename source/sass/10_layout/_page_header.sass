@@ -114,12 +114,13 @@ body > header
     cursor: pointer
 
     p
+      font-size: rv(-1)
       &:after
         content: ''
         position: relative
         display: inline-flex
         justify-content: center
-        background: url(get_svg_url('icons-black/down-arrow-black')) no-repeat center
+        background: url(get_svg_url('icons/down-arrow-black')) no-repeat center
         background-size: contain
         background-position: top 2px // cheat
         margin-left: rv(-3)
@@ -149,7 +150,6 @@ body > header
 
     > ul
       margin: 0
-      padding: rv(0)
       list-style-type: none
       text-align: right
       font-size: rv(0)
