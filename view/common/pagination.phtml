@@ -32,9 +32,9 @@ $filterBtnImg = "<img src='{$filterBtnImgSrc}' data-src='{$filterBtnImgSrc}' dat
 
     <div class="pagination--arrows">
         <?php if ($currentPage != 1): ?>
-            <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>","{$pagelessUrl}?page={$prevPage}", 'previous o-icon-prev button',$translate('Previous'), $translate('Previous'),$previousArrowImg); ?>
+            <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>","{$pagelessUrl}?page={$prevPage}", 'previous o-icon-prev',$translate('Previous'), $translate('Previous'),$previousArrowImg); ?>
         <?php else: ?>
-            <span class="previous explore-left button inactive"></span>
+            <span class="previous explore-left inactive"></span>
         <?php endif; ?>
     </div>
 
@@ -59,9 +59,9 @@ $filterBtnImg = "<img src='{$filterBtnImgSrc}' data-src='{$filterBtnImgSrc}' dat
 
     <div class="pagination--arrows">
         <?php if ($currentPage < $pageCount): ?>
-            <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>", "{$pagelessUrl}?page={$nextPage}", 'next o-icon-next button',$translate('Next'), $translate('Next'),$nextArrowImg); ?>
+            <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>", "{$pagelessUrl}?page={$nextPage}", 'next o-icon-next',$translate('Next'), $translate('Next'),$nextArrowImg); ?>
         <?php else: ?>
-            <span class="next explore-right button inactive"></span>
+            <span class="next explore-right inactive"></span>
         <?php endif; ?>
     </div>
 
@@ -78,17 +78,17 @@ $filterBtnImg = "<img src='{$filterBtnImgSrc}' data-src='{$filterBtnImgSrc}' dat
     <div class="pagination--mobile">
         <div class="pagination--arrows">
             <?php if ($currentPage != 1): ?>
-                <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>","{$pagelessUrl}?page={$prevPage}", 'previous o-icon-prev button',$translate('Previous'), $translate('Previous'),$previousArrowImg); ?>
+                <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>","{$pagelessUrl}?page={$prevPage}", 'previous o-icon-prev',$translate('Previous'), $translate('Previous'),$previousArrowImg); ?>
             <?php else: ?>
-                <span class="previous explore-left button inactive"></span>
+                <span class="previous explore-left inactive"></span>
             <?php endif; ?>
             <div class="pagination--label" <?php echo ($pageCount == 1) ? 'readonly' : ''; ?> aria-label="<?php echo $translate('Page'); ?>">
             Page <span class="pagination--detail"><?php echo $currentPage; ?> <?php echo sprintf($translate('of %s'), $pageCount); ?></span>
             </div>
             <?php if ($currentPage < $pageCount): ?>
-                <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>", "{$pagelessUrl}?page={$nextPage}", 'next o-icon-next button',$translate('Next'), $translate('Next'),$nextArrowImg); ?>
+                <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>", "{$pagelessUrl}?page={$nextPage}", 'next o-icon-next',$translate('Next'), $translate('Next'),$nextArrowImg); ?>
             <?php else: ?>
-                <span class="next explore-right button inactive"></span>
+                <span class="next explore-right inactive"></span>
             <?php endif; ?>
 
         </div>

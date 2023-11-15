@@ -1,0 +1,65 @@
+/* =======================
+ * DOWNLOAD ITEM BLOCK
+ * @seealso /view/agile-item/download-item-block
+ * ======================= */
+
+.download-icons
+  display: flex
+  align-items: flex-start
+  margin-bottom: rv(1)
+
+  .icon-ui
+    text-decoration: none
+
+  +bp($desktop)
+    justify-content: space-between
+
+  .download-link
+    display: flex
+    align-items: flex-end
+    .download-icon
+      width: rv(2)
+      height: rv(2)
+      margin-left: rv(-1)
+
+.metadata-label
+  text-transform: uppercase
+
+  .value
+    display: -webkit-box
+    -webkit-line-clamp: 4
+    -webkit-box-orient: vertical
+    overflow: hidden
+
+.download-img
+  height: rv(0)
+  width: rv(0)
+
+.download-item
+  display: inline-flex
+  background-position: left
+  background-size: rv(1) rv(1)
+
+  a
+    background: url(get_svg_url('icons-grey/download-grey')) no-repeat center
+    @include icon-position
+
+    &:hover,
+    &:focus
+      background: url(get_svg_url('icons-active/download-active')) no-repeat center
+      @include icon-hover
+
+.download-metadata
+  display: inline-flex
+  background-position: left
+  background-size: rv(1) rv(1)
+
+  a
+    background: url(get_svg_url('icons-grey/download-metadata-grey')) no-repeat center
+    @include icon-position
+    margin-right: 0
+
+    &:hover,
+    &:focus
+      background: url(get_svg_url('icons-active/download-metadata-active')) no-repeat center
+      @include icon-hover
