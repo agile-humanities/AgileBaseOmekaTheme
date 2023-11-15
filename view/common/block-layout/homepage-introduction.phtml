@@ -9,44 +9,46 @@ $searchMainPage = $this->siteSetting('advancedsearch_main_config');
 /** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
 $searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
 
+$browseUrl = $searchConfig->siteUrl();
+
 ?>
 <!-- HOMEPAGE INTRODUCTION BLOCK TEMPLATE  common/block-layout/homepage-introduction.phtml -->
-<div id="block-<?php echo $this->blockId; ?>" class="homepage-introduction  <?= $this->compositionClass; ?>  viewer slideviewer-container region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+<div id="block-<?= $this->blockId; ?>" class="homepage-introduction  <?= $this->compositionClass; ?>  viewer slideviewer-container region <?= $this->regionClass; ?>" data-target-region-id="<?= $this->targetID; ?>">
 
   <div class="title-area reversed discovery-tool">
       <div>
         <?php if (!empty($labelText)): ?>
-            <div class='label'><?php echo $labelText; ?></div>
+            <div class='label'><?= $labelText; ?></div>
         <?php endif; ?>
         <?php if (!empty($titleSlideTitle)): ?>
-            <h1><?php echo $titleSlideTitle; ?></h1>
+            <h1><?= $titleSlideTitle; ?></h1>
         <?php endif; ?>
         <?php if (!empty($subtitle)): ?>
-            <div class='subtitle'><?php echo $subtitle; ?></div>
+            <div class='subtitle'><?= $subtitle; ?></div>
         <?php endif; ?>
         <?php if (!empty($titleSlideIntro)): ?>
             <div class='introductory-text deck'>
-              <?php echo $titleSlideIntro; ?>
+              <?= $titleSlideIntro; ?>
             </div>
         <?php endif; ?>
-          <?php echo $this->partial(
+          <?= $this->partial(
               'common/search-form',
               ['query' => $this->params()->fromQuery(), 'resourceType' => 'user','searchType' => 'browser']
           ); ?>
 
           <div class="intro-browse">
               <!-- <div class="intro-browse--title">Browse our collections</div> -->
-              <div class="intro-browse--collections"><a class="intro-browse--all" href="browse">Browse all collections</a></div>
+              <div class="intro-browse--collections"><a class="intro-browse--all" href="<?= $browseUrl ?>">Browse all collections</a></div>
           </div>
 
           <?php if (!empty($buttonText)): ?>
-            <a class='slickNext next-slide btn'><?php echo $buttonText; ?></a>
+            <a class='slickNext next-slide btn'><?= $buttonText; ?></a>
         <?php endif; ?>
       </div>
   </div>
   <?php if($hasAttachments): ?>
     <div class='slide-container'>
-      <slide-viewer class="<?php echo $hasAudioAttachment ? 'slideshow-with-audio' : ''; ?>" option-slidesPerRow='<?php echo $optionSlidesPerRow; ?>' option-slidesToShow='<?php echo $optionSlidesToShow; ?>' option-autoplay='<?php echo $optionAutoPlay; ?>' option-fade='<?php echo $optionFade; ?>' integratedcontrols>
+      <slide-viewer class="<?= $hasAudioAttachment ? 'slideshow-with-audio' : ''; ?>" option-slidesPerRow='<?= $optionSlidesPerRow; ?>' option-slidesToShow='<?= $optionSlidesToShow; ?>' option-autoplay='<?= $optionAutoPlay; ?>' option-fade='<?= $optionFade; ?>' integratedcontrols>
         <div slot='slides'>
             <?php foreach ($attachments as $attachment): ?>
                 <?php
@@ -64,14 +66,14 @@ $searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPa
           <?php if($hasAudioAttachment): ?>
               <div class="audio-controls">
                   <div class="audio-player">
-                      <?php echo $audioAttachment->media()->render(); ?>
+                      <?= $audioAttachment->media()->render(); ?>
                       <div class="audio-message">
                           <a href=='#' class='audio-text-play-control' title='Play audio' data-playbtnmsg='Play audio slideshow' data-stopbtnmsg='Pause audio slideshow'>Play audio slideshow.</a>
                       </div>
                   </div>
                   <?php if ($audioAttachment->caption()): ?>
                       <div class="audio-caption">
-                          <?php echo $audioAttachment->caption(); ?>
+                          <?= $audioAttachment->caption(); ?>
                       </div>
                   <?php endif; ?>
               </div>
