@@ -19,10 +19,20 @@
       padding: rv($edge_padding_factor) 0
 
   input#q
-    padding-right: calc(#{$btn_submit_img_size} + #{$ui_padding})
-    width: 100%
-    max-width: unset
-    +search-icon($btn_icon_size,$ui_padding)
+    @extend %search-input-with-icon
+
+
+#search-form
+  display: flex
+  flex-direction: row
+  width: 100%  // Take up entire container
+  align-content: center
+
+  *[type='text']
+    flex-grow: 1 // Searchbox takes available space
+
+  *[type='submit']
+    margin-left: rv(-1) // Spacing for submit button
 
 #search-filters
   margin: rv($grid_gap_factor) 0

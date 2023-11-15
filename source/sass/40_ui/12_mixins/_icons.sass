@@ -35,8 +35,8 @@ $submit_arrow_reversed: no-repeat url(get_svg_url('icons/right-arrow-white'))
 $submit_arrow_hover: $submit_arrow_reversed
 $search_icon: no-repeat url(get_svg_url('icons/search-black'))
 $search_icon_hover: no-repeat url(get_svg_url('icons/search-black'))
-$search_submit_icon: no-repeat url(get_svg_url('icons/search-grey'))
-$search_submit_icon_hover: no-repeat url(get_svg_url('icons/search-black'))
+$search_submit_icon: no-repeat url(get_svg_url('icons/search-white'))
+$search_submit_icon_hover: no-repeat url(get_svg_url('icons/search-white'))
 
 $more_arrow: no-repeat url(get_svg_url('icons/arrow-right-ui'))
 $more_arrow_hover: no-repeat url(get_svg_url('icons/arrow-right-ui'))
@@ -103,10 +103,16 @@ $close_icon: no-repeat url(get_svg_url('icons/close-icon'))
   +background-icon($submit_arrow_hover, $btn_icon_size, right rv(-2) center)
 
 =search-icon($size: $btn_icon_size, $offset: 0px)
-  +background-icon($search_submit_icon, $size, right $offset center)
+  +background-icon($search_icon, $size, right $offset center)
 
 =search-icon-hover($size: $btn_icon_size, $offset: 0px)
   +background-icon($search_icon_hover, $size, right $offset center)
+
+=search-submit-icon($size: $btn_icon_size, $position: center)
+  +background-icon($search_submit_icon, $size, $position)
+
+=search-submit-icon-hover($size: $btn_icon_size, $position: center)
+  +background-icon($search_submit_icon_hover, $size, $position)
 
 =reset-icon
   +background-icon($close_icon,$btn_icon_size, right center)

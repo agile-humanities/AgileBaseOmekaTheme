@@ -8,17 +8,6 @@
  *
  **/
 
-// Focus
-
-/** @todo: too broad. Also: should not be here. */
-// *:focus-visible, *:focus
-//  outline: 3px solid $impact
-//  outline-offset: 2px
-//  -moz-outline-radius: 0
-
-.reversed, .reverse
-  *:focus-visible, *:focus
-    outline-color: $white
 
 /* =======================
  * UI ICONS
@@ -48,6 +37,10 @@
  * BUTTONS: APPLY DEFINITIONS
  * ======================= */
 
+
+// Note: applying styles to <button> elements often create problems with third-party modules and admin interfaces.
+// It is advised that you add a button class to button elements to avoid conflicts
+
 .button
   @extend %button
 
@@ -74,6 +67,13 @@
 
   &.more
     @extend %button-more
+
+  &.search-submit,&[type='submit'].search-submit
+    @extend %button-search-submit
+
+button
+  &.search-submit,&[type='submit'].search-submit
+    @extend %button-search-submit
 
 
 /* =======================

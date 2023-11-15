@@ -34,9 +34,9 @@ $searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPa
               ['query' => $this->params()->fromQuery(), 'resourceType' => 'user','searchType' => 'browser']
           ); ?>
 
-          <div id="intro-browse">
-              <div class="intro-browse--title">Browse our collections</div>
-              <div class="intro-browse--collections"><a class="intro-browse--all" href="browse">All collections</a></div>
+          <div class="intro-browse">
+              <!-- <div class="intro-browse--title">Browse our collections</div> -->
+              <div class="intro-browse--collections"><a class="intro-browse--all" href="browse">Browse all collections</a></div>
           </div>
 
           <?php if (!empty($buttonText)): ?>

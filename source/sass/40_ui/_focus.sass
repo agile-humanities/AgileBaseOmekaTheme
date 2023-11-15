@@ -1,0 +1,23 @@
+/**
+ *  @file _focus.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *  @description Define handling of focused elements.
+ *
+ **/
+
+
+// NOTE: Currently not loaded pending more testing.
+
+// Focus
+
+/** @todo: These styles are too broad. Need development. */
+
+*:focus-visible, *:focus
+  outline: 3px solid $impact
+  outline-offset: 2px
+  -moz-outline-radius: 0
+
+.reversed, .reverse
+  *:focus-visible, *:focus
+    outline-color: $white

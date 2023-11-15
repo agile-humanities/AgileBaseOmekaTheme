@@ -66,7 +66,6 @@
   flex-direction: row
   align-items: center
   justify-content: center
-  margin: rv(-1) 0
   cursor: pointer
   @extend %underscore
 
@@ -266,10 +265,10 @@
 
 %button-search-submit
   @extend %button
-  +search-icon
+  +search-submit-icon()
   border: none
   font-style: normal
-  background-color: transparent
+  background-color: set-color(1)
   color: transparent
   overflow: hidden
   display: inline-block
@@ -281,9 +280,8 @@
   justify-content: flex-start
 
   &:hover
-    +search-icon-hover
-    color: transparent
-    background-color: transparent
+    +search-submit-icon-hover
+    background-color: set-color(1,90,$black)
     border-color: transparent
 
 %button-reset-submit
@@ -426,3 +424,8 @@
       background: no-repeat url(get_svg_url('icons/content-icon-reverse'))
       color: $white
 
+%search-input-with-icon
+  padding-right: calc(#{$btn_submit_img_size} + #{$ui_padding})
+  width: 100%
+  max-width: unset
+  +search-icon($btn_icon_size,$ui_padding)
