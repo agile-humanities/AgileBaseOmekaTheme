@@ -39,6 +39,9 @@ select
   background-size: auto rv(0)
   padding-right: calc(#{rv(0)} + (#{$ui_padding} * 3))
   font-weight: $bold
+  width: $ui_select_width
+  min-width: $ui_select_min_width
+  max-width: $ui_select_max_width
 
 option
   font-weight: $normal
@@ -132,7 +135,6 @@ fieldset, details
 
   legend, summary
     font-size: $ui_checkbox_label_font_size
-    font-weight: $bold
     width: 100%
     position: relative
 

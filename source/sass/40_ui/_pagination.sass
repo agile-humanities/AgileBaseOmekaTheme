@@ -13,7 +13,7 @@ $pagination_ui_gap: rv(-2)
 $pagination_bullet_size: rv(-3)
 
 .pagination
-  display: flex
+  display: none
   margin: 0 auto
   flex-direction: row
   justify-content: center
@@ -24,6 +24,9 @@ $pagination_bullet_size: rv(-3)
   width: fit-content
   padding: $pagination_ui_gap
   color: $white
+
+  +bp($tablet)
+    display: flex
 
   .for-js
     display: none
@@ -48,7 +51,7 @@ $pagination_bullet_size: rv(-3)
 
   .pagination--label
     margin: 0 rv(2)
-  
+
   img
     height: rv(2)
     width: auto
@@ -77,7 +80,7 @@ $pagination_bullet_size: rv(-3)
     color: $white
     text-decoration: none
 
-   
+
     span
       line-height: 1
       padding-top: rv(-3)
@@ -90,9 +93,9 @@ $pagination_bullet_size: rv(-3)
       background-color: $white
       border: 1px solid $white
       border-radius: 50%
-    
+
     &:focus
-      color: $white  
+      color: $white
 
     &:hover, &.active
       color: $white

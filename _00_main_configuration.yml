@@ -131,18 +131,18 @@ h6fontsize: "map-get($sizefactors,'h6')"
 
 ## 04 UI | Needs an overhaul
 ui_padding: 8px
-ui_element_height: 50px
+ui_element_height: 40px
 ui_minheight: $ui_element_height
 ui_maxheight: 60px
-ui_compactheight: 40px
+ui_compactheight: 25px
 ui_largeheight: 80px
-ui_border_radius: 8px
+ui_border_radius: 5px
 ui_border_width: 1px
 ui_border_color: neutral(40)
 ui_hover_border_color: $impact
 ui_checkbox_height: 20px
 ui_element_font_size: rv(0)
-ui_checkbox_label_font_size: rv(-1)
+ui_checkbox_label_font_size: rv(-2)
 ui_icon_height: $ui_minheight * 0.4
 ui_select_indicator_size: $ui_icon_height
 
@@ -161,13 +161,13 @@ mobile_filter_height: rv(5)
 btn_padding: "5px rv(0)"
 btn_border_width: $ui_border_width
 btn_border_radius: $ui_border_radius
-btn_height: $ui_maxheight
+btn_height: $ui_element_height
 btn_min_width: 200px
 btn_width: 280px
 btn_compactwidth: 180px
 btn_largewidth: 280px
 btn_max_width: 375px
-btn_icon_size: rv(-1)
+btn_icon_size: $btn_height * 0.5
 
 btn_fontsize: "clamped(0,1)"
 btn_compact_fontsize: "clamped(-1,0)"

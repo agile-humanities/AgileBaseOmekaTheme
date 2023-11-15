@@ -96,11 +96,11 @@ $close_icon: no-repeat url(get_svg_url('icons/close-icon'))
 =twitter-icon
   +icon($twitter_icon)
 
-=submit-arrow
-  +background-icon($submit_arrow_reversed, $btn_icon_size, right rv(-2) center)
+=submit-arrow($size: $btn_icon_size, $offset: rv(-2))
+  +background-icon($submit_arrow_reversed, $size, right $offset center)
 
-=submit-arrow-hover
-  +background-icon($submit_arrow_hover, $btn_icon_size, right rv(-2) center)
+=submit-arrow-hover($size: $btn_icon_size, $offset: rv(-2))
+  +background-icon($submit_arrow_hover, $btn_icon_size, right $offset center)
 
 =search-icon($size: $btn_icon_size, $offset: 0px)
   +background-icon($search_icon, $size, right $offset center)

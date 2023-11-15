@@ -91,7 +91,7 @@ $this->headScript()->appendFile($assetUrl('js/search.js', 'AdvancedSearch'), 'te
 <!-- SEARCH TEMPLATE BEGIN search/search.phtml -->
 <div class="title-block">
     <div container>
-        <h1>Search the collection</h1>
+        <h1>Browse the Collection</h1>
         <!-- <div class='deck'>Browse deck text not available</div>-->
     </div>
 </div>
@@ -125,43 +125,7 @@ $this->headScript()->appendFile($assetUrl('js/search.js', 'AdvancedSearch'), 'te
 
 <?php if (isset($response)): ?>
     <?= $this->searchForm($searchPage, null, $skipFormAction) ?>
-    <?php if ($documentCount): ?>
-        <header>
-            <?php if ($displayPartsHeader): ?>
-                <div class="search-results-part search-results-header">
-                    <?= $partial('search/results-header-footer', [
-                        'site' => $site,
-                        'searchPage' => $searchPage,
-                        'query' => $query,
-                        'response' => $response,
-                        'itemSet' => $itemSet,
-                        'resultPart' => 'header',
-                        'documentCount' => $documentCount,
-                    ]) ?>
-                </div>
-            <?php endif; ?>
-            <?php if ($itemsCount): ?>
-                <div class="browse-title">
-                    <h2>Browsing <?php printf($translatePlural('%s item', '%s items', $itemsCount), "<span>{$itemsCount}</span>") ?> in our archive</h2>
-                    <?php
-                        if ($hasActiveFacets && $displayActive):
-                            echo $activeTermDisplay;
-                        endif;
-                    ?>
-                </div>
-            <?php endif; ?>
-            <?php if ($itemSetsCount): ?>
-                <div class="browse-title">
-                    <h2>Browsing <?php printf($translatePlural('%s item set', '%s item sets', $itemSetsCount), "<span>$itemSetsCount)</span>") ?> in our archive</h2>
-                    <?php
-                    if ($hasActiveFacets && $displayActive):
-                        echo $activeTermDisplay;
-                    endif;
-                    ?>
-                </div>
-            <?php endif; ?>
-        </header>
-    <?php endif; ?>
+
     <div class="search-results-wrapper">
     <aside class="search-facets">
         <a id="aside-mobile-close-btn">Close</a>
@@ -176,45 +140,77 @@ $this->headScript()->appendFile($assetUrl('js/search.js', 'AdvancedSearch'), 'te
     <div class="search-results">
 
         <?php if ($documentCount): ?>
+            <header>
+                <?php if ($displayPartsHeader): ?>
+                    <div class="search-results-part search-results-header">
+                        <?= $partial('search/results-header-footer', [
+                          'site' => $site,
+                          'searchPage' => $searchPage,
+                          'query' => $query,
+                          'response' => $response,
+                          'itemSet' => $itemSet,
+                          'resultPart' => 'header',
+                          'documentCount' => $documentCount,
+                        ]) ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ($itemsCount): ?>
+                    <div class="browse-title">
+                        <h2>Browsing <?php printf($translatePlural('%s item', '%s items', $itemsCount), "<span>{$itemsCount}</span>") ?> in our archive</h2>
+                        <?php
+                        if ($hasActiveFacets && $displayActive):
+                            echo $activeTermDisplay;
+                        endif;
+                        ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ($itemSetsCount): ?>
+                    <div class="browse-title">
+                        <h2>Browsing <?php printf($translatePlural('%s item set', '%s item sets', $itemSetsCount), "<span>$itemSetsCount)</span>") ?> in our archive</h2>
+                        <?php
+                        if ($hasActiveFacets && $displayActive):
+                            echo $activeTermDisplay;
+                        endif;
+                        ?>
+                    </div>
+                <?php endif; ?>
+            </header>
+            <div class="search-results-part search-results-list">
+                <?php if ($itemSetsCount): ?>
+                    <?= $partial('search/resource-list', [
+                        'site' => $site,
+                        'searchPage' => $searchPage,
+                        'query' => $query,
+                        'response' => $response,
+                        'title' => '', // moved above: sprintf($translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
+                        'resourceName' => 'item_sets',
+                    ]) ?>
+                <?php endif; ?>
 
-        <div class="search-results-part search-results-list">
-            <?php if ($itemSetsCount): ?>
-            <?= $partial('search/resource-list', [
-                'site' => $site,
-                'searchPage' => $searchPage,
-                'query' => $query,
-                'response' => $response,
-                'title' => '', // moved above: sprintf($translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
-                'resourceName' => 'item_sets',
-            ]) ?>
+                <?php if ($itemsCount): ?>
+                    <?= $partial('search/resource-list', [
+                        'site' => $site,
+                        'searchPage' => $searchPage,
+                        'query' => $query,
+                        'response' => $response,
+                        'title' => '', // moved above: sprintf($translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
+                        'resourceName' => 'items',
+                    ]) ?>
+                <?php endif; ?>
+            </div>
+            <?php if ($displayPartsFooter): ?>
+                <div class="search-results-part search-results-footer">
+                    <?= $partial('search/results-header-footer', [
+                        'site' => $site,
+                        'searchPage' => $searchPage,
+                        'query' => $query,
+                        'response' => $response,
+                        'itemSet' => $itemSet,
+                        'resultPart' => 'footer',
+                        'documentCount' => $documentCount,
+                    ]) ?>
+                </div>
             <?php endif; ?>
-
-            <?php if ($itemsCount): ?>
-            <?= $partial('search/resource-list', [
-                'site' => $site,
-                'searchPage' => $searchPage,
-                'query' => $query,
-                'response' => $response,
-                'title' => '', // moved above: sprintf($translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
-                'resourceName' => 'items',
-            ]) ?>
-            <?php endif; ?>
-        </div>
-
-        <?php if ($displayPartsFooter): ?>
-        <div class="search-results-part search-results-footer">
-            <?= $partial('search/results-header-footer', [
-                'site' => $site,
-                'searchPage' => $searchPage,
-                'query' => $query,
-                'response' => $response,
-                'itemSet' => $itemSet,
-                'resultPart' => 'footer',
-                'documentCount' => $documentCount,
-            ]) ?>
-        </div>
-        <?php endif; ?>
-
         <?php else: ?>
 
             <div class="noresults">

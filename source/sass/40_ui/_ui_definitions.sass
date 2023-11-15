@@ -228,7 +228,7 @@
 
 %button-submit
   @extend %button
-  +submit-arrow
+  +submit-arrow($btn_icon_size * 0.5)
   border-width: $btn_submit_border_width
   border-color: $btn_submit_border_color
   font-style: normal
@@ -239,7 +239,7 @@
   justify-content: flex-start
 
   &:hover
-    +submit-arrow-hover
+    +submit-arrow-hover($btn_icon_size * 0.5)
     color: $btn_submit_hover_color
     background-color: $btn_submit_hover_bg_color
     border-color: $btn_submit_hover_border_color

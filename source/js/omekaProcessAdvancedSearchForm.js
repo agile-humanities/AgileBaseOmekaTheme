@@ -19,7 +19,7 @@
 
       form.find('> *:first-child').remove();
       form.find('> *:last-child').remove();
-      form.find('> *').wrapAll('<details>');
+      form.find('> *').wrapAll('<details>').wrapAll('<div class="details-container">')
       form.find('details').prepend('<summary>More search options</summary>');
 
       keywordInput.find('.field-meta label').text('Enter keywords')
