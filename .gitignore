@@ -2,3 +2,7 @@
 
 /asset
 /node_modules
+
+# Ignore Mac file system
+
+.DS_Store
