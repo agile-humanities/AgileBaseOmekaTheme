@@ -107,7 +107,35 @@ button
     -webkit-box-orient: vertical
     overflow: hidden
 
-
 .download-img
   height: rv(0)
   width: rv(0)
+
+.download-item
+  display: inline-flex
+  background-position: left
+  background-size: rv(1) rv(1)
+
+  a
+    background: url(get_svg_url('icons-grey/download-grey')) no-repeat center
+    @include icon-position
+
+    &:hover,
+    &:focus
+      background: url(get_svg_url('icons-active/download-active')) no-repeat center
+      @include icon-hover
+
+  .download-metadata
+    display: inline-flex
+    background-position: left
+    background-size: rv(1) rv(1)
+
+    a
+      background: url(get_svg_url('icons-grey/download-metadata-grey')) no-repeat center
+      @include icon-position
+      margin-right: 0
+
+      &:hover,
+      &:focus
+        background: url(get_svg_url('icons-active/download-metadata-active')) no-repeat center
+        @include icon-hover
