@@ -114,14 +114,15 @@ body > header
     cursor: pointer
 
     p
+      font-size: rv(-1)
       &:after
         content: ''
         position: relative
         display: inline-flex
         justify-content: center
-        background: url(get_svg_url('icons-black/down-arrow-black')) no-repeat center
+        background: url(get_svg_url('icons/down-arrow-black')) no-repeat center
         background-size: contain
-        background-position: top 2px // cheat
+        background-position: 0 5px // cheat
         margin-left: rv(-3)
         height: rv(-1)
         width: rv(-1)
@@ -129,23 +130,10 @@ body > header
 
 
   .mobile-menu-header
-    padding-top: 0 rv($mobile_edge_padding_factor)
-    display: flex
-    justify-content: space-between
-    align-items: center
-    min-height: rv(5)
-    border-bottom: solid #c0c0bf 1px
     position: relative
-
-    .mobile-mark
-      img
-        height: rv(5)
-        width: rv(10)
-        transform: translateY(#{rv(-1) * -1})
 
     .nav-hamburger
       img
-        height: rv(3)
         width: rv(3)
 
 
@@ -162,7 +150,6 @@ body > header
 
     > ul
       margin: 0
-      padding: rv(0)
       list-style-type: none
       text-align: right
       font-size: rv(0)

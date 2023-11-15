@@ -44,26 +44,16 @@ $partial = $this->plugin('partial');
                   <?php foreach ($attachments as $attachment): ?>
                     <slide-item>
                       <div class="slide-item-content" slot="slide-content">
-                        <?php
-                        $item = $attachment->item();
-                        $media = $attachment->media() ?: $item->primaryMedia();
-                        ?>
-                        <?= $partial('agile-item/card', [
-                          'item' => $item,
-                          'containerElement' => 'div',
-                          'cardStyle' => 'item-info caption--compact',
-                          'heading' => $showTitleOption == 'file_name' && $media ? $media->displayTitle() : $item->displayTitle(),
-                        ]) ?>
-                        <?php if (!empty($attachment->caption())): ?>
-                          <div class="caption caption--compact reverse">
-                            <?= $attachment->caption() ?>
-                          </div>
-                        <?php endif; ?>
-
-
+						<?php $item = $attachment->item(); ?>
+							<?= $partial('agile-item/slide-item', [
+							'item' => $item,
+							'media' => $attachment->media() ?? $item->primaryMedia(),
+							'caption' => $attachment->caption() ?? $item->displayDescription(),
+							'imageSize' => 'large'
+							]) ?>
+                    
                       </div>
                     </slide-item>
-
                   <?php endforeach; ?>
               </div>
               <?php if($hasAudioAttachment): ?>
