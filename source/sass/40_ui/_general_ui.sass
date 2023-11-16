@@ -2,9 +2,9 @@
  *  @file _general_ui.sass
  *  @category 40_ui
  *  @theme LOCAL
- *  @description Define various user interface elements. Buttons definitions are located in _ui_definitions.
- *    This file applies them to various elements and classes and defines special ui elements. Also see
- *    _form_ui.sass in this group.
+ *  @description Define various user interface elements.
+ *  @seealso  stop14-themesystem/source/sass/a_components/40_ui/ui_element_base  for core definitions and
+ *  preset styling. Also see 00_Main_Configuration
  *
  **/
 
@@ -30,46 +30,3 @@
 .clear-filters
   display: inline-block
   margin-left: rv(0)
-
-
-/* =======================
- * BUTTONS: APPLY DEFINITIONS
- * ======================= */
-
-
-// Note: applying styles to <button> elements often create problems with third-party modules and admin interfaces.
-// It is advised that you add a button class to button elements to avoid conflicts
-
-.button
-  @extend %button
-
-  &.compact
-    @extend %button-compact
-
-  &.large
-    @extend %button-large
-
-  &.standard
-    @extend %button-standard
-
-  &.link
-    @extend %button-link
-
-  &.outline
-    @extend %button-outline
-
-  &.cta
-    @extend %button-cta
-
-  &.feature-cta
-    @extend %button-feature-cta
-
-  &.more
-    @extend %button-more
-
-  &.search-submit,&[type='submit'].search-submit
-    @extend %button-search-submit
-
-button
-  &.search-submit,&[type='submit'].search-submit
-    @extend %button-search-submit

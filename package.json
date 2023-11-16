@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "masonry-layout": "^4.2.2",
-    "stop14-themesystem-legacy": "^1.2.2",
+    "stop14-themesystem-legacy": "^1.7",
     "superfish": "^1.7.10"
   }
 }

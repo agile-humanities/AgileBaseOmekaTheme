@@ -13,7 +13,7 @@ textarea
   display: block
   height: $ui_element_height
   padding: $ui_padding
-  border: 1px solid $lighter_neutral
+  border: 1px solid neutral(40)
   font-family: $basefont
   font-size: $ui_element_font_size
 
@@ -64,7 +64,7 @@ input[type="radio"]
 input[type="checkbox"]
   appearance: none
   border-radius: unset
-  border: 1px solid $lighter_neutral
+  border: 1px solid neutral(40)
   height: $ui_checkbox_height
   width: $ui_checkbox_height
   background-color: white
@@ -100,7 +100,7 @@ input[type="checkbox"]
 
 input[type="radio"]
   appearance: none
-  border: 1px solid $lighter_neutral
+  border: 1px solid neutral(40)
   border-radius: 50%
   height: $ui_checkbox_height
   width: $ui_checkbox_height
@@ -111,7 +111,7 @@ input[type="radio"]
   &:hover,
   &:checked
     box-shadow: inset 0 0 0 3px white !important
-    background-color: $lighter_neutral
+    background-color: neutral(40)
 
 // Submit Button
 
@@ -131,7 +131,7 @@ fieldset, details
 
   &.open, &[open]
     legend::after, summary::after
-      content: url(../img/svg/icons/accordion-collapse-icon.svg)
+      content: url(get_svg_url(icons/accordion-collapse-icon))
 
   legend, summary
     font-size: $ui_checkbox_label_font_size
@@ -140,7 +140,7 @@ fieldset, details
 
     // General and closed accordion styles
     &::after
-      content: url(../img/svg/icons/accordion-open-icon.svg)
+      content: url(get_svg_url(icons/accordion-open-icon))
       position: absolute
       width: 8px
       right: 0
