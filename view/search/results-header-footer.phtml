@@ -12,7 +12,6 @@
 
 $plugins = $this->getHelperPluginManager();
 $translate = $plugins->get('translate');
-$icon_path = "/themes/AgileBaseTheme/source/img/svg/icons";
 
 // Default values of the module.
 $displayParts = [
@@ -48,8 +47,8 @@ $multiMode = isset($displayParts['grid_list']) && !in_array($gridListMode, ['lis
 
 <?php if ($multiMode): ?>
 <div class="search-results-display ui-icon-container">
-    <a class="search-view-type search-view-type-list<?= $gridListMode == 'list' ? ' active' : '' ?>" href="#" title="Browse results as a list"><img class='ui-icon<?= $gridListMode == 'list' ? ' active' : '' ?>' alt="list view" src="<?= $icon_path ?>/list-view-grey.svg" data-src="<?= $icon_path ?>/list-view-grey.svg" data-src-active="<?= $icon_path ?>/list-view-active.svg"></a>
-    <a class="search-view-type search-view-type-grid<?= $gridListMode == 'grid' ? ' active' : '' ?>" href="#" title="Browse results as a grid"><img class='ui-icon<?= $gridListMode == 'grid' ? ' active' : '' ?>' alt="grid view" src="<?= $icon_path ?>/masonry-view-grey.svg" data-src="<?= $icon_path ?>/masonry-view-grey.svg" data-src-active="<?= $icon_path ?>/masonry-view-active.svg"></a>
+    <a class="search-view-type search-view-type-list<?= $gridListMode == 'list' ? ' active' : '' ?>" href="#" title="Browse results as a list"><img class='ui-icon<?= $gridListMode == 'list' ? ' active' : '' ?>' alt="list view" src="<?= $this->assetUrl('img/svg/icons/list-view-grey.svg'); ?>" data-src="<?= $this->assetUrl('img/svg/icons/list-view-grey.svg'); ?>" data-src-active="<?= $this->assetUrl('img/svg/icons/list-view-active.svg'); ?>"></a>
+    <a class="search-view-type search-view-type-grid<?= $gridListMode == 'grid' ? ' active' : '' ?>" href="#" title="Browse results as a grid"><img class='ui-icon<?= $gridListMode == 'grid' ? ' active' : '' ?>' alt="grid view" src="<?= $this->assetUrl('img/svg/icons/masonry-view-grey.svg'); ?>" data-src="<?= $this->assetUrl('img/svg/icons/masonry-view-grey.svg'); ?>" data-src-active="<?= $this->assetUrl('img/svg/icons/masonry-view-active.svg'); ?>"></a>
 </div>
 <?php endif; ?>
 <?php if ($resultPart === 'footer'): ?>
