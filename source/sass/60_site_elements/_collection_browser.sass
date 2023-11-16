@@ -9,9 +9,26 @@
 #collection-list
   @extend %card-grid
 
+
+// @todo: move to 40_ui/_omeka_search_components.sass ?
+
 .search-results-list
     list-style-type: none
 
     &.grid
       .resource
         @extend .card
+
+.item-browser > div
+  @extend %browser-container
+
+#content-stack
+  .browse-tool
+    margin-bottom: 0
+
+    .browse-search-form
+      margin-top: rv(1)
+
+#mobile-browse-controls
+  @extend %browser-mobile-toolbar
+
