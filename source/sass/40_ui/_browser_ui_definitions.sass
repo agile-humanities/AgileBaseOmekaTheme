@@ -336,23 +336,40 @@ $grid_gap_size: rv($grid_gap_factor)
       font-weight: $semibold
 
 %browser-mobile-toolbar
-  width: 100%
+  position: fixed
+  left: 0
+  right: 0
+  bottom: 0
+  height: $mobile_filter_height
+  z-index: 4
   display: flex
-  flex-wrap: nowrap
+  flex-direction: row
   justify-content: space-between
   align-items: center
-  height: $ui_display_controls_icon_size
+  background: $black
+  padding: rv($mobile_edge_padding_factor)
+  border-top: 3px solid $white
 
-  .filter-container
+  +bp($tablet)
+    display: none
+
+  // Filter menu
+
+  > a
     display: flex
-    flex-direction: row-reverse
+    color: $white
+    height: 100%
+    flex-direction: row
     align-items: center
+    width: 50vw
 
-    label
-      color: $white
+    img
+      width: auto
+      height: rv(1)
+      margin-right: rv(-1)
 
-    a.filter
-      +filter-icon-reverse
+  .pagination--label
+    color: $white
 
 // Display mode controls
 
