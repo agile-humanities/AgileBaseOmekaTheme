@@ -27,23 +27,25 @@ p, main li
     color: $white
 
 .compact
-  @extend %s-normal-k
+  @extend %small-text
 
 .discreet
-  @extend %s-normal-k
+  @extend %small-text
   line-height: 1.5
 
 .content-label, .item-label
-  @extend %xs-bold-k-cap
+  +font-size(-2)
+  text-transform: uppercase
+  font-weight: $bold
 
 figcaption, .caption
-  @extend %s-normal-k
+  @extend %small-text
 
 .poster-text
-  @extend %xl-normal-k
+  +font-size(2)
 
 .deck
-  @extend %sm-normal-k-fluid
+  font-size: clamped(1,2)
   line-height: 1.5
   margin-bottom: rv(0)
 
@@ -56,18 +58,19 @@ figcaption, .caption
     font-family: inherit
 
 .callout-text
-  @extend %xl-alt-bold-accent
+  @extend %impact-text
   line-height: 1.25
 
 label, .label, .metadata-label
-  @extend %s-normal-k-70
+  +font-size(-1)
+  color: neutral(70)
   line-height: 1.25
 
   @at-root .reversed &
     color: neutral(30)
 
 .value, .metadata-value
-  @extend %s-normal-k
+  @extend %small-text
   line-height: 1.25
 
 .label, .metadata-label
@@ -76,7 +79,7 @@ label, .label, .metadata-label
 
 .read-more-link, .more
   @extend %inline-anchor-block
-  @extend %s-bold-k
+  +font-size(-1)
   margin-right: rv(-2)
   margin-top: rv(1)
 
