@@ -6,12 +6,35 @@
  *
  **/
 
+// Variables  @todo: move to main config
+
+$ribbon_padding_factor: -3
+
+// Base styles
+
+%small-text
+  font-size: clamped(-1,-2)
+  font-weight: $normal
+  color: $black
+  @extend %has-reversed
+
+%underscore
+  text-decoration: underline
+
+%display-font
+  font-family: $altfont
+
+%impact-text
+  @extend %display-font
+  font-size: clamped(2,3)
+  font-weight: $bold
+  color: $impact
+
 // Utility
 
 %has-reversed
   @at-root .reversed &
     color: $white
-
 
 // Anchors
 
@@ -48,23 +71,7 @@
     color: set-colour-tint(4, 50)
     text-decoration-color: set-colour-tint(4, 50)
 
-/**
- *  @file _definitions.sass
- *  @category 30_typography
- *  @theme LOCAL
- *  @description Defines elementary type definitions. To be applied in _general typography and elsewhere
- *
- **/
-
-// Base styles
-
-$ribbon_padding_factor: -3
-
-%underscore
-  text-decoration: underline
-
-%display-font
-  font-family: $altfont
+// Extras
 
 %ribbon-black
   padding: rv($ribbon_padding_factor)
