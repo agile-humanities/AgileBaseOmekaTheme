@@ -2,7 +2,7 @@
   *  @file _advanced_search_form.sass
   *  @category 40_ui
   *  @theme LOCAL
-  *  @description Styling for the advanced search form.
+  *  @description Styling for the advanced search form and related styles
   *    Note that the advanced search form is created from a series of nested templates.
   *    Throughout this theme the advanced search page is refered to as a “collection browser”, which is more
   *    intuitive for users but confusing internally.
@@ -51,12 +51,13 @@
     #submit
       @extend %button-submit
 
+
 #advanced-search-form
   +standard_edge_padding
   background-color: neutral(2)
   margin-bottom: rv($edge_padding_factor)
 
-#search-form
+#search-form, .search-container
   display: flex
   flex-direction: row
   width: 100%  // Take up entire container
@@ -91,6 +92,11 @@
 
   width: 100%
   padding-right: calc(#{$btn_submit_img_size} + #{$ui_padding})
+
+.search-by-id
+  display: block
+  margin-top: rv($mobile_edge_padding_factor)
+  @extend %inline-anchor
 
 .search-results-list
   list-style-type: none

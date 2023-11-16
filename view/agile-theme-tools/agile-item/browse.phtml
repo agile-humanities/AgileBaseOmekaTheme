@@ -47,24 +47,24 @@ $sortHeadings = [
             <div class="browse-search-form">
                 <?php echo $this->partial('common/search-form'); ?>
             </div>
-            <?php echo $this->hyperlink($translate('Advanced Search'), $this->url('site/resource', ['controller' => 'item', 'action' => 'search'], ['query' => $query], true), ['class' => 'advanced-search']); ?>
+            <?php echo $this->hyperlink($translate('Search by ID'), $this->url('site/resource', ['controller' => 'item', 'action' => 'search'], ['query' => $query], true), ['class' => 'search-by-id']); ?>
         </div>
     </div>
-    
+
     <?php echo $this->searchFilters(); ?>
-    
+
     <div class="top-bar-ui">
-      
+
         <div class="browse-controls">
             <h3>Results</h3>
             <div class='sort-selector'>
                 <?php echo $this->sortSelector($sortHeadings); ?>
-                
-            </div>        
+
+            </div>
 
         </div>
     </div>
-    
+
 
         <div class="browser browser-container">
             <ul class="list">
