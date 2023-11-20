@@ -14,7 +14,7 @@ switch ($searchType) {
     case 'browser':
     case 'sitewide':
     default:
-        $searchAction = isset($searchAction) ? $searchAction : $searchConfig->siteUrl();
+        $searchAction = isset($searchAction) ? $searchAction : ($searchConfig ? $searchConfig->siteUrl() : '#');
         $searchValue = $this->escapeHtml($this->params()->fromQuery('q', ''));
         $name='q';
 }

@@ -28,26 +28,43 @@ if (strpos($this->classes, 'card') === false) {
 $bodyTerm = $this->siteSetting('browse_body_property_term');
 $viewItemPageTerm  = $this->siteSetting('browse_view_item_page_term');
 $untitled = $translate('[Untitled]');
+$thumbnailSize = 'large';
 
 $contentType = [];
 
-$cardMode = get_class($item) == 'Omeka\Api\Representation\ItemRepresentation' ? 'item' : 'resource';
+if ($item || $resource):
 
-$thumbnailSize = 'large';
+$cardMode = !empty($item) &&  get_class($item) == 'Omeka\Api\Representation\ItemRepresentation' ? 'item' : 'resource';
 
-//var_dump($item->value('dcterms:temporal'));
-//$year = '2020';
-$year = !empty($item->value('dcterms:temporal')) && is_array($item->value('dcterms:temporal')) && count($item->value('dcterms:temporal')) > 0 ? date('Y',$item->value('dcterms:temporal')[0]) : null;
-$resourceClassLabel = $item->resourceClass()->label();
-$label = $resourceClassLabel . ($year ? " {$year}" : '');
-$creator = $item->value('dcterms:creator');
-$resourceIndicator = "resource-id-". $item->resourceClass()->id();
+
+// Defaults
+
+$year = '';
+$resourceClassLabel = ucfirst($cardMode);
+$label = $resourceClassLabel;
+$creator = '';
+$resourceIndicator = '';
 $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$resourceClassLabel)));
+
 
 switch($cardMode) {
   case 'item':
+
+    // Item values
+
     $url = $item->url();
     $altText = $item->value('vra:caption') ?? '';
+
+    $year = !empty($item->value('dcterms:temporal')) && is_array($item->value('dcterms:temporal')) && count($item->value('dcterms:temporal')) > 0 ? date('Y',$item->value('dcterms:temporal')[0]) : null;
+    $label = $resourceClassLabel . ($year ? " {$year}" : '');
+    $creator = $item->value('dcterms:creator');
+
+    if (method_exists($item,'resourceClass') && $item->resourceClass() !== null) {
+      $resourceClassLabel = $item->resourceClass()->label();
+      $resourceIndicator = "resource-id-" . $item->resourceClass()->id();
+      $resourceClassName = "resource-" . urlencode(strtolower(str_replace(' ', '-', $resourceClassLabel)));
+    }
+
     $thumbnail = !empty($altText) ? $this->thumbnail($item, $thumbnailSize,['alt' => $escape(strip_tags($altText)),'class' => "{$resourceIndicator} {$resourceClassName}"]) : $this->thumbnail($item, $thumbnailSize,['class' => "{$resourceIndicator} {$resourceClassName}"]);
     $contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item');
     $viewItemPage = $viewItemPageTerm ? $item->value($viewItemPageTerm, ['default' => $translate('Find Out More')]) : 'Find out more';
@@ -68,7 +85,6 @@ switch($cardMode) {
     $heading = isset($heading) ? $heading->asHtml() : $escape($resource->displayTitle($untitled, $lang));
     $viewItemPage = $resource->value($viewItemPageTerm, ['default' => $translate('Find Out More')]);
     $body = isset($body) ? $body : (isset($bodyTerm) ? $resource->value($bodyTerm, ['lang' => $langValue]) : '');
-    $institution = !empty($resource->value('vra:placeOfRepository')) ? $resource->value('vra:placeOfRepository') : '';
     if (strpos($this->classes, 'resources') === false) {
       $this->classes .= " resources";
     }
@@ -102,4 +118,5 @@ $cardStyle = isset($cardStyle) ? $cardStyle : 'card';
   </div>
 </a>
 </<?php print $containerElement; ?> >
+<?php endif; ?>
 <!-- END TEMPLATE: /agile-item/card -->
