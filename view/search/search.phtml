@@ -126,18 +126,20 @@ $this->headScript()->appendFile($assetUrl('js/search.js', 'AdvancedSearch'), 'te
 <?php if (isset($response)): ?>
     <?= $this->searchForm($searchPage, null, $skipFormAction) ?>
 
-    <div class="search-results-wrapper">
-    <aside class="search-facets">
-        <a id="aside-mobile-close-btn">Close</a>
-        <?= $partial('search/facets', [
-            'site' => $site,
-            'searchPage' => $searchPage,
-            'query' => $query,
-            'response' => $response,
-            'itemSet' => $itemSet,
-        ]) ?>
-    </aside>
-    <div class="search-results">
+    <div class="search-results-wrapper  <?php if ($hasActiveFacets) { echo ' with-sidebar';} ?>">
+    <?php if ($hasActiveFacets): ?>
+      <aside class="search-facets">
+          <a id="aside-mobile-close-btn">Close</a>
+          <?= $partial('search/facets', [
+              'site' => $site,
+              'searchPage' => $searchPage,
+              'query' => $query,
+              'response' => $response,
+              'itemSet' => $itemSet,
+          ]) ?>
+      </aside>
+    <?php endif; ?>
+      <div class="search-results">
 
         <?php if ($documentCount): ?>
             <header>
