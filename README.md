@@ -52,8 +52,8 @@ Instructions for creating a new site using this theme. This also points to modif
 
 - Make sure that all the modules above are successfully installed via Admin > Modules
 - Create your site (Admin > Sites)
-- Enable theme for the site (Admin > Sites > YourSite > Theme)
 - IMPORTANT: You must enable a default search page. Admin > Sites > YourSite > Theme > [Settings] > Advanced Search > Available search pages > enable
+- Enable theme for the site (Admin > Sites > YourSite > Theme)
 - Enable Universal Viewer and/or Mirador as your base viewer
   - Navigate to Admin > Sites > Your Theme > Site Admin > [Settings Tab]
   - Under “Blocks Disposition” click on the desired viewer beside “For Item Show” (and others). 

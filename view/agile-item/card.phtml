@@ -32,7 +32,6 @@ $thumbnailSize = 'large';
 
 $contentType = [];
 
-
 if ($item || $resource):
 
 $cardMode = !empty($item) &&  get_class($item) == 'Omeka\Api\Representation\ItemRepresentation' ? 'item' : 'resource';
@@ -44,26 +43,28 @@ $year = '';
 $resourceClassLabel = ucfirst($cardMode);
 $label = $resourceClassLabel;
 $creator = '';
-$resourceIndeicator = '';
+$resourceIndicator = '';
 $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$resourceClassLabel)));
 
 
 switch($cardMode) {
   case 'item':
-  
-    // Item values  
-  
+
+    // Item values
+
     $url = $item->url();
     $altText = $item->value('vra:caption') ?? '';
-    
+
     $year = !empty($item->value('dcterms:temporal')) && is_array($item->value('dcterms:temporal')) && count($item->value('dcterms:temporal')) > 0 ? date('Y',$item->value('dcterms:temporal')[0]) : null;
-    $resourceClassLabel = $item->resourceClass()->label();
     $label = $resourceClassLabel . ($year ? " {$year}" : '');
     $creator = $item->value('dcterms:creator');
-    $resourceIndicator = "resource-id-". $item->resourceClass()->id();
-    $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$resourceClassLabel)));
 
-    
+    if (method_exists($item,'resourceClass') && $item->resourceClass() !== null) {
+      $resourceClassLabel = $item->resourceClass()->label();
+      $resourceIndicator = "resource-id-" . $item->resourceClass()->id();
+      $resourceClassName = "resource-" . urlencode(strtolower(str_replace(' ', '-', $resourceClassLabel)));
+    }
+
     $thumbnail = !empty($altText) ? $this->thumbnail($item, $thumbnailSize,['alt' => $escape(strip_tags($altText)),'class' => "{$resourceIndicator} {$resourceClassName}"]) : $this->thumbnail($item, $thumbnailSize,['class' => "{$resourceIndicator} {$resourceClassName}"]);
     $contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item');
     $viewItemPage = $viewItemPageTerm ? $item->value($viewItemPageTerm, ['default' => $translate('Find Out More')]) : 'Find out more';
