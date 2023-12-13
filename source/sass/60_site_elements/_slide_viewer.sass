@@ -115,10 +115,6 @@ slide-item
     padding-top: rv($mobile_edge_padding_factor)
     padding-bottom: calc(#{rv($mobile_edge_padding_factor)} + #{$integrated_nav_height}) // cheat: actual height of nav
     margin-top: 0
-    border-top: 1px solid $white
-    display: flex
-    flex-direction: column
-    justify-content: flex-end
     color: $white
 
     *
@@ -136,6 +132,11 @@ slide-item
       color: $white
       border-color: $white
       width: fit-content
+      background-color: $clr2
+      padding: 12px 60px
+      border-radius: 5px
+      display: inline-block
+      margin-top: rv(1)
 
 
     p + .btn
