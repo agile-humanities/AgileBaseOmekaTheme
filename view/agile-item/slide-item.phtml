@@ -1,52 +1,68 @@
 <?php
-    use Omeka\Api\Representation\ItemRepresentation;
+use Omeka\Api\Representation\ItemRepresentation;
 
-    $translate = $this->plugin('translate');
-    $escape = $this->plugin('escapeHtml');
-    $plugins = $this->getHelperPluginManager();
-    $thumbnailer = $plugins->get('thumbnail');
-    $thumbnailSize = 'large';
-    $textLimit = $textLimit ?? 600;
-    $showTitleOption = $showTitleOption ?? 'item_title';
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$plugins = $this->getHelperPluginManager();
+$thumbnailer = $plugins->get('thumbnail');
+$thumbnailSize = 'large';
+$textLimit = $textLimit ?? 600;
+$showTitleOption = $showTitleOption ?? 'item_title';
 
-    try {
-      $textSummary = $this->plugin('textSummary');
-    } catch (Exception $e)  {
-      $textSummary = null;
-    }
+try {
+  $textSummary = $this->plugin('textSummary');
+} catch (Exception $e)  {
+  $textSummary = null;
+}
 ?>
 <!-- BEGIN agile-item/slide-item.phtml -->
-<slide-item>
+<slide-item class="slide-card">
   <?php
-    /** @var Omeka\Api\Representation\ItemRepresentation */
-    if ($item):
-  ?>
-      <?php
-        /** @var \Omeka\Api\Representation\MediaRepresentation $media */
-        $media = $item->primaryMedia();
-        $caption = $caption ?? $item->displayDescription();
-        $thumbnail = $this->thumbnail($item, $imageSize);
-
+  /** @var Omeka\Api\Representation\ItemRepresentation */
+  if ($item):
+    ?>
+    <?php
+    /** @var \Omeka\Api\Representation\MediaRepresentation $media */
+    $media = $media ?? $item->primaryMedia();
+    $caption = $caption ?? $item->displayDescription();
+    $thumbnail = $media ? $thumbnailer($media,$thumbnailSize) : '';
+    $contributors = $item->value('dcterms:creator', ['all' => true]);
+    ?>
+    <?php
+    if ($media):
       ?>
-      <?php
-        if ($media):
-      ?>
-        <div slot='slide-content'>
-          <?php echo $thumbnail; ?>
-        </div>
-      <?php endif; ?>
-      <div slot='slide-caption'>
-        <?php if ($showTitleOption == 'item_title'): ?>
-          <h3><?php echo $item->link($item->displayTitle()); ?></h3>
-        <?php elseif ($showTitleOption == 'file_name'): ?>
-          <h3><?php echo $media->displayTitle(); ?></h3>
-        <?php endif; ?>
-        <?php
-          if ($caption):
-            echo $caption;
-          endif;
-        ?>
+      <div slot='slide-content'>
+        <a href="<?= $item->url() ?>" aria-labelledby="caption-title-<?= $item->id() ?>">
+          <?= $thumbnail; ?>
+        </a>
       </div>
     <?php endif; ?>
+    <div class='reversed' slot='slide-caption'>
+      <a href="<?= $item->url() ?>" aria-labelledby="caption-title-<?= $item->id() ?>">
+        <div class="item-info">
+          <div class="item title-container">
+            <?php if ($showTitleOption == 'item_title'): ?>
+              <h3 id="caption-title-<?= $item->id() ?>"><?= $item->displayTitle() ?></h3>
+            <?php elseif ($showTitleOption == 'file_name'): ?>
+              <h3 id="caption-title-<?= $item->id() ?>"><?= $media->displayTitle(); ?></h3>
+            <?php endif; ?>
+            <?php if ($contributors): ?>
+              <div class="contributor">
+                <?php foreach ($contributors as $contributor) { echo $contributor->asHtml(); }?>
+              </div>
+            <?php endif; ?>
+          </div>
+          <div class="item item-description">
+            <?php
+            if ($caption):
+              echo $caption;
+            endif;
+            ?>
+            <div id="caption-more-<?= $item->id() ?>" class="more">Find out more</div>
+          </div>
+        </div>
+      </a>
+    </div>
+  <?php endif; ?>
 </slide-item>
 <!-- END agile-item/slide-item.phtml -->

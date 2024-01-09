@@ -8,9 +8,19 @@ $searchMainPage = $this->siteSetting('advancedsearch_main_config');
 $searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
 $searchPath = $searchConfig->siteUrl();
 
+// Omit terms from the item metadata block. For instance, omit the description of the item because
+// it’s being displayed elsewhere.
+// Format: $metadata_exclusions = ['dcterms:termname'];
+
+$metadata_exclusions = [];
 ?>
 <!-- BEGIN common/resource-values.phtml -->
-<?php foreach ($values as $term => $propertyData): ?>
+<?php foreach ($values as $term => $propertyData):
+  // Omit excluded metadata
+  if (in_array($term,$metadata_exclusions)) {
+    continue;
+  }
+?>
     <div class="property" data-term="<?php echo $escape($term); ?>" >
         <div class="metadata-label">
             <?php if ($propertyData['alternate_label']): ?>
@@ -29,7 +39,7 @@ $searchPath = $searchConfig->siteUrl();
             /** @var \Omeka\Api\Representation\ValueRepresentation $value */
             foreach ($propertyData['values'] as $value):
                 $valueType = $value->type();
-                $term = $propertyData['property']->term(); // dcterm:termname
+                // $term = $propertyData['property']->term(); // dcterm:termname
                 $value_label = $value->__toString();
                 $class = ['value'];
                 $url =  $searchConfig->siteUrl(). "?facet" . urlencode("[") . $term . urlencode("][0]") . "=" . urlencode($value_label);

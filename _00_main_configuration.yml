@@ -130,6 +130,12 @@ h6fontsize: "map-get($sizefactors,'h6')"
 
 
 ## 04 UI | Needs an overhaul
+
+#
+menu_background: $white
+
+#base ui
+
 ui_padding: 8px
 ui_element_height: 40px
 ui_minheight: $ui_element_height

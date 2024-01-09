@@ -1,7 +1,7 @@
 {
-  "name": "ctc-19-theme",
+  "name": "agile-generic-theme",
   "version": "1.0.0",
-  "description": "Theme for the Cretivity in the Time of COVID-19 project.",
+  "description": "Base Omeka theme and front-end development system.",
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

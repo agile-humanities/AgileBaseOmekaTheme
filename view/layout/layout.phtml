@@ -9,8 +9,8 @@ $this->headTitle($this->setting('installation_title', 'Omeka S'))->setSeparator(
 $this->headLink()->prependStylesheet($this->assetUrl('css/vendor.min.css'));
 $this->headLink()->prependStylesheet($this->assetUrl('css/iconfonts.css', 'Omeka'));
 $this->headLink()->appendStylesheet($this->assetUrl('css/style.min.css'));
-$this->headScript()->prependFile($this->assetUrl('js/core.min.js'));
 $this->headScript()->prependFile($this->assetUrl('js/default.min.js'));
+$this->headScript()->prependFile($this->assetUrl('js/core.min.js'));
 $this->headScript()->prependFile($this->assetUrl('js/global.js', 'Omeka'));
 $this->headScript()->prependFile($this->assetUrl('js/vendor.js'));
 $this->headScript()->prependFile($this->assetUrl('vendor/jquery/jquery.min.js', 'Omeka'));
@@ -71,7 +71,7 @@ if (!empty($this->userBar())) {
               </a>
             </div>
               <!--DESKTOP MENU START-->
-              <nav class="desktop-nav" aria-label="Main navigation for <?= $siteTitle ?>">
+              <nav id="main-nav" class="desktop-nav" aria-label="Main navigation for <?= $siteTitle ?>">
                   <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' =>2]); ?>
               </nav>
               <!--DESKTOP MENU END-->

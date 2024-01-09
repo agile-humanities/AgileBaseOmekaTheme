@@ -47,6 +47,9 @@ if (method_exists($item,'resourceClass') && $item->resourceClass() !== null) {
   $label = $resourceClassLabel . ($year ? " {$year}" : '');
 }
 
+// Terms to use in main description area. Format: $keyTerms = ['dcterms:termname'=>'Label to Use']
+
+$keyTerms = ['dcterms:creator'=>'Creator','dcterms:date'=>'Date','dcterms:source'=>'Source','dcterms:format'=>'Format'];
 
 
 // Determine which viewer to use. Note that the UV and Mirador viewers are displayed via the blocks disposition module,
@@ -146,7 +149,6 @@ foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $
               <div class='metadata-list metadata-list-top'>
                 <?php
                 // Display key terms
-                $keyTerms = ['dcterms:creator'=>'Creator','dcterms:date'=>'Date','dcterms:source'=>'Source','dcterms:format'=>'Format'];
                   foreach(array_intersect_key($item->values(),$keyTerms) as $term => $value):
                     if (!empty($value['values'][0])):
                       printf("<div class='property' data-term='%s'>\n",$term);

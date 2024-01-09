@@ -1,0 +1,18 @@
+/**
+ *   @file mirador.sass
+ *   @description Additional support for mirador
+ */
+
+
+.mirador.viewer
+  isolation: isolate // Ensure that Mirador’s internal z-indexing does not interfere with other page elements
+
+  // Force video container to full width
+  .mejs__video
+    width: 100% !important
+    height: calc(100% - 92px) !important // fudge factor for controls clearance
+    object-fit: contain
+
+    .mejs__overlay
+      width: 100% !important
+      height: 100% !important

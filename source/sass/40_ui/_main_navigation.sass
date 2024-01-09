@@ -1,0 +1,84 @@
+/**
+ *  @file _main_navitation
+ *
+ *  An customized alternative to the default Superfish-based main navigation.
+ *  IMPORTANT: Not loaded by default.
+ *
+ */
+
+.desktop-nav
+  display: none
+
+  +bp($desktop)
+    display: flex
+
+  > ul
+    +horizontal_list()
+    align-items: flex-start
+    list-style-type: none
+    font-weight: $bold
+
+    > li
+      list-style-type: none
+      padding-right: rv(1)
+      line-height: 1
+
+      a
+        display: inline-flex
+        flex-direction: row
+        align-items: center
+        padding: 0 rv(-2)
+
+      &.active > a
+        color: $cta
+        text-decoration: underline
+
+      > a:hover, > a:focus
+        color: $impact
+
+
+.has-sub-menu
+  position: relative
+  > a
+
+    &:after
+      content: ''
+      position: relative
+      display: inline-flex
+      justify-content: center
+      background: url(get_svg_url('icons-black/down-arrow-black')) no-repeat center
+      background-size: contain
+      background-position: top 2px // cheat
+      margin-left: rv(-3)
+      height: rv(-1)
+      width: rv(-1)
+
+
+  > ul
+    display: none
+    position: absolute
+    font-weight: $normal
+    text-transform: capitalize
+    list-style-type: none
+    top: 15px
+    font-size: rv(-1)
+    text-align: center
+    padding: rv(-2)
+    z-index: 1
+    background-color: $white
+    border: solid #c0c0bf 1px
+
+    > li
+      +line-height(1.25)
+      background-color: $white
+
+
+      > a
+        text-decoration: none
+        color: $black
+
+
+        &:hover,
+        &:focus
+          border-bottom: none
+          color: $clr2

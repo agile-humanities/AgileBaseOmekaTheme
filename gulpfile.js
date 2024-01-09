@@ -77,7 +77,7 @@ var paths = {
  * Copy third-party scripts and styles.
  */
 
-var vendor_scripts = ['node_modules/superfish/dist/js/superfish.js','node_modules/superfish/dist/js/hoverIntent.js','node_modules/ev-emitter/ev-emitter.js','node_modules/imagesloaded/imagesloaded.js','node_modules/jquery-reflow-table/dist/js/reflow-table.js','node_modules/in-view/dist/in-view.min.js','node_modules/select2/dist/js/select2.min.js', 'node_modules/masonry-layout/dist/masonry.pkgd.js'];
+var vendor_scripts = ['node_modules/superfish/dist/js/hoverIntent.js','node_modules/superfish/dist/js/superfish.js','node_modules/ev-emitter/ev-emitter.js','node_modules/imagesloaded/imagesloaded.js','node_modules/jquery-reflow-table/dist/js/reflow-table.js','node_modules/in-view/dist/in-view.min.js','node_modules/select2/dist/js/select2.min.js', 'node_modules/masonry-layout/dist/masonry.pkgd.js'];
 var vendor_styles = ['node_modules/superfish/dist/css/superfish.css','node_modules/jquery-reflow-table/dist/css/reflow-table.css','node_modules/select2/dist/css/select2.min.css'];
 
 
@@ -375,35 +375,24 @@ var buildStyles = function (done) {
     .pipe(header(banner.min, { package : package }))
     .pipe(sourcemaps.write('./'))
     .pipe(dest(paths.styles.output));
-
 };
 
 
 var buildVendorStyles = function(done) {
 
   if (!settings.scripts) return done();
+
   return src(vendor_styles)
-    .pipe(flatmap(function(stream, file) {
+    .pipe(concat(paths.styles.vfilename + '.css'))
+    .pipe(sourcemaps.init())
+    .pipe(header(banner.full, { package : package }))
+    .pipe(dest(paths.styles.output))
+    .pipe(rename({basename: paths.styles.vfilename, suffix: '.min'}))
+    .pipe(postcss(cssPlugins))
+    .pipe(header(banner.min, { package : package }))
+    .pipe(sourcemaps.write('./'))
+    .pipe(dest(paths.styles.output));
 
-
-        // Setup a filename.
-
-        var filename = paths.styles.vfilename === false ? file.relative : paths.styles.vfilename;
-
-        // Grab all files and concatenate them
-
-        src(file.path)
-          .pipe(sourcemaps.init())
-          .pipe(header(banner.full, { package : package }))
-          .pipe(rename({basename: filename}))
-          .pipe(dest(paths.styles.output))
-          .pipe(rename({basename: filename, suffix: '.min'}))
-          .pipe(postcss(cssPlugins))
-          .pipe(header(banner.min, { package : package }))
-          .pipe(sourcemaps.write('./'))
-          .pipe(dest(paths.styles.output));
-        return stream;
-    }));
 }
 
 
@@ -588,6 +577,11 @@ exports.js = series(
   buildScripts,
   buildVendorScripts,
   buildModernizr
+);
+
+exports.vendor = series(
+  buildVendorScripts,
+  buildVendorStyles
 );
 
 exports.images = series(
