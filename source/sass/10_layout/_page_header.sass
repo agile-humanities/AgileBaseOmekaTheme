@@ -30,6 +30,21 @@ body > header
     height: 100%
     width: auto
 
+    // Portrait ratio logos are sub-optimal, tending to shrink to illegibility.
+    // This expands the logos to the full height of the masthead, then shifts it
+    // up into the padded area. This way developers can use the masthead height to find
+    // the optimal sizing for their identity.
+
+    &.img-portrait
+      position: absolute
+      height: $masthead_height
+      width: auto
+      top: -0.5 * rv($mobile_edge_padding_factor)
+
+      +bp($tablet)
+        top: -0.5 * rv($edge_padding_factor)
+
+
 // MOBILE NAVIGATION //
 
 .mobile-menu

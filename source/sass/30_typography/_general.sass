@@ -80,8 +80,8 @@ label, .label, .metadata-label
 .read-more-link, .more
   @extend %inline-anchor-block
   +font-size(-1)
-  margin-right: rv(-2)
-  margin-top: rv(1)
+  margin-right: rv($mobile_edge_padding_factor)
+  margin-top: rv($mobile_edge_padding_factor)
 
 .more, .more-options
   @extend %more
@@ -94,3 +94,6 @@ fieldset, .field
 .form-search
   + fieldset, + .field
     margin-top: rv(0)
+
+.contributor
+  font-style: italic

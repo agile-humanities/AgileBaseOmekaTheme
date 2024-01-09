@@ -1,0 +1,116 @@
+/*
+   @file _slide_item.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description Handles slide-item template (view/agile-item/slide-item). Most styles are internal to the web component.
+   @alsosee 60_site_elements/_slide_viewer, 60_site_elements/_slideshow_block
+   */
+
+
+@use 'sass:math'
+
+slide-item
+  isolation: isolate
+  z-index: 4
+  p:last-of-type
+    margin-bottom: rv(-5)
+
+  .card
+
+    .item-info
+      background: neutral(3)
+
+    +bp($desktop)
+      background: $white
+
+  .img-portrait
+    padding: rv($mobile_edge_padding_factor) !important
+
+    +bp($desktop)
+      padding: rv(0) !important
+
+  &.title-slide
+    +slide-item-template(3)
+    --slide-item-slide-flex-direction: row
+    position: relative
+    perspective: 8px
+    perspective-origin: 50%
+    color: $white
+
+    h2, .deck, .item-label
+      color: inherit
+    p
+      @extend %small-text
+      color: $white
+
+      &:last-of-type
+        margin-bottom: 0
+
+    img
+      border-radius: $card-border-radius
+
+  [slot="slide-content"]
+    position: relative
+    z-index: 0
+    +gradient-overlay-slide()
+
+  $integrated_nav_height: 34px
+
+  [slot='slide-caption']
+    $element_spacing: rv(0)
+    margin: rv($mobile_edge_padding_factor)
+    padding-top: rv($mobile_edge_padding_factor)
+    padding-bottom: calc(#{rv($mobile_edge_padding_factor)} + #{$integrated_nav_height}) // cheat: actual height of nav
+    margin-top: 0
+    border-top: 1px solid $white
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
+    color: $white
+
+    *
+      color: inherit
+
+    h2, h3
+      margin: 0
+
+    .item-description
+      margin-top: rv($mobile_edge_padding_factor)
+
+    +bp($desktop)
+      margin: rv($edge_padding_factor)
+      padding-bottom: calc(#{rv($edge_padding_factor)} + #{$integrated_nav_height}) // cheat: actual height of nav
+
+    .btn
+      +font-size(0)
+      color: $white
+      border-color: $white
+      width: fit-content
+
+    p + .btn
+      margin-top: $element_spacing
+
+  &:after
+    content: ''
+    position: absolute
+    width: rv(10)
+    height: rv(10)
+    pointer-events: none
+    background-size: contain
+    top: math.div(rv(10),-4)
+    left: math.div(rv(10),-4)
+    z-index: 1
+    opacity: 0
+
+  &.element-ready
+    &:after
+      transform: translateZ(0px)
+      animation: animateZ 2s ease-out
+      opacity: 1
+
+@keyframes animateZ
+  from
+    transform: translateZ(6px)
+  to
+    transform: translateZ(0px)
