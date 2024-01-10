@@ -3,7 +3,9 @@
 // $labelText
 // $subtitle
 // $buttonText
+$plugins = $this->getHelperPluginManager();
 $partial = $this->plugin('partial');
+$thumbnailer = $plugins->get('thumbnail');
 
 ?>
 <div id="block-<?php echo $this->blockId; ?>" class="slideshow-block slideviewer-container region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
@@ -15,12 +17,16 @@ $partial = $this->plugin('partial');
                           <div slot='slide-content'>
                               <?php
                                   if ($titleSlideMedia):
-                                      echo $this->thumbnail($titleSlideMedia, $thumbnailType);
-                                  endif;
-                              ?>
+                                      echo $thumbnailer($titleSlideMedia, $thumbnailType);
+                                  endif;?>
                           </div>
                           <div slot='slide-caption'>
+                            <?php
+                                  if ($titleSlideMedia):
+                                    echo $thumbnailer($titleSlideMedia, $thumbnailType);
+                                  endif;?>
                               <div class="slide-title-content">
+
                                   <?php if (!empty($labelText)): ?>
                                       <div class='item-label'><?php echo $labelText; ?></div>
                                   <?php endif; ?>
@@ -34,26 +40,42 @@ $partial = $this->plugin('partial');
                                       <?php echo $titleSlideIntro; ?>
                                   <?php endif; ?>
                                   <?php if (!empty($buttonText)): ?>
-                                      <a class='slickNext next-slide btn cta'><?php echo $buttonText; ?></a>
+                                    <div class="arrow-container">
+                                    <div class='slickNext next-slide'>
+                                       <h2> <?php echo $buttonText; ?></h2>
+                                        <img class="slider-arrow" alt='Next Slide' src=<?php echo $this->assetUrl('img/svg/icons/arrow-right-icon.svg'); ?>>
+                                        <img class="slider-arrow-black" alt='Next Slide' src=<?php echo $this->assetUrl('img/svg/icons/arrow-right-icon-neutral.svg'); ?>>
+                                    </div>
+
+                                  </div>
                                   <?php endif; ?>
                               </div>
                           </div>
                       </slide-item>
                   <?php endif; ?>
 
+                  <?php /** @var Omeka\Api\Representation\SiteBlockAttachmentRepresentation $attachment **/ ?>
                   <?php foreach ($attachments as $attachment): ?>
-                    <slide-item>
                       <div class="slide-item-content" slot="slide-content">
-						<?php $item = $attachment->item(); ?>
-							<?= $partial('agile-item/slide-item', [
-							'item' => $item,
-							'media' => $attachment->media() ?? $item->primaryMedia(),
-							'caption' => $attachment->caption() ?? $item->displayDescription(),
-							'imageSize' => 'large'
-							]) ?>
-                    
+                        <?php
+                        /** @var Omeka\Api\Representation\ItemRepresentation $item */
+                        // var_dump("Media ID: " . $attachment->media()->id());
+                        $item = $attachment->item();
+                        $media = $attachment->media() ?: $item->primaryMedia();
+                        ?>
+                        <?= $partial('agile-item/slide-item', [
+                          'item' => $item,
+                          'media' => $attachment->media() ?: $item->primaryMedia(),
+                          'caption' => $attachment->caption() ?: $item->displayDescription(),
+                          'imageSize' => 'large'
+                        ]) ?>
+                        <?php if (!empty($attachment->caption())): ?>
+
+                        <?php endif; ?>
+
+
                       </div>
-                    </slide-item>
+
                   <?php endforeach; ?>
               </div>
               <?php if($hasAudioAttachment): ?>

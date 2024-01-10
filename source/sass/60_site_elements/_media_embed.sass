@@ -1,5 +1,5 @@
-/* 
- @file _media_embed.sass 
+/*
+ @file _media_embed.sass
  @category 60_site_elements
  @theme LOCAL
  @description  Handles the media embed block with wrap around text. */
@@ -8,13 +8,13 @@
   .attachments
     margin-bottom: 0
 
-        
+
   // Set left and right settings
 
   &.right
     .attachments
       +callout-side('right') // Mixin does the heavy lifting here
-  
+
   &.left
     .attachments
       +callout-side('left')
@@ -22,17 +22,17 @@
   &.center
     display: flex
     justify-content: center
-      
-     
 
-        
+
+
+
   // Set sizing
-  
+
   &.square
     .attachments
-      img 
-        +proportional_height(100%, 1) 
-        
+      img
+        +proportional_height(100%, 1)
+
   &.large
     .attachments
       +bp($desktop)
@@ -42,26 +42,48 @@
       .attachments
         +bp($desktop)
           width: 100%
-          
-      
-.media-embed-info            
-  background-color: neutral(4)
-  h4
-    white-space: nowrap
+
+.media-embed
+  .media-render
     overflow: hidden
-    text-overflow: ellipsis
-    margin-top: rv(-1)
-    
-  p:last-child
-    margin-bottom: 0
-    
-  .caption
-    margin-bottom: 0
-  
-  & + .caption
-    padding-top: 0
+    position: relative
 
-.site-page-pagination
-   display: none
+  .media-embed-info
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
+    margin: 0 20px 20px
+    overflow: hidden
 
+    .item-info
+      display: none // was flex. Takes up too much space for media embeds, where the focus should be the image
+      flex-direction: row
+      position: relative
+      justify-content: space-between
+      background: rgba(0,0,0,.9)
+      padding: 10px
+      +bp($tablet)
+        padding: rv(1)
+      .item
+        flex: 0 1 auto
+
+        p, h3
+          color: $white
+          margin: 0
+          padding: 0
+        h3 a
+          &:hover
+            color: $clr1
+            border-bottom: none
+
+      .title-container
+        display: flex
+        .item-title
+          font-size: rv(-1)
+          width: 50%
+          +bp($tablet)
+            font-size: rv(0)
+        .caption
+          width: 50%
 

@@ -1,26 +1,25 @@
 .quotation
   font-family: $headingfont
   color: $black
-  font-weight: $extrabold
-  padding: rv(3)
-  margin-top: rv(2)
-  font-size: clamped(0, 2, 'sml', 'xlrg')
+  font-weight: $bold
+  padding: rv(1)
+  font-size: clamped(1, 3, 'sml', 'xlrg')
 
   blockquote
     margin: 0 auto
-    padding: rv(3)
+    padding: rv(2)
+    text-align: center
 
-    h2
-      color: $black
+    p
+      padding: 0
+      margin: 0
 
     cite
-      border-top: 1px solid $clr4
-      color: $clr4
-      padding-top: rv(0)
-      display: block
+      margin-top: rv($edge_padding_factor)
+      display: inline
       font-family: $basefont
-      font-weight: $thin
-      font-size: clamped(-1, 0, 'sml', 'xlrg')
+      font-weight: $normal
+      font-size: clamped(-1, 1, 'sml', 'xlrg')
+      background-color: $clr1
+      padding: rv(-3)
 
-    a
-      @extend %inline-anchor-reverse
