@@ -2,7 +2,7 @@
 
 About
 
-The Agile Base Omeka Theme was developed by The Agile Humanities Agency in conjunction with Michigan State University’s Creativity in the Time of COVID-19 project. While it can be used as a clean, standalone theme, it is intended as front-end scaffolding for demanding design implementation.
+The Agile Base Omeka S Theme was developed by Agile Humanities Agency in conjunction with Michigan State University’s Creativity in the Time of COVID-19 project. While it can be used as a clean, standalone theme, it is intended as front-end scaffolding for demanding design implementation.
 
 The theme scaffold is SASS based, and a lot of customization can be done by modifying the main configuration file. The theme’s SASS components are built on the Stop14 Theme System Library, which must be installed via NPM (see instructions below). 
 
@@ -23,7 +23,7 @@ Agile Humanities is also available for custom design and installation. Contact u
 
 **Installation**
 
-- Install Omeka 4 as per instructions
+- Install Omeka S v4 as per instructions
 - Download, install, and activate the following modules as per their instructions:
   - AgileThemeTools: <https://github.com/agile-humanities/AgileThemeTools>
   - Advanced Search : <https://gitlab.com/Daniel-KM/Omeka-S-module-AdvancedSearch>
