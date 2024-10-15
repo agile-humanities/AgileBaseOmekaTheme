@@ -11,6 +11,9 @@
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 $plugins = $this->getHelperPluginManager();
+$filterLocale = (bool) $this->siteSetting('filter_locale_values');
+$lang = $this->lang();
+$valueLang = $filterLocale ? [$lang, ''] : null;
 
 try {
   $textSummary = $this->plugin('textSummary');
@@ -26,7 +29,9 @@ if (strpos($this->classes, 'card') === false) {
 }
 
 $bodyTerm = $this->siteSetting('browse_body_property_term');
-$viewItemPageTerm  = $this->siteSetting('browse_view_item_page_term');
+$viewItemPageLabelTerm  = $this->siteSetting('browse_view_item_page_term');
+$viewItemPageLabel = $viewItemPageLabelTerm ? $item->value($viewItemPageLabelTerm, ['default' => $translate('View')]) : 'View';
+
 $untitled = $translate('[Untitled]');
 $thumbnailSize = 'large';
 
@@ -34,26 +39,33 @@ $contentType = [];
 
 if ($item || $resource):
 
-$cardMode = !empty($item) &&  get_class($item) == 'Omeka\Api\Representation\ItemRepresentation' ? 'item' : 'resource';
-
+$cardMode = get_class($item);
 
 // Defaults
 
 $year = '';
-$resourceClassLabel = ucfirst($cardMode);
+$resourceClassLabel = $cardMode ? 'Item' : '';
 $label = $resourceClassLabel;
 $creator = '';
 $resourceIndicator = '';
-$resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$resourceClassLabel)));
 
+$headingTerm = $this->siteSetting('browse_heading_property_term');
+$bodyTerm = $this->siteSetting('browse_body_property_term');
+
+
+
+$url = '';
+$heading = '';
 
 switch($cardMode) {
-  case 'item':
+  case 'Omeka\Api\Representation\ItemRepresentation':
 
     // Item values
 
     $url = $item->url();
-    $altText = $item->value('vra:caption') ?? '';
+    $altText = $item->value('vra:caption') ? $item->value('vra:caption') : $item->value('dcterms:description');
+    $label = 'Item';
+    $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$label)));
 
     $year = !empty($item->value('dcterms:temporal')) && is_array($item->value('dcterms:temporal')) && count($item->value('dcterms:temporal')) > 0 ? date('Y',$item->value('dcterms:temporal')[0]) : null;
     $label = $resourceClassLabel . ($year ? " {$year}" : '');
@@ -62,17 +74,42 @@ switch($cardMode) {
     if (method_exists($item,'resourceClass') && $item->resourceClass() !== null) {
       $resourceClassLabel = $item->resourceClass()->label();
       $resourceIndicator = "resource-id-" . $item->resourceClass()->id();
-      $resourceClassName = "resource-" . urlencode(strtolower(str_replace(' ', '-', $resourceClassLabel)));
     }
 
     $thumbnail = !empty($altText) ? $this->thumbnail($item, $thumbnailSize,['alt' => $escape(strip_tags($altText)),'class' => "{$resourceIndicator} {$resourceClassName}"]) : $this->thumbnail($item, $thumbnailSize,['class' => "{$resourceIndicator} {$resourceClassName}"]);
     $contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item');
-    $viewItemPage = $viewItemPageTerm ? $item->value($viewItemPageTerm, ['default' => $translate('Find Out More')]) : 'Find out more';
     $heading = $heading ?? $item->displayTitle();
     $body = $body ?? $item->displayDescription();
     break;
 
-  case 'resource':
+  case 'Omeka\Api\Representation\ItemSetRepresentation':
+    $url = $item->url();
+    $heading = $headingTerm ? $item->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $item->displayTitle(null, $valueLang);
+    $header = $escape($heading);
+    $thumbnail = $thumbnailer($item, 'large');
+    $label = 'Item Set';
+    $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$label)));
+
+    if (empty($body)) {
+      $body = $bodyTerm ? $item->value($bodyTerm, ['lang' => $valueLang]) : $item->displayDescription(null, $valueLang);
+    }
+    break;
+  default:
+    $url = $item->url();
+    $heading = $headingTerm ? $item->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $item->displayTitle(null, $valueLang);
+    $header = $escape($heading);
+    $thumbnail = $thumbnailer($item, 'large');
+    $label = 'Resource';
+    $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$label)));
+
+    if (empty($body)) {
+      $body = $bodyTerm ? $item->value($bodyTerm, ['lang' => $valueLang]) : $item->displayDescription(null, $valueLang);
+    }
+
+
+
+
+  /*case 'resource'
     $url = $resource->url();
     $thumbnail = '';
 
@@ -83,11 +120,11 @@ switch($cardMode) {
 
     $contentType['value'] = ucfirst(!empty($resource->value('dcterms:type')) ? $resource->value('dcterms:type') : $resource->resourceName());
     $heading = isset($heading) ? $heading->asHtml() : $escape($resource->displayTitle($untitled, $lang));
-    $viewItemPage = $resource->value($viewItemPageTerm, ['default' => $translate('Find Out More')]);
+    $viewItemPageLabel = $resource->value($viewItemPageLabelTerm, ['default' => $translate('Find Out More')]);
     $body = isset($body) ? $body : (isset($bodyTerm) ? $resource->value($bodyTerm, ['lang' => $langValue]) : '');
     if (strpos($this->classes, 'resources') === false) {
       $this->classes .= " resources";
-    }
+    }*/
 }
 
 $heading_fragment = "“" . substr($heading,0,20) . (strlen($heading > 20) ? "... " : ''). "”";
@@ -96,7 +133,7 @@ $cardStyle = isset($cardStyle) ? $cardStyle : 'card';
 ?>
 <!-- BEGIN TEMPLATE: /agile-item/card -->
 <<?= $containerElement; ?> class="<?= $cardStyle ?> <?= $this->classes ?>"<?php echo isset($slot) ? " slot={$slot}" : '' ?>>
-<a href="<?= $url ?>">
+<a <?= !empty($url) ? 'href="'. $url .'"' : ''; ?>>
   <?php if (!empty($thumbnail)): ?>
     <figure class="item-thumbnail <?= $resourceClassName ?> <?= $resourceClassName ?>">
       <?= $thumbnail ?>
@@ -104,16 +141,18 @@ $cardStyle = isset($cardStyle) ? $cardStyle : 'card';
   <?php endif; ?>
   <div class="item-info">
     <div class="item-label"><?= $label ?></div>
-    <h3 class="item-title"><?= $heading ?></h3>
+    <?php if (!empty($heading)): ?>
+      <h3 class="item-title"><?= $heading ?></h3>
+    <?php endif; ?>
     <?php if (!empty($creator)): ?>
       <div class="item-sublabel"><?= $creator ?></div>
     <?php endif ?>
-    <?php if ($body && $textSummary): ?>
+    <?php if (!empty($body) && $textSummary): ?>
       <div class="item-description"><?= $textSummary->summarize($escape($body),600); ?></div>
-    <?php elseif($body):?>
-      <div class="item-description"><?= $body; ?></div>
+    <?php elseif(!empty($body)):?>
+      <div class="item-description"><?= $escape($body); ?></div>
     <?php endif; ?>
-    <div class="more">View item</div>
+    <div class="more"><?= $viewItemPageLabel ?></div>
 
   </div>
 </a>
