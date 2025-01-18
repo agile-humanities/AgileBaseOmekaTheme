@@ -4,8 +4,7 @@
  * @description Displays a card view for a particular item. Use $this->plugin('cardViewer')->getCard($item) to invoke.
  * @var /Laminas/View/View $this
  * @var $containerElement Wrapping element can be passed to card via the View Helper
- * @var /Omeka/Api/Representation/ItemRepresentation $item
- * @var $resource
+ * @var mixed $item
  */
 
 $translate = $this->plugin('translate');
@@ -53,7 +52,6 @@ $headingTerm = $this->siteSetting('browse_heading_property_term');
 $bodyTerm = $this->siteSetting('browse_body_property_term');
 
 
-
 $url = '';
 $heading = '';
 
@@ -94,7 +92,7 @@ switch($cardMode) {
       $body = $bodyTerm ? $item->value($bodyTerm, ['lang' => $valueLang]) : $item->displayDescription(null, $valueLang);
     }
     break;
-  default:
+  default: // Resources
     $url = $item->url();
     $heading = $headingTerm ? $item->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $item->displayTitle(null, $valueLang);
     $header = $escape($heading);
@@ -105,26 +103,6 @@ switch($cardMode) {
     if (empty($body)) {
       $body = $bodyTerm ? $item->value($bodyTerm, ['lang' => $valueLang]) : $item->displayDescription(null, $valueLang);
     }
-
-
-
-
-  /*case 'resource'
-    $url = $resource->url();
-    $thumbnail = '';
-
-    if (method_exists($resource,'getItem') && $item = $this->getItem()) {
-      $altText = $item->value('vra:caption') ?? '';
-      $thumbnail = !empty($altText) ? $this->thumbnail($item, $thumbnailSize,['alt' => $escape(strip_tags($altText)),'class' => "{$resourceIndicator} {$resourceClassName}"]) : $this->thumbnail($item, $thumbnailSize,['class' => "{$resourceIndicator} {$resourceClassName}"]);
-    }
-
-    $contentType['value'] = ucfirst(!empty($resource->value('dcterms:type')) ? $resource->value('dcterms:type') : $resource->resourceName());
-    $heading = isset($heading) ? $heading->asHtml() : $escape($resource->displayTitle($untitled, $lang));
-    $viewItemPageLabel = $resource->value($viewItemPageLabelTerm, ['default' => $translate('Find Out More')]);
-    $body = isset($body) ? $body : (isset($bodyTerm) ? $resource->value($bodyTerm, ['lang' => $langValue]) : '');
-    if (strpos($this->classes, 'resources') === false) {
-      $this->classes .= " resources";
-    }*/
 }
 
 $heading_fragment = "“" . substr($heading,0,20) . (strlen($heading > 20) ? "... " : ''). "”";

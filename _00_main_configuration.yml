@@ -79,7 +79,7 @@ block_spacing: 2
 mobile_block_spacing: -2
 edge_padding_factor: 1
 mobile_edge_padding_factor: 0
-
+text_element_spacing: 3px
 
 # Breakpoints
 breakpoints: "(xsml: 21em, sml: 30em, med: 46.25em, lrg: 75em, xlrg: 112.5em, xxlrg: 130em)"
@@ -105,7 +105,7 @@ default-min-bp: sml
 default-max-bp: xlrg
 min_sizefactors: "(base: -1, h1: 3, h2: 2, h3: 1, h4: 0, h5: -1, h6: -1)"
 sizefactors: "(base: 0, h1: 4, h2: 3, h3: 2, h4: 1, h5: 0, h6: 0)"
-line_heights: "(base: $base_line_height, h1: 1, h2: 1.2, h3: 1.2, h4: 1.2, h5: 1.2, h6: 1.2)"
+line_heights: "(base: $base_line_height, h1: 1, h2: 1.25, h3: 1.25, h4: 1.2, h5: 1.2, h6: 1.2)"
 typescale: "(base: 1, xsml: 1, sml: 1, med:1, lrg: 1, xlrg: 1, xxlrg: 1)"
 paragraph_spacing: "clamped(map-get($min_sizefactors,'base'),map-get($sizefactors,'base'),$default-min-bp,$default-max-bp,map-get($line_heights,base))"
 
@@ -128,10 +128,7 @@ h4fontsize: "map-get($sizefactors,'h4')"
 h5fontsize: "map-get($sizefactors,'h5')"
 h6fontsize: "map-get($sizefactors,'h6')"
 
-
-## 04 UI | Needs an overhaul
-
-#
+#UI
 menu_background: $white
 
 #base ui
@@ -142,15 +139,18 @@ ui_minheight: $ui_element_height
 ui_maxheight: 60px
 ui_compactheight: 25px
 ui_largeheight: 80px
+ui_max_text_width: 500px
+ui_element_spacing: "rv($mobile_edge_padding_factor)"
 ui_border_radius: 5px
 ui_border_width: 1px
-ui_border_color: neutral(40)
+ui_border_color: neutral(20)
 ui_hover_border_color: $impact
 ui_checkbox_height: 20px
 ui_element_font_size: rv(0)
 ui_checkbox_label_font_size: rv(-2)
 ui_icon_height: $ui_minheight * 0.4
 ui_select_indicator_size: $ui_icon_height
+ui_form_text_color: neutral(90)
 
 # mobile ui controls
 
@@ -183,17 +183,17 @@ btn_submit_img_size: $ui_icon_height
 btn_color: $black
 btn_bg_color: neutral(20)
 btn_border_color: $ui_border_color
-btn_hover_color: neutral(70)
-btn_hover_border_color: neutral(60)
-btn_hover_bg_color: neutral(40)
+btn_hover_color: $black
+btn_hover_border_color: mix($black,$ui_border_color,5%)
+btn_hover_bg_color:  mix($black,$ui_border_color,5%)
 
 btn_submit_color: $white
 btn_submit_bg_color: $cta
 btn_submit_border_width: 0
 btn_submit_border_color: $cta
 btn_submit_hover_color: $white
-btn_submit_hover_border_color: "mix($black,$cta,10%)"
-btn_submit_hover_bg_color: "mix($black,$cta,10%)"
+btn_submit_hover_border_color: $impact
+btn_submit_hover_bg_color: "mix($white,$impact,10%)"
 
 btn_search_color: $black
 btn_search_bg_color: transparent
@@ -245,7 +245,7 @@ card_border_radius: $border-radius
 default_next_btn: "'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNi4yNCAzMCI+PGRlZnM+PHN0eWxlPi5ie2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9ImIiIGQ9Ik0xNi4yNCwxNWMwLC4zMi0uMTIsLjYzLS4zNiwuODdMMi4xMSwyOS42NGMtLjQ4LC40OC0xLjI3LC40OC0xLjc1LDAtLjQ4LS40OC0uNDgtMS4yNywwLTEuNzVMMTMuMjUsMTUsLjM2LDIuMTFDLS4xMiwxLjYzLS4xMiwuODQsLjM2LC4zNiwuODQtLjEyLDEuNjMtLjEyLDIuMTEsLjM2TDE1Ljg3LDE0LjEzYy4yNCwuMjQsLjM2LC41NiwuMzYsLjg3WiIvPjwvc3ZnPg=='"
 default_prev_btn: "'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNi4yNCAzMCI+PGRlZnM+PHN0eWxlPi5ie2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9ImIiIGQ9Ik0wLDE1YzAtLjMyLC4xMi0uNjMsLjM2LS44N0wxNC4xMywuMzZjLjQ4LS40OCwxLjI3LS40OCwxLjc1LDAsLjQ4LC40OCwuNDgsMS4yNywwLDEuNzVMMi45OSwxNWwxMi44OSwxMi44OWMuNDgsLjQ4LC40OCwxLjI3LDAsMS43NS0uNDgsLjQ4LTEuMjcsLjQ4LTEuNzUsMEwuMzYsMTUuODdDLjEyLDE1LjYzLDAsMTUuMzIsMCwxNVoiLz48L3N2Zz4='"
 default_slide_item_template: 1
-default_slide_viewer_template: 1
+default_slide_viewer_template: 2
 slide_viewer_padding: rv(0)
 slide_viewer_marker_size: 10px
 slide_viewer_ui_spacing: rv(-1)
@@ -257,6 +257,7 @@ page_marker_background_hover: $clr2
 page_marker_background_active: $clr2
 page_marker_border_radius: 50%
 
+page_marker_transform: none
 page_marker_transform_hover: none
 page_marker_transform_active: none
 page_marker_width: $slide_viewer_marker_size
@@ -302,10 +303,11 @@ page_marker_margin: 0 $slide_viewer_ui_spacing 0 0
 
 # Sequential Slider Nav (next/previous)
 
-sequential_nav_top: 0
-sequential_nav_bottom: 0
-sequential_nav_left: $slide_viewer_padding
-sequential_nav_right: $slide_viewer_padding
+sequential_nav_top: initial
+sequential_nav_bottom: rv($mobile_edge_padding_factor)
+sequential_nav_left: 50%
+sequential_nav_right: auto
+sequential_nav_transform: translateX(-50%)
 sequential_nav_justify_content: space-between
 sequential_nav_align_items: center
 sequential_control_spacing: $slide_viewer_ui_spacing
@@ -331,4 +333,3 @@ slide_item_caption_padding: 0 $slide_viewer_padding
 slide_item_caption_height: auto
 slide_item_caption_position: absolute
 slide_item_caption_bottom: 0
-

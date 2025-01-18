@@ -6,24 +6,11 @@ $dateHandler = $this->plugin('dateHandler');
 $this->htmlElement("body")->appendAttribute("class", "item resource show");
 $embedMedia = $this->siteSetting("item_media_embed", false);
 $itemMedia = $item->media();
+$hasMedia = $itemMedia && is_array($itemMedia) && count($itemMedia) > 0;
 
 $mirador = null;
 $uv = null;
 
-// Check if UV plugin exists
-try {
-  $uv = $this->plugin('universalViewer');
-} catch (Exception $exception) {
-  $uv = null;
-}
-
-try {
-  $mirador = $this->plugin('mirador');
-} catch (Exception $exception) {
-  $mirador = null;
-}
-
-$oEmbed = $itemMedia && $itemMedia[0]->renderer() === 'oembed';
 $contentType = [];
 $contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item');
 
@@ -52,23 +39,6 @@ if (method_exists($item,'resourceClass') && $item->resourceClass() !== null) {
 $keyTerms = ['dcterms:creator'=>'Creator','dcterms:date'=>'Date','dcterms:source'=>'Source','dcterms:format'=>'Format'];
 
 
-// Determine which viewer to use. Note that the UV and Mirador viewers are displayed via the blocks disposition module,
-// which does not give contextual control over which viewer to display. Viewer handling is now done via css
-// @todo: there must be a better way.
-
-$viewer = 'viewer-default';
-
-$uv_media = [
-  'text',
-  'moving image' // Use UV for video right now because current Mirador 3 implementation is crap
-];
-
-if ($uv && in_array(strtolower($label),$uv_media)) {
-  $viewer = 'viewer-uv';
-} elseif ($mirador) {
-  $viewer = 'viewer-mirador';
-}
-
 $searchMainPage = $this->siteSetting('advancedsearch_main_config');
 /** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
 $searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
@@ -96,6 +66,48 @@ foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $
     }
   }
 }
+
+if ($hasMedia) {
+  // Determine which viewer to use. Note that the UV and Mirador viewers are displayed via the blocks disposition module,
+  // which does not give contextual control over which viewer to display. Viewer handling is now done via css
+  // @todo: there must be a better way.
+
+  // Check if UV plugin exists
+  try {
+    $uv = $this->plugin('universalViewer');
+  } catch (Exception $exception) {
+    $uv = null;
+  }
+
+  try {
+    $mirador = $this->plugin('mirador');
+  } catch (Exception $exception) {
+    $mirador = null;
+  }
+
+  $oEmbed = $itemMedia && $itemMedia[0]->renderer() === 'oembed';
+  $viewer = 'viewer-default';
+
+  // PDF Viewer Support
+  $source = $itemMedia[0]->originalUrl();
+  $mediaType = $itemMedia[0]->mediaType();
+
+  $uv_media = [
+    'text',
+    'moving image' // Use UV for video right now because current Mirador 3 implementation is crap
+  ];
+
+  if ($mediaType === 'application/pdf') {
+    $viewer = 'viewer-pdf';
+  } elseif(strpos($mediaType,'video') > -1) {
+    $viewer = 'viewer-video';
+  } elseif ($uv && in_array(strtolower($label), $uv_media)) {
+    $viewer = 'viewer-uv';
+  } elseif ($mirador) {
+    $viewer = 'viewer-mirador';
+  }
+
+}
 ?>
 
 <!-- BEGIN agile-theme-tools/agile-item/show.phtml -->
@@ -104,23 +116,49 @@ foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $
 <div class='item-container'>
   <div class='item-viewer <?= $viewer ?>'>
     <?php
-    // Default viewer
-    if ($viewer === 'viewer-default' && (($embedMedia && $itemMedia) || $oEmbed)): ?>
-      <div class="media-embeds">
-        <?php foreach ($itemMedia as $media):
-          echo $media->render();
-        endforeach; ?>
-      </div>
-    <?php
-    // Will display both Mirador and UV. UV must be suppressed via CSS.
-    else:
-      $this->trigger("view.show.after");
+    if ($hasMedia):
+      // Default viewer
+      if ($viewer === 'viewer-default' && (($embedMedia && $itemMedia) || $oEmbed)): ?>
+        <div class="media-embeds">
+          <?php foreach ($itemMedia as $media):
+            echo $media->render();
+          endforeach; ?>
+        </div>
+      <?php
+      elseif ($viewer === 'viewer-pdf'):
+        $options = [];
+        $options['attributes'] = 'allowfullscreen="allowfullscreen" zoom="page-fit"';
+        ?>
+        <object height="100%" width="100%" <?= $options['attributes'] ?> data="<?= $escapeAttr($source) ?>" type="<?= $mediaType ?>">
+          <iframe width="100%" <?= $options['attributes'] ?> src="<?= $escapeAttr($source) ?>"></iframe>
+        </object>
+
+      <?php
+      elseif ($viewer === 'viewer-video' && $source):
+        ?>
+        <video width="100%" preload="auto" onclick="playPause();" controls="controls">
+          <source src="<?= $escapeAttr($source) ?>"  type="<?= $mediaType ?>" />
+        </video>
+      <?php
+
+      // Will display both Mirador and UV. UV must be suppressed via CSS.
+      else:
+        $this->trigger("view.show.after");
+      endif;
     endif;
     ?>
+    <?php if (($mirador || $viewer === 'viewer-pdf' || $viewer === 'viewer-video') && !empty($item->value('dcterms:description'))): ?>
+      <div id="viewer-support">
+        <div class="label">Item description</div>
+        <div id="viewer-description">
+          <?= $item->value('dcterms:description') ?>
+        </div>
+      </div>
+    <?php endif; ?>
   </div>
   <div class='item-info item-text'>
     <div class="wayfinding">
-      <a href="<?php echo $site->siteUrl(); ?>"><img alt='Home Icon' class='wayfinding-home' src='<?php echo $this->assetUrl('img/svg/icons/home-grey.svg')?>'></a>
+      <a href="<?php echo $site->siteUrl(); ?>"><img alt='Home Icon' class='wayfinding-home' src='<?php echo $this->assetUrl('img/svg/icons/home-neutral.svg')?>'></a>
       <a href="<?php echo $site->siteUrl(); ?>/browse">Browse the collection</a>
     </div>
     <header>

@@ -1,0 +1,245 @@
+/**
+  *  @file _advanced_search_form.sass
+  *  @category 40_ui
+  *  @theme LOCAL
+  *  @description Styling for the advanced search form and related styles
+  *    Note that the advanced search form is created from a series of nested templates.
+  *    Throughout this theme the advanced search page is refered to as a “collection browser”, which is more
+  *    intuitive for users but confusing internally.
+  *
+  **/
+
+.form-search
+  margin-bottom: rv($edge_padding_factor)
+
+  fieldset
+    margin: 0
+    padding: 0
+    border: 0px
+
+  // This element is created via JavaScript. See js/omekaProcessAdvancedSearchForm.js
+
+  details
+    margin: rv($mobile_edge_padding_factor) 0
+    padding: rv($mobile_edge_padding_factor) 0
+    border-top: 1px solid neutral(30)
+
+    &[open]
+      border-bottom: 1px solid neutral(30)
+
+    +bp($tablet)
+      margin: rv($edge_padding_factor) 0
+      padding: rv($edge_padding_factor) 0
+
+    .details-container
+      +standard_edge_padding
+
+  #search-item-sets
+    > *
+      margin-bottom: rv($grid_gap_factor)
+
+      &:last-child
+        margin-bottom: 0
+
+  input#q
+    @extend %search-input-with-icon
+    background-color: $white
+
+  // Advanced search / browse context
+
+  @at-root #advanced-search-form
+    #submit
+      @extend %button-submit
+
+
+#advanced-search-form
+  +standard_edge_padding
+  background-color: neutral(2)
+  margin-bottom: rv($edge_padding_factor)
+
+#search-form, .search-container
+  display: flex
+  flex-direction: row
+  width: 100%  // Take up entire container
+  align-content: center
+  background: $white
+  &:hover, &:focus, &:focus-visible
+    +glow-up
+
+  *[type='text']
+    flex-grow: 1 // Searchbox takes available space
+    color: $black !important
+    border: none
+
+    &:focus-visible, &:focus
+      outline-style: none // focus indicator handled container in this context
+
+  *[type='submit']
+    position: relative
+    margin-left: rv(-1) // Spacing for submit button
+
+.focused-search-form
+  box-shadow: 0 0 5px 3px $cta
+
+.search-form-clear
+  all: unset
+  cursor: pointer
+  color: var(--colour--neutral--20)
+  font: 1rem/1 $headingfont
+  position: absolute
+  right: 35px
+  padding: 0.2rem
+  top: 50%
+  transform: translateY(-50%)
+  +bp($tablet)
+    right: 50px
+  +bp($desktop)
+    &:hover, &:focus
+      color: $cta
+
+#search-filters
+  margin: rv($grid_gap_factor) 0
+
+  > *
+    margin-bottom: rv($grid_gap_factor)
+
+    &:last-child
+      margin-bottom: 0
+
+  .filter
+    display: flex
+
+    > *
+      margin-right: rv($mobile_edge_padding_factor)
+
+      &:first-child
+        width: $ui_select_min_width // Special case of select being too narrow
+
+      &:last-child
+        margin-right: 0
+
+  width: 100%
+  padding-right: calc(#{$btn_submit_img_size} + #{$ui_padding})
+
+.search-by-id
+  display: block
+  margin-top: rv($mobile_edge_padding_factor)
+  @extend %inline-anchor
+
+.search-results-list
+  list-style-type: none
+
+  &.grid
+    .resource
+      @extend .card
+
+.browse-title
+  span
+    font-weight: $bold
+    color: set-colour(2)
+
+.search-facets-list
+  padding-left: 0
+
+.search-facet
+  overflow-x: hidden
+  +font-size(-1)
+
+  details
+    summary //prevent horizontal scroll from ::after element (arrows)
+      overflow: hidden
+
+  .more-options
+    display: none
+    color: neutral(90)
+    margin: rv(-1) 0 0 rv(8)
+    padding: 0
+    width: fit-content
+    font-size: rv(-1)
+    font-weight: $semibold
+    text-decoration: underline
+
+  .options
+    +bp($desktop)
+      max-height: 445px
+      overflow-y: scroll
+
+  summary::-webkit-details-marker
+    display: none
+
+  summary + .options
+    margin-top: rv(0)
+
+  ul
+    list-style-type: none
+    padding: 0
+    margin: 0
+
+  li
+    margin-bottom: rv(-3)
+
+
+  form, details
+    overflow: hidden
+
+    > ul
+      padding-left: 0
+
+.search-results-count
+  > .pagination--label
+    display: none
+
+    +bp($desktop)
+      display: block
+
+.search-results-header
+  position: fixed
+  z-index: 3
+  top: rv(3)
+  left: 0
+  right: 0
+  padding: $mobile_overlay_spacing
+  width: 100%
+  display: none // Set to “flex” by JS event
+  flex-direction: row
+  justify-content: flex-end
+  align-items: center
+
+  +bp($desktop)
+    display: flex
+    position: initial
+    padding: 0
+    top: initial
+    left: initial
+    right: initial
+
+  > *
+    +bp($desktop)
+      margin-left: rv($edge_padding_factor)
+
+  .search-sort
+    display: flex
+    align-items: center
+
+    label
+      margin-right: rv(0)
+
+.search-results-footer
+  margin-top: rv($edge_padding_factor)
+
+.search-results-wrapper.with-sidebar
+  display: grid
+  grid-column-gap: rv(1)
+  grid-template-columns: 1fr
+
+  // Includes <aside>, which is hidden on mobile
+  +bp($desktop)
+    grid-template-columns: minmax(min-content,300px) 1fr
+
+
+  // Full screen on mobile.
+
+  aside
+    @extend %browser-sidebar
+    background-color: set-colour(1,3)
+

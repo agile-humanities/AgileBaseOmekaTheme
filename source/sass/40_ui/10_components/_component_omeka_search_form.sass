@@ -1,0 +1,38 @@
+/**
+ *  @file _search_form.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *
+ **/
+
+
+%search-form-container
+  display: flex
+  flex-direction: row
+  width: 100%
+  justify-content: flex-start
+  align-items: center
+  flex-wrap: nowrap
+  position: relative
+
+%search-form-textfield
+  width: 100%
+
+%search-form-submit
+  position: absolute
+  height: $btn_submit_img_size
+  width: $btn_submit_img_size
+  top: calc((100% - #{$btn_submit_img_size})/2)
+  right: $ui_padding
+  background-image: url(get_svg_url('icons/search-default'))
+  background-size: contain
+  background-position: center right
+  background-repeat: no-repeat
+  background-color: transparent
+  padding: 0
+  font-size: 0 // hide text in favour of icon. Still readable by screen readers.
+  &:hover
+    opacity: 0.7
+
+  &:focus
+    outline: 3px solid $impact !important

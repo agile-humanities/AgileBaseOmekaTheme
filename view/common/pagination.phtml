@@ -1,16 +1,16 @@
 <! -- START OF /COMMON/PAGINATION.PHTML -->
 <?php
 $translate = $this->plugin('translate');
-$previousArrowImgSrc = $this->assetUrl('img/svg/icons/left-arrow-white.svg');
+$previousArrowImgSrc = $this->assetUrl('img/svg/icons/arrow-left-reversed.svg');
 $previousArrowHoverImgSrc = $this->assetUrl('img/svg/icons/left-arrow-active.svg');
-$nextArrowImgSrc = $this->assetUrl('img/svg/icons/right-arrow-white.svg');
+$nextArrowImgSrc = $this->assetUrl('img/svg/icons/arrow-reversed.svg');
 $nextArrowHoverImgSrc = $this->assetUrl('img/svg/icons/right-arrow-active.svg');
 
 $previousArrowImg = "<img src='{$previousArrowImgSrc}' data-src='{$previousArrowImgSrc}' data-src-active='{$previousArrowHoverImgSrc}' alt='left arrow' />";
 $nextArrowImg = "<img src='{$nextArrowImgSrc}' data-src='{$nextArrowImgSrc}' data-src-active='{$nextArrowHoverImgSrc}' alt='left arrow' />";
 
-$filterBtnImgSrc = $this->assetUrl('img/svg/icons/list-view-white.svg');
-$filterBtnHoverSrc = $this->assetUrl('img/svg/icons/list-view-active.svg');
+$filterBtnImgSrc = $this->assetUrl('img/svg/icons/list-reversed.svg');
+$filterBtnHoverSrc = $this->assetUrl('img/svg/icons/list-active.svg');
 $filterBtnImg = "<img src='{$filterBtnImgSrc}' data-src='{$filterBtnImgSrc}' data-src-active='{$filterBtnHoverSrc}' alt='Show search and filter options' />";
 
 ?>

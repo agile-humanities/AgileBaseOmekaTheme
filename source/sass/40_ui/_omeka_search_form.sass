@@ -1,0 +1,52 @@
+/**
+ *  @file _search_form.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *
+ **/
+
+#search-form, #advanced-search-form
+  @extend %search-form-container
+
+  img
+    width: 24px
+
+  input[name='text'], input[name='search'], input[name='fulltext_search'], input[name='q']
+    @extend %search-form-textfield
+    color: neutral(80) !important // Important to ensure contrast against white bg in .reversed contexts
+
+    &::placeholder
+      color: neutral(80) !important
+
+    // Search plus submit
+
+    & + button[type='submit']
+      @extend %search-form-submit
+      background-image: url(get_svg_url('ui/search-black'))
+
+  input:focus
+    border: solid $black 1px
+
+  & + .advanced-search
+    width: 100%
+    text-align: right
+    margin-top: rv(0)
+
+    a
+      @extend %inline-anchor
+
+.search-form-clear
+  all: unset
+  cursor: pointer
+  color: neutral(20)
+  font: 1rem/1 $headingfont
+  position: absolute
+  right: 35px
+  padding: 0.2rem
+  top: 50%
+  transform: translateY(-50%)
+  +bp($tablet)
+    right: 50px
+  +bp($desktop)
+    &:hover, &:focus
+      color: $cta

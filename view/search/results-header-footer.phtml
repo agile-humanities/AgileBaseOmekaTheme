@@ -47,8 +47,8 @@ $multiMode = isset($displayParts['grid_list']) && !in_array($gridListMode, ['lis
 
 <?php if ($multiMode): ?>
 <div class="search-results-display ui-icon-container">
-    <a class="search-view-type search-view-type-list<?= $gridListMode == 'list' ? ' active' : '' ?>" href="#" title="Browse results as a list"><img class='ui-icon<?= $gridListMode == 'list' ? ' active' : '' ?>' alt="list view" src="<?= $this->assetUrl('img/svg/icons/list-view-grey.svg'); ?>" data-src="<?= $this->assetUrl('img/svg/icons/list-view-grey.svg'); ?>" data-src-active="<?= $this->assetUrl('img/svg/icons/list-view-active.svg'); ?>"></a>
-    <a class="search-view-type search-view-type-grid<?= $gridListMode == 'grid' ? ' active' : '' ?>" href="#" title="Browse results as a grid"><img class='ui-icon<?= $gridListMode == 'grid' ? ' active' : '' ?>' alt="grid view" src="<?= $this->assetUrl('img/svg/icons/masonry-view-grey.svg'); ?>" data-src="<?= $this->assetUrl('img/svg/icons/masonry-view-grey.svg'); ?>" data-src-active="<?= $this->assetUrl('img/svg/icons/masonry-view-active.svg'); ?>"></a>
+    <a class="search-view-type search-view-type-list<?= $gridListMode == 'list' ? ' active' : '' ?>" href="#" title="Browse results as a list"><img class='ui-icon<?= $gridListMode == 'list' ? ' active' : '' ?>' alt="list view" src="<?= $this->assetUrl('img/svg/icons/list-neutral.svg'); ?>" data-src="<?= $this->assetUrl('img/svg/icons/list-neutral.svg'); ?>" data-src-active="<?= $this->assetUrl('img/svg/icons/list-active.svg'); ?>"></a>
+    <a class="search-view-type search-view-type-grid<?= $gridListMode == 'grid' ? ' active' : '' ?>" href="#" title="Browse results as a grid"><img class='ui-icon<?= $gridListMode == 'grid' ? ' active' : '' ?>' alt="grid view" src="<?= $this->assetUrl('img/svg/icons/masonry-neutral.svg'); ?>" data-src="<?= $this->assetUrl('img/svg/icons/masonry-neutral.svg'); ?>" data-src-active="<?= $this->assetUrl('img/svg/icons/masonry-active.svg'); ?>"></a>
 </div>
 <?php endif; ?>
 <?php if ($resultPart === 'footer'): ?>

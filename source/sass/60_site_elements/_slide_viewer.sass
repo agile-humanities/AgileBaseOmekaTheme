@@ -18,15 +18,15 @@ slide-viewer,
   width: 100%
 
 .slideviewer-container
-    position: relative
-    flex-direction: column-reverse
-    background: $black
+  position: relative
+  flex-direction: column-reverse
+  background: $black
 
-    +bp($desktop)
-      display: flex
-      flex-direction: row-reverse
-      flex-wrap: nowrap
-      align-items: center
+  +bp($desktop)
+    display: flex
+    flex-direction: row-reverse
+    flex-wrap: nowrap
+    align-items: center
 
 
 slide-viewer
@@ -34,17 +34,20 @@ slide-viewer
   background-color: neutral(3)
   height: 80vh
   --sequential-nav-justify-content: center
-  --sequential-nav-top: initial
-  --sequential-nav-left: 50%
-  --sequential-nav-right: auto
-  --sequential-nav-bottom: #{rv($mobile_edge_padding_factor)}
-  --sequential-nav-transform: translateX(-50%)
+  --sequential-nav-top: #{$sequential_nav_top}
+  --sequential-nav-left: #{$sequential_nav_left}
+  --sequential-nav-right: #{$sequential_nav_right}
+  --sequential-nav-bottom: #{$sequential_nav_bottom}
+  --sequential-nav-transform: #{$sequential_nav_transform}
   --slide-nav-background: none
   --sequential-nav-background: #{neutral(90)}
   --sequential-nav-border: 1px solid transparent
   --sequential-nav-border-radius: #{$ui_border_radius}
   --sequential-control-spacing: 0
   --sequential-control-initial-opacity: 0.7
+  --page-marker-transform: #{$page_marker_transform}
+  --page-marker-transform-hover: #{$page_marker_transform_hover}
+  --page-marker-transform-active: #{$page_marker_transform_active}
   --page-marker-margin: 0 #{rv(-3)}
   --sequential-control-background-size: 75%
 

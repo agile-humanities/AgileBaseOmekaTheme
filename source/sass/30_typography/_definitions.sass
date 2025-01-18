@@ -185,7 +185,6 @@ $ribbon_padding_factor: -3
 %more
   +font-size(0)
   color: $black
-  font-weight: $medium
   display: flex
   flex-direction: row
   align-items: center
@@ -199,11 +198,34 @@ $ribbon_padding_factor: -3
   &:after
     content: ''
     margin-left: rv(0) * 0.25
-    height: rv(0) * 0.5
-    width: rv(0) * 0.5
-    background: no-repeat url(get_svg_url('icons/right-arrow-black'))
+    height: 80%
+    width: 20px // arbitrary
+    background: no-repeat url(get_svg_url('icons/arrow-neutral'))
     background-size: contain
+    background-position: center right
 
   +reversed
+    color: $white
+
     &:hover
-      color: $impact
+      color: set-color(1)
+      text-decoration-color: set-color(1)
+
+%highlight
+  color: set-color(2)
+  position: relative
+  display: inline-block
+  isolation: isolate
+  padding: 0 rv(-2)
+
+  &:before
+    content: ''
+    position: absolute
+    top: 0
+    right: 0
+    left: 0
+    bottom: 0
+    z-index: -1
+    transform: scale(1.1) translateY(6%) //fudge factor. ugh.
+    transform-origin: center
+    background: $black

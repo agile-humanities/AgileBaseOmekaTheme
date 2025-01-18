@@ -4,10 +4,20 @@
  @theme LOCAL
  @description  Handles the media embed block with wrap around text. */
 
+// @todo: Media embed no longer offers “right” and “left” options.
+// This will need to be refactored.
+
 .file
   .attachments
     margin-bottom: 0
 
+  &.large
+    .attachments
+      width: 100% !important
+      margin-bottom: rv($mobile_edge_padding_factor)
+
+      +bp($desktop)
+        margin-bottom: rv($edge_padding_factor)
 
   // Set left and right settings
 
@@ -39,9 +49,9 @@
         width: $legible_inset_width * .5
 
   &.large.center
-      .attachments
-        +bp($desktop)
-          width: 100%
+    .attachments
+      +bp($desktop)
+        width: 100%
 
 .media-embed
   .media-render

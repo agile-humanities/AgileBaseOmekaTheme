@@ -1,0 +1,56 @@
+/**
+ *  @file _superfish_navigation.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *  @description Supports the Superfish menu jQuery library.
+ *    Also see ./js/superfishMenu.js and ./sass/10_layout/_page_header.sass
+ *
+ **/
+
+
+ul.sf-menu
+
+  > li
+    text-transform: uppercase
+
+  li
+    font-weight: normal
+    background: $menu_background
+
+    &.sfHover, &:hover
+      background: $menu_background
+
+    a
+      border: 0
+      padding: $ui_padding
+      color: $black
+
+      &:hover
+        color: $impact
+
+  ul
+    li
+      text-transform: none
+
+
+.sf-arrows
+  .sf-with-ul
+    &:after
+      position: initial
+      top: initial
+      left: initial
+      margin-top: initial
+      border: 0
+    +background_icon_right('accordion-expand')
+
+a.sf-depth-2
+  white-space: normal !important
+
+.sf-depth-1
+  .sf-with-ul:after
+    +background_icon_right('accordion-expand')
+
+
+.sf-depth-2
+  .sf-with-ul:after
+    content: ''

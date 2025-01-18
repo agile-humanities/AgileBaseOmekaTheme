@@ -2,7 +2,8 @@
  *  @file _header.sass
  *  @category 10_layout
  *  @theme LOCAL
- *  @description Defines page header and navigation areas. */
+ *  @description Defines page header and navigation areas.
+ */
 
  //DESKTOP NAVIGATION//
 
@@ -18,7 +19,7 @@ body > header
     height: $masthead_height
     position: relative
     padding-bottom: $masthead_clearance
-    border-bottom: solid #c0c0bf 1px
+    border-bottom: 1px solid neutral(80)
 
 #identity
   height: 100%
@@ -65,7 +66,7 @@ body > header
         position: relative
         display: inline-flex
         justify-content: center
-        background: url(get_svg_url('icons/down-arrow-black')) no-repeat center
+        background: url(get_svg_url('icons/accordion-expand-default')) no-repeat center
         background-size: contain
         background-position: 0 5px // cheat
         margin-left: rv(-3)

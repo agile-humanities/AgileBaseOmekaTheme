@@ -5,30 +5,224 @@
    @component main
    @description Handles collection browser elements. */
 
+// Faceted browsing supplied by the Advanced Search module
+
+.item-browser > div
+  @extend %browser-container
+  border-radius: $border_radius
+  padding: 0
+
+  .ui-icon-container
+    @extend %ui-display-mode-controls
+
+.search-results-wrapper
+  @extend %browser-container-grid
+
+  > aside
+    @extend %browser-sidebar
+    background-color: neutral(4)
+    border-radius: 0
+
+    +bp($desktop)
+      border-radius: $border_radius 0 0 $border_radius
+
+    h3
+      font-size: clamped(1,0)
+
+  > div
+    +standard_edge_padding
+
+  label[for="sort"]
+    margin-left: 0
+
+  .active-facets
+    > ul
+      display: flex
+      justify-content: flex-start
+      gap: rv(0)
+      list-style: none
+      padding: 0
+
+
 
 #collection-list
   @extend %card-grid
 
+.search-facet
+  @extend %exposed-facet
 
-// @todo: move to 40_ui/_omeka_search_components.sass ?
+  a
+    text-decoration: none
 
-.search-results-list
-    list-style-type: none
+    &:hover
+      text-decoration: underline
 
-    &.grid
-      .resource
-        @extend .card
-
-.item-browser > div
-  @extend %browser-container
-
-#content-stack
-  .browse-tool
-    margin-bottom: 0
-
-    .browse-search-form
-      margin-top: rv(1)
+  // Odd case where a link is automatically assigned a “poster” class, triggering the style for poster block elements
+  .poster
+    background: unset
+    padding: unset !important
+    min-height: unset
+    color: initial
 
 #mobile-browse-controls
   @extend %browser-mobile-toolbar
 
+#browser--mobile-close-btn
+  position: fixed
+  top: rv($mobile_edge_padding_factor)
+  right: rv($mobile_edge_padding_factor)
+
+#search-form, #advanced-search-form
+  @extend %search-form-container
+  margin-bottom: rv($mobile_edge_padding_factor)
+
+  img
+    width: 24px
+
+  input[name='search'], input[name='fulltext_search'], input[name='q']
+    @extend %search-form-textfield
+
+    // Search plus submit
+
+    & + button[type='submit']
+      @extend %search-form-submit
+
+  input:focus
+    border: solid $black 1px
+
+  & + .advanced-search
+    width: 100%
+    text-align: right
+    margin-top: rv(0)
+
+    a
+      @extend %inline-anchor
+
+.search-results-list
+  list-style-type: none
+
+  &.grid
+    .resource
+      @extend .card
+
+
+.search-facets-list
+  padding-left: 0
+
+.browse-title
+  margin: rv($mobile_edge_padding_factor) * 2 0
+
+  +bp($tablet)
+    margin: rv($edge_padding_factor) * 2 0
+
+  h2 > span
+    color: set-color(2)
+
+/** BACKUP: Deprecated, marked for removal. Here for reference. **/
+
+.search-facet-backup
+  +font-size(-1)
+  overflow-x: hidden
+
+  details
+    summary //prevent horizontal scroll from ::after element (arrows)
+      overflow: hidden
+
+  .more-options
+    display: none
+    color: neutral(90)
+    margin: rv(-1) 0 0 rv(8)
+    padding: 0
+    width: fit-content
+    font-size: rv(-1)
+    font-weight: $semibold
+    text-decoration: underline
+
+  .options
+    +bp($desktop)
+      max-height: 445px
+      overflow-y: scroll
+
+  summary::-webkit-details-marker
+    display: none
+
+  summary + .options
+    margin-top: rv(0)
+
+  ul
+    list-style-type: none
+    padding: 0
+    margin: 0
+
+  li
+    margin-bottom: rv(-3)
+
+
+  form, details
+    overflow: hidden
+
+    > ul
+      padding-left: 0
+
+
+
+.pagination
+  display: none
+
+  +bp($tablet)
+    display: flex
+
+.search-results-count
+  > .pagination--label
+    display: none
+
+    +bp($tablet)
+      display: block
+
+.search-results-header
+  position: fixed
+  z-index: 12
+  top: rv(3)
+  left: 0
+  right: 0
+  padding: $mobile_overlay_spacing
+  width: 100%
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+  display: none
+
+  +bp($tablet)
+    display: flex
+    position: initial
+    top: initial
+    left: initial
+    right: initial
+    padding: $mobile_overlay_spacing 0
+
+  > *
+    display: flex
+    align-items: center
+
+  label
+    @extend %labels-controls
+
+.search-results-footer
+  margin-top: rv($edge_padding_factor)
+
+// Note: Some modifications are done in js/pathwaysFormElements.js to override hard-wired styling
+
+input#q
+  @extend %search-form-textfield
+  width: 100%
+
+button.search-submit
+  @extend %search-form-submit
+  top: calc((#{$ui_element_height} - #{$btn_submit_img_size})/3)
+
+
+.select2-search__field
+  display: none
+
+.select2-results__option
+  margin-bottom: 0

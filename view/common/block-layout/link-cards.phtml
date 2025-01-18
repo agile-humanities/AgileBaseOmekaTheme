@@ -1,6 +1,6 @@
 <div id="block-<?php echo $this->blockId; ?>" class="region site-links <?php echo $this->classes; ?> <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?> ">
-  <div class="site-links-intro"> 
-    
+  <div class="site-links-intro">
+
     <?php if ($this->hasTitle || $this->hasIntroduction): ?>
         <div class='title-area'>
             <?php if ($this->hasTitle): ?>
@@ -11,13 +11,12 @@
                     <?php echo $this->introduction; ?>
                 </div>
             <?php endif; ?>
-           
+
         </div>
     <?php endif; ?>
   </div>
-    
+
     <?php $i=0; ?>
-    <?p
 
     <?php foreach($this->itemFields as $itemFieldSet): ?>
       <?php $item = isset($attachments[$i]) ? $attachments[$i]->item() : null;
@@ -72,7 +71,7 @@
         <?php $i++; ?>
     <?php endforeach; ?>
 </div>
-        
+
 
 
 
