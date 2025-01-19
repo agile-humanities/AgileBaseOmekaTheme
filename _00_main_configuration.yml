@@ -41,7 +41,7 @@ bgcolor: $white
 footer_bg: $black
 
 # Colour Aliases
-impact: $clr2
+impact: $clr3
 cta: $clr1
 de_emphasized: $light_neutral
 de_activated: $lighter_neutral
@@ -59,8 +59,8 @@ legible_inset_width: 750px
 # Structure
 masthead_height: 60px
 footer_height: 100px
-admin_bar_height: 40px
-admin_bar_tray: 40px // Second-tier admin bar
+admin_bar_height: 38px
+admin_bar_tray: 38px // Second-tier admin bar
 masthead_clearance: rv(0)
 masthead_clearance_mobile: rv(-1)
 splash_height_mobile: 50vh

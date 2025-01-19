@@ -1,0 +1,31 @@
+/**
+ *  @file _site_identity.sass
+ *  @category 60_site_elements
+ *  @description Styles the main identity / logo for the site.
+ *  @alsosee 20_layout/_page_header */
+
+
+#identity
+  height: 100%
+  a
+    display: inline-flex
+    height: 100%
+
+  img
+    height: 100%
+    width: auto
+
+    // Portrait ratio logos are sub-optimal, tending to shrink to illegibility.
+    // This expands the logos to the full height of the masthead, then shifts it
+    // up into the padded area. This way developers can use the masthead height to find
+    // the optimal sizing for their identity.
+
+    &.img-portrait
+      position: absolute
+      height: $masthead_height
+      width: auto
+      top: -0.5 * rv($mobile_edge_padding_factor)
+
+      +bp($tablet)
+        top: -0.5 * rv($edge_padding_factor)
+

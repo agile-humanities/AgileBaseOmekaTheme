@@ -1,0 +1,41 @@
+/**
+ *  @file _header.sass
+ *  @category 10_layout
+ *  @theme LOCAL
+ *  @description Defines page header and navigation areas.
+  * @alsosee 40_ui/_main_navigation_desktop, 40_ui/_main_navigation_mobile,
+  *   40_ui/10_components/_component_library_superfish, 60_site_elements/_site_indentity
+ */
+
+
+$page_header_border_color: neutral(70)
+
+body > header
+  +standard_edge_padding()
+  width: 100%
+
+  > div
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+    width: 100%
+    height: $masthead_height
+    position: relative
+    padding-bottom: $masthead_clearance
+    border-bottom: 1px solid $page_header_border_color
+
+  // Responsive visibility
+
+  .desktop-nav
+    display: none
+
+    +bp($desktop)
+      display: block
+
+  #mobile-menu
+    display: flex
+
+    +bp($desktop)
+      display: none
+

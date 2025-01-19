@@ -1,15 +1,15 @@
 (function($) {
   $(document).ready(function() {
-    
-    var mobileNavIcon = $('.nav-hamburger, .mobile-close');
-    var mobileMenu = $('.mobile-container');
- 
+
+    var mobileNavIcon = $('#mobile-menu--button, #mobile-menu--close');
+    var mobileMenu = $('#mobile-menu--container');
+
     mobileNavIcon.on('click', function () {
     mobileMenu.slideToggle("fast");
   });
 
   });
-  
+
 })(jQuery);
 
 

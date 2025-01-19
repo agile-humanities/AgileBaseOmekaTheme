@@ -1,0 +1,72 @@
+// MOBILE NAVIGATION //
+
+$mobile_menu_background_color: 3
+
+#mobile-menu--button
+  +icon-with-label-right('hamburger-menu')
+
+#mobile-menu--close
+  +icon-with-label('close')
+
+#mobile-menu--container
+  display: none
+  position: absolute
+  width: auto
+  top: calc(#{$masthead_height} + #{rv($mobile_edge_padding_factor)} - 1px) // displays beneath the header. 1px for border clearance.
+  left: rv($mobile_edge_padding_factor)
+  right: rv($mobile_edge_padding_factor)
+  bottom: rv($mobile_edge_padding_factor)
+  z-index: 1
+  +standard_edge_padding()
+  border: 1px solid $page_header_border_color
+  overflow-x: hidden
+  overflow-y: scroll
+  isolation: isolate
+
+  &:before
+    content: ''
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    background-color: set-color($mobile_menu_background_color,7)
+    opacity: 0.98
+    z-index: -1
+
+
+  @at-root .has-admin-bar &
+    top: calc(#{$masthead_height} + #{rv($mobile_edge_padding_factor)}  + #{$admin_bar_height} - 1px) // compensates for the Omeka admin bar.
+
+  // General menu styles
+  ul
+    list-style-type: none
+    text-align: right
+
+  // Top-level menus
+
+  > ul
+    margin: 0
+    font-size: clamped(1,2)
+    text-transform: uppercase
+    position: relative
+    color: $black
+
+    // Child menus
+
+    ul
+      font-size: clamped(0,1)
+      text-transform: none
+      color: neutral(80)
+      margin-top: 0
+
+    > li
+      margin-bottom: 0
+
+    a
+      text-decoration: none
+      color: inherit
+
+// @todo: what is this?
+.nav-icons
+  display: none!important

@@ -1,16 +1,13 @@
 /**
- *  @file _main_navigation
- *
- *  An customized alternative to the default Superfish-based main navigation.
- *  IMPORTANT: Not loaded by default.
+ *  @file _main_navigation_desktop
+ *  @group 40_ui
+ *  @decription Manages a basic horizontal main menu navigation.
+ *    IMPORTANT: Not loaded by default. Basic build uses the Superfish library for main navigation
+ *  @alsosee  _40_ui/10_components/_component_library_superfish
  *
  */
 
-.desktop-nav
-  display: none
-
-  +bp($desktop)
-    display: flex
+#main-nav.desktop-nav
 
   > ul
     +horizontal_list()

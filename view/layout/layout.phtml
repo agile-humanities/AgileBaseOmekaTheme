@@ -77,24 +77,12 @@ if (!empty($this->userBar())) {
               <!--DESKTOP MENU END-->
 
               <!--MOBILE MENU START-->
-              <div class="mobile-menu" aria-label='Mobile Menu'>
-                  <div class="mobile-menu-header">
-                    <a class="nav-hamburger" href="#" title="Menu"><img alt='mobile menu' src=<?= $this->assetUrl('img/svg/icons/hamburger-menu-default.svg'); ?>></a>
-                  </div>
-                  <div class="mobile-container">
-                      <div class="mobile-close">
-                          <p>Close</p>
-                      </div>
-                      <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' =>2]); ?>
-
-                      <!--MOBILE SEARCH FORM START-->
-                      <div class="mobile-search">
-                        <?= $this->partial('common/search-form', ['query' => $this->params()->fromQuery(), 'resourceType' => 'user','searchType' => 'browser']); ?>
-                      </div>
-                  <!--MOBILE SEARCH FORM END-->
+              <div id="mobile-menu" aria-label='Mobile Menu'>
+                  <div id="mobile-menu--header">
+                    <a id="mobile-menu--button" href="#" title="Menu">Menu</a>
                   </div>
               </div>
-            </div>
+          </div>
             <!--MOBILE MENU END-->
 
         </header>
@@ -157,6 +145,15 @@ if (!empty($this->userBar())) {
             </div>
           </section>
         </footer>
+        <!-- Mobile overlay -->
+        <div id="mobile-menu--container">
+          <div id="mobile-menu--close">Close</div>
+          <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' =>2]); ?>
+          <div id="mobile-menu-search">
+            <?= $this->partial('common/search-form', ['query' => $this->params()->fromQuery(), 'resourceType' => 'user','searchType' => 'browser']); ?>
+          </div>
+        </div>
+        <!-- Mobile overlay end-->
     </body>
 </html>
 <! -- END OF /LAYOUT/LAYOUT.PHTML -->
