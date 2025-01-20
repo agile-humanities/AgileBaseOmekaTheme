@@ -148,10 +148,10 @@ if (!empty($this->userBar())) {
         <!-- Mobile overlay -->
         <div id="mobile-menu--container">
           <div id="mobile-menu--close">Close</div>
-          <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' =>2]); ?>
-          <div id="mobile-menu-search">
+          <div id="mobile-menu--search">
             <?= $this->partial('common/search-form', ['query' => $this->params()->fromQuery(), 'resourceType' => 'user','searchType' => 'browser']); ?>
           </div>
+          <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' =>2]); ?>
         </div>
         <!-- Mobile overlay end-->
     </body>

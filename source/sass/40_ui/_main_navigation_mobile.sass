@@ -8,6 +8,9 @@ $mobile_menu_background_color: 3
 #mobile-menu--close
   +icon-with-label('close')
 
+#mobile-menu--search
+  padding: rv($mobile_edge_padding_factor) 0
+
 #mobile-menu--container
   display: none
   position: absolute
@@ -41,21 +44,20 @@ $mobile_menu_background_color: 3
   // General menu styles
   ul
     list-style-type: none
-    text-align: right
+    font-size: clamped(0,1)
 
   // Top-level menus
 
   > ul
     margin: 0
-    font-size: clamped(1,2)
     text-transform: uppercase
     position: relative
     color: $black
+    padding-left: 0
 
     // Child menus
 
     ul
-      font-size: clamped(0,1)
       text-transform: none
       color: neutral(80)
       margin-top: 0

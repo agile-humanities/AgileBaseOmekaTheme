@@ -16,6 +16,12 @@ p, main li
   & > a
     @extend %inline-anchor
 
+ul
+  padding-inline-start: rv($mobile_edge_padding_factor)
+
+  +bp($tablet)
+    padding-inline-start: rv($edge_padding_factor)
+
 
 // TEXT TREATMENTS
 

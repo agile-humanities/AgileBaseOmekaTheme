@@ -1,0 +1,22 @@
+/**
+ *  @file _omeka_browse_controls.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *  @see view/common/search.phtml
+ *
+ **/
+
+
+.browse-controls
+  form, .sort-block
+    display: flex
+    flex-direction: column
+    +ui-form-spacing
+
+    +bp($tablet)
+      flex-direction: row
+
+  // Oddity of select2. This will treat this element like the first child and adjust margins to be flush left
+
+  select[name="sort_by"] + span
+    margin-left: 0

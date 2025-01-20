@@ -14,25 +14,38 @@
   align-items: center
   flex-wrap: nowrap
   position: relative
+  border: 1px solid $ui_border_color
+  border-radius: $ui_border_radius
+  background: $white
+
+  &:hover
+    border-color: $ui_hover_border_color
+
+  input[type='text']
+    border: 0
+    background: none
 
 %search-form-textfield
-  width: 100%
+  width: 80%
+  max-width: none
+  color: neutral(80) !important // Important to ensure contrast against white bg in .reversed contexts
+
+  &::placeholder
+    color: neutral(60) !important
+
+  &:focus
+    border: 1px solid neutral(10)
 
 %search-form-submit
   position: absolute
-  height: $btn_submit_img_size
-  width: $btn_submit_img_size
-  top: calc((100% - #{$btn_submit_img_size})/2)
   right: $ui_padding
-  background-image: url(get_svg_url('icons/search-default'))
-  background-size: contain
-  background-position: center right
-  background-repeat: no-repeat
-  background-color: transparent
-  padding: 0
-  font-size: 0 // hide text in favour of icon. Still readable by screen readers.
+  @extend %button-search
+  padding-right: 0
+  max-width: 20%
+  color: neutral(80)
+
   &:hover
-    opacity: 0.7
+    color: $black
 
   &:focus
-    outline: 3px solid $impact !important
+    outline: 1px solid $impact !important

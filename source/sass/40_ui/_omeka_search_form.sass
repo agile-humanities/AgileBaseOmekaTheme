@@ -2,6 +2,7 @@
  *  @file _search_form.sass
  *  @category 40_ui
  *  @theme LOCAL
+ *  @see view/common/search.phtml
  *
  **/
 
@@ -13,19 +14,6 @@
 
   input[name='text'], input[name='search'], input[name='fulltext_search'], input[name='q']
     @extend %search-form-textfield
-    color: neutral(80) !important // Important to ensure contrast against white bg in .reversed contexts
-
-    &::placeholder
-      color: neutral(80) !important
-
-    // Search plus submit
-
-    & + button[type='submit']
-      @extend %search-form-submit
-      background-image: url(get_svg_url('ui/search-black'))
-
-  input:focus
-    border: solid $black 1px
 
   & + .advanced-search
     width: 100%
