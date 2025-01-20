@@ -66,17 +66,17 @@ switch($cardMode) {
     $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$label)));
 
     $year = !empty($item->value('dcterms:temporal')) && is_array($item->value('dcterms:temporal')) && count($item->value('dcterms:temporal')) > 0 ? date('Y',$item->value('dcterms:temporal')[0]) : null;
-    $label = $resourceClassLabel . ($year ? " {$year}" : '');
     $creator = $item->value('dcterms:creator');
 
     if (method_exists($item,'resourceClass') && $item->resourceClass() !== null) {
       $resourceClassLabel = $item->resourceClass()->label();
       $resourceIndicator = "resource-id-" . $item->resourceClass()->id();
+      $label = $resourceClassLabel . ($year ? " {$year}" : '');
     }
 
     $thumbnail = !empty($altText) ? $this->thumbnail($item, $thumbnailSize,['alt' => $escape(strip_tags($altText)),'class' => "{$resourceIndicator} {$resourceClassName}"]) : $this->thumbnail($item, $thumbnailSize,['class' => "{$resourceIndicator} {$resourceClassName}"]);
     $contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item');
-    $heading = $heading ?? $item->displayTitle();
+    $heading = !empty($heading) ? $heading : $item->displayTitle();
     $body = $body ?? $item->displayDescription();
     break;
 

@@ -21,13 +21,18 @@
     font-weight: $normal
     line-height: 1
 
-    &:after
+    &:before
       content: '>'
-      padding: 0 rv(-1)
+      padding-right: $text_element_spacing
 
-    &:last-child:after
+    &:first-child:before
       display: none
 
     &:hover,
     &:focus
       color: $impact
+
+    &.icon-home
+      height: rv(-1)
+      width: rv(-1)
+      margin-right: $text_element_spacing

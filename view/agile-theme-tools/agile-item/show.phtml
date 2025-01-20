@@ -1,12 +1,14 @@
 <?php
 $translate = $this->plugin("translate");
 $escape = $this->plugin("escapeHtml");
+$escapeAttr = $this->plugin('escapeHtmlAttr');
 $partial = $this->plugin('partial');
 $dateHandler = $this->plugin('dateHandler');
 $this->htmlElement("body")->appendAttribute("class", "item resource show");
 $embedMedia = $this->siteSetting("item_media_embed", false);
 $itemMedia = $item->media();
 $hasMedia = $itemMedia && is_array($itemMedia) && count($itemMedia) > 0;
+$hasTranscription = !empty($item->value("vra:text"));
 
 $mirador = null;
 $uv = null;
@@ -27,10 +29,13 @@ $dateHandler->isDate($temporal);
 $resourceClass = '';
 $label = 'Item';
 
+$year = !empty($item->value('dcterms:temporal')) && is_array($item->value('dcterms:temporal')) && count($item->value('dcterms:temporal')) > 0 ? date('Y',$item->value('dcterms:temporal')[0]) : null;
+$creator = $item->value('dcterms:creator');
+
 if (method_exists($item,'resourceClass') && $item->resourceClass() !== null) {
-  /** @var \Omeka\Api\Representation\ResourceClassRepresentation $resourceClass */
   $resourceClass = $item->resourceClass();
-  $resourceClassLabel = $resourceClass->label();
+  $resourceClassLabel = $item->resourceClass()->label();
+  $resourceIndicator = "resource-id-" . $item->resourceClass()->id();
   $label = $resourceClassLabel . ($year ? " {$year}" : '');
 }
 
@@ -158,11 +163,11 @@ if ($hasMedia) {
   </div>
   <div class='item-info item-text'>
     <div class="wayfinding">
-      <a href="<?php echo $site->siteUrl(); ?>"><img alt='Home Icon' class='wayfinding-home' src='<?php echo $this->assetUrl('img/svg/icons/home-neutral.svg')?>'></a>
-      <a href="<?php echo $site->siteUrl(); ?>/browse">Browse the collection</a>
+      <a class="icon-home" href="<?php echo $site->siteUrl(); ?>"><span class="screen-reader-text">Home</span></a>
+      <a href="../item">Browse the collection</a>
     </div>
     <header>
-      <div class="item-label"><?= $contentType['value']; ?></div>
+      <div class="item-label"><?= $label ?></div>
       <?php echo $this->pageTitle($item->displayTitle(), 1); ?>
     </header>
     <?php if ($item->value('dcterms:alternative')): ?>
@@ -174,10 +179,12 @@ if ($hasMedia) {
 
       <div class="container-with-tabs-and-panels">
 
-        <div class="tabs">
-          <a class="tab description-tab active-tab">Description</a> |
-          <a class="tab info-tab">Transcription</a>
-        </div>
+        <?php if ($hasTranscription): ?>
+          <div class="tabs">
+            <a class="tab description-tab active-tab">Description</a> |
+            <a class="tab info-tab">Transcription</a>
+          </div>
+        <?php endif; ?>
         <div class="panels">
           <div class="description-panel">
               <p class="description-text">
@@ -228,14 +235,16 @@ if ($hasMedia) {
               </div>
             <?php endif; ?>
           </div>
-          <div class="transcription-panel">
-            <p class="metadata-label">Transcription of this Item</p>
-              <?php if (!empty($item->value("vra:text"))): ?>
-              <?php echo $item->value("vra:text"); ?>
-            <?php else: ?>
-              <p class="no-transcription">Transcription not available.</p>
-            <?php endif; ?>
-          </div>
+          <?php if ($hasTranscription): ?>
+            <div class="transcription-panel">
+              <p class="metadata-label">Transcription of this Item</p>
+                <?php if (!empty($item->value("vra:text"))): ?>
+                <?php echo $item->value("vra:text"); ?>
+              <?php else: ?>
+                <p class="no-transcription">Transcription not available.</p>
+              <?php endif; ?>
+            </div>
+          <?php endif; ?>
         </div>
       </div>
   </div>

@@ -23,6 +23,9 @@ main
   a
     text-decoration: none
 
+    &:hover
+      color: $black
+
   figure
     overflow: hidden
     height: 100%
@@ -32,7 +35,7 @@ main
 
   &:hover
     img
-      transform: scale3d(1.04,1.04,1.04)
+      transform: scale3d(1.07,1.07,1.07)
 
   @at-root .visible &
     +fadeInUp()
@@ -52,6 +55,7 @@ main
 
 /*
  * Define list item cards
+ * @see 40_ui/10_components/_browser_ui_supporting_definitions
  */
 
 .list-item

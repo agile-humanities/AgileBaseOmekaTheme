@@ -1,9 +1,9 @@
 <?php
   $metadata_file_name = "metadata-" . urlencode(strtolower(str_replace(' ','_',$item->title()))) .".json";
 ?>
-<div class=download-icons>
+<div class=download>
   <?php if ($item->primaryMedia()): ?>
-    <div class='download-item'>
+    <div class='download--item'>
       <?php
       // See https://stackoverflow.com/a/64719808/16534002
       $primary_media = $item->primaryMedia()->originalUrl();
@@ -12,18 +12,16 @@
       $dl_attribute = !empty($file_name) ? ' download="'. $file_name .'"' : '';
 
       ?>
-      <a class='icon-ui' title="Download item" href='<?php echo $item
+      <a class='icon-left-download' title="Download item" href='<?php echo $item
         ->primaryMedia()
         ->originalUrl(); ?>' <?php echo $dl_attribute; ?>>
-        <span class="screen-reader-text">Download item</span>
-        Item
+        Download item
       </a>
     </div>
   <?php endif; ?>
-  <div class='download-metadata'>
-    <a class='icon-ui' title="Download metadata" target="_blank" type='application/json' href='<?php echo $item->apiUrl(); ?>' download='<?php echo $metadata_file_name; ?>'>
-      <span class="screen-reader-text">Download metadata</span>
-      Metadata
+  <div class='download--metadata'>
+    <a class='icon-left-metadata' title="Download metadata" target="_blank" type='application/json' href='<?php echo $item->apiUrl(); ?>' download='<?php echo $metadata_file_name; ?>'>
+      Download Metadata
     </a>
   </div>
 </div>
