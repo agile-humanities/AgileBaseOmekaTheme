@@ -1,101 +1,25 @@
 /*
-   @file _advanced_search.sass
-   @category 60_site_elements
-   @theme LOCAL
-   @component main
-   @description Creates a faceted browsing interface built on top of the Advanced Search module.
-   @see 40_ui/10_components/_component_omeka_browser_ui */
+ *  @file _advanced_search.sass
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description Creates a faceted browsing interface built on top of the Advanced Search module.
+ *  @see 40_ui/10_components/_component_omeka_browser_ui
+ */
 
-.item-browser > div
-  @extend %browser-container
-  border-radius: $border_radius
-  padding: 0
+// Template: search/search
 
-  .ui-icon-container
-    @extend %ui-display-mode-controls
-
-.search-results-wrapper
-  @extend %browser-container-grid
-
-  > aside
-    @extend %browser-sidebar
-    background-color: neutral(4)
-    border-radius: 0
-
-    +bp($desktop)
-      border-radius: $border_radius 0 0 $border_radius
-
-    h3
-      font-size: clamped(1,0)
-
+.item-browser
   > div
-    +standard_edge_padding
-
-  label[for="sort"]
-    margin-left: 0
-
-  .active-facets
-    > ul
-      display: flex
-      justify-content: flex-start
-      gap: rv(0)
-      list-style: none
-      padding: 0
-
-
+    @extend %browser-container
+    border-radius: $border_radius
+    padding: 0
 
 #collection-list
   @extend %card-grid
+  margin-top: rv($mobile_edge_padding_factor)
 
-.search-facet
-  @extend %exposed-facet
-
-  a
-    text-decoration: none
-
-    &:hover
-      text-decoration: underline
-
-  // Odd case where a link is automatically assigned a “poster” class, triggering the style for poster block elements
-  .poster
-    background: unset
-    padding: unset !important
-    min-height: unset
-    color: initial
-
-#mobile-browse-controls
-  @extend %browser-mobile-toolbar
-
-#browser--mobile-close-btn
-  position: fixed
-  top: rv($mobile_edge_padding_factor)
-  right: rv($mobile_edge_padding_factor)
-
-#search-form, #advanced-search-form
-  @extend %search-form-container
-  margin-bottom: rv($mobile_edge_padding_factor)
-
-  img
-    width: 24px
-
-  input[name='search'], input[name='fulltext_search'], input[name='q']
-    @extend %search-form-textfield
-
-    // Search plus submit
-
-    & + button[type='submit']
-      @extend %search-form-submit
-
-  input:focus
-    border: solid $black 1px
-
-  & + .advanced-search
-    width: 100%
-    text-align: right
-    margin-top: rv(0)
-
-    a
-      @extend %inline-anchor
+  +bp($tablet)
+    margin-top: rv($edge_padding_factor)
 
 .search-results-list
   list-style-type: none
@@ -104,9 +28,10 @@
     .resource
       @extend .card
 
+.search-results-wrapper
+  @extend %browser-container-grid
 
-.search-facets-list
-  padding-left: 0
+// Title area
 
 .browse-title
   margin: rv($mobile_edge_padding_factor) * 2 0
@@ -117,53 +42,61 @@
   h2 > span
     color: set-color(2)
 
-/** BACKUP: Deprecated, marked for removal. Here for reference. **/
+.search-filter-container
+  display: flex
+  flex-wrap: wrap
 
-.search-facet-backup
-  +font-size(-1)
-  overflow-x: hidden
+  > *
+    margin-right: $ui_element_spacing
+    margin-bottom: $ui_element_spacing
 
-  details
-    summary //prevent horizontal scroll from ::after element (arrows)
-      overflow: hidden
+    &:last-child
+      margin-right: 0
 
-  .more-options
-    display: none
-    color: neutral(90)
-    margin: rv(-1) 0 0 rv(8)
-    padding: 0
-    width: fit-content
-    font-size: rv(-1)
-    font-weight: $semibold
-    text-decoration: underline
+.search-facets-list
+  padding-left: 0
 
-  .options
+// FACET SIDEBAR
+// Template: search/search, search/facet-list
+
+aside
+  @at-root .search-results-wrapper > &
+    @extend %browser-sidebar
+    background-color: neutral(4)
+    border-radius: 0
+
     +bp($desktop)
-      max-height: 445px
-      overflow-y: scroll
+      border-radius: $border_radius 0 0 $border_radius
 
-  summary::-webkit-details-marker
-    display: none
+    h3
+      font-size: clamped(1,0)
+      margin-top: 0
 
-  summary + .options
-    margin-top: rv(0)
-
-  ul
-    list-style-type: none
-    padding: 0
-    margin: 0
-
-  li
-    margin-bottom: rv(-3)
-
-
-  form, details
-    overflow: hidden
-
+  .active-facets
     > ul
-      padding-left: 0
+      display: flex
+      justify-content: flex-start
+      gap: rv(0)
+      list-style: none
+      padding: 0
 
+  .facets-actions
+    button
+      margin-bottom: $ui_element_spacing
 
+      +bp($desktop)
+        width: 100%
+
+  .search-facet
+    @extend %exposed-facet
+
+    a
+      text-decoration: none
+
+      &:hover
+        text-decoration: underline
+
+// @todo: scope?
 
 .pagination
   display: none
@@ -197,11 +130,18 @@
     top: initial
     left: initial
     right: initial
-    padding: $mobile_overlay_spacing 0
+    padding: 0 0 $mobile_overlay_spacing 0
+    justify-content: flex-end
 
   > *
     display: flex
     align-items: center
+
+    +bp($tablet)
+      margin-left: $ui_element_spacing
+
+      &:first-child
+        margin-left: 0
 
   label
     @extend %labels-controls
@@ -209,18 +149,25 @@
 .search-results-footer
   margin-top: rv($edge_padding_factor)
 
-// Note: Some modifications are done in js/pathwaysFormElements.js to override hard-wired styling
+#mobile-browse-controls
+  @extend %browser-mobile-toolbar
 
-input#q
-  @extend %search-form-textfield
-  width: 100%
+#browser--mobile-close-btn
+  position: fixed
+  top: rv($mobile_edge_padding_factor)
+  right: rv($mobile_edge_padding_factor)
 
-button.search-submit
-  @extend %search-form-submit
+// Template: search/results-header-footer
 
+label[for="sort"]
+  margin-left: 0
 
-.select2-search__field
-  display: none
+.search-results-display
+  @extend %ui-display-mode-controls
 
-.select2-results__option
-  margin-bottom: 0
+.search-view-type-list
+  +icon_with-label-right('list',$btn_icon_size,'neutral')
+
+.search-view-type-grid
+  +icon_with-label-right('grid',$btn_icon_size,'neutral')
+

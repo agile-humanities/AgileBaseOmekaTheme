@@ -17,10 +17,6 @@ $displayCount = !empty($options['display_count']);
     <?php foreach ($facetValues as $facetValue): ?>
     <?php
       $facetClass = urlencode(strtolower(str_replace(' ','-',$facetValue['value'])));
-      
-      if ($facetClass == 'w-%26-l-university') {
-          $facetClass = 'washington-and-lee'; // special case required for styling
-      }
     ?>
     <li class="<?= $facetClass ?> <?= $facetValue['active'] ? 'active' : 'inactive' ?>">
         <a href="<?= $escapeAttr($facetValue['url']) ?>"><?= $escape($facetValue['label']) ?></a>

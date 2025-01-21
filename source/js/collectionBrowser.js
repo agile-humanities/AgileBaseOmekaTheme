@@ -93,6 +93,12 @@ if (searchViewType === null) {
     // Modify browse collection search button to conform to design
     $('#form-search').find('button.search-submit').attr('aria-describedby','Submit search request').html('');
 
+    // Reset button is not fully implemented. See advanced search module search.js
+    $('#facets-reset').on('click', function () {
+      const url = window.location.href;
+      window.history.pushState({}, '', url.split(/[?#]/)[0]);
+      window.location.reload();
+    });
 
     // Open facet details if an item is checked.
 

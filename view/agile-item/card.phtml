@@ -21,7 +21,7 @@ try {
 }
 $thumbnailer = $plugins->get('thumbnail');
 
-$containerElement = isset($containerElement) ? $containerElement : "div";
+$cardObjectClass = get_class($item);
 $this->classes = isset($this->classes) ? $this->classes : '';
 if (strpos($this->classes, 'card') === false) {
   $this->classes .= " card";
@@ -33,29 +33,27 @@ $viewItemPageLabel = $viewItemPageLabelTerm ? $item->value($viewItemPageLabelTer
 
 $untitled = $translate('[Untitled]');
 $thumbnailSize = 'large';
-
 $contentType = [];
 
-if ($item || $resource):
-
-$cardMode = get_class($item);
+$selectionButton = isset($site) && $plugins->has('selectionButton') && $this->siteSetting('selection_append_items_browse_individual') ? $plugins->get('selectionButton') : null;
+$contactUsSelector = isset($site) && $plugins->has('contactUsSelector') && $this->siteSetting('contactus_append_items_browse_individual') ? $plugins->get('contactUsSelector') : null;
 
 // Defaults
-
+$containerElement = $containerElement ?? "div";
 $year = '';
-$resourceClassLabel = $cardMode ? 'Item' : '';
+$resourceClassLabel = $cardObjectClass ?? 'Item';
 $label = $resourceClassLabel;
 $creator = '';
 $resourceIndicator = '';
+$url = '';
+$heading = '';
+
+$thumbnailType = $thumbnailType ?? 'medium';
 
 $headingTerm = $this->siteSetting('browse_heading_property_term');
 $bodyTerm = $this->siteSetting('browse_body_property_term');
 
-
-$url = '';
-$heading = '';
-
-switch($cardMode) {
+switch($cardObjectClass) {
   case 'Omeka\Api\Representation\ItemRepresentation':
 
     // Item values
@@ -84,7 +82,7 @@ switch($cardMode) {
     $url = $item->url();
     $heading = $headingTerm ? $item->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $item->displayTitle(null, $valueLang);
     $header = $escape($heading);
-    $thumbnail = $thumbnailer($item, 'large');
+    $thumbnail = $thumbnailer($item, $thumbnailType);
     $label = 'Item Set';
     $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$label)));
 
@@ -96,7 +94,7 @@ switch($cardMode) {
     $url = $item->url();
     $heading = $headingTerm ? $item->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $item->displayTitle(null, $valueLang);
     $header = $escape($heading);
-    $thumbnail = $thumbnailer($item, 'large');
+    $thumbnail = $thumbnailer($item, $thumbnailType);
     $label = 'Resource';
     $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$label)));
 
@@ -131,9 +129,20 @@ $cardStyle = isset($cardStyle) ? $cardStyle : 'card';
       <div class="item-description"><?= $escape($body); ?></div>
     <?php endif; ?>
     <div class="more"><?= $viewItemPageLabel ?></div>
+    <?php if ($selectionButton || $contactUsSelector): ?>
+      <footer>
+        <?php if ($selectionButton): ?>
+        <?= $selectionButton($resource) ?>
+        <?php endif; ?>
+        <?php if ($contactUsSelector): ?>
+          <?= $contactUsSelector($resource) ?>
+        <?php endif; ?>
+      </footer>
+    <?php endif; ?>
+
 
   </div>
 </a>
 </<?php print $containerElement; ?> >
-<?php endif; ?>
 <!-- END TEMPLATE: /agile-item/card -->
+

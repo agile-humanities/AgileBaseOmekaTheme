@@ -1,0 +1,36 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var array $activeFacets List of active facets with keys value, count (null),
+ *   label, active (true), url and fieldLabel.
+ * @var array $options
+ */
+
+// Warning: when inactive, don't return anything, in particular don't return any space,
+// else it should be managed in facets.phtml.
+
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
+
+$texts = [
+    'from' => $translate('from %1$s'), // @translate
+    'to' => $translate('to %1$s'), // @translate
+    'default' => '%1$s',
+];
+?>
+
+<ul class="facets-active">
+    <?php foreach ($activeFacets as $name => $facetValues) foreach ($facetValues as $facetKey => $facetValue): ?>
+    <li class="facet-active">
+        <span class="facet-active-label"><?= $escape($translate($facetValue['fieldLabel'])) ?></span>
+        <?= sprintf('<a class="lozenge facet-active-value" href="%1$s" data-facet-name="facet[%2$s][%3$s]" data-facet-value="%4$s">%5$s</a>',
+            $escapeAttr($facetValue['url']),
+            $escapeAttr($name),
+            is_numeric($facetKey) ? '' : $escapeAttr($facetKey),
+            $escapeAttr($facetValue['value']),
+            $escape(sprintf($texts[$facetKey] ?? $texts['default'], $facetValue['label']))) ?>
+    </li>
+    <?php endforeach; ?>
+</ul>

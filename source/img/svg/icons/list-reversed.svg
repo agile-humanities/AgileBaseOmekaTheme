@@ -1,14 +1,16 @@
-<svg width="34" height="31" viewBox="0 0 34 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.6401 3H32.1401" stroke="#020C19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.6401 3H32.1401" stroke="white" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3 3H7" stroke="#020C19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3 3H7" stroke="white" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.6401 16H32.1401" stroke="#020C19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.6401 16H32.1401" stroke="white" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3 16H7" stroke="#020C19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3 16H7" stroke="white" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.6401 28H32.1401" stroke="#020C19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.6401 28H32.1401" stroke="white" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3 28H7" stroke="#020C19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3 28H7" stroke="white" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <rect class="cls-1" x="9" width="21" height="5"/>
+  <circle class="cls-1" cx="2.5" cy="2.5" r="2.5"/>
+  <rect class="cls-1" x="9" y="25" width="21" height="5"/>
+  <circle class="cls-1" cx="2.5" cy="27.5" r="2.5"/>
+  <rect class="cls-1" x="9" y="13" width="21" height="5"/>
+  <circle class="cls-1" cx="2.5" cy="15.5" r="2.5"/>
 </svg>

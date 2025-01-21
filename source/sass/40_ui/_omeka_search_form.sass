@@ -8,12 +8,21 @@
 
 #search-form, #advanced-search-form
   @extend %search-form-container
+  margin-bottom: rv($mobile_edge_padding_factor)
 
-  img
-    width: 24px
+  // img
+  //  width: 24px
 
-  input[name='text'], input[name='search'], input[name='fulltext_search'], input[name='q']
+  input[name='search'], input[name='fulltext_search'], input[name='q']
     @extend %search-form-textfield
+
+    // Search plus submit
+
+    & + button[type='submit']
+      @extend %search-form-submit
+
+  input:focus
+    border: solid 1px $black
 
   & + .advanced-search
     width: 100%

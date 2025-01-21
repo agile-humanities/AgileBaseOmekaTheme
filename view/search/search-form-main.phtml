@@ -2,6 +2,7 @@
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \AdvancedSearch\Form\MainSearchForm $form
+ * @var \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig
  */
 
 // Scripts are loaded via an event on view.layout and can be managed in search-form-main-header.phtml.
@@ -10,14 +11,52 @@ $params = $this->params()->fromQuery() ?: [];
 $form
     ->setData($params)
     ->prepare();
-?>
 
-<!-- SEARCH FORM MAIN TEMPLATE BEGIN search/search-form-main.phtml -->
+$formId = $form->getAttribute('id');
+if (!$formId) {
+    $formId = 'form-search';
+    $form->setAttribute('id', $formId);
+}
+
+// Move buttons reset and submit outside of the form.
+$reset = null;
+$submit = null;
+if ($form->has('form-reset')) {
+    $reset = $form->get('form-reset');
+    $form->remove('form-reset');
+}
+if ($form->has('submit')) {
+    $submit = $form->get('submit');
+    $form->remove('submit');
+}
+
+// To avoid to display all advanced search filters, so the js just add new ones:
+// TODO This new mechanism requires to update the js.
+/** @var \Laminas\Form\Fieldset $filters */
+/*
+$filters = $form->get('filter');
+if ($filters) {
+    $defaultCount = (int) $filters->getAttribute('data-count-default');
+    $i = 0;
+    foreach ($filters->getFieldsets() as $name => $element) {
+        if (++$i > max($defaultCount, count($params['filter']))) {
+            $filters->remove($name);
+        }
+    }
+}
+*/
+?>
+<!-- SEARCH-FORM-MAIN TEMPLATE BEGIN search/search-form-main.phtml dev -->
 
 <div id="advanced-search-form-wrapper">
     <div id="advanced-search-form">
-        <?= $this->form($form) ?>
+        <?= $this->form()->openTag($form) ?>
+        <?= $this->formCollection($form) ?>
+        <div class="search-form-buttons">
+            <?= $reset ? $this->formButton($reset) : null ?>
+            <?= $submit ? $this->formButton($submit) : null ?>
+        </div>
+        <?= $this->form()->closeTag() ?>
     </div>
 </div>
-
-<!-- SEARCH FORM MAIN TEMPLATE END -->
+<!-- SEARCH-FORM-MAIN TEMPLATE END search/search-form-main.phtml dev -->

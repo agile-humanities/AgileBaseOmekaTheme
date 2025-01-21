@@ -107,3 +107,21 @@ fieldset, .field
 
 .contributor
   font-style: italic
+
+.lozenge
+  height: $ui_compactheight
+  width: fit-content
+  padding: $ui_padding $ui_padding * 2
+  display: inline-flex
+  align-items: center
+  text-align: center
+  justify-content: center
+  border-radius: $ui_compactheight * 0.5
+  background-color: set-color(1)
+  color: $white
+  text-decoration: none
+
+  &:hover
+    color: $white
+    background-color: set-color(2)
+

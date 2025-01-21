@@ -18,12 +18,11 @@ $pagination_bullet_size: rv(-3)
   flex-direction: row
   justify-content: center
   align-items: center
-  background: neutral(70)
   border: 1px solid transparent
   border-radius: $ui_border_radius
   width: fit-content
   padding: $pagination_ui_gap
-  color: $white
+  color: neutral(80)
 
   +bp($tablet)
     display: flex
@@ -77,7 +76,7 @@ $pagination_bullet_size: rv(-3)
     display: flex
     flex-direction: column
     align-items: center
-    color: $white
+    color: neutral(80)
     text-decoration: none
 
 
@@ -95,10 +94,10 @@ $pagination_bullet_size: rv(-3)
       border-radius: 50%
 
     &:focus
-      color: $white
+      color: $black
 
     &:hover, &.active
-      color: $white
+      color: $impact
 
       &:before
         background-color: $impact

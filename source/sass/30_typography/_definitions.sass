@@ -183,26 +183,20 @@ $ribbon_padding_factor: -3
     margin-right: rv(-2)
 
 %more
-  +font-size(0)
+  font-size: clamped(0,1)
   color: $black
   display: flex
   flex-direction: row
   align-items: center
   justify-content: flex-start
   border-bottom: 0
+  text-decoration: none
+  +background-icon-right('arrow')
 
   &:hover
     border-bottom: 0
+    text-decoration: none
     color: $impact
-
-  &:after
-    content: ''
-    margin-left: rv(0) * 0.25
-    height: 80%
-    width: 20px // arbitrary
-    background: no-repeat url(get_svg_url('icons/arrow-neutral'))
-    background-size: contain
-    background-position: center right
 
   +reversed
     color: $white

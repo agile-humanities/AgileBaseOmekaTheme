@@ -1,2 +1,8 @@
 button[type="submit"] //Button
   @extend %button-submit
+
+input[name="refine"]
+  @extend %input-text
+
+button[type="reset"]
+  +background_icon_left('reset',$btn_icon_size,'default','default')

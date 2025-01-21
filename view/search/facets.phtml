@@ -89,10 +89,10 @@ $options = $searchPage->setting('facet', []);
                         <?= $facetSelect($name, $facetValues, $options) ?>
                         <?php else: ?>
                         <?= $facetElements($name, $facetValues, $options) ?>
+                        <?php endif; ?>
                     </div>
                     <button class='more-options' tabindex="0">More options</button>
                 </details>
-                <?php endif; ?>
             </li>
             <?php endforeach; ?>
         </ul>

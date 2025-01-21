@@ -1,0 +1,30 @@
+<?php
+/**
+ * This is a resource card model from the the advanced_search results template, left for reference.
+ * @todo: see if there is a way to simplify the cards using a similar model. Thumbnail handling is wiggy here tho.
+ */
+?>
+<div class="resource-heading">
+    <?= $hyperlink->raw($escapeValueOrGetHtml($heading), $resourceUrl, ['class' => 'resource-link']) ?>
+  </div>
+<?php if (!$noThumbnail): ?>
+  <?php $resourceThumbnail = $thumbnail($resource, $thumbnailType); ?>
+  <div class="resource-thumbnail<?= $resourceThumbnail ? '' : ($allThumbnail ? ' default-thumbnail' : '') ?>">
+    <?php if ($resourceThumbnail || $allThumbnail): ?>
+      <?= $hyperlink->raw($resourceThumbnail ?: $defaultThumbnail, $resourceUrl, ['class' => 'resource-link']) ?>
+    <?php endif; ?>
+  </div>
+<?php endif; ?>
+  <div class="resource-body resource-metadata">
+    <?php if (strlen($body)): ?>
+      <div class="description">
+        <?= $escapeValueOrGetHtml($body, $allowHtml) ?>
+      </div>
+    <?php endif; ?>
+  </div>
+<?php if ($selectionButton): ?>
+  <?= $selectionButton($resource) ?>
+<?php endif; ?>
+<?php if ($contactUsSelector): ?>
+  <?= $contactUsSelector($resource) ?>
+<?php endif; ?>

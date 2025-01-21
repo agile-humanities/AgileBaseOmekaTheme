@@ -18,22 +18,21 @@
     border-style: solid
     border-collapse: collapse
     overflow: hidden
-    padding: rv(0)
 
     &:hover
       border-color: $impact
 
   figure
-    +proportional-height(200px,0.75)
-    min-width: 200px // TODO: collapses to image width otherwise, but why?
-    margin-right: rv(2)
+    +proportional-height(25%,0.75)
+    min-width: 25% // TODO: collapses to image width otherwise, but why?
 
     &:before
       background: none
 
     img
       width: 100%
-      height: auto
+      height: 100%
+      object-fit: cover
 
     &.figure-portrait
       img
@@ -49,7 +48,7 @@
 
   .item-info
     border: 0 !important
-    padding: 0 !important
+    padding: rv($mobile_edge_padding_factor) !important
 
 %exposed-facet
   background-color: neutral(2)
@@ -86,6 +85,28 @@
   details
     summary //prevent horizontal scroll from ::after element (arrows)
       overflow: hidden
+      position: relative
+      width: 100%
+      +background_icon_right('accordion-expand')
+
+      &:after
+        position: absolute
+        right: 0
+        +fadeInDown($heartbeat,$heartbeat)
+
+      &:hover:after
+        +fadeInDown($heartbeat,$heartbeat)
+
+    &[open]
+      summary
+        &:after
+          display: inline-flex
+          transform: rotate(45deg)
+          +fadeInUp($heartbeat,$heartbeat)
+
+        &:hover:after
+          +fadeInUp($heartbeat,$heartbeat)
+
 
   .more-options
     display: none

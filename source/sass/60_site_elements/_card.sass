@@ -34,6 +34,8 @@ main
     transition-duration: $slow
 
   &:hover
+    border-color: $impact
+
     img
       transform: scale3d(1.07,1.07,1.07)
 
@@ -41,16 +43,21 @@ main
     +fadeInUp()
 
   .item-info
-    +standard_edge_padding()
+    padding: rv($mobile_edge_padding_factor)
     border-top-width: 10px
     border-top-style: solid
 
+  .item-sublabel
+    margin: rv(-3) 0
+
   .item-description
-    +font-size(-1)
+    @extend %small-text
     line-height: map-get($line_heights,'tight')
 
-  .item-link > a
-    @extend .more
+  .more
+    margin-top: rv($edge_padding_factor)
+
+
 
 
 /*

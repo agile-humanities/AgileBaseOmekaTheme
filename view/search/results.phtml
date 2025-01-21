@@ -1,0 +1,76 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation|null $site
+ * @var \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig
+ * @var \AdvancedSearch\Query $query
+ * @var \AdvancedSearch\Response $response
+ * @var ?string $resourceType The resource type may be "resources" or a specific one.
+ * @var \Omeka\Api\Representation\ItemSetRepresentation|null $itemSet
+ */
+
+// A check is done: when page is not first, the resources may be empty even with results.
+$resources = $response->getResources($resourceType);
+if (!$resources) return;
+
+$plugins = $this->getHelperPluginManager();
+$assetUrl = $plugins->get('assetUrl');
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
+$thumbnail = $plugins->get('thumbnail');
+$partial = $plugins->get('partial');
+$escapeValueOrGetHtml = $plugins->get('escapeValueOrGetHtml');
+
+$selectionButton = $site && $plugins->has('selectionButton') && $this->siteSetting('selection_append_items_browse_individual') ? $plugins->get('selectionButton') : null;
+$contactUsSelector = $site && $plugins->has('contactUsSelector') && $this->siteSetting('contactus_append_items_browse_individual') ? $plugins->get('contactUsSelector') : null;
+
+// Can be simplified in a public theme.
+$setting = $plugins->get(isset($site) ? 'siteSetting' : 'setting');
+
+$siteSlug = isset($site) ? $site->slug() : null;
+
+$filterLocale = (bool) $setting('filter_locale_values');
+$lang = $plugins->get('lang')();
+$langValue = $filterLocale ? [$lang, ''] : null;
+
+$untitled = $translate('[Untitled]');
+
+$headingTerm = $setting('browse_heading_property_term');
+$bodyTerm = $setting('browse_body_property_term');
+
+$gridListMode = $searchConfig->subSetting('results', 'grid_list_mode', 'auto');
+
+// A list does not have html-code in a consistant user interface.
+$allowHtml = (bool) $searchConfig->subSetting('results', 'allow_html');
+
+$thumbnailMode = $searchConfig->subSetting('results', 'thumbnail_mode', 'default');
+$noThumbnail = $thumbnailMode === 'none';
+$allThumbnail = $thumbnailMode === 'all';
+$defaultThumbnail = $allThumbnail
+    ? sprintf('<img loading="lazy" src="%1$s" title="%2$s"/>', $assetUrl('thumbnails/default.png', 'Omeka', true), $translate('No media'))
+    : '';
+
+$thumbnailType = $searchConfig->subSetting('results', 'thumbnail_type', 'medium');
+?>
+<!-- RESULTS TEMPLATE BEGIN search/results.phtml -->
+
+<ul id='collection-list' class="resource-list search-results-list<?= $gridListMode === 'list_only' ? ' list' : ($gridListMode === 'grid_only' ? ' grid' : '') ?>">
+    <?php /** @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource */
+    foreach ($resources as $resource):
+        $resourceUrl = isset($site) ? $resource->siteUrl($siteSlug) : $resource->adminUrl();
+        $resourceType = $resource->getControllerName();
+        $heading = $headingTerm ? $resource->value($headingTerm, ['default' => $untitled, 'lang' => $langValue]) : $resource->displayTitle($untitled, $langValue);
+        $body = $bodyTerm ? $resource->value($bodyTerm, ['lang' => $langValue, 'default' => '']) : $resource->displayDescription(null, $langValue);
+        ?>
+        <?=
+        $partial('agile-item/card', [
+          'containerElement' => 'li',
+          'cardStyle' => 'item',
+          'item' => $resource,
+          'thumbnailType' => $thumbnailType
+        ]) ?>
+    <?php endforeach; ?>
+</ul>
+<!-- RESULTS TEMPLATE BEGIN search/results.phtml dev -->
+
+

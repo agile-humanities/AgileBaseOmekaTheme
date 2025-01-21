@@ -1,0 +1,42 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Laminas\Form\Form $form
+ * @var \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig
+ */
+
+$params = $this->params()->fromQuery() ?: [];
+$form
+    ->setData($params)
+    ->prepare();
+
+$formId = $form->getAttribute('id');
+if (!$formId) {
+    $formId = 'form-search';
+    $form->setAttribute('id', $formId);
+}
+
+// Move buttons reset and submit outside of the form.
+$reset = null;
+$submit = null;
+if ($form->has('form-reset')) {
+    $reset = $form->get('form-reset')->setAttribute('form', $formId);
+    $form->remove('form-reset');
+}
+if ($form->has('submit')) {
+    $submit = $form->get('submit')->setAttribute('form', $formId);
+    $form->remove('submit');
+}
+?>
+<!-- SEARCH-FORM TEMPLATE BEGIN search/search-form.phtml dev -->
+
+<div id="advanced-search-form-wrapper">
+    <div id="advanced-search-form">
+        <?= $this->form($form) ?>
+        <div class="search-form-buttons">
+            <?= $reset ? $this->formButton($reset) : null ?>
+            <?= $submit ? $this->formButton($submit) : null ?>
+        </div>
+    </div>
+</div>
+<!-- SEARCH-FORM TEMPLATE BEGIN search/search-form.phtml dev -->

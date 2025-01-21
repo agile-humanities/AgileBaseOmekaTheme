@@ -1,64 +1,105 @@
 <?php
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
- * @var \Omeka\Api\Representation\SiteRepresentation $site
- * @var \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchPage
+ * @var \Omeka\Api\Representation\SiteRepresentation|null $site
+ * @var \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig
  * @var \AdvancedSearch\Query $query
  * @var \AdvancedSearch\Response $response
- * @var \Omeka\Api\Representation\ItemSetRepresentation $itemSet
- * @var string $resultPart
- * @var int $documentCount
+ * @var \Omeka\Api\Representation\ItemSetRepresentation|null $itemSet
+ * @var string $resultPart "header" or "footer"
  */
 
 $plugins = $this->getHelperPluginManager();
 $translate = $plugins->get('translate');
+$translatePlural = $plugins->get('translatePlural');
 
 // Default values of the module.
 $displayParts = [
     'search_filters' => 'header',
-    'paginator' => 'header',
-    'per_pages' => 'header',
+    'active_facets' => 'none',
+    'total_results' => 'header',
+    'search_form_simple' => 'none',
+    'search_form_quick' => 'none',
+    'paginator' => 'footer',
+    'per_page' => 'header',
     'sort' => 'header',
     'grid_list' => 'header',
     'grid_list_mode' => 'auto',
 ];
-$displayParts = $searchPage ? $searchPage->setting('display', $displayParts) : $displayParts;
-$displayParts = array_filter($displayParts, function ($v) use ($resultPart) { return in_array($v, [$resultPart, 'both']); });
+$displayParts = $searchConfig ? $searchConfig->setting('results', $displayParts) : $displayParts;
+$displayParts = array_filter($displayParts, fn ($v) => in_array($v, [$resultPart, 'both']));
 
-$paginationPerPages = isset($displayParts['per_pages']) ? $searchPage->subSetting('pagination', 'per_pages') : [];
-$sortFields = isset($displayParts['sort']) ? $searchPage->subSetting('sort', 'fields') : [];
-
-// Grid list mode can also be set via Javascript if configured to remember the user’s last selection.
-// See modules/AdvancedSearch/asset/search.js and themes/ctc-19/source/js/collectionBrowser.js
-
-$gridListMode = $searchPage->subSetting('display', 'grid_list_mode', 'auto');
+$paginationPerPages = isset($displayParts['per_page']) ? ($searchConfig->subSetting('results', 'per_page_list') ?: []) : [];
+$sortFields = isset($displayParts['sort']) ? $searchConfig->subSetting('results', 'sort_list') : [];
+$gridListMode = $searchConfig->subSetting('results', 'grid_list_mode', 'auto');
 $multiMode = isset($displayParts['grid_list']) && !in_array($gridListMode, ['list_only', 'grid_only']);
 ?>
+<!-- RESULTS-HEADER-FOOTER BEGIN search/results-header-footer.phtml dev -->
 
-<!-- TEMPLATE BEGIN: search/results-header-footer.phtml -->
+<?php // Active Facets. ?>
 
-<?php if (isset($displayParts['search_filters'])): ?>
-<?= $this->searchingFilters($searchPage, $query, ['template' => 'common/search-filters-links']) ?>
+<?php if (isset($displayParts['active_facets']) && $activeFacets = $response->getActiveFacets()): ?>
+<?php $facetActives = $plugins->get('facetActives'); ?>
+<?= $facetActives(null, $activeFacets, $searchConfig->setting('facet', [])) ?>
 <?php endif; ?>
 
-<?php if (count($sortFields)): ?>
-<?= $this->searchSortSelector($query, $sortFields, true) ?>
-<?php endif; ?>
+<?php // Total results. ?>
 
-<?php if ($multiMode): ?>
-<div class="search-results-display ui-icon-container">
-    <a class="search-view-type search-view-type-list<?= $gridListMode == 'list' ? ' active' : '' ?>" href="#" title="Browse results as a list"><img class='ui-icon<?= $gridListMode == 'list' ? ' active' : '' ?>' alt="list view" src="<?= $this->assetUrl('img/svg/icons/list-neutral.svg'); ?>" data-src="<?= $this->assetUrl('img/svg/icons/list-neutral.svg'); ?>" data-src-active="<?= $this->assetUrl('img/svg/icons/list-active.svg'); ?>"></a>
-    <a class="search-view-type search-view-type-grid<?= $gridListMode == 'grid' ? ' active' : '' ?>" href="#" title="Browse results as a grid"><img class='ui-icon<?= $gridListMode == 'grid' ? ' active' : '' ?>' alt="grid view" src="<?= $this->assetUrl('img/svg/icons/masonry-neutral.svg'); ?>" data-src="<?= $this->assetUrl('img/svg/icons/masonry-neutral.svg'); ?>" data-src-active="<?= $this->assetUrl('img/svg/icons/masonry-active.svg'); ?>"></a>
+<?php if (isset($displayParts['total_results'])): ?>
+<div class="search-results-count-total">
+    <?php $totalResults = $response->getTotalResults(); ?>
+    <?= sprintf($translatePlural('%s resource', '%s resources', $totalResults), $totalResults) ?>
 </div>
 <?php endif; ?>
-<?php if ($resultPart === 'footer'): ?>
-    <!-- Footer only (results-header-footer.phtml) -->
-    <?php if (isset($displayParts['paginator'])): ?>
-        <div class="search-results-count">
-            <?= $this->pagination('common/pagination') ?>
-        </div>
-    <?php endif; ?>
-    <!-- End Footer only -->
+
+<?php // Search form simple. ?>
+
+<?php if (isset($displayParts['search_form_simple'])): ?>
+<?= $searchConfig->renderForm(['variant' => 'simple', 'skip_form_action' => true]) ?>
 <?php endif; ?>
 
-<!-- TEMPLATE END: search/results-header-footer.phtml -->
+<?php // Search form quick. ?>
+
+<?php if (isset($displayParts['search_form_quick'])): ?>
+<?= $searchConfig->renderForm(['variant' => 'quick', 'skip_form_action' => true]) ?>
+<?php endif; ?>
+
+<?php // Pagination. ?>
+
+<?php if (isset($displayParts['paginator']) && $resultPart == 'footer'): ?>
+<div class="search-results-count <?= isset($displayParts['total_results']) ? 'no-total-results' : '' ?>">
+    <?php
+    if ($itemSet && $site):
+        $redirectItemSets = $this->siteSetting('advancedsearch_redirect_itemsets', ['default' => 'browse']);
+        $redirectItemSet = $redirectItemSets[$itemSet->id()] ?? $redirectItemSets['default'] ?? 'browse';
+        echo $redirectItemSet === 'all'
+            ? $this->paginationSearch('common/pagination', $response->getTotalResults(), $response->getCurrentPage(), $response->getPerPage())
+            : $this->pagination('common/pagination');
+    else:
+        echo $this->pagination('common/pagination');
+    endif;
+    ?>
+</div>
+<?php endif; ?>
+
+<?php // Pagination per page. ?>
+
+<?php if (count($paginationPerPages)): ?>
+<?= $this->searchPaginationPerPageSelector($query, $paginationPerPages, true) ?>
+<?php endif; ?>
+
+<?php // Sort. ?>
+
+<?php if (count($sortFields)): ?>
+<?= $this->searchSortSelector($query, $sortFields, ['as_url' => true, 'label' => $searchConfig->subSetting('results', 'label_sort')]) ?>
+<?php endif; ?>
+
+<?php // Grid/list. ?>
+
+<?php if ($multiMode): ?>
+<div class="search-results-display">
+    <a class="search-view-type search-view-type-list<?= $gridListMode === 'list' ? ' active' : '' ?>" href="#"><?= $translate('list') ?></a>
+    <a class="search-view-type search-view-type-grid<?= $gridListMode === 'grid' ? ' active' : '' ?>" href="#"><?= $translate('grid') ?></a>
+</div>
+<?php endif; ?>
+<!-- RESULTS-HEADER-FOOTER END search/results-header-footer.phtml dev -->
