@@ -1,23 +1,9 @@
 /**
- *  @file collectionBrowser.js
- *
- *  Modifications to the PTD form elements
+ *  @file advancedSearchSupport.js
+ *  @description Supports the transformation of the advanced search module’s UI into the Agile Collection Browser interface
  *
  */
 
-
-/*
-  Due to a bug in the Advanced Search Module’s search.js the initial state for the browser view type
-  is set to "list" regardless of the default configuration. Sadly this does not correct the issue, it merely
-  sets the default to "grid". While we set the default mode as a class in the DOM, the document would need to be
-  loaded to retrieve this info. By that time the search.js module will already have set the default.
-
-  See /modules/AdvancedSearch/assets/search.js line 275+
-  var view_type = localStorage.getItem('search_view_type');
-    if (!view_type) {
-        view_type = 'list';
-    }
- */
 
 const searchViewType = localStorage.getItem('search_view_type')
 
@@ -29,11 +15,16 @@ if (searchViewType === null) {
 (function($) {
 
   $(document).ready(function() {
+    const mobileFilterButton = $('#mobile-filter-button');
+    const mobileCloseButton = $('#browser--mobile-close-btn');
+    const mobileBrowseControls = $('#mobile-browse-controls');
+    const facetSidebar = $('#browser-sidebar');
+    const searchResultsHeader = $('.search-results-header');
 
     // Mobile browse controls
 
-    $('#mobile-filter-button').on('click',_toggleFilterOverlay);
-    $('#aside-mobile-close-btn').on('click',_toggleFilterOverlay)
+    mobileFilterButton.on('click',_toggleFilterOverlay);
+    mobileCloseButton.on('click',_toggleFilterOverlay)
     // @todo: allow users to click off of filter overlay. To do this you must prevent propagation if a user selects a control element via event.stopPropagation()
     /*
     $('aside.search-facets').on('click',function(){
@@ -43,9 +34,33 @@ if (searchViewType === null) {
     })
     */
 
+    // Position Mobile Paginator
+    if (mobileBrowseControls.length > 0) {
+      $('.pagination--mobile').appendTo(mobileBrowseControls);
+    }
+
+    // Resets the sidebar display status when the window is resized
+
+    $(window).on('resize',() => { facetSidebar.attr('style',null) });
+
+    //
+
     function _toggleFilterOverlay() {
-      $('aside.search-facets').slideToggle(window.heartbeat);
-      $('.search-results-header').fadeToggle(window.heartbeat).css('display', 'flex');
+      // Set a delay to avoid animation race conditions
+      const delay = () => {
+        setTimeout(()=>{},window.heartbeat)
+      }
+
+      if (facetSidebar.length > 0) {
+        facetSidebar.is(':hidden') ?
+          facetSidebar.fadeIn(window.heartbeat,delay) :
+          facetSidebar.fadeOut(window.heartbeat,delay);
+      }
+      if (searchResultsHeader.length > 0) {
+        searchResultsHeader.is(':hidden') ?
+          searchResultsHeader.fadeIn(window.heartbeat,function() { $(this).css('display','flex'); delay()}) :
+          searchResultsHeader.fadeOut(window.heartbeat,delay);
+      }
     }
 
     // Collection browser support

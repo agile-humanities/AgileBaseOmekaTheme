@@ -8,6 +8,7 @@ $partial = $this->plugin('partial');
 $thumbnailer = $plugins->get('thumbnail');
 
 ?>
+<!-- SLIDESHOW BLOCK BEGIN common/block-layout/slideshow.phtml -->
 <div id="block-<?php echo $this->blockId; ?>" class="slideshow-block slideviewer-container region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
     <div class='slide-container'>
           <slide-viewer class="<?php echo $hasAudioAttachment ? 'slideshow-with-audio' : ''; ?>" option-slidesPerRow='<?php echo $optionSlidesPerRow; ?>' option-autoplay='<?php echo $optionAutoPlay; ?>' option-fade='<?php echo $optionFade; ?>' integratedcontrols>
@@ -41,13 +42,11 @@ $thumbnailer = $plugins->get('thumbnail');
                                   <?php endif; ?>
                                   <?php if (!empty($buttonText)): ?>
                                     <div class="arrow-container">
-                                    <div class='slickNext next-slide'>
-                                       <h2> <?php echo $buttonText; ?></h2>
-                                        <img class="slider-arrow" alt='Next Slide' src=<?php echo $this->assetUrl('img/svg/icons/arrow-default.svg'); ?>>
-                                        <img class="slider-arrow-black" alt='Next Slide' src=<?php echo $this->assetUrl('img/svg/icons/arrow-default-neutral.svg'); ?>>
-                                    </div>
+                                      <div class='slickNext next-slide'>
+                                         <a class="more"><?= $buttonText ?></a>
+                                      </div>
 
-                                  </div>
+                                    </div>
                                   <?php endif; ?>
                               </div>
                           </div>

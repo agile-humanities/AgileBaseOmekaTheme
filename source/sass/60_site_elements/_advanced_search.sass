@@ -18,7 +18,7 @@
   @extend %card-grid
   margin-top: rv($mobile_edge_padding_factor)
 
-  +bp($tablet)
+  +bp($ui_mobile_app_controls_breakpoint)
     margin-top: rv($edge_padding_factor)
 
 .search-results-list
@@ -36,7 +36,7 @@
 .browse-title
   margin: rv($mobile_edge_padding_factor) * 2 0
 
-  +bp($tablet)
+  +bp($ui_mobile_app_controls_breakpoint)
     margin: rv($edge_padding_factor) * 2 0
 
   h2 > span
@@ -65,7 +65,7 @@ aside
     background-color: neutral(4)
     border-radius: 0
 
-    +bp($desktop)
+    +bp($ui_mobile_app_controls_breakpoint)
       border-radius: $border_radius 0 0 $border_radius
 
     h3
@@ -81,10 +81,16 @@ aside
       padding: 0
 
   .facets-actions
+    display: flex
+
+    +bp($ui_mobile_app_controls_breakpoint)
+      flex-direction: column
+
     button
+      margin-right: $ui_element_spacing
       margin-bottom: $ui_element_spacing
 
-      +bp($desktop)
+      +bp($ui_mobile_app_controls_breakpoint)
         width: 100%
 
   .search-facet
@@ -96,35 +102,40 @@ aside
       &:hover
         text-decoration: underline
 
+  #search-refine
+    width: 100%
+    +background-icon-base('search',$btn_icon_size,'neutral','default','right')
+    background-position: right #{$ui_padding} center
+
 // @todo: scope?
 
 .pagination
   display: none
 
-  +bp($tablet)
+  +bp($ui_mobile_app_controls_breakpoint)
     display: flex
 
 .search-results-count
   > .pagination--label
     display: none
 
-    +bp($tablet)
+    +bp($ui_mobile_app_controls_breakpoint)
       display: block
 
 .search-results-header
   position: fixed
   z-index: 12
-  top: rv(3)
+  top: calc(#{$masthead_height} + #{rv($mobile_edge_padding_factor)})
   left: 0
   right: 0
-  padding: $mobile_overlay_spacing
+  padding: 0 rv($mobile_edge_padding_factor) $mobile_overlay_spacing rv($mobile_edge_padding_factor)
   width: 100%
   flex-direction: row
   justify-content: space-between
   align-items: center
   display: none
 
-  +bp($tablet)
+  +bp($ui_mobile_app_controls_breakpoint)
     display: flex
     position: initial
     top: initial
@@ -134,10 +145,9 @@ aside
     justify-content: flex-end
 
   > *
-    display: flex
-    align-items: center
-
-    +bp($tablet)
+    +bp($ui_mobile_app_controls_breakpoint)
+      display: flex
+      align-items: center
       margin-left: $ui_element_spacing
 
       &:first-child
@@ -153,9 +163,7 @@ aside
   @extend %browser-mobile-toolbar
 
 #browser--mobile-close-btn
-  position: fixed
-  top: rv($mobile_edge_padding_factor)
-  right: rv($mobile_edge_padding_factor)
+  @extend %mobile-close-btn
 
 // Template: search/results-header-footer
 

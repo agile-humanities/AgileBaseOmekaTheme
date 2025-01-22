@@ -157,7 +157,7 @@ ui_form_text_color: neutral(90)
 
 mobile_overlay_spacing: rv(2)
 ui_mobile_app_controls_footer_height: $masthead_height
-ui_mobile_app_controls_breakpoint: $tablet
+ui_mobile_app_controls_breakpoint: $desktop
 ui_display_controls_icon_size: "$ui_mobile_app_controls_footer_height * 0.5"
 
 # legacy

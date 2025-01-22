@@ -28,6 +28,8 @@ slide-viewer,
     flex-wrap: nowrap
     align-items: center
 
+.slide-item-content
+  height: 100%
 
 slide-viewer
   background-size: cover
@@ -50,10 +52,12 @@ slide-viewer
   --page-marker-transform-active: #{$page_marker_transform_active}
   --page-marker-margin: 0 #{rv(-3)}
   --sequential-control-background-size: 75%
+  --slide-item-landscape-object-fit: cover
 
   +bp($desktop)
     background-color: transparent
     height: 100%
+    --slide-item-landscape-object-fit: #{$slide_item_landscape_object_fit}
 
   .slick-slide > div, .slick-slide .card > a
     display: flex

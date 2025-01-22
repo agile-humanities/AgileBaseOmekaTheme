@@ -159,7 +159,8 @@ $this->headScript()
         <div class="search-results-wrapper<?= $displayFacets ? " with-sidebar sidebar-{$displayFacets}" : ""; ?>">
 
             <?php if ($displayFacets === 'before'): ?>
-            <aside class="search-facets">
+            <aside id="browser-sidebar" class="search-facets">
+                <a id="browser--mobile-close-btn">Close</a>
                 <?= $partial('search/facets-list') ?>
             </aside>
             <?php endif; ?>
@@ -240,6 +241,7 @@ $this->headScript()
 
         <?php if (empty($isPartial)): ?>
     </div>
+    <?= $partial('search/mobile-browse-controls'); ?>
 </div>
 <?php endif; ?>
 <!-- SEARCH TEMPLATE END search/search.phtml -->

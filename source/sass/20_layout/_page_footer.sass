@@ -5,66 +5,68 @@
  *  @description Defines page footer and navigation menus. */
 
 
-
-$mark-container-left-padding: rv(2)
 body
   > footer
-    padding: rv(4) 0 0
+    +standard_edge_padding()
     color: $white
     background-color: $black
     margin-top: auto // Always aligns to the bottom of flex container
     position: relative
 
-    .footer-content
+    *
+      color: inherit
+
+    .footer--content
       display: flex
       flex-direction: column
-      padding: rv(1)
 
       +bp($tablet)
         +inset-full()
         flex-direction: row
-        padding: rv(1)
 
-
-      .mark-container
-        width: 100%
-        padding: $mark-container-left-padding rv(1) rv(1) $mark-container-left-padding
-
-        position: relative
-
-        &:before
-          content: ''
-          position: absolute
-          height: rv(4)
-          width: rv(4)
-          top: 0
-          left: 0
+      > *
+        margin-bottom: rv($mobile_edge_padding_factor) * 2
 
         +bp($tablet)
-          max-width: 400px
+          margin-right: rv($mobile_edge_padding_factor) * 2
 
-        .pathways-mark
-          width: 100%
-          padding: 0 0 rv(0)
-          position: relative
+          &:last-child
+            margin-right: 0
 
-
-
-        p
-          +line-height(1.25)
-
-
-      .link-container
-        padding: rv(1)
-        width: 100%
+      .footer--mark-container
+        width: 40%
 
         +bp($tablet)
+          width: 25%
+          max-width: 250px
+
+        a
           display: flex
-          padding: rv(2)
-          width: 50%
-          justify-content: space-around
+          width: 100%
+          height: 100%
+
+      .footer--main
+        display: flex
+        flex-direction: column
+
+        +bp($tablet)
+          align-items: flex-start
+          flex-direction: row
+
+        ul
+          margin-top: 0
+          padding-left: 0
+          list-style-position: inside
+
+        > *
+          margin-bottom: rv($mobile_edge_padding_factor)
+
+          +bp($tablet)
+            margin-bottom: 0
+            margin-right: rv($mobile_edge_padding_factor)
 
 
+      .footer--links
         .link-list
           list-style: none
           padding: 0
@@ -85,64 +87,3 @@ body
 
             a
               @extend %inline-anchor-reverse
-
-$acs-logo-container-size: 150px
-$acs-spacing: rv(0)
-#acs
-  bottom: 0
-  right: 0
-  width: 100%
-  display: flex
-  flex-direction: row
-  flex-wrap: nowrap
-  align-items: flex-end
-  justify-content: space-between
-
-
-  +bp($tablet)
-    width: auto
-    justify-content: flex-end
-    position: absolute
-
-  .acs--text
-    padding-left: $mark-container-left-padding
-    padding-bottom: $acs-spacing
-    line-height: 1
-
-    +bp($tablet)
-      text-align: right
-    a
-      @extend %inline-anchor-reverse
-
-  .acs--cutout
-    width: $acs-logo-container-size
-    height: $acs-logo-container-size
-    position: relative
-    margin-left: rv(0)
-    overflow: hidden
-
-    &:before
-      content: ''
-      position: absolute
-      background-color: $white
-      border-radius: 50%
-      width: 200%
-      height: 150%
-      top: 0
-      left: 0
-
-    > a
-      display: flex
-      flex-wrap: nowrap
-      justify-content: flex-end
-      align-items: flex-end
-      width: 100%
-      height: 100%
-
-    img
-      display: block
-      width: 70%
-      height: auto
-      z-index: 1
-      transform: translateX(#{$acs-spacing * -1}) translateY(#{$acs-spacing * -1})
-

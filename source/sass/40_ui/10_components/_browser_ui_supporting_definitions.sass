@@ -1,3 +1,6 @@
+$list_item_figure_width: 25%
+
+
 %list-item
   width: 100%
   margin-bottom: rv(2)
@@ -18,16 +21,25 @@
     border-style: solid
     border-collapse: collapse
     overflow: hidden
+    position: relative
 
     &:hover
       border-color: $impact
 
   figure
-    +proportional-height(25%,0.75)
-    min-width: 25% // TODO: collapses to image width otherwise, but why?
+    width: 25%
+    min-width: 25%
+    padding: rv($mobile_edge_padding_factor) 0 rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor)
 
-    &:before
-      background: none
+    +bp($ui_mobile_app_controls_breakpoint)
+      width: auto
+      min-width: auto
+      padding: 0
+      position: absolute
+      top: 0
+      left: 0
+      right: calc(100% - #{$list_item_figure_width})
+      bottom: 0
 
     img
       width: 100%
@@ -43,12 +55,12 @@
   .item-description
     line-height: 1.5
 
-  .more
-    margin-top: 0
-
   .item-info
     border: 0 !important
-    padding: rv($mobile_edge_padding_factor) !important
+    padding: rv($mobile_edge_padding_factor)
+
+    +bp($ui_mobile_app_controls_breakpoint)
+      padding: rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor) calc(#{$list_item_figure_width} + #{rv($edge_padding_factor)})!important
 
 %exposed-facet
   background-color: neutral(2)

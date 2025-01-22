@@ -13,8 +13,15 @@
 slide-item
   isolation: isolate
   position: relative
+
+  a
+    text-decoration: none
+
+  .more
+    +icon_with_label_right('arrow',$btn_icon_size,'reversed','active')
+
   p:last-of-type
-    margin-bottom: rv(-5)
+    margin-bottom: $paragraph_spacing
 
   .card
 
@@ -38,8 +45,10 @@ slide-item
     perspective-origin: 50%
     color: $white
 
+
     h2, .deck, .item-label
       color: inherit
+
     p
       @extend %small-text
       color: $white
@@ -47,18 +56,35 @@ slide-item
       &:last-of-type
         margin-bottom: 0
 
+    [slot=slide-content]
+      &:before
+        background-color: $black
+        opacity: 0.8
+
+    [slot=slide-caption]
+      padding-top: 0
+      border: 0
+      justify-content: center
+      max-height: 80%
+      overflow-x: scroll
+
     img
       border-radius: $card-border-radius
+      height: 60%
+      width: auto
+      object-fit: cover
+
+      + .slide-title-content
+          margin-top: rv($edge_padding_factor)
 
   [slot="slide-content"]
-    +gradient-overlay-slide()
+    +gradient-overlay-slide($black,60%)
     position: absolute
     top: 0
     left: 0
     right: 0
     bottom: 0
     z-index: 0
-
   $integrated_nav_height: 34px
 
   [slot='slide-caption']

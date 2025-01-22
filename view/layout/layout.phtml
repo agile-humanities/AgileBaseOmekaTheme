@@ -119,19 +119,20 @@ if (!empty($this->userBar())) {
           </div>
         </section>
         <footer class="full">
-          <section class="footer-content">
-            <div class="mark-container">
-              <?php if ($this->themeSetting('logo')): ?>
-                <img src="<?= $this->themeSettingAssetUrl('logo'); ?>" alt="<?= $escape($siteTitle); ?>" />
-              <?php else: ?>
-                <?= $escape($siteTitle); ?>
-              <?php endif; ?>
+          <section class="footer--content">
+            <div class="footer--mark-container">
+              <a href="<?= $site->url() ?>">
+                <?php if ($this->themeSetting('footer_logo')): ?>
+                  <img src="<?= $this->themeSettingAssetUrl('footer_logo'); ?>" alt="<?= $escape($siteTitle); ?>" />
+                <?php else: ?>
+                  <img src="<?= $this->assetUrl("img/svg/marks/logo_reversed.svg"); ?>" alt="<?= $escape($siteTitle); ?>" />
+                <?php endif; ?>
+              </a>
             </div>
-            <div class="footer-main">
+            <div class="footer--main">
               <div class="footer--text">
                 <?php if (!empty($this->themeSetting('footer'))): ?>
                   <?= $this->themeSetting('footer') ; ?>
-                  <hr class="horizontal">
                 <?php endif; ?>
               </div>
               <div class="footer--links">
