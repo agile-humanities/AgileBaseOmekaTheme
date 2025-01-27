@@ -55,6 +55,8 @@ if (!empty($this->userBar())) {
         <link rel="icon" type="image/png" href=<?= $this->assetUrl('img/png/favicon/favicon.png'); ?>>
         <?= $this->headStyle(); ?>
         <?= $this->headScript(); ?>
+        <link href=<?= $this->assetUrl('../user-stylesheet.css'); ?> media="screen" rel="stylesheet" type="text/css">
+        <script src=<?= $this->assetUrl('../user-scripts.js'); ?>></script>
     </head>
 
     <?= $this->htmlElement('body'); ?>
