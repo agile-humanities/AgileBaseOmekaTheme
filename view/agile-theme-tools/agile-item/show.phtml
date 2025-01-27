@@ -145,8 +145,10 @@ if ($hasMedia) {
           <source src="<?= $escapeAttr($source) ?>"  type="<?= $mediaType ?>" />
         </video>
       <?php
+      elseif ($mirador):
+        echo $this->mirador($item);
 
-      // Will display both Mirador and UV. UV must be suppressed via CSS.
+      // This will display UV or other media players assigned to view.show.after.
       else:
         $this->trigger("view.show.after");
       endif;
