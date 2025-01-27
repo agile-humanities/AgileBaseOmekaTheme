@@ -1,6 +1,7 @@
 # Ignore build files
 
-/asset
+# distributed version has precompiled asset folder
+# /asset
 /node_modules
 
 # Ignore Mac file system
