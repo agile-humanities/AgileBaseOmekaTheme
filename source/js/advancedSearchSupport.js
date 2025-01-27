@@ -41,9 +41,10 @@ if (searchViewType === null) {
 
     // Resets the sidebar display status when the window is resized
 
-    $(window).on('resize',() => { facetSidebar.attr('style',null) });
-
-    //
+    $(window).on('resize',() => {
+        facetSidebar.attr('style', null)
+        mobileCloseButton.attr('style', null)
+      });
 
     function _toggleFilterOverlay() {
       // Set a delay to avoid animation race conditions
