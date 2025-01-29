@@ -21,11 +21,13 @@ $pagination_bullet_size: rv(-3)
   border: 1px solid transparent
   border-radius: $ui_border_radius
   width: fit-content
-  padding: $pagination_ui_gap
+  padding: $pagination_ui_gap 0
   color: neutral(80)
 
   +bp($tablet)
     display: flex
+    justify-content: space-between
+    width: 100%
 
   .for-js
     display: none
@@ -35,6 +37,8 @@ $pagination_bullet_size: rv(-3)
   text-align: center
   @extend %small-text
 
+.pagination--pagenav
+  display: flex
 
 .pagination--arrows
   display: flex
@@ -46,7 +50,10 @@ $pagination_bullet_size: rv(-3)
         content: none // Override default
 
   & + .pagination--bullets
-    margin-left: rv(2)
+    margin-left: $ui_element_spacing
+
+  & + .pagination--arrows
+    margin-left: $ui_element_spacing
 
   .pagination--label
     margin: 0 rv(2)
@@ -89,9 +96,8 @@ $pagination_bullet_size: rv(-3)
       display: block
       height: $pagination_bullet_size
       width: $pagination_bullet_size
-      background-color: $white
-      border: 1px solid $white
-      border-radius: 50%
+      background: no-repeat url(get_svg_url('icons/pip-default'))
+      background-size: contain
 
     &:focus
       color: $black
@@ -100,4 +106,4 @@ $pagination_bullet_size: rv(-3)
       color: $impact
 
       &:before
-        background-color: $impact
+        background-image: url(get_svg_url('icons/pip-active'))
