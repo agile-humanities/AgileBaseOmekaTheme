@@ -15,77 +15,12 @@
 // ITEM CONTAINER
 // =======================
 
-.item-container
-  margin-bottom: rv($block_spacing)
-  display: flex
-  flex-direction: column-reverse
-
-  +bp($tablet)
-    max-width: 100%
-
-  +bp($desktop)
-    $item_container_object_spacing: rv($edge_padding_factor)
-    display: grid
-    grid-template-columns: 100%
-    grid-template-columns: calc(50% - #{$item_container_object_spacing * 0.5}) calc(50% - #{$item_container_object_spacing * 0.5}) // using this instead of 1fr because Universal Viewer is miscalculating its size
-    grid-column-gap: $item_container_object_spacing
-    max-width: 100%
-
-  // transcription links
-
-  .transcription-link
-    margin-top: rv(-1)
-
-  .transcription-link a
-    text-decoration: underline
-    font-size: font-value(0)
-
-  .transcription-link a:hover,
-  .transcription-link a:focus
-    color: $clr3
-    border-bottom: none
-
-
-// =======================
-// ITEM VIEWER & ITEM INFO
-// =======================
-
-.item-viewer
-  width: 100%
-  border-top-width: 10px
-  border-top-style: solid
-
-  .media-render
-    width: 100%
-    +proportional-height(100%,.5625)
-    background: black
-    display: flex
-    justify-content: center
-    align-items: center
-    +standard_edge_padding
-
-    iframe
-      +proportional-height(100%,.5625)
-
-  #viewer-support
-    margin-top: rv($mobile_edge_padding_factor)
-
-    +bp($tablet)
-      margin-top: rv($edge_padding_factor)
-
-
-.item-info
-  .informations-panel
-    max-height: rv(12)
-    overflow: scroll
-    overflow-x: hidden
-
-
+.item.show
   h1
     word-wrap: break-word
 
   h1 + .description, .subtitle + .description
-    margin-top: rv(-1)
+    margin-top: rv($mobile_edge_padding_factor)
 
   .metadata-list
     +metadata-list(1,3,5)
@@ -94,71 +29,100 @@
 
 
     +bp($desktop)
-      padding: rv($mobile_edge_padding_factor) 0
+      padding: rv($edge_padding_factor) 0
 
+  .item-container
+    margin-bottom: rv($block_spacing)
+    display: flex
+    flex-direction: column-reverse
 
-.container-with-tabs-and-panels
-  .contributor
-    margin-top: rv(1)
-    font-style: italic
-    font-size: rv(2)
+    +bp($tablet)
+      max-width: 100%
 
+    +bp($desktop)
+      $item_container_object_spacing: rv($edge_padding_factor)
+      display: grid
+      grid-template-columns: 100%
+      grid-template-columns: calc(50% - #{$item_container_object_spacing * 0.5}) calc(50% - #{$item_container_object_spacing * 0.5}) // using this instead of 1fr because Universal Viewer is miscalculating its size
+      grid-column-gap: $item_container_object_spacing
+      max-width: 100%
 
-// =======================
-// RIGHTS
-// =======================
+    // transcription links
 
-.rights
-  display: flex
-  flex-direction: column
-  padding-top: rv(-1)
-  align-items: flex-start
+    .transcription-link
+      margin-top: rv(-1)
 
-
-  +bp($desktop)
-    align-items: flex-start
-
-
-
-// =======================
-// FULL METADATA
-// =======================
-
-.item-metadata-block
-  +metadata-block()
-
-/**
-  ITEM W/ METADATA EXHIBIT BLOCK
- **/
-
-.item-with-metadata
-  .item-metadata-block
-    &:before
-      background: none
-
-    .subject-title
-      color: $black
+    .transcription-link a
       text-decoration: underline
+      font-size: font-value(0)
 
-      &:hover, &.focus
-        color: $clr2
+    .transcription-link a:hover,
+    .transcription-link a:focus
+      color: $clr3
+      border-bottom: none
 
 
+  // =======================
+  // ITEM VIEWER
+  // =======================
 
-/**
- *  RELATED ITEMS
- */
-
-#related-items
-  @extend %browser-container
-  padding: rv($mobile_edge_padding_factor) !important
-
-  +bp($tablet)
-    padding: rv($edge_padding_factor) !important
-
-  .browse-title
+  .item-viewer
     width: 100%
-    margin-bottom: rv(1)
+    border-top-width: 10px
+    border-top-style: solid
 
-    span
-      color: $impact
+    .media-render
+      width: 100%
+      +proportional-height(100%,.5625)
+      background: black
+      display: flex
+      justify-content: center
+      align-items: center
+      +standard_edge_padding
+
+      iframe
+        +proportional-height(100%,.5625)
+
+    #viewer-support
+      margin-top: rv($mobile_edge_padding_factor)
+
+      +bp($tablet)
+        margin-top: rv($edge_padding_factor)
+
+
+
+
+  .container-with-tabs-and-panels
+    .contributor
+      margin-top: rv(1)
+      font-style: italic
+      font-size: rv(2)
+
+  .item-metadata-block
+    +metadata-block()
+
+  .item-with-metadata
+    .item-metadata-block
+      &:before
+        background: none
+
+      .subject-title
+        color: $black
+        text-decoration: underline
+
+        &:hover, &.focus
+          color: $clr2
+
+  #related-items
+    @extend %browser-container
+    padding: rv($mobile_edge_padding_factor) !important
+
+    +bp($tablet)
+      padding: rv($edge_padding_factor) !important
+
+    .browse-title
+      width: 100%
+      margin-bottom: rv(1)
+
+      span
+        color: $impact
