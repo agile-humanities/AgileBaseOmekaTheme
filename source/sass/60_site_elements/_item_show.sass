@@ -75,21 +75,6 @@
 
 
 .item-info
-  .key-metadata
-    margin-top: rv(-1)
-
-    .metadata-list
-      +separated_row(1,1,1px) // the last argument adds a rule between each grid line as a pseudo-element
-
-      +bp($tablet)
-        +separated_row(3,$edge_padding_factor,1px)
-
-      +bp($desktop)
-        +separated_row(5,$edge_padding_factor,1px)
-
-      .metadata-label
-        padding-top: rv(-1)
-
   .informations-panel
     max-height: rv(12)
     overflow: scroll
@@ -103,10 +88,13 @@
     margin-top: rv(-1)
 
   .metadata-list
-    +bp($desktop)
-      padding-bottom: rv($edge_padding_factor)
-      border-bottom: 1px solid neutral(30)
+    +metadata-list(1,3,5)
+    padding: rv($mobile_edge_padding_factor) 0
+    border-bottom: 1px solid neutral(60)
 
+
+    +bp($desktop)
+      padding: rv($mobile_edge_padding_factor) 0
 
 
 .container-with-tabs-and-panels
@@ -137,50 +125,7 @@
 // =======================
 
 .item-metadata-block
-  background-color: neutral(90)
-  color: $white
-  max-width: 100%
-  padding: rv($mobile_edge_padding_factor) !important
-  position: relative
-  overflow: hidden
-
-  a
-    @extend %inline-anchor-reverse
-    text-decoration: none
-    &:hover
-      color: $clr1
-
-
-  +bp($desktop)
-    padding: rv($edge_padding_factor)  !important
-
-  .metadata-list
-    //Breakpoints
-    +separated_row(1,$mobile_edge_padding_factor,1px) // the last argument adds a rule between each grid line as a pseudo-element
-
-    +bp($tablet)
-      +separated_row(3,$edge_padding_factor,1px)
-
-    +bp($desktop)
-      +separated_row(6,$edge_padding_factor,1px)
-
-  h2
-    color: $white
-    margin-top: 0
-    font-family: $basefont
-  span
-    font-style: italic
-
-
-  // this will enforce padding below the rule
-
-  .property > *:first-child
-    padding-top: rv($mobile_edge_padding_factor)
-
-    +bp($desktop)
-      padding-top: rv($edge_padding_factor)
-
-
+  +metadata-block()
 
 /**
   ITEM W/ METADATA EXHIBIT BLOCK

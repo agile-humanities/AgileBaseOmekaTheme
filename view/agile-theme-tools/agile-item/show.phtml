@@ -56,12 +56,18 @@ foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $
         [
           'property' => $value->jsonSerialize()['property_id'],
           'type' => 'eq',
-          'text' => $value->value(),
+          'text' => [$value->value()],
         ],
       ],
     ];
     $response = $this->api()->search('items',$query);
+    $limit = 24;
+    $i=1;
     foreach($response->getContent() as $itemRepresentation) {
+      if ($i >= $limit) {
+        continue;
+      }
+      $i++;
       $id = $itemRepresentation->id();
       // Filter out the current item
       if ($id !== $item->id()) {
@@ -145,8 +151,8 @@ if ($hasMedia) {
           <source src="<?= $escapeAttr($source) ?>"  type="<?= $mediaType ?>" />
         </video>
       <?php
-      elseif ($mirador):
-        echo $this->mirador($item);
+        elseif ($mirador):
+          echo $this->mirador($item);
 
       // This will display UV or other media players assigned to view.show.after.
       else:
@@ -251,12 +257,12 @@ if ($hasMedia) {
       </div>
   </div>
 </div>
-<div class='item-metadata-block'>
+<div class='item-metadata-block reversed'>
   <header>
     <h2>Full Metadata</h2>
   </header>
 
-  <div class='metadata-list reversed'>
+  <div class='metadata-list'>
     <?php echo $item->displayValues(); ?>
     <div class="property">
         <?php $itemSets = $item->itemSets(); ?>
