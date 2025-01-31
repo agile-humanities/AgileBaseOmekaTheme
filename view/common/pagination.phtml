@@ -1,10 +1,10 @@
 <! -- START OF /COMMON/PAGINATION.PHTML -->
 <?php
 $translate = $this->plugin('translate');
-$previousArrowImgSrc = $this->assetUrl('img/svg/icons/arrow-left-reversed.svg');
-$previousArrowHoverImgSrc = $this->assetUrl('img/svg/icons/left-arrow-active.svg');
-$nextArrowImgSrc = $this->assetUrl('img/svg/icons/arrow-reversed.svg');
-$nextArrowHoverImgSrc = $this->assetUrl('img/svg/icons/right-arrow-active.svg');
+$previousArrowImgSrc = $this->assetUrl('img/svg/icons/arrow-left-neutral.svg');
+$previousArrowHoverImgSrc = $this->assetUrl('img/svg/icons/arrow-left-active.svg');
+$nextArrowImgSrc = $this->assetUrl('img/svg/icons/arrow-neutral.svg');
+$nextArrowHoverImgSrc = $this->assetUrl('img/svg/icons/arrow-active.svg');
 
 $previousArrowImg = "<img src='{$previousArrowImgSrc}' data-src='{$previousArrowImgSrc}' data-src-active='{$previousArrowHoverImgSrc}' alt='left arrow' />";
 $nextArrowImg = "<img src='{$nextArrowImgSrc}' data-src='{$nextArrowImgSrc}' data-src-active='{$nextArrowHoverImgSrc}' alt='left arrow' />";
@@ -30,15 +30,6 @@ $filterBtnImg = "<img src='{$filterBtnImgSrc}' data-src='{$filterBtnImgSrc}' dat
     <span class='for-js per-page'><?php echo $perPage ?></span>
     <span class='for-js pagination--count'><?php echo $pageCount?></span>
 
-    <div class="pagination--arrows">
-        <?php if ($currentPage != 1): ?>
-            <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>","{$pagelessUrl}?page={$prevPage}", 'previous o-icon-prev',$translate('Previous'), $translate('Previous'),$previousArrowImg); ?>
-        <?php else: ?>
-            <span class="previous explore-left inactive"></span>
-        <?php endif; ?>
-    </div>
-
-
     <ul class='pagination--bullets'>
         <?php if (strpos($pagelessUrl, '?') !== false) : ?>
             <?php
@@ -57,12 +48,21 @@ $filterBtnImg = "<img src='{$filterBtnImgSrc}' data-src='{$filterBtnImgSrc}' dat
         <?php endif ?>
     </ul>
 
-    <div class="pagination--arrows">
-        <?php if ($currentPage < $pageCount): ?>
-            <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>", "{$pagelessUrl}?page={$nextPage}", 'next o-icon-next',$translate('Next'), $translate('Next'),$nextArrowImg); ?>
-        <?php else: ?>
-            <span class="next explore-right inactive"></span>
-        <?php endif; ?>
+    <div class="pagination--pagenav">
+        <div class="pagination--arrows">
+            <?php if ($currentPage != 1): ?>
+                <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>","{$pagelessUrl}?page={$prevPage}", 'previous o-icon-prev',$translate('Previous'), $translate('Previous'),$previousArrowImg); ?>
+            <?php else: ?>
+                <span class="previous explore-left inactive"></span>
+            <?php endif; ?>
+        </div>
+        <div class="pagination--arrows">
+            <?php if ($currentPage < $pageCount): ?>
+                <?php printf("<a href='%s' class='%s' tabindex=0 title='%s' aria-label='%s'>%s</a>", "{$pagelessUrl}?page={$nextPage}", 'next o-icon-next',$translate('Next'), $translate('Next'),$nextArrowImg); ?>
+            <?php else: ?>
+                <span class="next explore-right inactive"></span>
+            <?php endif; ?>
+        </div>
     </div>
 
 <?php else: ?>
@@ -90,9 +90,7 @@ $filterBtnImg = "<img src='{$filterBtnImgSrc}' data-src='{$filterBtnImgSrc}' dat
             <?php else: ?>
                 <span class="next explore-right inactive"></span>
             <?php endif; ?>
-
         </div>
-
     </div>
 </div>
 

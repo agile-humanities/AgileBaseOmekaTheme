@@ -1,0 +1,69 @@
+/*
+ * @file _card
+ * @group 40_ui/10_components/
+ * @description Defines a basic list view. This particular design is more of a horizontal card than an minimal list.
+ */
+
+$list_item_figure_width: 25%
+
+
+%list-item
+  width: 100%
+  border-top-left-radius: 0 !important
+  border-bottom-left-radius: 0 !important
+
+
+  > *
+    width: 100%
+    display: flex
+    flex-direction: row
+    align-items: flex-start
+    justify-content: flex-start
+    text-decoration: none
+    background: $white
+    border-color: $black
+    border-width: 0 0 0 10px
+    border-style: solid
+    border-collapse: collapse
+    overflow: hidden
+    position: relative
+
+    &:hover
+      border-color: $impact
+
+  figure
+    width: $list_item_figure_width
+    min-width: $list_item_figure_width
+    padding: rv($mobile_edge_padding_factor) 0 rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor)
+
+    +bp($ui_mobile_app_controls_breakpoint)
+      width: auto
+      min-width: auto
+      padding: 0
+      position: absolute
+      top: 0
+      left: 0
+      right: calc(100% - #{$list_item_figure_width})
+      bottom: 0
+
+    img
+      width: 100%
+      height: 100%
+      object-fit: cover
+
+    &.figure-portrait
+      img
+        height: 100%
+        width: 100% // Portrait cards cover their containers and are cut off in this treatment.
+        margin: 0 auto
+        background-position: top
+
+  .item-description
+    line-height: 1.5
+
+  .item-info
+    border: 0 !important
+    padding: rv($mobile_edge_padding_factor)
+
+    +bp($ui_mobile_app_controls_breakpoint)
+      padding: rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor) calc(#{$list_item_figure_width} + #{rv($edge_padding_factor)})!important

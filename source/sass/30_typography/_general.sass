@@ -87,7 +87,7 @@ label, .label, .metadata-label
   & + .value, & + .values, & + .metadata-value
     margin-top: rv(-4)
 
-.read-more-link, .more
+.read-more-link
   @extend %inline-anchor-block
   +font-size(-1)
   margin-right: rv($mobile_edge_padding_factor)
@@ -125,3 +125,13 @@ fieldset, .field
     color: $white
     background-color: set-color(2)
 
+
+.rights
+  display: flex
+  flex-direction: column
+  padding-top: rv(-1)
+  align-items: flex-start
+
+
+  +bp($desktop)
+    align-items: flex-start

@@ -1,0 +1,73 @@
+/*
+ * @file _card
+ * @group 40_ui/10_components/
+ * @description Defines a basic card
+ */
+
+
+%card
+  display: block
+  background: $white
+  border: 1px solid $ui_border_color
+  border-radius: $card-border-radius
+  border-collapse: collapse
+  overflow: hidden
+
+  a
+    text-decoration: none
+
+    &:hover
+      color: $black
+
+  figure
+    overflow: hidden
+    height: 100%
+    +proportional_height(100%,0.75)
+
+    @at-root .masonry-grid &
+
+      &:before
+        content: unset
+
+  img
+    transition-duration: $slow
+    height: 100%
+    width: 100%
+    object-fit: cover
+
+    @at-root .masonry-grid &
+      height: auto
+      object-fit: initial
+      position: relative
+
+
+
+
+
+    &.img-portrait
+      object-fit: cover
+      max-height: 600px
+
+  &:hover
+    border-color: $impact
+
+    img
+      transform: scale3d(1.07,1.07,1.07)
+
+  @at-root .visible &
+    +fadeInUp()
+
+  .item-info
+    padding: rv($mobile_edge_padding_factor)
+    border-top-width: 10px
+    border-top-style: solid
+
+  .item-sublabel
+    margin: rv(-3) 0
+
+  .item-description
+    @extend %small-text
+    line-height: map-get($line_heights,'tight')
+
+  .more
+    margin-top: rv($edge_padding_factor)

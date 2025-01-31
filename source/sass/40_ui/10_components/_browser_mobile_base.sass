@@ -1,0 +1,77 @@
+%mobile-close-btn
+  +icon_with_label_right('close')
+  position: fixed
+  top: rv($mobile_edge_padding_factor)
+  right: rv($mobile_edge_padding_factor)
+
+
+%browser-mobile-toolbar
+  position: fixed
+  left: 0
+  right: 0
+  bottom: 0
+  height: $mobile_filter_height
+  z-index: 4
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+  background: $black
+  padding: rv($mobile_edge_padding_factor)
+  border-top: 3px solid $white
+
+  +bp($ui_mobile_app_controls_breakpoint)
+    display: none
+
+  // Filter menu
+
+  > a
+    display: flex
+    color: $white
+    height: 100%
+    flex-direction: row
+    align-items: center
+    width: 50vw
+
+    img
+      width: auto
+      height: rv(1)
+      margin-right: rv(-1)
+
+  .pagination--label, .search-view-type
+    color: $white
+
+%browser-mobile-paginator
+  position: fixed
+  height: $ui_mobile_app_controls_footer_height
+  padding: rv($mobile_edge_padding_factor)
+  display: flex
+  justify-content: flex-end
+  align-items: center
+  bottom: 0
+
+  +bp($desktop)
+    display: none
+
+
+%browser-mobile-toolbar
+  position: fixed
+  left: 0
+  right: 0
+  bottom: 0
+  height: $ui_mobile_app_controls_footer_height
+  z-index: 11
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+  background: $black
+  padding: rv($mobile_edge_padding_factor)
+  border-radius: 0 !important // Erroneously inherits a border radius in some contexts
+
+  +bp($ui_mobile_app_controls_breakpoint)
+    display: none
+
+  .filter-btn
+    color: $white
+    +icon_with_label('filter',$btn_icon_size, 'reversed','active','left')

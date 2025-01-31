@@ -1,0 +1,70 @@
+/*
+ * @file _browser_display_mode_controls
+ * @group 40_ui/10_components/
+ * @description Defines the display mode toggle (list/grid) in browser uis
+ */
+
+
+// Display mode controls
+// Does not display controls on mobile by default, as there is not much difference between the list and grid views
+// at this viewport size. To display these controls on mobile, change to “display: flex”
+
+%ui-display-mode-controls
+  display: none
+  position: fixed
+  height: $masthead_height
+  right: rv($mobile_edge_padding_factor)
+  bottom: 0
+  align-items: center
+  z-index: 11
+  color: $white
+
+  > *
+    margin-left: $ui_element_spacing
+
+
+  +bp($ui_mobile_app_controls_breakpoint)
+    display: flex
+    position: initial
+    bottom: unset
+    z-index: unset
+    color: initial
+    right: unset
+    height: $ui_element_height
+
+  label
+    color: $white
+    @extend %labels-controls
+
+    +bp($ui_mobile_app_controls_breakpoint)
+      color: initial
+
+  ul
+    +horizontal-list()
+
+  .vat-tab
+    filter: brightness(10) // Invert the control buttons on mobile
+
+    &:hover, &.active
+      filter: brightness(5)
+
+    +bp($ui_mobile_app_controls_breakpoint)
+      filter: none
+
+      &:hover, &.active
+        filter: none
+
+  .card_view
+    +background-icon-right('grid')
+
+  .list, .list_view
+    +background-icon-right('list')
+
+  .masonry
+    +background-icon-right('masonry')
+
+  .grid
+    +background-icon-right('grid')
+
+  .vat-tab
+    @extend %control-icon

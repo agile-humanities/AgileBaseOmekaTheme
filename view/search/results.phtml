@@ -39,6 +39,7 @@ $headingTerm = $setting('browse_heading_property_term');
 $bodyTerm = $setting('browse_body_property_term');
 
 $gridListMode = $searchConfig->subSetting('results', 'grid_list_mode', 'auto');
+$masonry = $masonry ?? true;
 
 // A list does not have html-code in a consistant user interface.
 $allowHtml = (bool) $searchConfig->subSetting('results', 'allow_html');
@@ -54,7 +55,7 @@ $thumbnailType = $searchConfig->subSetting('results', 'thumbnail_type', 'medium'
 ?>
 <!-- RESULTS TEMPLATE BEGIN search/results.phtml -->
 
-<ul id='collection-list' class="resource-list search-results-list<?= $gridListMode === 'list_only' ? ' list' : ($gridListMode === 'grid_only' ? ' grid' : '') ?>">
+<ul id='collection-list' class="resource-list search-results-list<?= $masonry ? ' masonry-grid' : ''?><?= $gridListMode === 'list_only' ? ' list' : ($gridListMode === 'grid_only' ? ' grid' : '') ?>">
     <?php /** @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource */
     foreach ($resources as $resource):
         $resourceUrl = isset($site) ? $resource->siteUrl($siteSlug) : $resource->adminUrl();

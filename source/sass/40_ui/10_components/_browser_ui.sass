@@ -1,0 +1,100 @@
+/**
+ *  @file _browser_ui_definintions.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *  @description Common definitions for card browsers.
+ *  @alsosee js/advancedSearchSupport.js, and js/masonryCardGrid.js, other components in 40_ui/10_components
+ *
+ **/
+
+
+// Create a root variable that can be retrieved in javascript.
+// Used to set the gutter width for Masonry views, which requires
+// it to be manually set. See js/01_masonryCardGrid.js
+
+$grid_gap_size: rv($grid_gap_factor)
+$mobile_sidebar_content_clearance: 150px // The browser <aside> contents need to clear some absolutely positioned controls.
+
+\:root
+  --grid-gap-size: #{strip-unit(convert($grid_gap_size,'px'))}
+// General wrapper for all browser items
+
+%browser-container
+  background-color: neutral(2)
+
+// Applies to the container with a sidebar and results area.
+// Drupal does not require this as facets are assigned to sidebars as blocks,
+// but Omeka and other systems must manage their own browser grid
+
+%browser-container-grid
+  display: grid
+  grid-column-gap: rv(1)
+  grid-template-columns: 1fr
+
+  // Includes <aside>, which is hidden on mobile
+  +bp($ui_mobile_app_controls_breakpoint)
+    grid-template-columns: minmax(min-content,#{$left_sidebar_width}) 1fr
+
+  &.sidebar-after
+    +bp($ui_mobile_app_controls_breakpoint)
+      grid-template-columns: 1fr minmax(min-content,#{$right_sidebar_width})
+
+
+// Apply to sidebars with facet browsers. Turns them into overlay controls on
+// mobile. Works with js/processExposedFacetsSidebar.js (currently in theme)
+
+%browser-sidebar
+  display: none // Hidden by default. Managed by js at this viewport
+  position: fixed
+  top: 0
+  bottom: $ui_mobile_app_controls_footer_height
+  left: 0
+  right: 0
+  z-index: 11
+  overflow-y: scroll
+  transition: height $heartbeat ease-in // Manage transition when filter button is tapped
+  padding: $mobile_sidebar_content_clearance rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor)
+
+  // Previous implementation had fly-up animation that proved buggy. @todo: revisit
+  //height: 0
+  //padding: 0 // padding must be set to zero so that it doesn't force open the height. See https://stackoverflow.com/posts/20827604/revisions
+
+  // &.active
+  //  height: calc(100vh - #{$masthead_height} - #{$ui_mobile_app_controls_footer_height})
+  //  padding: rv($mobile_edge_padding_factor)
+
+  +bp($ui_mobile_app_controls_breakpoint)
+    display: initial
+    position: initial
+    height: auto
+    bottom: initial
+    left: initial
+    right: initial
+    z-index: unset
+    padding: rv($edge_padding_factor)
+
+    &.active
+      height: auto
+
+  input, button
+    max-width: 100%
+    min-width: auto
+
+  h2
+    font-size: clamped(2,3)
+    font-weight: normal
+    margin-top: 0
+
+  .search-facets-list
+    overflow: scroll
+
+    +bp($desktop)
+      overflow: auto
+
+  #form-facets
+    height: calc(70vh - #{$mobile_filter_height})
+    overflow-y: scroll
+
+    +bp($desktop)
+      height: auto
+      overflow-y: auto

@@ -1,11 +1,20 @@
 /* eslint-disable max-len, no-underscore-dangle, no-console, no-control-regex*/
 
+/*
+ *    @file 01_masonryCardGrid.js
+ *    @description  Adds the masonry library to card grid presentations.
+ *    @usage  Add a .masonry-grid class to the card container. Only applies to desktop breakpoints by default
+ *      adjust the masonryBreakpoint to breakpoint_mobile or breakpoint_tablet or 0 to change
+ */
+
 (function jQ($) {
 
     $(document).ready(function masonry() {
         let gridGapSize = 16; // should be value of rv($grid_gap_factor), in pixels
 
         let style = getComputedStyle(document.body);
+
+        const masonryBreakpoint = breakpoint_desktop;
 
         // Grid gap size is set as a root variable in sass/40_ui/_browser_ui_definitions
         // It is used to ensure that masonry’s calculations work correctly
@@ -15,7 +24,6 @@
         }
 
         const masonryContext = [
-          "#collection-list",
           ".masonry-grid"
         ];
 
@@ -44,7 +52,7 @@
 
                 function initCollectionBrowserGrid() {
 
-                    if (_this.hasClass("grid") && window.outerWidth >= breakpoint_desktop) {
+                    if (_this.hasClass("grid") && window.outerWidth >= masonryBreakpoint) {
                         _this.imagesLoaded(function() {
                             _this.masonry({
                                 "itemSelector": ".card",
@@ -55,7 +63,7 @@
                         });
                     }
 
-                    if (_this.hasClass("list") || window.outerWidth < breakpoint_desktop) {
+                    if (_this.hasClass("list") || window.outerWidth < masonryBreakpoint) {
 
                         if (typeof _this.masonry === "function") {
 

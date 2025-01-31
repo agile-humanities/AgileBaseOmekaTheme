@@ -1,0 +1,50 @@
+/*
+ * @file _card_grid
+ * @group 40_ui/10_components/
+ * @description Defines a basic grid of cards
+ * @usage  For masonry grids, add the .masonry-grid class to the container. Works in conjunction
+ *   with js/01_masonryCardGrid.js
+ */
+
+%card-grid
+  padding: 0
+  margin: 0
+
+  &.grid
+    +separated-row(1)
+
+    +bp($tablet)
+      +separated-row(2)
+
+    +bp($desktop)
+      +separated-row(3)
+
+      &.masonry-grid
+        display: block
+        width: 100%
+
+    .card
+      width: 100%
+      height: 100%
+
+      > *
+        display: flex
+        flex-direction: column
+        height: 100%
+
+        +bp($desktop)
+          display: block
+          height: auto
+
+    &.masonry-grid
+      .card
+        +bp($desktop)
+          width: calc((100% - (#{$grid_gap_size} * 2)) / 3) // gutter manually set in js/masonryCardGrid.js
+          height: auto
+          margin-bottom: $grid_gap_size
+
+
+  &.list
+    .card
+      @extend %list-item
+      margin-bottom: $grid_gap_size
