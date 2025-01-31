@@ -1,41 +1,37 @@
-_index.sass/**
+/**
  *  @file _metadata_block.sass
  *  @category 30_typography
  *  @theme LOCAL
  *  @description Mixin to create metadata blocks and list.
+ *  Expects item DOM structure in this form:
+ *  <div><div class='label'>Metadata Label</div><div class='value'>Metadata Value</div></div>
  *
  **/
 
 // The metadata list defines a basic grid of metadata
 
-=metadata-list($mobile_columns: 1, $tablet_columns: 3, $desktop_columns: 7, $rule: 1px, $gap: $edge_padding_factor)
+// @param $rule Width of the rule between rows. Use 0px for none.
+// @param $gap The separation of rows and columns, as an rv unit
+// @param $rule_colour A colour to apply to the ruls
+
+=metadata-list($mobile_columns: 1, $tablet_columns: 3, $desktop_columns: 7, $rule: 1px, $gap: $edge_padding_factor, $rule_colour: neutral(40))
   //Breakpoints
 
-  @if rule != 0
-    +separated_row($mobile_columns,$gap,$rule)
+  +separated_row($mobile_columns,$gap,$rule,$rule_colour)
 
-    +bp($tablet)
-      +separated_row($tablet_columns,$gap,$rule)
+  +bp($tablet)
+    +separated_row($tablet_columns,$gap,$rule,$rule_colour)
+
+  +bp($desktop)
+    +separated_row($desktop_columns,$gap,$rule,$rule_colour)
+
+  // this will enforce padding below the rule.
+
+  > * > *:first-child
+    padding-top: rv($gap)
 
     +bp($desktop)
-      +separated_row($desktop_columns,$gap,$rule)
-
-    // this will enforce padding below the rule
-
-    .property > *:first-child
       padding-top: rv($gap)
-
-      +bp($desktop)
-        padding-top: rv($gap)
-
-  @else
-    +separated_row($mobile_columns,$gap)
-
-    +bp($tablet)
-      +separated_row($tablet_columns,$gap)
-
-    +bp($desktop)
-      +separated_row($desktop_columns,$gap)
 
 
 // A metadata block separates the meadata

@@ -22,9 +22,31 @@
   figure
     overflow: hidden
     height: 100%
+    +proportional_height(100%,0.75)
+
+    @at-root .masonry-grid &
+
+      &:before
+        content: unset
 
   img
     transition-duration: $slow
+    height: 100%
+    width: 100%
+    object-fit: cover
+
+    @at-root .masonry-grid &
+      height: auto
+      object-fit: initial
+      position: relative
+
+
+
+
+
+    &.img-portrait
+      object-fit: cover
+      max-height: 600px
 
   &:hover
     border-color: $impact

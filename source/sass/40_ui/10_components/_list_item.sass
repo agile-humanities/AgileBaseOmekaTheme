@@ -9,12 +9,11 @@ $list_item_figure_width: 25%
 
 %list-item
   width: 100%
-  margin-bottom: rv(2)
   border-top-left-radius: 0 !important
   border-bottom-left-radius: 0 !important
 
 
-  > a
+  > *
     width: 100%
     display: flex
     flex-direction: row
@@ -33,8 +32,8 @@ $list_item_figure_width: 25%
       border-color: $impact
 
   figure
-    width: 25%
-    min-width: 25%
+    width: $list_item_figure_width
+    min-width: $list_item_figure_width
     padding: rv($mobile_edge_padding_factor) 0 rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor)
 
     +bp($ui_mobile_app_controls_breakpoint)

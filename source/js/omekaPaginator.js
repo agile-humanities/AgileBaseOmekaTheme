@@ -17,9 +17,6 @@
 
             const visibleMarkers = [...new Set([1, 2, activePage, activePage - 1, activePage + 1, pageCount, pageCount - 1])].sort((a,b) => a-b);
 
-            console.log(parseInt(markers.find('a.active').attr('data-pagenumber')));
-            console.log(visibleMarkers);
-
             // Indicates where the gaps in the paginator are by comparing values in (sorted) visibleMarkers
             // with the previous one. A value difference of more than 1 indicates a gap.
 
@@ -27,8 +24,6 @@
                 const prev = i - 1 > -1 ? visibleMarkers[i-1] : null;
                 return prev !== null &&  a - prev !== 1 ? a - 1 : null;
             }).filter((a) => a !== null);
-
-            console.log(gaps);
 
             markers.find('li').each(function () {
                 const item = $(this);
