@@ -18,12 +18,21 @@ const imageARScope = 'body > header, body > footer, main, #splash, #title';
 
 /* eslint-disable max-len, no-underscore-dangle, no-console, no-control-regex*/
 
+/*
+ *    @file 01_masonryCardGrid.js
+ *    @description  Adds the masonry library to card grid presentations.
+ *    @usage  Add a .masonry-grid class to the card container. Only applies to desktop breakpoints by default
+ *      adjust the masonryBreakpoint to breakpoint_mobile or breakpoint_tablet or 0 to change
+ */
+
 (function jQ($) {
 
     $(document).ready(function masonry() {
         let gridGapSize = 16; // should be value of rv($grid_gap_factor), in pixels
 
         let style = getComputedStyle(document.body);
+
+        const masonryBreakpoint = breakpoint_desktop;
 
         // Grid gap size is set as a root variable in sass/40_ui/_browser_ui_definitions
         // It is used to ensure that masonry’s calculations work correctly
@@ -33,7 +42,6 @@ const imageARScope = 'body > header, body > footer, main, #splash, #title';
         }
 
         const masonryContext = [
-          "#collection-list",
           ".masonry-grid"
         ];
 
@@ -62,7 +70,7 @@ const imageARScope = 'body > header, body > footer, main, #splash, #title';
 
                 function initCollectionBrowserGrid() {
 
-                    if (_this.hasClass("grid") && window.outerWidth >= breakpoint_desktop) {
+                    if (_this.hasClass("grid") && window.outerWidth >= masonryBreakpoint) {
                         _this.imagesLoaded(function() {
                             _this.masonry({
                                 "itemSelector": ".card",
@@ -73,7 +81,7 @@ const imageARScope = 'body > header, body > footer, main, #splash, #title';
                         });
                     }
 
-                    if (_this.hasClass("list") || window.outerWidth < breakpoint_desktop) {
+                    if (_this.hasClass("list") || window.outerWidth < masonryBreakpoint) {
 
                         if (typeof _this.masonry === "function") {
 
@@ -317,6 +325,60 @@ if (searchViewType === null) {
   $(document).ready(function() {
     $('#mirador-1').attr('aria-describedby','viewer-description');
   })})(jQuery);
+
+(function ($) {
+    $(document).ready(function () {
+        const markers = $('.pagination--bullets');
+
+        if (markers.length > 0) {
+
+            // Data from hidden Omeka paginator fields
+
+            const perPage = parseInt($('.per-page').first().text());
+            const totalItems = parseInt($('.number-of-items').first().text());
+            const endItemCounter = parseInt($('.end-item-counter').first().text());
+            const pageCount = parseInt($('.pagination--count').first().text());
+            const activePage = parseInt(markers.find('a.active').attr('data-pagenumber'));
+
+            // An array that lists the markers that should be visible. Shows the first two pages, the last two pagesm
+            // and one page around active pages.
+
+            const visibleMarkers = [...new Set([1, 2, activePage, activePage - 1, activePage + 1, pageCount, pageCount - 1])].sort((a,b) => a-b);
+
+            // Indicates where the gaps in the paginator are by comparing values in (sorted) visibleMarkers
+            // with the previous one. A value difference of more than 1 indicates a gap.
+
+            const gaps = visibleMarkers.map((a,i) => {
+                const prev = i - 1 > -1 ? visibleMarkers[i-1] : null;
+                return prev !== null &&  a - prev !== 1 ? a - 1 : null;
+            }).filter((a) => a !== null);
+
+            markers.find('li').each(function () {
+                const item = $(this);
+                const marker = item.find('> a');
+                const page = parseInt(marker.attr('data-pagenumber'));
+                if (gaps.includes(page)) {
+                    item.after("<li class='pagination--gap'>...</li>");
+                }
+
+                item.hide();
+
+                if (visibleMarkers.includes(page)) {
+                    item.show();
+                }
+
+            });
+        }
+
+        // change color of diamond marker representing current page
+        // var s = $('.start-item-counter').first().text();
+        //var t = (s/perPage);
+        //var u = Math.ceil(t);
+        //$('.bullet-pages > li > a').removeClass('active');
+        //$('.bullet-pages').find('> li:nth-of-type(' + u.toString() + ') > a').addClass('active');
+
+    });
+})(jQuery);
 
 /**
  *  @file omekaProcessAdvancedSearchForm

@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
-  <defs>
-    <style>
-      .cls-1 {
-        fill: #f4b17a;
-      }
-    </style>
-  </defs>
-  <rect class="cls-1" x="9" width="21" height="5"/>
-  <circle class="cls-1" cx="2.5" cy="2.5" r="2.5"/>
-  <rect class="cls-1" x="9" y="25" width="21" height="5"/>
-  <circle class="cls-1" cx="2.5" cy="27.5" r="2.5"/>
-  <rect class="cls-1" x="9" y="13" width="21" height="5"/>
-  <circle class="cls-1" cx="2.5" cy="15.5" r="2.5"/>
-</svg>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><defs><style>.cls-1{fill:#f4b17a}</style></defs><path class="cls-1" d="M9 0h21v5H9z"/><circle class="cls-1" cx="2.5" cy="2.5" r="2.5"/><path class="cls-1" d="M9 25h21v5H9z"/><circle class="cls-1" cx="2.5" cy="27.5" r="2.5"/><path class="cls-1" d="M9 13h21v5H9z"/><circle class="cls-1" cx="2.5" cy="15.5" r="2.5"/></svg>
