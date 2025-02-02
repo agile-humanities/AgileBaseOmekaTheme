@@ -202,16 +202,21 @@ if ($hasMedia) {
               <div class='metadata-list metadata-list-top'>
                 <?php
                 // Display key terms
-                  foreach(array_intersect_key($item->values(),$keyTerms) as $term => $value):
-                    if (!empty($value['values'][0])):
-                      printf("<div class='property' data-term='%s'>\n",$term);
-                      printf("   <div class='metadata-label'>%s</div>",!empty($value['alternate_label']) ? $value['alternate_label'] : $keyTerms[$term]);
-                      print ("    <div class='values'>");
-                      printf("       <div class='value'>%s</div>",$value['values'][0]);
-                      print ("    </div>");
-                      print ("</div>");
+                foreach(array_intersect_key($item->values(),$keyTerms) as $term => $propertyData):
+                  if (!empty($propertyData['values'][0])):
+                    printf("<div class='property' data-term='%s'>\n",$term);
+                    printf("   <div class='metadata-label'>%s</div>",!empty($propertyData['alternate_label']) ? $propertyData['alternate_label'] : $keyTerms[$term]);
+                    print ("    <div class='values'>");
+                    /** @var Omeka\Api\Representation\ValueRepresentation $value */
+                    foreach($propertyData['values'] as $value)
+                      if($value->isPublic()):
+                        $url =  $searchConfig->siteUrl(). "?facet" . urlencode("[") . $term . urlencode("][0]") . "=" . urlencode($value->value());
+                        printf("       <div class='value'><a href='%s'>%s</a></div>",$url,$value->value());
                       endif;
-                  endforeach;
+                    print ("    </div>");
+                    print ("</div>");
+                  endif;
+                endforeach;
                 ?>
                 <div class="property">
                   <?php $itemSets = $item->itemSets(); ?>
