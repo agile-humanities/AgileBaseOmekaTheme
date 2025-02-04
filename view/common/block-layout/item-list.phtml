@@ -1,0 +1,21 @@
+<div id="block-<?= $this->blockId; ?>" class="item-list section-list region <?= $this->regionClass; ?> <?= $this->classes ?>" data-target-region-id="<?= $this->targetID; ?>">
+    <?php if ($this->hasTitle): ?>
+        <h2><?= $this->title; ?></h2>
+    <?php endif; ?>
+    <?php if ($this->hasIntroduction): ?>
+        <div class='block-introduction'>
+            <?= $this->introduction; ?>
+        </div>
+    <?php endif; ?>
+    <?php if ($this->hasPages): ?>
+        <div class='desktop-page-list'>
+            <ul class='tab-ui desktop-page-list ruled'>
+                <?php foreach($this->pages as $page): ?>
+                    <li class='tab-ui--tab<?= $page['o:active'] ? ' active' : ''; ?>'>
+                        <a class='item-list-link<?= $page['o:active'] ? ' active' : ''; ?>' href='<?= $page['o:url']; ?>'><?= $page['o:title']; ?></a>
+                    </li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+</div>
