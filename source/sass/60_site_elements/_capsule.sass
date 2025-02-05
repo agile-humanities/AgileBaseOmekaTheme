@@ -1,0 +1,37 @@
+/*
+   @file _capsule.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description An encapsulated design pattern for displaying media. Used for inline media, etc.  */
+
+
+.capsule
+  .item-info
+    background-color: $black
+    padding: rv($mobile_edge_padding_factor)
+    color: $white
+    border-top: 2px solid $white
+
+    *
+      color: inherit
+
+    .content-label
+      color: set-color(2)
+
+    h3
+      font-size: clamped(1,2)
+      margin-top: 0
+
+    img
+      &:hover
+        transform: scale3d(1.07,1.07,1.07)
+
+    .item-description
+      font-size: clamped(-2,-1)
+
+    .more
+      margin-top: rv($mobile_edge_padding_factor)
+      margin-bottom: 0
+
+

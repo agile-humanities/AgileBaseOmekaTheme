@@ -12,12 +12,14 @@
 
 // @param $rule Width of the rule between rows. Use 0px for none.
 // @param $gap The separation of rows and columns, as an rv unit
+// @param $mobile_gap The separation of rows and columns on mobile viewports, as an rv unit
 // @param $rule_colour A colour to apply to the ruls
 
-=metadata-list($mobile_columns: 1, $tablet_columns: 3, $desktop_columns: 7, $rule: 1px, $gap: $edge_padding_factor, $rule_colour: neutral(40))
+=metadata-list($mobile_columns: 1, $tablet_columns: 3, $desktop_columns: 7, $rule: 1px, $gap: $edge_padding_factor, $mobile_gap: $mobile_edge_padding_factor, $rule_colour: neutral(40))
   //Breakpoints
 
-  +separated_row($mobile_columns,$gap,$rule,$rule_colour)
+  @if $mobile_columns > 1
+    +separated_row($mobile_columns,$mobile_gap,$rule,$rule_colour)
 
   +bp($tablet)
     +separated_row($tablet_columns,$gap,$rule,$rule_colour)
@@ -28,7 +30,7 @@
   // this will enforce padding below the rule.
 
   > * > *:first-child
-    padding-top: rv($gap)
+    padding-top: rv($mobile_gap)
 
     +bp($desktop)
       padding-top: rv($gap)
@@ -36,13 +38,13 @@
 
 // A metadata block separates the meadata
 
-=metadata-block($mobile_columns: 1, $tablet_columns: 3, $desktop_columns: 7, $rule: 1px, $gap: $grid_gap_factor)
+=metadata-block($mobile_columns: 1, $tablet_columns: 3, $desktop_columns: 7, $rule: 1px, $gap: $grid_gap_factor, $mobile_gap: $mobile_edge_padding_factor)
   max-width: 100%
   position: relative
   overflow: hidden
 
   &.reversed
-    padding: rv($mobile_edge_padding_factor) !important
+    padding: rv($mobile_gap) !important
     background-color: neutral(90)
     color: $white
 
@@ -51,7 +53,7 @@
 
   +bp($desktop)
     &.reversed
-      padding: rv($edge_padding_factor)  !important
+      padding: rv($gap)  !important
 
 
   a
@@ -62,7 +64,7 @@
 
 
   .metadata-list
-    +metadata-list($mobile_columns, $tablet_columns, $desktop_columns,$rule,$gap)
+    +metadata-list($mobile_columns, $tablet_columns, $desktop_columns,$rule,$gap,$mobile_gap)
 
   h2
     margin-top: 0

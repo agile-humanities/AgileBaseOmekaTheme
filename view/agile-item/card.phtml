@@ -22,10 +22,6 @@ try {
 $thumbnailer = $plugins->get('thumbnail');
 
 $cardObjectClass = get_class($item);
-$this->classes = isset($this->classes) ? $this->classes : '';
-if (strpos($this->classes, 'card') === false) {
-  $this->classes .= " card";
-}
 
 $bodyTerm = $this->siteSetting('browse_body_property_term');
 $viewItemPageLabelTerm  = $this->siteSetting('browse_view_item_page_term');
@@ -105,7 +101,14 @@ switch($cardObjectClass) {
 
 $heading_fragment = "“" . substr($heading,0,20) . (strlen($heading > 20) ? "... " : ''). "”";
 $cardStyle = isset($cardStyle) ? $cardStyle : 'card';
+// @todo: The logic below is wonky. The base theme styling looks for .card.list , so .card is always a class
+// This is a source of some complexity in the theme, so it's best to have either .card OR .list and style
+// accordingly.
 
+$this->classes = isset($this->classes) ? $this->classes : '';
+if (strpos($this->classes, 'card') === false) {
+  $this->classes .= " card";
+}
 ?>
 <!-- BEGIN TEMPLATE: /agile-item/card -->
 <<?= $containerElement; ?> class="<?= $cardStyle ?> <?= $this->classes ?>"<?php echo isset($slot) ? " slot={$slot}" : '' ?>>

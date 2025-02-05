@@ -1,5 +1,13 @@
-/* reusable tab styles */
+/**
+  *  @file _tab_ui.sass
+  *  @category 40_ui
+  *  @theme LOCAL
+  *  @description Styles to add a tab-like user interface.
+  *
+  **/
 
+
+// Simplified version
 
 .container-with-tabs-and-panels
   .tabs
@@ -18,48 +26,93 @@
         color: $black
 
 
-// @todo: The following styles may not be used in this build
+/* This version expects a .tab_ui container with .tab-ui--tab child elements.
+   If the container has an additional .ruled element a horizontal rule beneath the container is added, aligned to
+   active markers. You can also set the active-tab-marker as a mixin based on the preset examples below */
 
+$tab_marker_distance: rv(-1)
+$tab_size: 10px
+
+=tab-marker-circle
+  border-radius: 50%
+  background-color: $cta
+
+=tab-marker-accordion
+  +icon('accordion-expand',contain,'active')
+
+=tab-marker-pip
+  +icon('pip',contain,'active')
+
+=active-tab-marker
+  +tab-marker-circle
 
 .tab-ui
-  $tab_underscore_width: 5px
-
-  padding: 0
-  color: $black
-  width: 100%
   display: flex
-  flex-direction: row
-  justify-content: flex-end
-  position: relative
+  flex-direction: column
+  justify-content: flex-start
+  list-style-type: none
+  padding-inline-start: 0
+  isolation: isolate
 
-  &:before
-    content: ''
-    border-bottom: 1px neutral(30) solid
+  +bp($tablet)
+    flex-direction: row
+
+  > *
+    margin-right: $ui_element_spacing
+
+    &:last-child
+      margin-right: 0
+
+  // Adds full width and a rule beneath measured to the marker.
+
+  &.ruled
+    position: relative
     width: 100%
-    position: absolute
-    bottom: $tab_underscore_width * 0.5 //center with underscore
-    z-index: -1
 
-  .tab-control
-    list-style-type: none
-    +font-size(0)
-    margin-left: rv(1)
+    &:after
+      content: ''
+      position: absolute
+      bottom: calc((#{$tab_marker_distance} - #{$tab_size}) * -1)
+      height: 1px
+      width: 100%
+      background-color: neutral(10)
+      z-index: -1
 
-    a
-      color: neutral(40)
-      font-weight: $normal
-      text-transform: uppercase
-      text-decoration: none
-      display: block
+.tab-ui--tab, .tab-ui--control
+  font-family: $basefont
+  +font-size(0)
+  text-transform: uppercase
+  position: relative
+  text-decoration: none
+  border-bottom: none
+  font-weight: $bold
+  color: neutral(50)
 
-      &:hover, &.active
-        border-bottom: $tab_underscore_width solid $clr3
+  &.active, &:hover
+    color: $black
 
-      &:hover
-        color: $clr3
+    &:after
+      content: ''
+      height: $tab_size
+      width: $tab_size
+      +active-tab-marker
+      display: inline-flex
+      z-index: 2
+      margin-right: $tab_marker_distance
 
-      &.active
-        color: $black
+      +bp($tablet)
+        position: absolute
+        bottom: calc((#{$tab_marker_distance} - #{$tab_size * 0.5}) * -1)
+        left: calc(50% - #{$tab_size * 0.5})
+        margin-right: 0
 
 
+  // Some implementations will have a link inside the <li> tags. This aligns the styles.
+  a
+    color: inherit
+    font-weight: inherit
+    text-decoration: none
+    border-bottom: none
 
+    &.active, &:hover
+      color: inherit
