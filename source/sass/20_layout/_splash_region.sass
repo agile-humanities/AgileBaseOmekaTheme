@@ -13,16 +13,17 @@ body
 
 #splash
   width: 100%
+  +standard_edge_padding()
 
   > *
     // height: calc(100vh - #{$masthead_height} - #{$masthead_clearance_mobile})
 
     +bp($desktop)
       position: relative
-      height: calc(100vh - #{$emory_menu_height} - #{$masthead_height})
+      height: calc(100vh - #{$masthead_height} - #{rv($edge_padding_factor) * 3})
       min-height: $min_splash_height
 
     @at-root .has-admin-bar &
       +bp($desktop)
-        height: calc(100vh - #{$emory_menu_height} - #{$masthead_height} - #{$admin_bar_height})
+        height: calc(100vh - #{$masthead_height} - #{$admin_bar_height} - #{rv($edge_padding_factor) * 3})
 
