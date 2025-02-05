@@ -83,17 +83,19 @@
       display: block
 
 // Splash version, originally from Pitts build
-// @todo: Make a template option
+// @todo: Provide template options through configuration (regular, splash compact, splash full height)
 
 .section-intro-block.region-splash
   position: relative
   color: $white
   background-color: $black
   isolation: isolate
-  height: 80vh
-  min-height: $min_splash_height
 
-  .title-area, .items
+  @at-root #splash &
+    height: auto
+    min-height: auto
+
+  .items
     position: absolute
     top: 0
     left: 0
@@ -102,8 +104,6 @@
     overflow: hidden
     display: flex
     flex-direction: column
-
-  .items
     z-index: 1
 
     .item, figure, img
@@ -129,6 +129,7 @@
       display: none
 
   .title-area
+    position: relative
     z-index: 2
 
 
