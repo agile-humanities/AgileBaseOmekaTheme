@@ -76,6 +76,7 @@ $displayPartsHeader = array_filter($displayParts, fn ($v) => in_array($v, ['head
 $displayPartsFooter = array_filter($displayParts, fn ($v) => in_array($v, ['footer', 'both']));
 $displayFacets = $displayParts ? $displayParts['facets'] ?? 'before' : 'none';
 $activeFacets = $query->getActiveFacets();
+$facets = $searchConfig->engineAdapter()->getAvailableFacetFields();
 
 if ($itemSet && $site) {
     $redirectItemSets = $this->siteSetting('advancedsearch_redirect_itemsets', ['default' => 'browse']);
@@ -188,7 +189,7 @@ $this->headScript()
                                     foreach($activeFacets as $facet => $facetValues):
                                 ?>
                                         <div class="search-filters">
-                                            <span class="label"><?= ucfirst($facet) ?></span>
+                                            <span class="label"><?= array_key_exists($facet,$facets) ? $facets[$facet]['label'] : $facet ?></span>
                                             <?php
                                                 foreach($facetValues as $facetValue):
                                                     printf("<a class='lozenge'>%s</a>",$facetValue);
