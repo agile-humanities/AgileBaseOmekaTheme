@@ -177,8 +177,9 @@ $this->headScript()
 
                 <div class="search-results-part search-results-list browse-title">
                     <?php foreach (array_filter($response->getResourceTotalResults()) as $resourceType => $count): ?>
-                        <h2><?= $escape(sprintf($translate('%1$d %2$s'), $count, $easyMeta->resourceLabelCount($resourceType, $count))) ?></h2>
+                        <h2><?= sprintf($translate('<span class="search--summary--count">%1$d</span> %2$s'), $count, $easyMeta->resourceLabelCount($resourceType, $count)) ?></h2>
                         <?php // Search filters. ?>
+                    <?php endforeach; ?>
 
                         <?php if (isset($displayParts['search_filters'])): ?>
                             <div class="search-filter-container">
@@ -201,7 +202,6 @@ $this->headScript()
                         <?php endif; ?>
 
                         <?= $partial('search/results', $variables + ['resourceType' => $resourceType]) ?>
-                    <?php endforeach; ?>
                 </div>
 
                 <?php else: ?>

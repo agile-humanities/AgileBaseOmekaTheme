@@ -1,0 +1,40 @@
+/*
+   @file _featured_exhibits.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description Handles the Featured Exhibit block. */
+
+.site-link-cards
+  padding: rv(4) 0
+  font-family: $headingfont
+
+  +bp($tablet)
+    +separated-row(2)
+
+  +bp($desktop)
+    +separated-row(3)
+
+
+  .site-link-cards-img
+    width: 90px
+    margin: 0 auto
+    display: block
+    +bp($desktop)
+      width: initial
+      margin: initial
+      max-width: 180px
+
+  &.has-three-cards
+    +bp($desktop)
+      .site-link-cards-intro
+        grid-column: 1 / span 3
+        text-align: center
+        padding: 0 rv(15)
+
+        .site-link-cards-img
+          margin: 0 auto
+
+        a
+          margin: rv(6) auto
+

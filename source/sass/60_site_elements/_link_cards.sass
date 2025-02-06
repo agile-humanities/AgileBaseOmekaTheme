@@ -1,0 +1,67 @@
+/*
+   @file _featured_exhibits.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description Handles the link cards (see Site Link Cards for usage) */
+
+.link-card
+  padding: 0 rv($mobile_edge_padding_factor)
+
+  +bp($tablet)
+    &:nth-of-type(odd)
+      border-left: 1px solid neutral(30)
+  +bp($desktop)
+    border-left: 1px solid neutral(30)
+
+  > a
+    display: block
+    text-decoration: none
+    color: inherit
+
+    &:hover
+      color: inherit
+      text-decoration: none
+      border: 0
+      transition: all
+
+  figure
+    +proportional_height(100%, 0.75)
+
+    img
+      object-fit: cover
+      height: 100%
+      width: 100%
+      transition: all
+
+      //@todo: hover effect transition animation not working on Safari. Troubleshoot
+
+      // &:hover
+      //   transform: scale3d(1.07,1.07,1.07)
+
+  .link-card-info
+    text-decoration: none
+    +bp($tablet)
+      padding: initial
+
+    h3
+      margin-bottom: 0
+
+    hr
+      border-bottom: 1px solid var(--colour--neutral--30)
+      margin: rv($mobile_edge_padding_factor) 0
+
+    .description
+      font-family: $basefont
+      color: $black
+
+      p
+        line-height: 1.5
+
+  &.has-three-cards
+    +bp($desktop)
+      .link-card:nth-of-type(2)
+        border-left: none
+
+
+
