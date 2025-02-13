@@ -129,7 +129,7 @@ if ($hasMedia) {
     <?php
     if ($hasMedia):
       // Default viewer
-      if ($viewer === 'viewer-default' && (($embedMedia && $itemMedia) || $oEmbed)): ?>
+      if ($viewer === 'viewer-default' && (($itemMedia) || $oEmbed)): ?>
         <div class="media-embeds">
           <?php foreach ($itemMedia as $media):
             echo $media->render();
@@ -151,13 +151,15 @@ if ($hasMedia) {
           <source src="<?= $escapeAttr($source) ?>"  type="<?= $mediaType ?>" />
         </video>
       <?php
-        elseif ($mirador):
-          echo $this->mirador($item);
+      elseif ($mirador):
+        echo $this->mirador($item);
 
       // This will display UV or other media players assigned to view.show.after.
       else:
         $this->trigger("view.show.after");
       endif;
+    else:
+      $this->trigger("view.show.after");
     endif;
     ?>
     <?php if (($mirador || $viewer === 'viewer-pdf' || $viewer === 'viewer-video') && !empty($item->value('dcterms:description'))): ?>
