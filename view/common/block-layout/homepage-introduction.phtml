@@ -6,11 +6,6 @@
 
 $partial = $this->plugin('partial');
 $searchMainPage = $this->siteSetting('advancedsearch_main_config');
-/** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
-$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
-
-$browseUrl = $searchConfig->siteUrl();
-
 ?>
 <!-- HOMEPAGE INTRODUCTION BLOCK TEMPLATE  common/block-layout/homepage-introduction.phtml -->
 <div id="block-<?= $this->blockId; ?>" class="homepage-introduction  <?= $this->compositionClass; ?>  viewer slideviewer-container region <?= $this->regionClass; ?>" data-target-region-id="<?= $this->targetID; ?>">
@@ -35,11 +30,6 @@ $browseUrl = $searchConfig->siteUrl();
               'common/search-form',
               ['query' => $this->params()->fromQuery(), 'resourceType' => 'user','searchType' => 'browser']
           ); ?>
-
-          <div class="intro-browse">
-              <!-- <div class="intro-browse--title">Browse our collections</div> -->
-              <div class="intro-browse--collections"><a class="intro-browse--all" href="<?= $browseUrl ?>">Browse all collections</a></div>
-          </div>
 
           <?php if (!empty($buttonText)): ?>
             <a class='slickNext next-slide btn'><?= $buttonText; ?></a>

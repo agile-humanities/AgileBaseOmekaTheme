@@ -2,8 +2,6 @@
 $translate = $this->plugin('translate');
 $partial = $this->plugin('partial');
 $searchMainPage = $this->siteSetting('advancedsearch_main_config');
-/** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
-$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
 
 ?>
 <div class="preview-block">
@@ -27,15 +25,9 @@ $searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPa
 
   <?php
   if ($this->linkText):
-      /*
-      echo $this->hyperlink($this->linkText, $this->url(
-          'site/resource', ['controller' => $this->resourceType, 'action' => 'browse'], ['query' => $this->query], true
-      ));
-      */
-    ?>
-
-    <div class="browse--collections"><a class="intro-browse--all" href="<?= $searchConfig->siteUrl() ?>">Browse all</a></div>
-  <?php
+    echo $this->hyperlink($this->linkText, $this->url(
+      'site/resource', ['controller' => $this->resourceType, 'action' => 'browse'], ['query' => $this->query], true
+    ));
   endif;
   ?>
 </div>
