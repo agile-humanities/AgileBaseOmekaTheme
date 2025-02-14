@@ -1,82 +1,64 @@
-<div id="block-<?php echo $this->blockId; ?>" class="region site-links <?php echo $this->classes; ?> <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?> ">
-  <div class="site-links-intro">
-
+<div id="block-<?php echo $this->blockId; ?>" class="region site-link-cards <?php echo $this->classes; ?> <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?> ">
+  <div class="site-link-cards-intro">
     <?php if ($this->hasTitle || $this->hasIntroduction): ?>
-        <div class='title-area'>
-            <?php if ($this->hasTitle): ?>
-                <h2><?php echo $this->title; ?></h2>
-            <?php endif; ?>
-            <?php if ($this->hasIntroduction): ?>
-                <div class='block-introduction'>
-                    <?php echo $this->introduction; ?>
-                </div>
-            <?php endif; ?>
-
-        </div>
+      <div class='title-area'>
+        <?php if ($this->hasTitle): ?>
+          <h2><?php echo $this->title; ?></h2>
+        <?php endif; ?>
+        <?php if ($this->hasIntroduction): ?>
+          <div class='block-introduction'>
+            <?php echo $this->introduction; ?>
+          </div>
+        <?php endif; ?>
+        <?php if ($this->hasButton): ?>
+          <?php printf('<a class="btn" href="%s" alt="%s">%s</a>',$this->buttonPath,$this->buttonText,$this->buttonText); ?>
+        <?php endif; ?>
+      </div>
     <?php endif; ?>
   </div>
 
-    <?php $i=0; ?>
+  <?php $i=0; ?>
 
-    <?php foreach($this->itemFields as $itemFieldSet): ?>
-      <?php $item = isset($attachments[$i]) ? $attachments[$i]->item() : null;
-        if (is_array($itemFieldSet)):?>
+  <?php foreach($this->itemFields as $itemFieldSet): ?>
+    <?php
 
-          <div class="item resource card">
-            <?php if (!empty($this->itemFields[$i]["label"])): ?>
-                <div class='item-label'><?php echo  $this->itemFields[$i]["label"]; ?>
-                <?php endif; ?>
-              </div>
+    $item = isset($attachments[$i]) ? $attachments[$i]->item() : null;
 
-
-          <figure class="item-thumbnail">
+    if (is_array($itemFieldSet)):
+      ?>
+      <div class="item resource link-card">
+        <a title='<?php echo $this->itemFields[$i]["title"]; ?>' href='<?php echo $this->itemFields[$i]["url"]; ?>'>
+          <figure>
             <?php
-                if (!empty($this->itemFields[$i]["thumbnailUrl"])):
-                    printf('<img src="%s" alt="%s" />',$this->itemFields[$i]["thumbnailUrl"],$this->itemFields[$i]["title"] . " Thumbnail");
-                elseif ($item):
-                    $media = $attachments[$i]->media() ?: $item->primaryMedia();
-                    if ($media):
-                        echo $this->thumbnail($media, $this->thumbnailType); // $item->displayTitle()
-                    endif;
-                endif;
-                ?>
-
-             <figcaption class="item-overlay-caption figcaption-link">
-               <div class="item-caption-container">
-
-               <p><?php echo $this->itemFields[$i]["title"]; ?></p>
-             </div></figcaption>
+            if (!empty($this->itemFields[$i]["thumbnailUrl"])):
+              printf('<figure><img src="%s" alt="%s" /></figure>',$this->itemFields[$i]["thumbnailUrl"],$this->itemFields[$i]["title"] . " Thumbnail");
+            elseif ($item):
+              $media = $attachments[$i]->media() ?: $item->primaryMedia();
+              if ($media):
+                echo "<figure>". $this->thumbnail($media, $this->thumbnailType) . "</figure>"; // $item->displayTitle()
+              endif;
+            endif;
+            ?>
           </figure>
-
-
-
-
-        <div class="link-card-info">
-
-              <h3><?php echo $this->itemFields[$i]["title"]; ?></h3>
-              <?php if (!empty($this->itemFields[$i]["subtitle"])): ?>
-                <div class='deck'><?php echo  $this->itemFields[$i]["subtitle"]; ?></div>
-              <?php endif; ?>
-              <?php
-                $caption = !empty($this->itemFields[$i]["description"]) || !isset($attachments[$i]) ? $this->itemFields[$i]["description"] : $attachments[$i]->caption();
-                if ($caption):
+          <div class="link-card-info">
+            <?php if (!empty($this->itemFields[$i]["label"])): ?>
+              <div class='content-label'><?php echo  $this->itemFields[$i]["label"]; ?></div>
+            <?php endif; ?>
+            <h3><?php echo $this->itemFields[$i]["title"]; ?></h3>
+            <?php if (!empty($this->itemFields[$i]["subtitle"])): ?>
+              <div class='deck'><?php echo  $this->itemFields[$i]["subtitle"]; ?></div>
+            <?php endif; ?>
+            <hr>
+            <?php
+            $caption = !empty($this->itemFields[$i]["description"]) || !isset($attachments[$i]) ? $this->itemFields[$i]["description"] : $attachments[$i]->caption();
+            if ($caption):
               ?>
-                  <div class="description"><?php echo $caption; ?></div>
-                <?php endif; ?>
-                <a class='card-link' href='<?php echo $this->itemFields[$i]["url"]; ?>'>View Item</a> >
-            </div>
-          </a></div>
-
-        <?php endif; ?>
-        <?php $i++; ?>
-    <?php endforeach; ?>
+              <div class="description"><?php echo $caption; ?></div>
+            <?php endif; ?>
+            <div class='more' href='<?php echo $this->itemFields[$i]["url"]; ?>'>View</div>
+          </div>
+        </a></div>
+    <?php endif; ?>
+    <?php $i++; ?>
+  <?php endforeach; ?>
 </div>
-
-
-
-
-
-
-
-
-

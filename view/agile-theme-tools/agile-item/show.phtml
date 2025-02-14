@@ -1,10 +1,15 @@
 <?php
+$plugins = $this->getHelperPluginManager();
 $translate = $this->plugin("translate");
 $escape = $this->plugin("escapeHtml");
 $escapeAttr = $this->plugin('escapeHtmlAttr');
 $partial = $this->plugin('partial');
 $dateHandler = $this->plugin('dateHandler');
+/** @var \AgileThemeTools\View\Helper\AgileSearchHelper $searchHelper */
+$searchHelper = $this->plugin('agileSearchHelper');
 $this->htmlElement("body")->appendAttribute("class", "item resource show");
+
+// This is deprecated
 $embedMedia = $this->siteSetting("item_media_embed", false);
 $itemMedia = $item->media();
 $hasMedia = $itemMedia && is_array($itemMedia) && count($itemMedia) > 0;
@@ -27,7 +32,7 @@ $year = $temporal ? $dateHandler->render($temporal->value(),'Y') : null;
 $dateHandler->isDate($temporal);
 
 $resourceClass = '';
-$label = 'Item';
+$label = !empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item';
 
 $year = !empty($item->value('dcterms:temporal')) && is_array($item->value('dcterms:temporal')) && count($item->value('dcterms:temporal')) > 0 ? date('Y',$item->value('dcterms:temporal')[0]) : null;
 $creator = $item->value('dcterms:creator');
@@ -36,7 +41,7 @@ if (method_exists($item,'resourceClass') && $item->resourceClass() !== null) {
   $resourceClass = $item->resourceClass();
   $resourceClassLabel = $item->resourceClass()->label();
   $resourceIndicator = "resource-id-" . $item->resourceClass()->id();
-  $label = $resourceClassLabel . ($year ? " {$year}" : '');
+  $label = $resourceClassLabel;
 }
 
 // Terms to use in main description area. Format: $keyTerms = ['dcterms:termname'=>'Label to Use']
@@ -46,7 +51,18 @@ $keyTerms = ['dcterms:creator'=>'Creator','dcterms:date'=>'Date','dcterms:source
 
 $searchMainPage = $this->siteSetting('advancedsearch_main_config');
 /** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
-$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
+//$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
+$searchConfig = $plugins->get('getSearchConfig');
+// Updated way of handling facets
+$searchFacets = $searchConfig->subSetting('facet', 'facets', []);
+$facetElements = $plugins->get('facetElements');
+$facetParams = ['template'=>'search/facet-link'];
+
+/** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig2 */
+/** @var  \Omeka\Controller\Site\  $site */
+//$searchConfig2 = $plugins->get('getSearchConfig');
+
+//var_dump($searchConfig->settings());
 
 foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $term => $valueDetails) {
   foreach($valueDetails['values'] as $value) {
@@ -100,22 +116,24 @@ if ($hasMedia) {
   $viewer = 'viewer-default';
 
   // PDF Viewer Support
-  $source = $itemMedia[0]->originalUrl();
-  $mediaType = $itemMedia[0]->mediaType();
+  $source = $item->primaryMedia()->originalUrl();
+  $mediaType = $item->primaryMedia()->mediaType();
 
   $uv_media = [
     'text',
-    'moving image' // Use UV for video right now because current Mirador 3 implementation is crap
+    'moving image' // Use UV for video right now
   ];
 
-  if ($mediaType === 'application/pdf') {
-    $viewer = 'viewer-pdf';
-  } elseif(strpos($mediaType,'video') > -1) {
-    $viewer = 'viewer-video';
-  } elseif ($uv && in_array(strtolower($label), $uv_media)) {
-    $viewer = 'viewer-uv';
-  } elseif ($mirador) {
-    $viewer = 'viewer-mirador';
+  if($mediaType) {
+    if ($mediaType === 'application/pdf') {
+      $viewer = 'viewer-pdf';
+    } elseif(strpos($mediaType,'video') > -1) {
+      $viewer = 'viewer-video';
+    } elseif ($uv && in_array(strtolower($label), $uv_media)) {
+      $viewer = 'viewer-uv';
+    } elseif ($mirador) {
+      $viewer = 'viewer-mirador';
+    }
   }
 
 }
@@ -129,7 +147,7 @@ if ($hasMedia) {
     <?php
     if ($hasMedia):
       // Default viewer
-      if ($viewer === 'viewer-default' && (($embedMedia && $itemMedia) || $oEmbed)): ?>
+      if ($viewer === 'viewer-default' && (($itemMedia) || $oEmbed)): ?>
         <div class="media-embeds">
           <?php foreach ($itemMedia as $media):
             echo $media->render();
@@ -140,9 +158,8 @@ if ($hasMedia) {
         $options = [];
         $options['attributes'] = 'allowfullscreen="allowfullscreen" zoom="page-fit"';
         ?>
-        <object height="100%" width="100%" <?= $options['attributes'] ?> data="<?= $escapeAttr($source) ?>" type="<?= $mediaType ?>">
-          <iframe width="100%" <?= $options['attributes'] ?> src="<?= $escapeAttr($source) ?>"></iframe>
-        </object>
+
+        <object height="100%" width="100%" <?= $options['attributes'] ?> data="<?= $escapeAttr($source) ?>" type="<?= $mediaType ?>"></object>
 
       <?php
       elseif ($viewer === 'viewer-video' && $source):
@@ -151,13 +168,15 @@ if ($hasMedia) {
           <source src="<?= $escapeAttr($source) ?>"  type="<?= $mediaType ?>" />
         </video>
       <?php
-        elseif ($mirador):
-          echo $this->mirador($item);
+      elseif ($mirador):
+        echo $this->mirador($item);
 
       // This will display UV or other media players assigned to view.show.after.
       else:
         $this->trigger("view.show.after");
       endif;
+    else:
+      $this->trigger("view.show.after");
     endif;
     ?>
     <?php if (($mirador || $viewer === 'viewer-pdf' || $viewer === 'viewer-video') && !empty($item->value('dcterms:description'))): ?>
@@ -170,17 +189,34 @@ if ($hasMedia) {
     <?php endif; ?>
   </div>
   <div class='item-info item-text'>
-    <div class="wayfinding">
-      <a class="icon-home" href="<?php echo $site->siteUrl(); ?>"><span class="screen-reader-text">Home</span></a>
-      <a href="../item">Browse the collection</a>
+    <div class='wayfinding'>
+      <a class="wayfinding--breadcrumb icon-home" href="<?php echo $site->siteUrl(); ?>"><span class="screen-reader-text">Home</span></a>
+      <span>></span>
+      <a class="wayfinding--breadcrumb" href="<?= $searchConfig->siteUrl() ?>">Discover</a>
+      <?php
+        /** @var Omeka\Api\Representation\ItemSetRepresentation $itemSet */
+        $itemSets = $item->itemSets();
+      ?>
+      <span>></span>
+      <?php
+        if (count ($itemSets) > 0):
+          $firstItemSet = array_shift($itemSets);
+      ?>
+          <?= sprintf("<a class='wayfinding--breadcrumb key-item-set' href='%s'>%s</a>",$firstItemSet->url(),$firstItemSet->title()) ?>
+      <?php endif; ?>
     </div>
     <header>
       <div class="item-label"><?= $label ?></div>
-      <?php echo $this->pageTitle($item->displayTitle(), 1); ?>
+      <?= $this->pageTitle($item->displayTitle(), 1); ?>
     </header>
     <?php if ($item->value('dcterms:alternative')): ?>
       <div class='subtitle'>
-        <?php echo($item->value('dcterms:alternative')); ?>
+        <?= $item->value('dcterms:alternative'); ?>
+      </div>
+    <?php endif; ?>
+    <?php if ($creator): ?>
+      <div class='deck'>
+        <?= $creator; ?>
       </div>
     <?php endif; ?>
 
@@ -210,8 +246,9 @@ if ($hasMedia) {
                     /** @var Omeka\Api\Representation\ValueRepresentation $value */
                     foreach($propertyData['values'] as $value)
                       if($value->isPublic()):
-                        $url =  $searchConfig->siteUrl(). "?facet" . urlencode("[") . $term . urlencode("][0]") . "=" . urlencode($value->value());
-                        printf("       <div class='value'><a href='%s'>%s</a></div>",$url,$value->value());
+
+                        $url = $searchHelper->getFacetedSearchUrl($term,$value);
+                        printf("       <div class='value'><a href='%s'>%s</a></div>",$url,$value);
                       endif;
                     print ("    </div>");
                     print ("</div>");
@@ -234,7 +271,7 @@ if ($hasMedia) {
               </div>
             </div>
             <div class='rights'>
-              <p class="metadata-label">Download</p>
+              <div class="metadata-label">Download</div>
               <?php if ($item->primaryMedia()):  // Download item ?>
                 <?= $partial('agile-item/download-item-block', [
                   'item' => $item,

@@ -81,7 +81,8 @@
       +standard_edge_padding
 
       iframe
-        +proportional-height(100%,.5625)
+        width: 100%
+        height: 100%
 
     #viewer-support
       margin-top: rv($mobile_edge_padding_factor)
@@ -116,6 +117,9 @@
   #related-items
     @extend %browser-container
     padding: rv($mobile_edge_padding_factor) !important
+
+    .card
+      padding: rv($mobile_edge_padding_factor)
 
     +bp($tablet)
       padding: rv($edge_padding_factor) !important

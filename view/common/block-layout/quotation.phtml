@@ -1,0 +1,10 @@
+<div id="block-<?php echo $this->blockId; ?>" class="quotation clearfix">
+    <blockquote>
+        <?php echo $this->html; ?>
+        <?php if (!empty($this->attribution)): ?>
+        <cite>
+            <?php echo $this->attribution; ?>
+        </cite>
+        <?php endif; ?>
+    </blockquote>
+</div>

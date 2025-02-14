@@ -88,7 +88,7 @@ $line_heights: (base: $base_line_height, h1: 1, h2: 1.25, h3: 1.25, h4: 1.2, h5:
 $typescale: (base: 1, xsml: 1, sml: 1, med:1, lrg: 1, xlrg: 1, xxlrg: 1)
 $paragraph_spacing: clamped(map-get($min_sizefactors,'base'),map-get($sizefactors,'base'),$default-min-bp,$default-max-bp,map-get($line_heights,base))
 $basefont: Roboto, Tahoma, Arial, sans-serif
-$headingfont: 'Source Serif',Georgia,serif
+$headingfont: Roboto, Tahoma, Arial, sans-serif
 $altfont: 'Source Serif',Georgia,serif
 $codefont: 'IBM Plex Mono', Monaco, Courier New, monospace
 $row_header_bg: neutral(10)
@@ -171,6 +171,10 @@ $outline_btn_hover_color: $ui_hover_border_color
 $ui_select_width: fit-content
 $ui_select_min_width: 200px
 $ui_select_max_width: 100%
+$callout_shift: 0
+$callout_width: 40%
+$callout_inset: null
+$callout_breakpoint: lrg
 $heartbeat: 0.2s
 $standard_properties: translate3d scale opacity background-color
 $base_delay: null

@@ -1,0 +1,44 @@
+<?php
+use Laminas\Form\Element;
+
+$sortConfigContext = $this->status()->isAdminRequest() ? 'admin' : 'public';
+switch ($resourceType) {
+    case 'itemSet':
+        $sortConfigResourceType = 'item_sets';
+        break;
+    case 'media':
+        $sortConfigResourceType = 'media';
+        break;
+    case 'item':
+    default:
+        $sortConfigResourceType = 'items';
+}
+$sortConfig = $this->browse()->getBrowseService()->getSortConfig($sortConfigContext, $sortConfigResourceType);
+
+$sortBy = new Element\Select('sort_by');
+$sortBy->setAttribute('aria-label', 'Sort by'); // @translate
+$sortBy->setEmptyOption('Select sort by…'); // @translate
+$sortBy->setValueOptions($sortConfig);
+$sortBy->setValue((!isset($query['sort_by_default']) && isset($query['sort_by'])) ? $query['sort_by'] : '');
+$sortBy->setValue((!isset($query['sort_order_default']) && isset($query['sort_order'])) ? $query['sort_order'] : '');
+
+$sortOrder = new Element\Select('sort_order');
+$sortOrder->setAttribute('aria-label', 'Sort order'); // @translate
+$sortOrder->setEmptyOption('Select sort order…'); // @translate
+$sortOrder->setValueOptions([
+    'asc' => 'Ascending', // @translate
+    'desc' => 'Descending', // @translate
+]);
+$sortOrder->setValue($query['sort_order'] ?? '');
+?>
+<!-- TEMPLATE BEGIN common/advanced_search/sort -->
+<div id="advanced-search-sort" class="field">
+    <div class="field-meta">
+        <label><?php echo $this->translate('Sort'); ?></label>
+    </div>
+    <div class="inputs">
+        <?php echo $this->formSelect($sortBy); ?>
+        <?php echo $this->formSelect($sortOrder); ?>
+    </div>
+</div>
+<!-- TEMPLATE END common/advanced_search/sort -->

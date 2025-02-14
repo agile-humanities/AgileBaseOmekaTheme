@@ -1,5 +1,5 @@
 <!-- BEGIN TEMPLATE: /common/block-layout/file.phtml -->
-<div class="<?= $this->alignmentClass . ' ' . $this->thumbnailType; ?> file">
+<div class="<?= $this->alignmentClass . ' ' . $this->thumbnailType; ?> <?= $this->escapeHtml(implode(' ', $classes)); ?> file">
   <div class="attachments">
     <?php foreach($this->attachments as $attachment): ?>
     <div class="item resource capsule">

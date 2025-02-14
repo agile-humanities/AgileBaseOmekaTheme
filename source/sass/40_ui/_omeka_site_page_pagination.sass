@@ -1,0 +1,37 @@
+/**
+ *  @file _omeka_site_page_pagination.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *  @see view/common/site-page-pagination.phtml
+ *
+ **/
+
+
+.site-page-pagination
+  display: flex
+  align-items: center
+
+  .previous
+    +icon-with-label('arrow-left')
+
+    &:before
+      animation-name: unset
+      +fadeInRight($heartbeat,$heartbeat)
+
+    &:before
+      &:hover
+        animation-name: unset
+        +fadeInRight($heartbeat,$heartbeat)
+
+
+    &:hover
+      color: $impact
+
+    & + .next
+      margin-left: $ui_element_spacing
+
+  .next
+    +icon-with-label-right('arrow')
+
+    &:hover
+      color: $impact

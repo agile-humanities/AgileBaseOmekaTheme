@@ -1,0 +1,15 @@
+.listing-capsules
+  .grid
+    +standard_edge_padding()
+    +separated_row(2)
+    background-color: set-color(2)
+
+    +bp($desktop)
+      +separated-row(3)
+
+    .capsule
+      +standard_edge_padding()
+      background-color: $white
+
+      h3
+        margin-top: 0

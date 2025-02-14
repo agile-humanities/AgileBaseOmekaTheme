@@ -39,20 +39,23 @@ slide-viewer
   --sequential-nav-top: #{$sequential_nav_top}
   --sequential-nav-left: #{$sequential_nav_left}
   --sequential-nav-right: #{$sequential_nav_right}
-  --sequential-nav-bottom: #{$sequential_nav_bottom}
+  --sequential-nav-bottom: 0
   --sequential-nav-transform: #{$sequential_nav_transform}
   --slide-nav-background: none
   --sequential-nav-background: #{neutral(90)}
   --sequential-nav-border: 1px solid transparent
   --sequential-nav-border-radius: #{$ui_border_radius}
-  --sequential-control-spacing: 0
+  --sequential-control-spacing: 5px
   --sequential-control-initial-opacity: 0.7
   --page-marker-transform: #{$page_marker_transform}
   --page-marker-transform-hover: #{$page_marker_transform_hover}
   --page-marker-transform-active: #{$page_marker_transform_active}
-  --page-marker-margin: 0 #{rv(-3)}
+  --page-marker-margin: 8px
   --sequential-control-background-size: 75%
   --slide-item-landscape-object-fit: cover
+
+  +bp($tablet)
+    --sequential-nav-bottom: #{$sequential_nav_bottom}
 
   +bp($desktop)
     background-color: transparent

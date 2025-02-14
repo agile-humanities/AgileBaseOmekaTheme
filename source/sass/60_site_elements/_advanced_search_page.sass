@@ -1,0 +1,156 @@
+/*
+ *  @file _advanced_search_page.sass
+ *  @category 60_site_elements
+ *  @theme LOCAL
+ *  @description Creates a traditional advanced search filter page built on top of the default Omeka search tools.
+ *     These styles apply to the item/search template. For the browse page, confusingly created using the Advanced
+ *     Search module, see _advanced_search_browse
+ */
+
+.advanced-search-content
+  margin-bottom: rv(6)
+
+  #resource-class,
+  #item-sets ~ div.field
+    display: none
+  .field label,
+  .field .label
+    display: block
+    margin-bottom: 1rem
+  #fulltext_search
+    margin-bottom: initial
+
+  .value
+    flex-direction: column
+    select,
+    input
+      margin-left: initial
+  select,
+  input
+    display: block
+    width: 100%
+    margin-bottom: rv(0)
+
+  .remove-value
+    all: unset
+    display: inline-block
+    font: $normal 0.9rem $basefont
+    color: neutral(50)
+    background: url(get_svg_url("ui/close-dark-grey")) no-repeat right center
+    background-size: 15%
+    padding-right: 15px
+    margin: 0 auto 1rem auto
+    cursor: pointer
+    +bp($tablet)
+      position: absolute
+      top: 1.3rem
+      right: rv(1)
+
+  .add-value
+    font: $normal 0.9rem $basefont
+    color: neutral(50)
+    text-decoration: none
+    display: inline-block
+    height: 21px
+    background: url(get_svg_url("ui/add-dark-grey")) no-repeat right center
+    background-size: 8%
+    padding-right: 20px
+    position: relative
+    left: 50%
+    transform: translateX(-50%)
+
+    +bp($tablet)
+      position: absolute
+      left: initial
+      transform: initial
+      right: rv(1)
+      margin-top: 1rem
+
+  .inputs
+    padding: 1rem
+    background-color: neutral(5)
+    border-top: 1px solid neutral(60)
+    border-bottom: 1px solid neutral(60)
+    margin: 0 auto 1rem auto
+
+    +bp($tablet)
+      padding: rv($edge_padding_factor) * 3 rv($edge_padding_factor)
+      position: relative
+
+  .collapsible
+    overflow: hidden
+    max-height: 0
+    transition: max-height, margin-bottom 0.3s ease-out
+  .open-collapsible
+    max-height: 100vh
+    margin-bottom: 1rem
+  .field
+    margin-bottom: rv(4)
+
+  input[type="submit"]
+    margin: 0 auto
+    +bp($tablet)
+      margin: 0 0 0 auto
+      max-width: 225px
+
+  input[type="checkbox"]
+    display: initial
+    width: initial
+    margin-bottom: initial
+  .numeric-time-inputs
+    flex-direction: column
+    +bp($tablet)
+      flex-direction: row
+    select:last-child
+      margin-bottom: 0
+    select,
+    input
+      +bp($tablet)
+        margin-bottom: initial
+  .field:first-of-type
+    .inputs
+      padding: initial
+      background-color: initial
+      border-top: none
+      border-bottom: none
+  .field-meta
+    position: relative
+    span
+      display: inline-block
+    a
+      display: inline-block
+      position: absolute
+      width: 15px
+      height: 15px
+      right: 0
+      top: 0
+      background: url(get_svg_url("icons/accordion-expand-neutral")) no-repeat right center
+  .field-description
+    font: $normal 1rem $basefont
+  #property-queries
+    .value
+      +bp($tablet)
+        flex-direction: row
+        flex-wrap: wrap
+        justify-content: flex-start
+        select
+          flex: 0 0 35%
+        .query-property
+          margin-right: rv(1)
+  .numeric-date-inputs
+    +bp($tablet)
+      display: flex
+  .field:nth-last-child(-n+2)
+    .inputs
+      +bp($tablet)
+        display: flex
+        select
+          flex: 0 0 35%
+          margin-right: 1.2rem
+        .numeric-integer
+          flex: 0 0 35%
+
+  // Chosen is replaced by Select2 in this implementation
+
+  .chosen-container
+    display: none

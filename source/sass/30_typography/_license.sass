@@ -1,0 +1,38 @@
+/**
+ *  @file _license.sass
+ *  @category 30_typography
+ *  @theme LOCAL
+ *  @description Defines a checkmark icon with the label “free to use”. Used to indicate copyright free materials.
+ *  @alsosee view/common/free-to-use.phtml
+ *
+ **/
+
+
+$license_icon_width: 35px
+$license_label_shift: -5px
+
+.license-and-icon
+  width: 100%
+  display: flex
+  justify-content: space-between
+
+.license-img-wrapper
+  display: flex
+  align-items: flex-end
+
+  .license-img
+    display: block
+    width: $license_icon_width
+    height: $license_icon_width
+    object-fit: contain
+    margin-left: $text_element_spacing
+
+  span
+    +font-size(-2)
+    display: inline-block
+    text-align: left
+    text-transform: uppercase
+    color: $black
+    line-height: 1
+    font-weight: $bold
+    transform: translateX($license_label_shift)

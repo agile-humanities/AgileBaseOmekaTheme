@@ -3,16 +3,19 @@
  * @file card.phtml
  * @description Displays a card view for a particular item. Use $this->plugin('cardViewer')->getCard($item) to invoke.
  * @var /Laminas/View/View $this
+ * @var \Omeka\Entity\Resource $item
  * @var $containerElement Wrapping element can be passed to card via the View Helper
  * @var mixed $item
  */
 
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
+$partial = $this->plugin('partial');
 $plugins = $this->getHelperPluginManager();
 $filterLocale = (bool) $this->siteSetting('filter_locale_values');
 $lang = $this->lang();
 $valueLang = $filterLocale ? [$lang, ''] : null;
+$assetUrl = $plugins->get('assetUrl');
 
 try {
   $textSummary = $this->plugin('textSummary');
@@ -22,6 +25,7 @@ try {
 $thumbnailer = $plugins->get('thumbnail');
 
 $cardObjectClass = get_class($item);
+$type = 'item';
 
 $bodyTerm = $this->siteSetting('browse_body_property_term');
 $viewItemPageLabelTerm  = $this->siteSetting('browse_view_item_page_term');

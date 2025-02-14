@@ -112,7 +112,7 @@ paragraph_spacing: "clamped(map-get($min_sizefactors,'base'),map-get($sizefactor
 
 # Fonts
 basefont: "Roboto, Tahoma, Arial, sans-serif"
-headingfont: "'Source Serif',Georgia,serif"
+headingfont: "Roboto, Tahoma, Arial, sans-serif"
 altfont: "'Source Serif',Georgia,serif"
 codefont: "'IBM Plex Mono', Monaco, Courier New, monospace"
 
@@ -221,6 +221,12 @@ ui_select_width: fit-content
 ui_select_min_width: 200px
 ui_select_max_width: 100%
 
+#Callouts
+
+callout_shift: 0
+callout_width: 40%
+callout_inset: null
+callout_breakpoint: lrg
 
 # Animation
 heartbeat: 0.2s
