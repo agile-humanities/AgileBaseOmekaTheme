@@ -22,9 +22,11 @@ ul
   +bp($tablet)
     padding-inline-start: rv($edge_padding_factor)
 
+hr
+  margin: rv($mobile_edge_padding_factor) * 2 0
 
-dd, dt
-  font-family: $basefont
+  +bp($stack)
+    margin: rv($edge_padding_factor) * 2 0
 
 // TEXT TREATMENTS
 
@@ -70,6 +72,12 @@ figcaption, .caption
     font-size: inherit
     font-family: inherit
 
+.sublabel
+  font-family: $altfont
+  font-weight: $normal
+  font-style: italic
+  font-size: clamped(-1,0)
+
 .callout-text
   @extend %impact-text
   line-height: 1.25
@@ -81,6 +89,12 @@ label, .label, .metadata-label
 
   @at-root .reversed &
     color: neutral(30)
+
+  @at-root .field-meta &
+    text-transform: uppercase
+    font-size: clamped(0,1)
+    font-weight: $bold
+    color: $black
 
 .value, .metadata-value
   @extend %small-text
@@ -128,6 +142,54 @@ fieldset, .field
     color: $white
     background-color: set-color(2)
 
+$summary_text_font_size: clamped(-1,0)
+
+.summary--text--group
+  font-family: $basefont
+  font-size: clamped(0,1)
+  color: neutral(60)
+
+.summary--text, .filter-value
+  font-family: $basefont
+  font-weight: $bold
+  text-transform: uppercase
+  font-size: $summary_text_font_size
+  color: $black
+  text-decoration: none
+  border: 0
+
+a.summary--text
+  @extend .summary--text
+
+  &:hover
+    color: $link_colour_active
+    text-decoration: underline
+    text-decoration-color: $link_colour_active
+
+.summary--text--label, .filter-label
+  font-family: $basefont
+  font-size: $summary_text_font_size
+  color: set-color(3)
+  font-weight: $bold
+  text-transform: uppercase
+
+  &:after
+    content: ' '
+    display: inline
+
+
+.title-clamp
+  display: -webkit-box
+  -webkit-line-clamp: 3
+  -webkit-box-orient: vertical
+  overflow: hidden
+  // line-height: map-get($line_heights,'h3')
+
+.description-clamp
+  display: -webkit-box
+  -webkit-line-clamp: 9
+  -webkit-box-orient: vertical
+  overflow: hidden
 
 .rights
   display: flex

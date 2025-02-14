@@ -31,11 +31,11 @@
           <figure>
             <?php
             if (!empty($this->itemFields[$i]["thumbnailUrl"])):
-              printf('<img src="%s" alt="%s" />',$this->itemFields[$i]["thumbnailUrl"],$this->itemFields[$i]["title"] . " Thumbnail");
+              printf('<figure><img src="%s" alt="%s" /></figure>',$this->itemFields[$i]["thumbnailUrl"],$this->itemFields[$i]["title"] . " Thumbnail");
             elseif ($item):
               $media = $attachments[$i]->media() ?: $item->primaryMedia();
               if ($media):
-                echo $this->thumbnail($media, $this->thumbnailType); // $item->displayTitle()
+                echo "<figure>". $this->thumbnail($media, $this->thumbnailType) . "</figure>"; // $item->displayTitle()
               endif;
             endif;
             ?>

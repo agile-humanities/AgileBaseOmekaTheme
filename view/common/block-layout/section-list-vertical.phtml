@@ -1,4 +1,4 @@
-/ .,<div id="block-<?php echo $this->blockId; ?>" class="section-list section-list-vertical region <?php echo $this->regionClass; ?> <?php echo $this->classes ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+<div id="block-<?php echo $this->blockId; ?>" class="section-list section-list-vertical region <?php echo $this->regionClass; ?> <?php echo $this->classes ?>" data-target-region-id="<?php echo $this->targetID; ?>">
     <?php if ($this->hasTitle): ?>
         <h2><?php echo $this->title; ?></h2>
     <?php endif; ?>
@@ -8,14 +8,10 @@
         </div>
     <?php endif; ?>
     <?php if ($this->hasPages): ?>
-        <div class="list-container">
-            <ul class="list">
+        <div class="page-container">
+            <ul>
                 <?php foreach($this->pages as $page): ?>
-                    <li class='item'>
-                        <a title="See <?php echo $page['o:title']; ?>" href='<?= $page['o:url']; ?>'>
-                          <?php echo $page['o:title']; ?>
-                        </a>
-                    </li>
+                    <li><a title="See <?php echo $page['o:title']; ?>" href='<?= $page['o:url']; ?>'><?php echo $page['o:title']; ?></a></li>
                 <?php endforeach ?>
             </ul>
         </div>

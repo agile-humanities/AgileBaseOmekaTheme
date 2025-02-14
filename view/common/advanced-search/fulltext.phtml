@@ -1,0 +1,15 @@
+<?php
+$value = isset($query['fulltext_search']) ? $query['fulltext_search'] : null; // backwards compatibility
+$value = isset($query['q']) ? $query['q'] : $value;
+?>
+<!-- TEMPLATE BEGIN common/advanced-search/fulltext -->
+
+<div class="field">
+    <div class="field-meta">
+        <label for="fulltext_search">Search <span class="emphasized-text">Keywords</span></label>
+    </div>
+    <div class="inputs-keyword">
+        <input type="text" placeholder="Search by keyword" name="fulltext_search" id="fulltext_search" value="<?php echo $this->escapeHtml($value); ?>">
+    </div>
+</div>
+<!-- TEMPLATE END common/advanced-search/fulltext -->

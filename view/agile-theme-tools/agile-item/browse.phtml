@@ -10,6 +10,7 @@ $partial = $plugins->get('partial');
 
 
 $query = $this->params()->fromQuery();
+
 $itemSetShow = isset($itemSet);
 if ($itemSetShow):
     $this->htmlElement('body')->appendAttribute('class', 'item-set');
@@ -20,18 +21,18 @@ $sortHeadings = [
         'label' => $translate('Sort by Title'),
         'value' => 'dcterms:title'
     ],
-    // [
-    //     'label' => $translate('Identifier'),
-    //     'value' => 'dcterms:identifier'
-    // ],
-    // [
-    //     'label' => $translate('Class'),
-    //     'value' => 'resource_class_label'
-    // ],
-    // [
-    //     'label' => $translate('Sort by Date'),
-    //     'value' => 'created'
-    // ],
+    [
+        'label' => $translate('Identifier'),
+        'value' => 'dcterms:identifier'
+     ],
+     [
+         'label' => $translate('Class'),
+         'value' => 'resource_class_label'
+     ],
+     [
+         'label' => $translate('Sort by Date'),
+         'value' => 'created'
+     ],
 ];
 ?>
 <div class='browse-tool'>
@@ -45,7 +46,7 @@ $sortHeadings = [
             <div class="browse-search-form">
                 <?php echo $this->partial('common/search-form'); ?>
             </div>
-            <?php echo $this->hyperlink($translate('Search by ID'), $this->url('site/resource', ['controller' => 'item', 'action' => 'search'], ['query' => $query], true), ['class' => 'search-by-id']); ?>
+            <?php //echo $this->hyperlink($translate('Search by ID'), $this->url('site/resource', ['controller' => 'item', 'action' => 'search'], ['query' => $query], true), ['class' => 'search-by-id']); ?>
         </div>
     </div>
 
@@ -57,13 +58,10 @@ $sortHeadings = [
             <h3>Results</h3>
             <div class='sort-selector'>
                 <?php echo $this->sortSelector($sortHeadings); ?>
-
             </div>
 
         </div>
     </div>
-
-
         <div class="browser browser-container">
             <ul class="list">
                 <?php foreach ($items as $item): ?>
@@ -81,6 +79,7 @@ $sortHeadings = [
             <div class="bottom-bar-ui">
                 <?php echo $this->pagination(); ?>
             </div>
+
         </div>
 </div>
 <! -- END OF /AGILE-THEME-TOOLS/AGILE-ITEM/BROWSE.PHTML -->

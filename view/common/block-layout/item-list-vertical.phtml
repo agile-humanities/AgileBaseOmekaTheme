@@ -1,0 +1,27 @@
+<div id="block-<?php echo $this->blockId; ?>" class="item-list item-list-vertical region <?php echo $this->regionClass; ?> <?php echo $this->classes ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+    <?php if ($this->hasTitle): ?>
+        <h2><?php echo $this->title; ?></h2>
+    <?php endif; ?>
+    <?php if ($this->hasIntroduction): ?>
+        <div class='block-introduction'>
+            <?php echo $this->introduction; ?>
+        </div>
+    <?php endif; ?>
+    <?php if ($this->hasPages): ?>
+        <div class='vertical-page-list'>
+            <ul class='tab-ui'>
+                <?php foreach($this->pages as $page): ?>
+                    <li class='vertical-page-control no-padding' style='display:flex'<?php echo $page['o:active'] ? ' active' : ''; ?>'>
+                        <?php if ($page['o:active']) :?>
+                            <span class='vertical-item-list-link'><?php echo $page['o:title']; ?></span>
+                            <span class='page-list-arrow active-arrow'>></span>
+                        <?php else: ?>
+                            <a href='<?php echo $page['o:url']; ?>'><?php echo $page['o:title']; ?></a>
+                            <span class='page-list-arrow inactive-arrow'>></span>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+</div>

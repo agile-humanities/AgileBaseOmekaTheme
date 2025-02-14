@@ -9,7 +9,7 @@
     <?php endif; ?>
     <?php if ($this->hasPages): ?>
     <div class="card-container">
-        <ul class="cards grid masonry-grid">
+        <ul class="cards grid">
             <?php foreach($this->pages as $page): ?>
                 <li class='item'>
                     <a title="See <?php echo $page['o:title']; ?>" class="card" href='<?= $page['o:url']; ?>'>

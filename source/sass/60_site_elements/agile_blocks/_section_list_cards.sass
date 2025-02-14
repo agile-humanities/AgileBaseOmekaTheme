@@ -8,9 +8,13 @@
 .section-list-cards
   .card-container
     @extend %browser-container
+    +standard_edge_padding()
 
   .cards
     @extend %card-grid
+
+  ul
+    list-style-type: none
 
 // Legacy styling. @todo: deprecate?
 .site-links

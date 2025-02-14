@@ -4,5 +4,18 @@ button[type="submit"] //Button
 input[name="refine"]
   @extend %input-text
 
+input[type="number"]
+  height: $ui_element_height
+  min-height: $ui_element_height
+
 button[type="reset"]
   +background_icon_left('reset',$btn_icon_size,'default','default')
+  justify-content: center
+
+.btn
+  @extend %button
+
+.button, .btn
+  font-family: $basefont
+  font-weight: $bold
+

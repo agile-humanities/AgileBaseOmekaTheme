@@ -1,5 +1,5 @@
 /**
- *  @file _search_form.sass
+ *  @file _omeka_search_form.sass
  *  @category 40_ui
  *  @theme LOCAL
  *  @see view/common/search.phtml
@@ -36,14 +36,53 @@
   all: unset
   cursor: pointer
   color: neutral(20)
-  font: 1rem/1 $headingfont
+  +font-size(0)
   position: absolute
   right: 35px
-  padding: 0.2rem
-  top: 50%
-  transform: translateY(-50%)
+  top: 0
+  height: 100%
+  &:hover, &.active
+    background-color: transparent
+    color: $black
+
+
   +bp($tablet)
     right: 50px
   +bp($desktop)
     &:hover, &:focus
       color: $cta
+
+// Extensions to various new advanced search templates. This is referring to the advanced search templates
+// in common/advanced_search, NOT those supplied by the Advanced Search module.
+
+// fulltext.phtml
+
+#fulltext_search
+  @extend %search-form-textfield
+  +input-button-icon-right('search',25px,$ui_padding,'neutral','default')
+  width: 100%
+
+// properties.phtml
+
+.inputs input
+  @at-root #advanced-search &  // Added to override specificity in default template
+    margin: 0 $ui_element_spacing $ui_element_spacing 0
+
+    &:last-child
+      margin-right: 0
+
+
+#property-queries
+
+
+  .value-fields > *
+    min-width: 150px
+
+  input[type="text"]
+    width: 100%
+    min-width: 100%
+
+  textarea
+    padding: $ui_padding
+    margin: 0
+    min-height: calc(#{$ui_element_height} - #{$ui_padding * 2})

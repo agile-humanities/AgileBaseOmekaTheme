@@ -15,6 +15,18 @@
   +bp($desktop)
     +separated-row(3)
 
+  .site-link-cards-intro
+    text-align: center
+    margin-bottom: rv($mobile_edge_padding_factor)
+
+    +bp($tablet)
+      grid-column: 1/3
+
+    +bp($desktop)
+      text-align: left
+      grid-column: auto
+      margin-bottom: 0
+
 
   .site-link-cards-img
     width: 90px
