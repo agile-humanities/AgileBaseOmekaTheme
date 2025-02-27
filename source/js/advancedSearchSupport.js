@@ -53,9 +53,13 @@ if (searchViewType === null) {
       }
 
       if (facetSidebar.length > 0) {
-        facetSidebar.is(':hidden') ?
-          facetSidebar.fadeIn(window.heartbeat,delay) :
+        if(facetSidebar.is(':hidden')) {
+          facetSidebar.fadeIn(window.heartbeat,delay);
+          mobileCloseButton.fadeIn(window.heartbeat,function() { $(this).css('display','flex'); delay()});
+        } else {
           facetSidebar.fadeOut(window.heartbeat,delay);
+          mobileCloseButton.fadeOut(window.heartbeat,delay);
+        }
       }
       if (searchResultsHeader.length > 0) {
         searchResultsHeader.is(':hidden') ?
