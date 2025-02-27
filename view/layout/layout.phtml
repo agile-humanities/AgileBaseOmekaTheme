@@ -15,6 +15,10 @@ $this->headScript()->prependFile($this->assetUrl('js/global.js', 'Omeka'));
 $this->headScript()->prependFile($this->assetUrl('js/vendor.js'));
 $this->headScript()->prependFile($this->assetUrl('vendor/jquery/jquery.min.js', 'Omeka'));
 
+// Custom stylesheets.
+$this->headLink()->appendStylesheet($this->assetUrl('../custom.css'));
+$this->headScript()->appendFile($this->assetUrl('../custom.js'));
+
 
 $this->trigger('view.layout');
 $title = $this->pageTitle($site->title());

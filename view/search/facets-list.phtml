@@ -30,9 +30,9 @@ $displayRefine = (bool) $searchConfig->subSetting('facet', 'display_refine', tru
 $labelRefine = $displayRefine ? $searchConfig->subSetting('facet', 'label_refine', $translate('Refine search')) : null;
 $displayFacetButton = $isFacetModeButton && ($displayActive || !empty($facets));
 $displaySubmit = $displayFacetButton ? $searchConfig->subSetting('facet', 'display_submit', 'above') : 'none';
-$labelSubmit = $displaySubmit ? $searchConfig->subSetting('facet', 'label_submit', $translate('Apply filters')) : null;
+$labelSubmit = $displaySubmit ? $searchConfig->subSetting('facet', 'label_submit', $translate('Apply facets')) : null;
 $displayReset = $searchConfig->subSetting('facet', 'display_reset', 'above');
-$labelReset = $displayReset ? $searchConfig->subSetting('facet', 'label_reset', $translate('Reset filters')) : null;
+$labelReset = $displayReset ? $searchConfig->subSetting('facet', 'label_reset', $translate('Reset facets')) : null;
 
 $facetActives = $plugins->get('facetActives');
 $facetElements = $plugins->get('facetElements');
@@ -85,7 +85,7 @@ if (!empty($itemSet)) {
             <?php if ($labelRefine): ?>
             <h4><label for="search-refine"><?= $escape($labelRefine) ?></label></h4>
             <?php endif; ?>
-            <input id="search-refine" name="refine" class="search-refine" value="<?= $escape($query->getQueryRefine()) ?>"<?= $labelRefine ? ' data-placeholder="' . $escapeAttr($labelRefine) : ''?>"/>
+                <input id="search-refine" name="refine" class="search-refine" value="<?= $escape($query->getQueryRefine()) ?>"<?= $labelRefine ? ' data-placeholder="' . $escapeAttr($labelRefine) . '"' : '' ?>/>
             <?php if (!$displayButtonSubmit): ?>
             <button id="search-refine-submit" class="search-refine" type="submit"><?= $escape($translate('Submit')) ?></button>
             <?php endif; ?>
