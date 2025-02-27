@@ -30,13 +30,12 @@ $displayRefine = (bool) $searchConfig->subSetting('facet', 'display_refine', tru
 $labelRefine = $displayRefine ? $searchConfig->subSetting('facet', 'label_refine', $translate('Refine search')) : null;
 $displayFacetButton = $isFacetModeButton && ($displayActive || !empty($facets));
 $displaySubmit = $displayFacetButton ? $searchConfig->subSetting('facet', 'display_submit', 'above') : 'none';
-$labelSubmit = $displaySubmit ? $searchConfig->subSetting('facet', 'label_submit', $translate('Apply filters')) : null;
+$labelSubmit = $displaySubmit ? $searchConfig->subSetting('facet', 'label_submit', $translate('Apply facets')) : null;
 $displayReset = $searchConfig->subSetting('facet', 'display_reset', 'above');
-$labelReset = $displayReset ? $searchConfig->subSetting('facet', 'label_reset', $translate('Reset filters')) : null;
+$labelReset = $displayReset ? $searchConfig->subSetting('facet', 'label_reset', $translate('Reset facets')) : null;
 
 $facetActives = $plugins->get('facetActives');
 $facetElements = $plugins->get('facetElements');
-//$facetElements = $isFacetModeButton ? $plugins->get('facetCheckboxes') : $plugins->get('facetLinks');
 $facetSelect = $plugins->get('facetSelect');
 
 // TODO Remove item sets facets early when item set redirects to search.
@@ -45,6 +44,7 @@ if (!empty($itemSet)) {
     unset($facets['item_set_id']);
     unset($activeFacets['item_set_id']);
 }
+
 ?>
 <!-- FACET SIDEBAR TEMPLATE BEGIN search/facet-list.phtml -->
 <div id="search-facets" class="facets">
@@ -85,7 +85,7 @@ if (!empty($itemSet)) {
             <?php if ($labelRefine): ?>
             <h4><label for="search-refine"><?= $escape($labelRefine) ?></label></h4>
             <?php endif; ?>
-            <input id="search-refine" name="refine" class="search-refine" value="<?= $escape($query->getQueryRefine()) ?>"<?= $labelRefine ? ' data-placeholder="' . $escapeAttr($labelRefine) : ''?>"/>
+                <input id="search-refine" name="refine" class="search-refine" value="<?= $escape($query->getQueryRefine()) ?>"<?= $labelRefine ? ' data-placeholder="' . $escapeAttr($labelRefine) . '"' : '' ?>/>
             <?php if (!$displayButtonSubmit): ?>
             <button id="search-refine-submit" class="search-refine" type="submit"><?= $escape($translate('Submit')) ?></button>
             <?php endif; ?>
@@ -109,6 +109,25 @@ if (!empty($itemSet)) {
                 <details <?= $stateExpand ? 'open' : '' ?>>
                     <summary><?= $escape($translate($facetParams['label'] ?? $name)) ?></summary>
                     <div class="facet-elements<?= $hasState ? ' collapsible' : '' ?>"<?= $hasState && $facetParams['state'] === 'collapse' ? ' hidden="hidden"' : '' ?>>
+                        <?php
+
+                        /* The item set’s label is empty when an item set id is passed to the checkbox facet.
+                         * This conditional works in tandem with logic in the facet-checkboxes.phtml, which adds an extra facet
+                         * value key with the Item Set’s display name. Adding a key should keep it backwards compatible if this is fixed
+                         * (or properly configured, if that's the issue).
+                         */
+
+                        if ($facetParams['field'] === 'item_set_id') {
+                            /** @var Omeka\Api\Manager $api */
+                            $api = $plugins->get('api');
+
+                            foreach ($facetValues as &$value) {
+                                /** @var Omeka\Api\Representation\ItemSetRepresentation $itemSet */
+                                $itemSet = $api->read('item_sets',$value['value'])->getContent();
+                                $value['item_set_label'] = $itemSet->displayTitle();
+                            }
+                        }
+                        ?>
                         <?= $facetElements($facetParams['field'], $facetValues, $facetParams) ?>
                         <?php if (($facetParams['more'] ?? '') !== '' && in_array($facetParams['type'] ?? '', ['', 'Checkbox']) && count($facetValues) > (int) $facetParams['more']): ?>
                         <div class="facet-see-more">
