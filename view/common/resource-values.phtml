@@ -1,6 +1,7 @@
 <?php
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
+$agileSearchHelper = $this->plugin('agileSearchHelper');
 
 $labelInfo = $this->fallbackSetting('property_label_information', ['site', 'global'], 'none');
 $showLocale = (bool) $this->fallbackSetting('show_locale_label', ['site'], true);
@@ -15,7 +16,6 @@ $filterLocaleCallback = function ($value) use ($lang) {
 ?>
 <!-- BEGIN common/resource-values.phtml -->
 
-<dl>
 <?php
 foreach ($values as $term => $propertyData):
     $propertyValues = $propertyData['values'];
@@ -36,12 +36,12 @@ foreach ($values as $term => $propertyData):
     }
 ?>
     <div class="property">
-        <dt class="metadata-label">
+        <div class="metadata-label">
         <?php echo $escape($propertyLabel); ?>
         <?php if ($propertyTerm !== null): ?>
         <span class="field-term">(<?php echo $escape($propertyTerm); ?>)</span>
         <?php endif; ?>
-        </dt>
+        </div>
         <?php foreach ($propertyValues as $value): ?>
         <?php
         $valueType = $value->type();
@@ -55,11 +55,11 @@ foreach ($values as $term => $propertyData):
             $class[] = 'uri';
         }
         ?>
-        <dd class="metadata-value <?php echo implode(' ', $class); ?>" lang="<?php echo $escape($valueLang); ?>">
+        <div class="metadata-value <?php echo implode(' ', $class); ?>" lang="<?php echo $escape($valueLang); ?>">
             <?php if ($showLocale && $valueLang): ?>
             <span class="language"><?php echo $valueLang; ?></span>
-            <?php endif; ?>
-            <span class="value-content"><?php echo $filterLocale ? $value->asHtml($lang) : $value->asHtml(); ?></span>
+            <?php endif; 0?>
+            <span class="value-content"><a href="<?= $agileSearchHelper->getFacetedSearchUrl($value); ?>"><?php echo $filterLocale ? $value->asHtml($lang) : $value->asHtml(); ?></a></span>
             <?php if(!$value->isPublic()): ?>
                 <span class="o-icon-private" role="img" title="<?php echo $this->escapeHtml($translate('Private')); ?>" aria-label="<?php echo $this->escapeHtml($translate('Private')); ?>"></span>
             <?php endif; ?>
@@ -72,9 +72,8 @@ foreach ($values as $term => $propertyData):
                 </div>
             <?php endif; ?>
             <?php $this->trigger('view.show.value', ['value' => $value]); ?>
-        </dd>
+        </div>
         <?php endforeach; ?>
     </div>
 <?php endforeach; ?>
-</dl>
 <!-- END common/resource-values.phtml -->

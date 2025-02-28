@@ -22,14 +22,6 @@
   h1 + .description, .subtitle + .description
     margin-top: rv($mobile_edge_padding_factor)
 
-  .metadata-list
-    +metadata-list(1,3,5)
-    padding: rv($mobile_edge_padding_factor) 0
-    border-bottom: 1px solid neutral(60)
-
-
-    +bp($desktop)
-      padding: rv($edge_padding_factor) 0
 
   .item-container
     margin-bottom: rv($block_spacing)
@@ -62,6 +54,9 @@
       border-bottom: none
 
 
+  .item-info
+    .metadata-list
+      +metadata-list(1,3,5)
   // =======================
   // ITEM VIEWER
   // =======================

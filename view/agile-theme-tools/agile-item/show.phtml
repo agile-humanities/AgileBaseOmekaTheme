@@ -54,15 +54,11 @@ $searchMainPage = $this->siteSetting('advancedsearch_main_config');
 //$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
 $searchConfig = $plugins->get('getSearchConfig');
 // Updated way of handling facets
-$searchFacets = $searchConfig->subSetting('facet', 'facets', []);
 $facetElements = $plugins->get('facetElements');
 $facetParams = ['template'=>'search/facet-link'];
 
 /** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig2 */
 /** @var  \Omeka\Controller\Site\  $site */
-//$searchConfig2 = $plugins->get('getSearchConfig');
-
-//var_dump($searchConfig->settings());
 
 foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $term => $valueDetails) {
   foreach($valueDetails['values'] as $value) {
@@ -190,9 +186,9 @@ if ($hasMedia) {
   </div>
   <div class='item-info item-text'>
     <div class='wayfinding'>
-      <a class="wayfinding--breadcrumb icon-home" href="<?php echo $site->siteUrl(); ?>"><span class="screen-reader-text">Home</span></a>
+      <a class="wayfinding--breadcrumb icon-home" href="<?= $site->siteUrl(); ?>"><span class="screen-reader-text">Home</span></a>
       <span>></span>
-      <a class="wayfinding--breadcrumb" href="<?= $searchConfig->siteUrl() ?>">Discover</a>
+      <a class="wayfinding--breadcrumb" href="<?= $site->siteUrl(); ?>">Discover</a>
       <?php
         /** @var Omeka\Api\Representation\ItemSetRepresentation $itemSet */
         $itemSets = $item->itemSets();
@@ -247,7 +243,7 @@ if ($hasMedia) {
                     foreach($propertyData['values'] as $value)
                       if($value->isPublic()):
 
-                        $url = $searchHelper->getFacetedSearchUrl($term,$value);
+                        $url = $searchHelper->getFacetedSearchUrl($value);
                         printf("       <div class='value'><a href='%s'>%s</a></div>",$url,$value);
                       endif;
                     print ("    </div>");

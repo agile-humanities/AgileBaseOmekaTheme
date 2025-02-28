@@ -1,0 +1,73 @@
+/**
+ *  @file _omeka_search_common.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *  @description A place for class common to multiple search templates.
+ *
+ **/
+
+.search-results-list
+  list-style-type: none
+  padding-left: 0
+
+  li
+    margin-bottom: rv($grid_gap_factor)
+
+  &.grid
+    .resource
+      @extend .card
+
+.search-results-count
+  > .pagination--label
+    display: none
+
+    +bp($ui_mobile_app_controls_breakpoint)
+      display: block
+
+.search-results-header
+  position: fixed
+  z-index: 12
+  top: calc(#{$masthead_height} + #{rv($mobile_edge_padding_factor)})
+  left: 0
+  right: 0
+  padding: 0 rv($mobile_edge_padding_factor) $mobile_overlay_spacing rv($mobile_edge_padding_factor)
+  width: 100%
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+  display: none
+
+  +bp($ui_mobile_app_controls_breakpoint)
+    display: flex
+    position: initial
+    top: initial
+    left: initial
+    right: initial
+    padding: 0 0 $mobile_overlay_spacing 0
+    justify-content: flex-end
+
+  > *
+    +bp($ui_mobile_app_controls_breakpoint)
+      display: flex
+      align-items: center
+      margin-left: $ui_element_spacing
+
+      &:first-child
+        margin-left: 0
+
+  label
+    @extend %labels-controls
+
+.search-results-footer
+  padding-top: rv($mobile_edge_padding_factor)
+  margin-top: rv($mobile_edge_padding_factor)
+  border-top: 1px solid neutral(30)
+
+.search-results-display
+  @extend %ui-display-mode-controls
+
+.search-view-type-list
+  +icon_with-label-right('list',$btn_icon_size,'neutral')
+
+.search-view-type-grid
+  +icon_with-label-right('grid',$btn_icon_size,'neutral')

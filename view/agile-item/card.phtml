@@ -90,9 +90,19 @@ switch($cardObjectClass) {
       $body = $bodyTerm ? $item->value($bodyTerm, ['lang' => $valueLang]) : $item->displayDescription(null, $valueLang);
     }
     break;
+  case 'Omeka\Api\Representation\SitePageRepresentation':
+    /** @var Omeka\Api\Representation\SitePageRepresentation $item */
+    $url = $item->url();
+    $heading = $item->title();
+    $header = $escape($heading);
+    $thumbnail = $thumbnailer($item, $thumbnailType);
+    $label = 'Page';
+    $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$label)));
+
+    break;
   default: // Resources
     $url = $item->url();
-    $heading = $headingTerm ? $item->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $item->displayTitle(null, $valueLang);
+    $heading = $headingTerm ? $item->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : '$item_';
     $header = $escape($heading);
     $thumbnail = $thumbnailer($item, $thumbnailType);
     $label = 'Resource';
