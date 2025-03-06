@@ -64,11 +64,11 @@ foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $
   foreach($valueDetails['values'] as $value) {
     // Prepare a search query to find items with the same property value
     $query = [
-      'property' => [
+      'filter' => [
         [
-          'property' => $value->jsonSerialize()['property_id'],
+          'field' => $value->jsonSerialize()['property_id'],
           'type' => 'eq',
-          'text' => [$value->value()],
+          'val' => [$value->value()],
         ],
       ],
     ];
@@ -89,6 +89,8 @@ foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $
     }
   }
 }
+
+$viewer = 'viewer-none';
 
 if ($hasMedia) {
   // Determine which viewer to use. Note that the UV and Mirador viewers are displayed via the blocks disposition module,
@@ -145,9 +147,11 @@ if ($hasMedia) {
       // Default viewer
       if ($viewer === 'viewer-default' && (($itemMedia) || $oEmbed)): ?>
         <div class="media-embeds">
-          <?php foreach ($itemMedia as $media):
+          <?php
+          foreach ($itemMedia as $media):
             echo $media->render();
-          endforeach; ?>
+          endforeach;
+          ?>
         </div>
       <?php
       elseif ($viewer === 'viewer-pdf'):
