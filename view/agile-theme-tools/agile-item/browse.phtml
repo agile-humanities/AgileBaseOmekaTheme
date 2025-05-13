@@ -1,5 +1,8 @@
 <! -- START OF /AGILE-THEME-TOOLS/AGILE-ITEM/BROWSE.PHTML -->
 <?php
+
+/** @var \Omeka\Api\Representation\ItemSetRepresentation $itemSet */
+
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 $this->htmlElement('body')->appendAttribute('class', 'browse card-view');
@@ -7,6 +10,9 @@ $this->htmlElement('body')->appendAttribute('class', 'browse card-view');
 $plugins = $this->getHelperPluginManager();
 $api = $plugins->get('api');
 $partial = $plugins->get('partial');
+
+/** @var \AgileThemeTools\View\Helper\AgileSearchHelper $searchHelper */
+$searchHelper = $this->plugin('agileSearchHelper');
 
 
 $query = $this->params()->fromQuery();
@@ -17,69 +23,97 @@ if ($itemSetShow):
     $query['item_set_id'] = $itemSet->id();
 endif;
 $sortHeadings = [
-    [
-        'label' => $translate('Sort by Title'),
-        'value' => 'dcterms:title'
-    ],
-    [
-        'label' => $translate('Identifier'),
-        'value' => 'dcterms:identifier'
-     ],
-     [
-         'label' => $translate('Class'),
-         'value' => 'resource_class_label'
-     ],
-     [
-         'label' => $translate('Sort by Date'),
-         'value' => 'created'
-     ],
+  [
+    'label' => $translate('Sort by Title'),
+    'value' => 'dcterms:title'
+  ],
+  [
+    'label' => $translate('Identifier'),
+    'value' => 'dcterms:identifier'
+  ],
+  [
+    'label' => $translate('Class'),
+    'value' => 'resource_class_label'
+  ],
+  [
+    'label' => $translate('Sort by Date'),
+    'value' => 'dcterms:coverage'
+  ],
 ];
 ?>
-<div class='browse-tool'>
+<div id="browse" class='browse-tool' <?php if ($itemSetShow): ?>data-redirect="<?= $searchHelper->getSolrItemSetUrl($itemSet->id()) ?>" <?php endif; ?>>
     <div class="page-header">
-        <div id="block-<?php echo $this->blockId; ?>" class="title-block reverse region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+        <div class="title-block region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?>">
             <div container>
-                <h1>Search</h1>
-                <div class='deck'></div>
-                </div>
-        </div>
-            <div class="browse-search-form">
-                <?php echo $this->partial('common/search-form'); ?>
+                <?php if ($itemSetShow): ?>
+
+                    <?php $this->vars()->offsetSet('itemSet', $itemSet); ?>
+                    <?php $this->vars()->offsetSet('resourceType', 'item_sets'); // TODO Check if really needed. ?>
+                    <?php $this->htmlElement('body')->appendAttribute('class', 'search-page item-set resource browse'); ?>
+                    <div id="item-set-page" data-item-set="<?= $itemSet->id(); ?>">
+                        <div class="item-label"><?= $translate('Collection') ?></div>
+                        <?= $this->pageTitle($itemSet->displayTitle(), 1) ?>
+                        <p>
+                            <?= $itemSet->value('dcterms:description'); ?>
+                        </p>
+                        <?php if ($itemSet->value('dcterms:relation')): ?>
+                            <div class="label">See also</div>
+                            <div class="value">
+                                <a target="_blank" href="<?= $itemSet->value('dcterms:relation')->uri() ?>"><?= $itemSet->value('dcterms:relation') ?></a>
+                            </div>
+                        <?php endif; ?>
+                        <?php
+                        $url = $searchHelper->getSolrItemSetUrl($itemSet->id());
+                        printf("       <div class='collection-link'><a class='button' href='%s'>%s</a></div>",$url,"View Full Collection");
+                        ?>
+
+                    </div>
+                <?php else: ?>
+                    <h1>Search</h1>
+                <?php endif; ?>
             </div>
-            <?php //echo $this->hyperlink($translate('Search by ID'), $this->url('site/resource', ['controller' => 'item', 'action' => 'search'], ['query' => $query], true), ['class' => 'search-by-id']); ?>
         </div>
+        <?php if ($itemSetShow): ?>
+        <?php else: ?>
+        <div class="browse-search-form">
+            <?php echo $this->partial('common/search-form'); ?>
+        </div>
+        <?php //echo $this->hyperlink($translate('Search by ID'), $this->url('site/resource', ['controller' => 'item', 'action' => 'search'], ['query' => $query], true), ['class' => 'search-by-id']); ?>
     </div>
+    <?php endif; ?>
+</div>
 
-    <?php echo $this->searchFilters(); ?>
+<?= $this->searchFilters(); ?>
 
-    <div class="top-bar-ui">
+<div class="top-bar-ui">
 
-        <div class="browse-controls">
-            <h3>Results</h3>
-            <div class='sort-selector'>
-                <?php echo $this->sortSelector($sortHeadings); ?>
-            </div>
-
+    <div class="browse-controls">
+        <div class='sort-selector'>
+            <?php echo $this->sortSelector($sortHeadings); ?>
         </div>
+
     </div>
-        <div class="browser browser-container">
-            <ul class="list">
-                <?php foreach ($items as $item): ?>
-                  <?=
-                  $partial('agile-item/card', [
-                  'containerElement' => 'li',
-                  'cardStyle' => 'list-item',
-                  'item' => $item
-                  ]) ?>
-                <?php endforeach; ?>
-            </ul>
-        </div>
+</div>
+<div class="browser browser-container">
+    <ul class="list">
+        <?php foreach ($items as $item): ?>
+            <?=
+            $partial('agile-item/card', [
+              'containerElement' => 'li',
+              'cardStyle' => 'list-item',
+              'item' => $item
+            ]) ?>
+        <?php endforeach; ?>
+    </ul>
+</div>
 
-            <?php echo ($itemSetShow) ? '</div>' : ''; ?>
-            <div class="bottom-bar-ui">
-                <?php echo $this->pagination(); ?>
-            </div>
-
-        </div>
+<?php echo ($itemSetShow) ? '</div>' : ''; ?>
+<div class="bottom-bar-ui">
+    <?php echo $this->pagination(); ?>
+</div>
+<div>
+    <?= $partial('search/mobile-browse-controls'); ?>
+</div>
+</div>
 </div>
 <! -- END OF /AGILE-THEME-TOOLS/AGILE-ITEM/BROWSE.PHTML -->

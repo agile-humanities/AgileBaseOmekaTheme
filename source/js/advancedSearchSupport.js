@@ -34,6 +34,12 @@ if (searchViewType === null) {
     })
     */
 
+    // Hide filter button if filter sidebar doesn’t exist
+
+    if(facetSidebar.length === 0) {
+      mobileFilterButton.hide();
+    }
+
     // Position Mobile Paginator
     if (mobileBrowseControls.length > 0) {
       $('.pagination--mobile').appendTo(mobileBrowseControls);

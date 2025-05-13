@@ -23,9 +23,6 @@ $contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->va
 
 $metadata_file_name = "metadata-" . urlencode(strtolower(str_replace(' ','_',$item->title()))) .".json";
 
-$relatedItems = [];
-$relatedProperties = ['dcterms:subject']; // Array of properties to find related items.
-
 /** @var \Omeka\Api\Representation\ValueRepresentation $temporal */
 $temporal = $item->value('dcterms:temporal');
 $year = $temporal ? $dateHandler->render($temporal->value(),'Y') : null;
@@ -60,6 +57,11 @@ $facetParams = ['template'=>'search/facet-link'];
 /** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig2 */
 /** @var  \Omeka\Controller\Site\  $site */
 
+// Related Items
+
+$relatedItems = [];
+$relatedProperties = explode(',',$this->themeSetting("related_items_type", 'dcterms:subject')); // Array of properties to find related items.
+
 foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $term => $valueDetails) {
   foreach($valueDetails['values'] as $value) {
     // Prepare a search query to find items with the same property value
@@ -73,13 +75,8 @@ foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $
       ],
     ];
     $response = $this->api()->search('items',$query);
-    $limit = 24;
-    $i=1;
+
     foreach($response->getContent() as $itemRepresentation) {
-      if ($i >= $limit) {
-        continue;
-      }
-      $i++;
       $id = $itemRepresentation->id();
       // Filter out the current item
       if ($id !== $item->id()) {
@@ -87,7 +84,9 @@ foreach(array_intersect_key($item->values(),array_flip($relatedProperties)) as $
         $relatedItems[$id] = $itemRepresentation;
       }
     }
+
   }
+  $relatedItems = array_slice($relatedItems,0,$this->themeSetting("related_items", 6));
 }
 
 $viewer = 'viewer-none';
@@ -95,7 +94,7 @@ $viewer = 'viewer-none';
 if ($hasMedia) {
   // Determine which viewer to use. Note that the UV and Mirador viewers are displayed via the blocks disposition module,
   // which does not give contextual control over which viewer to display. Viewer handling is now done via css
-  // @todo: there must be a better way.
+  // @todo: Manage this via a helper and configuration values.
 
   // Check if UV plugin exists
   try {
@@ -117,23 +116,31 @@ if ($hasMedia) {
   $source = $item->primaryMedia()->originalUrl();
   $mediaType = $item->primaryMedia()->mediaType();
 
+  // Universal Viewer Settings
+
+  // Use UV with the follow dcterms:type
   $uv_media = [
     'text',
-    'moving image' // Use UV for video right now
   ];
+
+  // Use UV with the following MIME types
+  $uv_mime_types = [
+    'application/pdf'
+  ];
+
+  // Identify viewer
 
   if($mediaType) {
     if ($mediaType === 'application/pdf') {
       $viewer = 'viewer-pdf';
     } elseif(strpos($mediaType,'video') > -1) {
       $viewer = 'viewer-video';
-    } elseif ($uv && in_array(strtolower($label), $uv_media)) {
+    } elseif (($uv && in_array(strtolower($label), $uv_media)) || in_array($mediaType, $uv_mime_types)) {
       $viewer = 'viewer-uv';
     } elseif ($mirador) {
       $viewer = 'viewer-mirador';
     }
   }
-
 }
 ?>
 
@@ -154,6 +161,7 @@ if ($hasMedia) {
           ?>
         </div>
       <?php
+      // Uses the built-in browser PDF viewer if UV is not available
       elseif ($viewer === 'viewer-pdf'):
         $options = [];
         $options['attributes'] = 'allowfullscreen="allowfullscreen" zoom="page-fit"';
@@ -168,9 +176,8 @@ if ($hasMedia) {
           <source src="<?= $escapeAttr($source) ?>"  type="<?= $mediaType ?>" />
         </video>
       <?php
-      elseif ($mirador):
+      elseif ($viewer === 'viewer-mirador' && $source):
         echo $this->mirador($item);
-
       // This will display UV or other media players assigned to view.show.after.
       else:
         $this->trigger("view.show.after");

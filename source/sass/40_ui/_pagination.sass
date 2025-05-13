@@ -21,21 +21,28 @@ $pagination_bullet_size: rv(-3)
   border: 1px solid transparent
   border-radius: $ui_border_radius
   width: fit-content
-  padding: $pagination_ui_gap 0
   color: neutral(80)
+  font-family: $labelfont
 
   +bp($tablet)
     display: flex
-    justify-content: space-between
+    justify-content: flex-start
+    align-items: flex-start
     width: 100%
 
   .for-js
     display: none
 
+  &.mini
+    > *
+      margin-left: $ui_element_spacing
+
+
 .pagination--label
-  margin: rv(-1) auto
-  text-align: center
+  margin: 0 $ui_element_spacing 0 auto
+  text-align: right
   @extend %small-text
+  color: neutral(60)
 
 .pagination--pagenav
   display: flex
@@ -43,24 +50,26 @@ $pagination_bullet_size: rv(-3)
 .pagination--arrows
   display: flex
   align-items: center
+  margin-bottom: 0 !important // Conflict with general page block margins from 10_layout/_primary_content
 
   a
+    display: inline-flex
+    align-items: center
     &.o-icon-prev, &.o-icon-next
       &:before
         content: none // Override default
 
   & + .pagination--bullets
-    margin-left: $ui_element_spacing
+    margin-left: $text_element_spacing
 
   & + .pagination--arrows
-    margin-left: $ui_element_spacing
+    margin-left: $text_element_spacing
 
-  .pagination--label
-    margin: 0 rv(2)
 
   img
-    height: rv(2)
-    width: auto
+    height: $ui_icon_height
+    width: $ui_icon_height
+    object-fit: contain
 
 .pagination--bullets
   list-style-type: none
