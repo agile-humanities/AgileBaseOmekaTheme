@@ -223,3 +223,45 @@ $ribbon_padding_factor: -3
     transform: scale(1.1) translateY(6%) //fudge factor. ugh.
     transform-origin: center
     background: $black
+
+%content-list
+  ol
+    list-style: none
+    counter-reset: pitts-counter
+    position: relative
+
+    li
+      counter-increment: pitts-counter
+      list-style-type: revert
+      &::before
+        content: counter(pitts-counter)""
+        position: absolute
+        left: calc(#{rv(10)} - 6px)
+  ul
+    @at-root main &
+      li
+        list-style-type: none
+        position: relative
+        &::before
+          content: "◆"
+          position: absolute
+          left: -6px
+
+// An alternative definition from the list above.
+
+$bullet_size: 10px
+
+%bullet-list
+  list-style-type: none
+  padding-left: 0
+
+  li
+    position: relative
+
+    &:before
+      content: ''
+      +icon('pip',$bullet_size)
+      background-size: contain
+      display: inline-block
+      z-index: 2
+      margin-right: rv(-3)

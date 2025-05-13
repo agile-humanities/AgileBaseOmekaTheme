@@ -1,29 +1,40 @@
-/** 
- *  @file _callout.sass 
+/**
+ *  @file _callout.sass
  *  @category 60_site_elements
  *  @theme LOCAL
  *  @description  Handles styling of the callout block. */
 
+$callout_shift: 70px
+$callout_mobile_max_width: 370px
+$callout_desktop_max_width: 500px
 
 .callout
   .callout-text
     position: relative
+    width: 100%
+    padding: rv($mobile_edge_padding_factor)
     display: flex
-    justify-content: center
+    flex-direction: column
     align-items: center
-    margin: 0 0 rv(0) 0 
-    
+
+    +bp($tablet)
+      display: block
+      max-width: 370px
+      padding: rv($edge_padding_factor) calc(#{rv($edge_padding_factor)}) rv($edge_padding_factor) rv($edge_padding_factor)
+      width: $callout_width
+      max-width: $callout_mobile_max_width
+    +bp($desktop)
+      max-width: $callout_desktop_max_width
     p
-      font: $extrabold rv(2) $headingfont
-      line-height: rv(2)
-      margin: 0
+      font-size: clamped(2,3)
+      font-weight: $bold
+      marign-top: rv($mobile_edge_padding_factor)
       font-size: clamped(2, 3, 'sml', 'xlrg')
 
     +bp($tablet)
-      max-width: rv(10)
-      margin: 0 auto    
-   
- 
+        margin-top: 0
+
+
 .callout-centre
   .callout-text
     max-width: none
@@ -32,19 +43,20 @@
 
 .callout-right
   .callout-text
- 
+
     +bp($tablet)
       float: right
-      margin: 0 0 0 rv($edge_padding_factor)
-      right: rv(-5)
+    +bp($desktop)
+      right: $callout_shift * -1
 
 
 .callout-left
   .callout-text
     +bp($tablet)
+      text-align: right
       float: left
-      margin: 0 rv($edge_padding_factor) 0 0
-      left: rv(-5)
+    +bp($desktop)
+      left: callout_shift
 
-   
+
 

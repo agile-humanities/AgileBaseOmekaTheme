@@ -33,7 +33,7 @@ if (searchViewType === null) {
         }
     })
     */
-
+    
     // Hide filter button if filter sidebar doesn’t exist
 
     if(facetSidebar.length === 0) {
@@ -59,13 +59,9 @@ if (searchViewType === null) {
       }
 
       if (facetSidebar.length > 0) {
-        if(facetSidebar.is(':hidden')) {
-          facetSidebar.fadeIn(window.heartbeat,delay);
-          mobileCloseButton.fadeIn(window.heartbeat,function() { $(this).css('display','flex'); delay()});
-        } else {
+        facetSidebar.is(':hidden') ?
+          facetSidebar.fadeIn(window.heartbeat,delay) :
           facetSidebar.fadeOut(window.heartbeat,delay);
-          mobileCloseButton.fadeOut(window.heartbeat,delay);
-        }
       }
       if (searchResultsHeader.length > 0) {
         searchResultsHeader.is(':hidden') ?
@@ -140,6 +136,72 @@ if (searchViewType === null) {
         $(this).attr('open','');
       }
     })
+
+    // See more/less facet options
+
+    $('.facet').each(function (i) {
+      const facet = $(this);
+      const visibleOptions = parseInt(facet.attr('data-visible-options'));
+      const facetOptions = facet.find('.search-facet-items > *');
+
+      // All items are marked inactive by default
+      // Show active options
+      if (visibleOptions > 0) {
+        facetOptions.each(function (i) {
+          if (i<visibleOptions) {
+            $(this).css('display','flex');
+            $(this).removeClass('inactive');
+          }
+        });
+      } else {
+        facetOptions.css('display','flex');
+      }
+
+      const facetExpandBtn = facet.find('.facet--expand');
+      const facetCollapseBtn = facet.find('.facet--collapse');
+
+      // Show a set of options on click
+
+      facetExpandBtn.on('click',function(e) {
+        facet.find('.inactive').each(function (i) {
+          if (i<visibleOptions) {
+            $(this).css('display','flex');
+            $(this).removeClass('inactive');
+          }
+        });
+
+        // Hide button if there are no more inactive options to show
+        if(facet.find('.inactive').length == 0) {
+          $(this).hide();
+        }
+
+        // Show the “Fewer options” button
+        facetCollapseBtn.show()
+
+      })
+
+      // Hide a set of options on click
+      facetCollapseBtn.on('click',function(e) {
+        const activeOptions = facetOptions.not('.inactive');
+        const activeCount = activeOptions.length;
+        activeOptions.each(function (i) {
+          if (i > activeCount - visibleOptions) {
+            $(this).addClass('inactive');
+            $(this).css('display','none');
+          }
+        });
+
+        // Hide collapse button if the minimal set of options are visible
+        if(facetOptions.not('.inactive').length <= visibleOptions) {
+          $(this).hide();
+        }
+
+        // Make sure the “More options” is visible
+        facetExpandBtn.show()
+
+      })
+
+    });
 
   });
 

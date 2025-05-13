@@ -21,6 +21,7 @@ slide-viewer,
   position: relative
   flex-direction: column-reverse
   background: $black
+    isolation: isolate
 
   +bp($desktop)
     display: flex
@@ -56,6 +57,9 @@ slide-viewer
 
   +bp($tablet)
     --sequential-nav-bottom: #{$sequential_nav_bottom}
+    --sequential-nav-left: #{$sequential_nav_left}
+    --sequential-nav-right: #{$sequential_nav_right}
+    --slide-nav-justify-content: center
 
   +bp($desktop)
     background-color: transparent

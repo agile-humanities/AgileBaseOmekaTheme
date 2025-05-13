@@ -1,7 +1,7 @@
 .wayfinding
   display: flex
   align-items: center
-  +font-size(-1)
+  font-size: clamped(0,1)
   letter-spacing: 0.2px
   margin: rv($edge_padding_factor) 0
 
@@ -31,7 +31,8 @@
       margin-right: $text_element_spacing
 
     &.key-item-set
-      color: set-color(3)
+      color: $link_colour_active
+      text-decoration-color: $link_colour_active
 
   // breadcrumb separator
   .wayfinding--breadcrumb + span

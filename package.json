@@ -15,6 +15,7 @@
   "dependencies": {
     "masonry-layout": "^4.2.2",
     "stop14-themesystem-legacy": "^2.0",
-    "superfish": "^1.7.10"
+    "superfish": "^1.7.10",
+    "pdfjs-dist": "^4.10"
   }
 }

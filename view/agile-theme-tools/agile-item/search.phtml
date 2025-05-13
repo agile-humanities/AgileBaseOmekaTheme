@@ -2,6 +2,7 @@
 $translate = $this->plugin('translate');
 $this->htmlElement('body')->appendAttribute('class', 'items search');
 ?>
+<!-- TEMPLATE BEGIN agile-theme-tools/agile-item/search.phtml -->
 
 <h2><?php echo $translate('Advanced item search'); ?></h2>
 <form id="advanced-search" method="get" action="<?php echo $this->escapeHtml($this->url(null, ['action' => 'browse'], true)); ?>">
@@ -10,6 +11,9 @@ $this->htmlElement('body')->appendAttribute('class', 'items search');
       ['query' => $this->params()->fromQuery(), 'resourceType' => 'item']
     ); ?>
     <div id="page-actions">
-        <input type="submit" name="submit" value="<?php echo $this->escapeHtml($translate('Search')); ?>">
+        <input class="search-submit" type="submit" name="submit" value="<?php echo $this->escapeHtml($translate('Search')); ?>">
     </div>
 </form>
+</div>
+<!-- TEMPLATE END agile-theme-tools/agile-item/search.phtml -->
+

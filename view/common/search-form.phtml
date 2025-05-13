@@ -1,20 +1,39 @@
 <?php
 $translate = $this->plugin('translate');
-$searchType = $this->siteSetting('search_type', 'sitewide');
+$searchType = $searchType ?? $this->siteSetting('search_type', 'sitewide');
+$searchValue = $this->escapeHtml($this->params()->fromQuery('fulltext_search', ''));
+$name = 'fulltext_search';
+$searchMainPage = $this->siteSetting('advancedsearch_main_config');
+/** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
+$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
+
+$params = $this->params()->fromQuery() ?: [];
+$hasFacet = array_key_exists('facet',$params);
 switch ($searchType) {
     case 'cross-site':
         $searchAction = $this->url('site/cross-site-search', ['action' => 'results'], true);
-        break;
+    // break; // only site search supported
+    case 'browser':
     case 'sitewide':
     default:
-        $searchAction = $this->url('site/resource', ['controller' => 'index', 'action' => 'search'], true);
+        $searchAction = isset($searchAction) ? $searchAction : ($searchConfig ? $searchConfig->siteUrl() : '#');
+        $searchValue = $this->escapeHtml($this->params()->fromQuery('q', ''));
+        $name='q';
 }
-$searchValue = $this->escapeHtml($this->params()->fromQuery('fulltext_search', ''));
 ?>
 
-<form action="<?php echo $this->escapeHtml($searchAction); ?>" id="search-form">
-    <input type="text" name="fulltext_search" value="<?php echo $searchValue; ?>"
-        placeholder="<?php echo $translate('Search'); ?>"
-        aria-label="<?php echo $translate('Search'); ?>">
-    <button type="submit"><?php echo $translate('Search'); ?></button>
+<!-- BEGIN SEARCH FORM TEMPLATE  common/search-form.phtml -->
+<form action="<?= $searchAction ?>" id="search-form">
+    <input type="text" name="<?= $name ?>" value="<?php echo $searchValue; ?>"
+           placeholder="<?php echo $translate('Search by collection, item name, or keyword'); ?>"
+           aria-label="<?php echo $translate('Search by collection, item name, or keyword'); ?>">
+    <?php if ($hasFacet): // Add facets as hidden input if they exist ?>
+        <?php foreach ($this->params()->fromQuery('facet', '') as $key => $value_array): ?>
+            <?php foreach ($value_array as $value):  ?>
+                <input type="hidden" name="facet[<?= $this->escapeHtml($key) ?>][]" value="<?= $this->escapeHtml($value); ?>" />
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    <button class='search-submit' aria-label="<?php echo $translate('Submit search'); ?>" type="submit" tabindex="0"></button>
 </form>
+<!-- END SEARCH FORM TEMPLATE -->

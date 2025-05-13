@@ -37,12 +37,14 @@ $darker_neutral: neutral(80)
 $darkest_neutral: neutral(90)
 $bgcolor: $white
 $footer_bg: $black
-$impact: $clr3
+$impact: $clr2
 $cta: $clr1
 $de_emphasized: $light_neutral
 $de_activated: $lighter_neutral
 $link_colour: $black
 $link_colour_active: $clr3
+$link_colour_reversed: $white
+$link_colour_active_reversed: $white
 $rootsize: 100%
 $basesize: 1rem
 $base_line_height: 1.4
@@ -52,8 +54,8 @@ $max_width: 1900px
 $legible_inset_width: 750px
 $masthead_height: 60px
 $footer_height: 100px
-$admin_bar_height: 38px
-$admin_bar_tray: 38px // Second-tier admin bar
+$admin_bar_height: 40px
+$admin_bar_tray: 40px // Second-tier admin bar
 $masthead_clearance: rv(0)
 $masthead_clearance_mobile: rv(-1)
 $splash_height_mobile: 50vh
@@ -63,7 +65,7 @@ $min_splash_height: 700px
 $proportional_width_unit: math.div(100% - math.div(100,$scale),2)
 $standard_sidebar_width: $proportional_width_unit
 $right_sidebar_width: $standard_sidebar_width * 2
-$left_sidebar_width: $standard_sidebar_width * 2
+$left_sidebar_width: $standard_sidebar_width
 $mobile_grid_gap_factor: -1
 $grid_gap_factor: 0
 $block_spacing: 2
@@ -84,11 +86,11 @@ $font_path: '../fonts'
 $basetypesize: 0.9rem
 $min_sizefactors: (base: -1, h1: 3, h2: 2, h3: 1, h4: 0, h5: -1, h6: -1)
 $sizefactors: (base: 0, h1: 4, h2: 3, h3: 2, h4: 1, h5: 0, h6: 0)
-$line_heights: (base: $base_line_height, h1: 1, h2: 1.25, h3: 1.25, h4: 1.2, h5: 1.2, h6: 1.2)
+$line_heights: (base: $base_line_height, h1: 1, h2: 1.2, h3: 1.2, h4: 1.2, h5: 1.2, h6: 1.2)
 $typescale: (base: 1, xsml: 1, sml: 1, med:1, lrg: 1, xlrg: 1, xxlrg: 1)
 $paragraph_spacing: clamped(map-get($min_sizefactors,'base'),map-get($sizefactors,'base'),$default-min-bp,$default-max-bp,map-get($line_heights,base))
 $basefont: Roboto, Tahoma, Arial, sans-serif
-$headingfont: Roboto, Tahoma, Arial, sans-serif
+$headingfont: 'Source Serif',Georgia,serif
 $altfont: 'Source Serif',Georgia,serif
 $codefont: 'IBM Plex Mono', Monaco, Courier New, monospace
 $row_header_bg: neutral(10)
@@ -111,17 +113,16 @@ $ui_max_text_width: 500px
 $ui_element_spacing: rv($mobile_edge_padding_factor)
 $ui_border_radius: 5px
 $ui_border_width: 1px
-$ui_border_color: neutral(20)
+$ui_border_color: neutral(40)
 $ui_hover_border_color: $impact
 $ui_checkbox_height: 20px
 $ui_element_font_size: rv(0)
 $ui_checkbox_label_font_size: rv(-2)
 $ui_icon_height: $ui_minheight * 0.4
 $ui_select_indicator_size: $ui_icon_height
-$ui_form_text_color: neutral(90)
 $mobile_overlay_spacing: rv(2)
 $ui_mobile_app_controls_footer_height: $masthead_height
-$ui_mobile_app_controls_breakpoint: $desktop
+$ui_mobile_app_controls_breakpoint: $tablet
 $ui_display_controls_icon_size: $ui_mobile_app_controls_footer_height * 0.5
 $border_radius: $ui_border_radius
 $mobile_filter_height: rv(5)
@@ -142,23 +143,23 @@ $btn_submit_img_size: $ui_icon_height
 $btn_color: $black
 $btn_bg_color: neutral(20)
 $btn_border_color: $ui_border_color
-$btn_hover_color: $black
-$btn_hover_border_color: mix($black,$ui_border_color,5%)
-$btn_hover_bg_color: mix($black,$ui_border_color,5%)
+$btn_hover_color: neutral(70)
+$btn_hover_border_color: neutral(60)
+$btn_hover_bg_color: neutral(40)
 $btn_submit_color: $white
 $btn_submit_bg_color: $cta
 $btn_submit_border_width: 0
 $btn_submit_border_color: $cta
-$btn_submit_hover_color: $black
-$btn_submit_hover_border_color: $impact
-$btn_submit_hover_bg_color: mix($white,$impact,10%)
+$btn_submit_hover_color: $white
+$btn_submit_hover_border_color: mix($black,$cta,10%)
+$btn_submit_hover_bg_color: mix($black,$cta,10%)
 $btn_search_color: $black
 $btn_search_bg_color: transparent
 $btn_search_border_width: $ui_border_width
 $btn_search_border_color: $ui_border_color
 $btn_search_hover_color: $black
 $btn_search_hover_border_color: $ui_hover_border_color
-$btn_search_hover_bg_color: transparent
+$btn_search_hover_bg_color: neutral(1)
 $btn_reset_color: neutral(90)
 $btn_reset_bg_color: neutral(30)
 $btn_reset_border_width: 0

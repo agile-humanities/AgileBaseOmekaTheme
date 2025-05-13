@@ -76,7 +76,10 @@ $displayPartsHeader = array_filter($displayParts, fn ($v) => in_array($v, ['head
 $displayPartsFooter = array_filter($displayParts, fn ($v) => in_array($v, ['footer', 'both']));
 $displayFacets = $displayParts ? $displayParts['facets'] ?? 'before' : 'none';
 $activeFacets = $query->getActiveFacets();
+
 $facets = $searchConfig->engineAdapter()->getAvailableFacetFields();
+
+$searchFacets = $searchConfig->subSetting('facet', 'facets', []);
 
 if ($itemSet && $site) {
     $redirectItemSets = $this->siteSetting('advancedsearch_redirect_itemsets', ['default' => 'browse']);
@@ -120,7 +123,7 @@ $this->headScript()
         <?php endif; ?>
     <?php endif; ?>
 <div id="search-page">
-    <div class="advanced-search-browser" container>
+    <div container>
 <?php endif; // End NOT partial. ?>
 
         <?php if ($displayItemSet): ?>
@@ -153,7 +156,7 @@ $this->headScript()
             <?php echo $this->partial('common/search-form'); ?>
             <?php
                 // Advanced search uses:
-                //echo $searchConfig->renderForm(['template' => null, 'skip_form_action' => $skipFormAction])
+                echo $searchConfig->renderForm(['template' => null, 'skip_form_action' => $skipFormAction])
             ?>
         </div>
 
@@ -169,40 +172,39 @@ $this->headScript()
             <div class="search-results">
 
                 <?php if ($displayPartsHeader): ?>
-                <div class="search-results-part search-results-header">
+                <header class="search-results-part search-results--header">
                     <?= $partial('search/results-header-footer', $variables + ['resultPart' => 'header']) ?>
-                </div>
+                </header>
                 <?php endif; ?>
 
                 <?php if ($documentCount): ?>
 
                 <div class="search-results-part search-results-list browse-title">
                     <?php foreach (array_filter($response->getResourceTotalResults()) as $resourceType => $count): ?>
-                        <h2><?= sprintf($translate('<span class="search--summary--count">%1$d</span> %2$s'), $count, $easyMeta->resourceLabelCount($resourceType, $count)) ?></h2>
-                        <?php // Search filters. ?>
+                        <div class="search--resource-total-results"><?= sprintf($translate('<span class="summary--text--label">%1$d</span> <span class="lozenge">%2$s</span>'), $count, $easyMeta->resourceLabelCount($resourceType, $count)) ?></div>
                     <?php endforeach; ?>
-
+                    <?php // Search filters. ?>
                         <?php if (isset($displayParts['search_filters'])): ?>
                             <div class="search-filter-container">
                                 <?= $searchConfig->renderSearchFilters($query, ['template' => 'common/search-filters-links']) ?>
                                 <?php if($activeFacets):
                                     foreach($activeFacets as $facet => $facetValues):
+                                        $facets[$facet]['label'] =  $facets[$facet]['label'] == "Item Set" ? "Collection" : $facets[$facet]['label'];
                                 ?>
                                         <div class="search-filters">
-                                            <span class="label"><?= array_key_exists($facet,$facets) ? $facets[$facet]['label'] : $facet ?></span>
+                                            <span class="summary--text--label"><?= array_key_exists($facet,$facets) ? $facets[$facet]['label'] : $facet ?></span>
                                             <?php
                                                 foreach($facetValues as $facetValue):
-                                                    printf("<a class='lozenge'>%s</a>",$facetValue);
+                                                    printf("<span class='summary--text'>%s</span>",$facetValue);
                                                 endforeach;
                                             ?>
                                         </div>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </div>
-
                         <?php endif; ?>
 
-                        <?= $partial('search/results', $variables + ['resourceType' => $resourceType]) ?>
+                        <?= $partial('search/results', $variables + ['resourceType' => $resourceType,'masonry' => false]) ?>
                 </div>
 
                 <?php else: ?>
@@ -225,17 +227,18 @@ $this->headScript()
                 <?php endif; ?>
 
                 <?php if ($displayPartsFooter): ?>
-                <div class="search-results-part search-results-footer">
+                <footer class="search-results-part search-results-footer">
                     <?= $partial('search/results-header-footer', $variables + ['resultPart' => 'footer']) ?>
-                </div>
+                </footer>
                 <?php endif; ?>
 
             </div>
 
             <?php if ($displayFacets === 'after'): ?>
-            <aside class="search-facets">
-                <?= $partial('search/facets-list') ?>
-            </aside>
+                <aside id="browser-sidebar" class="search-facets">
+                    <a id="browser--mobile-close-btn">Close</a>
+                    <?= $partial('search/facets-list') ?>
+                </aside>
             <?php endif; ?>
 
         </div>

@@ -10,10 +10,13 @@ $plugins = $this->getHelperPluginManager();
 $escape = $plugins->get('escapeHtml');
 $escapeAttr = $this->plugin('escapeHtmlAttr');
 ?>
-
+<!-- TEMPLATE BEGIN search/search-filters-links.phtml -->
 <div class="search-filters">
     <?php foreach ($filters as $filterLabel => $filterValues): ?>
     <div class="filter">
+        <?php
+            $filterLabel =  $filterLabel == "Item Set" ? "Collection" : $filterLabel;
+        ?>
         <span class="filter-label label"><?= $escape($filterLabel) ?></span>
         <?php foreach ($filterValues as $urlQuery => $filterValue): ?>
         <a class='lozenge' href="<?= $escapeAttr($urlQuery) ?>" class="filter-value"><?= $escape($filterValue) ?></a>
@@ -21,3 +24,4 @@ $escapeAttr = $this->plugin('escapeHtmlAttr');
     </div>
     <?php endforeach; ?>
 </div>
+<!-- TEMPLATE END search/search-filters-links.phtml -->

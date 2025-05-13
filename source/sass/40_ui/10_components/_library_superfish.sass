@@ -32,26 +32,25 @@ ul.sf-menu
     li
       text-transform: none
 
-    .sf-with-ul
-      white-space: normal !important
-
-      &:after
-        content: unset
-
-    ul
-      li
-        background-color: $white
-
 
 .sf-arrows
   .sf-with-ul
-    padding-right: $ui_padding
-    +background_icon_right('accordion-expand')
-
     &:after
       position: initial
       top: initial
       left: initial
       margin-top: initial
       border: 0
+    +background_icon_right('accordion-expand')
 
+a.sf-depth-2
+  white-space: normal !important
+
+.sf-depth-1
+  .sf-with-ul:after
+    +background_icon_right('accordion-expand')
+
+
+.sf-depth-2
+  .sf-with-ul:after
+    content: ''

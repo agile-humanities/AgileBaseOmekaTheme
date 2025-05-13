@@ -1,0 +1,17 @@
+/**
+ *  @file _user_bar.sass
+ *  @category 10_layout
+ *  @theme LOCAL
+ *  @description Positions the Omeka admin bar. */
+
+#user-bar
+  position: fixed
+  z-index: 999
+  width: 100%
+  top: 0
+  padding-left: rv($mobile_edge_padding_factor)
+  padding-right: rv($mobile_edge_padding_factor)
+
+  +bp($tablet)
+    padding-left: rv($edge_padding_factor)
+    padding-right: rv($edge_padding_factor)

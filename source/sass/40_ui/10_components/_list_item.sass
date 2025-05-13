@@ -4,7 +4,7 @@
  * @description Defines a basic list view. This particular design is more of a horizontal card than an minimal list.
  */
 
-$list_item_figure_width: 150px
+$list_item_figure_width: 125px
 
 
 %list-item
@@ -61,9 +61,39 @@ $list_item_figure_width: 150px
   .item-description
     line-height: 1.5
 
+  .metadata-list
+    all: unset
+    display: flex
+    margin-right: rv($mobile_edge_padding_factor) * 2
+    flex-wrap: wrap
+
+    > *
+      display: flex
+      margin-right: rv($mobile_edge_padding_factor)
+      margin-bottom: 4px
+
+    .label
+      padding-top: 0
+      margin-right: $text_element_spacing
+
+    .value
+      margin-top: 0
+
+    .metadata-item:before
+      content: unset !important
+
+    .license-img-wrapper
+      display: none  // need better solution
+
+  h3
+    font-size: clamped(0,1)
+
   .item-info
     border: 0 !important
-    padding: rv($mobile_edge_padding_factor)
+    padding: 0 0 0 rv($mobile_edge_padding_factor)
 
     +bp($ui_mobile_app_controls_breakpoint)
-      padding: rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor) calc(#{$list_item_figure_width} + #{rv($edge_padding_factor)})!important
+     padding: 0 0 0 rv($edge_padding_factor)
+
+    > *
+      margin-bottom: rv(-5) !important

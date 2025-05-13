@@ -13,8 +13,9 @@
   // img
   //  width: 24px
 
-  input[name='search'], input[name='fulltext_search'], input[name='q']
+  input[name='search'], input[type='search'], input[name='fulltext_search'], input[name='q']
     @extend %search-form-textfield
+    width: 80%
 
     // Search plus submit
 
@@ -57,7 +58,7 @@
 
 // fulltext.phtml
 
-#fulltext_search
+#fulltext_search, input[name='q']
   @extend %search-form-textfield
   +input-button-icon-right('search',25px,$ui_padding,'neutral','default')
   width: 100%

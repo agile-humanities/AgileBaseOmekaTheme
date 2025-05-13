@@ -39,7 +39,7 @@ $selectMainDataType
     ],
   ])
   ->setAttributes([
-    'class' => 'query-text query-main-type chosen-select',
+    'class' => 'query-text query-main-type chosen-select no-select2',
     'aria-label' => $translate('Properties'), // @translate
     'data-placeholder' => 'Select main data type…', // @translate
   ]);
@@ -94,7 +94,7 @@ if ($isSiteRequest) {
 <div id="property-queries" class="property-queries-improved field removable multi-value" role="group" aria-labelledby="by-value-label">
   <div class="field-meta">
     <span id="by-value-label" class="label">Search by <span class="emphasized-text">value</span></span>
-    <button type="button" class="add-value o-icon-add button" aria-label="<?= $translate('Add new value') ?>" title="<?= $translate('Add new value') ?>"></button>
+    <button type="button" class="as--add add-value o-icon-add button" aria-label="<?= $translate('Add new value') ?>" title="<?= $translate('Add new value') ?>">Add value</button>
   </div>
   <div class="inputs">
     <?php
@@ -111,14 +111,14 @@ if ($isSiteRequest) {
       ?>
       <div class="value">
         <div class="value-common value-fields">
-          <select class="joiner chosen-select" name="<?= $escape($stem . '[joiner]') ?>" aria-label="<?= $translate('Joiner') ?>">
+          <select class="joiner chosen-select no-select2" name="<?= $escape($stem . '[joiner]') ?>" aria-label="<?= $translate('Joiner') ?>">
             <?= $queryOption('and', $property, 'joiner', $translate('AND')) ?>
             <?= $queryOption('or', $property, 'joiner', $translate('OR')) ?>
           </select>
           <?= $propertySelect([
             'name' => $stem . '[property]',
             'attributes' => [
-              'class' => 'query-property chosen-select',
+              'class' => 'query-property chosen-select no-select2',
               'value' => $propertyList,
               'aria-label' => $translate('Properties'), // @translate
               'multiple' => true,
@@ -132,7 +132,7 @@ if ($isSiteRequest) {
               'used_terms' => $usedTerms,
             ],
           ]) ?>
-          <select class="query-type chosen-select" name="<?= $escape($stem . '[type]') ?>" aria-label="<?= $translate('Query type') ?>">
+          <select class="query-type chosen-select no-select2" name="<?= $escape($stem . '[type]') ?>" aria-label="<?= $translate('Query type') ?>">
             <optgroup label="<?= $translate('Value') ?>">
               <?= $queryOption('eq', $property, 'type', $translate('is exactly')) ?>
               <?= $queryOption('neq', $property, 'type', $translate('is not exactly')) ?>
@@ -231,9 +231,9 @@ if ($isSiteRequest) {
             </optgroup>
           </select>
           <?= $queryText($isSubQuery ? [] : $property, $index) ?>
-          <?= $dataTypeHelper->getSelect($stem . '[text]', "property[$index][text]" ?? null, ['multiple' => false, 'class' => 'query-text query-data-type chosen-select', 'aria-label' => 'Data types', 'data-placeholder' => $translate('Select data type…')]) // TODO Manage search on property for multiple data types. ?>
+          <?= $dataTypeHelper->getSelect($stem . '[text]', "property[$index][text]" ?? null, ['multiple' => false, 'class' => 'query-text query-data-type chosen-select no-select2', 'aria-label' => 'Data types', 'data-placeholder' => $translate('Select data type…')]) // TODO Manage search on property for multiple data types. ?>
           <?= $formSelect($selectMainDataType->setName($stem . '[text]')->setValue("property[$index][text]" ?? null)) ?>
-          <button type="button" class="o-icon-delete remove-value button" aria-label="<?= $translate('Remove value') ?>" title="<?= $translate('Remove value') ?>"></button>
+          <button type="button" class="as--remove o-icon-delete remove-value button" aria-label="<?= $translate('Remove value') ?>" title="<?= $translate('Remove value') ?>">Remove value</button>
         </div>
         <div class="value-common sub-query">
           <?= $formQuery($queryInput) ?>

@@ -36,7 +36,7 @@ $labelReset = $displayReset ? $searchConfig->subSetting('facet', 'label_reset', 
 
 $facetActives = $plugins->get('facetActives');
 $facetElements = $plugins->get('facetElements');
-$facetSelect = $plugins->get('facetSelect');
+
 
 // TODO Remove item sets facets early when item set redirects to search.
 // Don't display facets for item sets when browsing an item set.
@@ -46,7 +46,7 @@ if (!empty($itemSet)) {
 }
 
 ?>
-<!-- FACET SIDEBAR TEMPLATE BEGIN search/facet-list.phtml -->
+<!-- TEMPLATE BEGIN search/facets-list -->
 <div id="search-facets" class="facets">
 
     <?php if ($label = $searchConfig->subSetting('facet', 'label', $translate('Filter results'))): ?>
@@ -97,16 +97,16 @@ if (!empty($itemSet)) {
         <p><?= $escape($label) ?></p>
         <?php endif; ?>
         <?php else: ?>
-        <ul class="search-facets-list">
+            <ul class="facets-list--ignore"><?php /* ignore default facet list styles. Check for compatibility */?>
             <?php foreach ($facets as $name => $facetValues): ?>
-            <?php
-                $facetParams = $searchFacets[$name];
+
+                    <?php $facetParams = $searchFacets[$name]; ?>
                 $facetClass = urlencode(strtolower(str_replace(' ','-',$label)));
                 $stateExpand = $facetParams['state'] === 'expand' || ($facetParams['state'] === 'collapse_unless_set' && !empty($activeFacets[$name]));
                 ?>
             <?php $hasState = in_array($facetParams['state'] ?? '', ['expand', 'collapse', 'collapse_unless_set']); ?>
-            <li class="facet search-facet<?= empty($facetParams['attributes']['class']) ? '' : ' ' . $escapeAttr($facetParams['attributes']['class']) ?> <?= $facetClass ?>">
-                <details <?= $stateExpand ? 'open' : '' ?>>
+                    <li id='facet_<?= $facetParams["field"] ?>' class="facet<?= empty($facetParams['attributes']['class']) ? '' : ' ' . $escapeAttr($facetParams['attributes']['class']) ?>" data-visible-options="<?php echo(trim($facetParams['more'])) ?>">
+                        <details open="<?= $stateExpand ? 'true' : 'false' ?>" aria-label="<?= $translate($stateExpand ? 'Collapse' : 'Expand') ?>" >
                     <summary><?= $escape($translate($facetParams['label'] ?? $name)) ?></summary>
                     <div class="facet-elements<?= $hasState ? ' collapsible' : '' ?>"<?= $hasState && $facetParams['state'] === 'collapse' ? ' hidden="hidden"' : '' ?>>
                         <?php
@@ -129,9 +129,10 @@ if (!empty($itemSet)) {
                         }
                         ?>
                         <?= $facetElements($facetParams['field'], $facetValues, $facetParams) ?>
-                        <?php if (($facetParams['more'] ?? '') !== '' && in_array($facetParams['type'] ?? '', ['', 'Checkbox']) && count($facetValues) > (int) $facetParams['more']): ?>
-                        <div class="facet-see-more">
-                            <button type="button" class="facet-see-more-or-less expand" data-default-count="<?= (int) $facetParams['more'] ?>" data-more-count="<?= count($facetValues) - (int) $facetParams['more'] ?>" data-label-see-more="<?= $escapeAttr($translate('See more')) ?>" data-label-see-less="<?= $escapeAttr($translate('See less')) ?>"><?= $escape($translate('See more')) ?></button>
+                            <?php if (($facetParams['more'] ?? '') !== '' && in_array($facetParams['type'] ?? '', ['', 'Checkbox', 'Link', 'Tree', 'TreeLink', 'Thesaurus', 'ThesaurusLink']) && count($facetValues) > (int) trim($facetParams['more'])): ?>
+                                <div class="facet--controls">
+                                    <button type="button" class="ghost facet--expand">More options</button>
+                                    <button type="button" class="ghost facet--collapse" style="display:none">Fewer options</button>
                         </div>
                         <?php endif; ?>
                     </div>
@@ -157,4 +158,4 @@ if (!empty($itemSet)) {
     </form>
 
 </div>
-<!-- FACET SIDEBAR TEMPLATE END search/facet-list.phtml -->
+<!-- TEMPLATE END search/facets-list -->

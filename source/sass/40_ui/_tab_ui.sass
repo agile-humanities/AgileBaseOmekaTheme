@@ -86,22 +86,34 @@ $tab_size: 10px
   text-decoration: none
   border-bottom: none
   font-weight: $bold
+
+  +bp($tablet)
+    text-transform: uppercase
   color: neutral(50)
+
+
+  &:before
+    content: ''
+    +icon('pip',$tab_size)
+    display: inline-block
+    z-index: 2
+    margin-right: $tab_marker_distance
+
+    +bp($tablet)
+      content: unset
 
   &.active, &:hover
     color: $black
 
     &:after
-      content: ''
-      height: $tab_size
-      width: $tab_size
-      +active-tab-marker
-      display: inline-flex
-      z-index: 2
-      margin-right: $tab_marker_distance
-
       +bp($tablet)
+        content: ''
         position: absolute
+        height: $tab_size
+        width: $tab_size
+        +active-tab-marker
+        display: inline-block
+        z-index: 2
         bottom: calc((#{$tab_marker_distance} - #{$tab_size * 0.5}) * -1)
         left: calc(50% - #{$tab_size * 0.5})
         margin-right: 0
@@ -111,8 +123,11 @@ $tab_size: 10px
   a
     color: inherit
     font-weight: inherit
+
+    +bp($tablet)
     text-decoration: none
     border-bottom: none
+
 
     &.active, &:hover
       color: inherit

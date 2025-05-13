@@ -1,0 +1,53 @@
+/**
+ *  @file _search_form.sass
+ *  @category 40_ui
+ *  @theme LOCAL
+ *
+ **/
+
+
+%search-form-container
+  display: flex
+  flex-direction: row
+  width: 100%
+  justify-content: flex-start
+  align-items: center
+  flex-wrap: nowrap
+  position: relative
+  border: 1px solid $ui_border_color
+  border-radius: $ui_border_radius
+  background: $white
+
+
+  &:hover, &:focus
+    box-shadow: 0 0 5px 3px $cta
+
+  input[type='text']
+    border: 0
+    background: none
+
+%search-form-textfield
+  max-width: none
+  color: neutral(80) !important // Important to ensure contrast against white bg in .reversed contexts
+  font-family: $basefont
+  font-weight: $light
+
+  &::placeholder
+    color: neutral(40) !important
+
+  &:focus
+    border: 1px solid neutral(10)
+
+%search-form-submit
+  position: absolute
+  right: $ui_padding
+  @extend %button-search
+  padding-right: 0
+  max-width: 20%
+  color: neutral(80)
+
+  &:hover
+    color: $black
+
+  &:focus
+    outline: 1px solid $impact !important

@@ -1,27 +1,28 @@
 /*
- *  @file _advanced_search.sass
+ *  @file _advanced_search_browser.sass
  *  @category 60_site_elements
  *  @theme LOCAL
  *  @description Creates a faceted browsing interface built on top of the Advanced Search module.
- *  @see 40_ui/10_components/_component_omeka_browser_ui, 40_ui/_omeka_search_common
+ *  @see 40_ui/10_components/_component_omeka_browser_ui
  */
 
 // Template: search/search
 
-.item-browser
-  > div
-    @extend %browser-container
-    border-radius: $border_radius
-    padding: 0
+#search-page
+  .title-block
+    text-align: center
+    padding-bottom: rv($edge_padding_factor)
+    border-bottom: 1px solid neutral(20)
+    max-width: 100%
+    width: 100%
 
-#collection-list
-  @extend %card-grid
-  margin-top: rv($mobile_edge_padding_factor)
+// Hide advanced search for now
+#advanced-search-form-wrapper
+  margin: $ui_element_spacing 0
+  display: none
 
-  +bp($ui_mobile_app_controls_breakpoint)
-    margin-top: rv($edge_padding_factor)
-
-
+#form-search
+  @extend %advanced_search_filter_ui
 
 // Title area
 
@@ -45,6 +46,86 @@
     &:last-child
       margin-right: 0
 
+.search-results-wrapper
+  @extend %browser-container-grid
+
+  @at-root #search-page &
+    margin-top: rv($mobile_edge_padding_factor)
+
+    +bp($tablet)
+      margin-top: rv($edge_padding_factor)
+
+.item-browser
+  > div
+    @extend %browser-container
+    border-radius: $border_radius
+    padding: 0
+
+.search--tier-one
+  display: flex
+  justify-content: space-between
+  width: 100%
+
+  +bp($ui_mobile_app_controls_breakpoint)
+    padding-bottom: calc((#{$tab_marker_distance} - #{$tab_size}) - 1px) // See 40_ui/_tab_ui
+    border-bottom: 1px solid neutral(60)
+    margin-bottom: rv($edge_padding_factor)
+
+.search--tier-two
+  display: flex
+  justify-content: space-between
+  width: 100%
+  margin-top: $ui_element_spacing
+
+
+#collection-list
+  @extend %card-grid
+  margin-top: rv($mobile_edge_padding_factor)
+
+  +bp($ui_mobile_app_controls_breakpoint)
+    margin-top: rv($edge_padding_factor)
+
+  +bp($desktop)
+
+    .card
+      border-right: 1px solid neutral(10)
+      padding-right: rv($grid_gap_factor)
+
+      // current grid treatment creates uneven thumbnails, because the padding removal of the 3rd column
+      // slightly increases the size of the card, making the thumbnails look off.
+      // @todo: this sets the size of the thumbnails evenly. Calculate the grid column math to ensure that the
+      // cards are all the same size and the margins work.
+
+      figure:before
+        padding-top: 300px
+
+      &:nth-child(3n)
+        border-right: 0
+        padding-right: 0
+
+
+  /*      &:nth-child(3n-2)
+        padding-left: 0
+        padding-right: rv($grid_gap_factor)
+
+      &:nth-child(3n-1)
+        padding-left: rv($grid_gap_factor) * 0.5
+        padding-right: rv($grid_gap_factor) * 0.5
+
+        > *
+          padding-left: rv($grid_gap_factor) * 0.5
+          padding-right: rv($grid_gap_factor) * 0.5 */
+
+.search-results-list
+  list-style-type: none
+
+  &.grid
+    .resource
+      @extend .card
+
+.search--resource-total-results
+  display: none
+
 .search-facets-list
   padding-left: 0
 
@@ -54,15 +135,21 @@
 aside
   @at-root .search-results-wrapper > &
     @extend %browser-sidebar
-    background-color: neutral(4)
+    background-color: neutral(5)
     border-radius: 0
 
     +bp($ui_mobile_app_controls_breakpoint)
       border-radius: $border_radius 0 0 $border_radius
 
-    h3
-      font-size: clamped(1,0)
+    h2
+      font-family: $headingfont
+      font-size: clamped(1,2)
+      text-transform: uppercase
+      font-weight: $bold
       margin-top: 0
+
+  .facets-refine
+    display: none
 
   .active-facets
     > ul
@@ -85,42 +172,126 @@ aside
       +bp($ui_mobile_app_controls_breakpoint)
         width: 100%
 
-  .search-facet
-    @extend %exposed-facet
+  // Facets
 
-    a
-      text-decoration: none
+  #form-facets
+    > ul
+        list-style-type: none
+        padding-left: 0
 
-      &:hover
-        text-decoration: underline
+  #search-refine-submit
+    width: 100%
+    margin-top: $ui_element_spacing
 
   #search-refine
     width: 100%
     +background-icon-base('search',$btn_icon_size,'neutral','default','right')
     background-position: right #{$ui_padding} center
 
-.advanced-search-browser
+  .facet
+    @extend %exposed-facet
+
+  .search-facet-items
+    padding-left: 0
+
+    li
+      font-family: $basefont
+      line-height: 1.7
+      color: neutral(60)
+      display: flex
+      align-items: flex-start
+      list-style-type: none
+
+      &::before
+        content: '◆'
+        font-size: rv(-2)
+        position: relative
+        color: neutral(60)
+        display: block
+        margin-right: rv(-3)
+
+      &.count
+        color: neutral(70)
+
+      a
+        color: $black
+        text-decoration: underline
+
+        &:hover, &.active
+          color: $link_colour_active
 
 
-  .search-results-wrapper
-    @extend %browser-container-grid
+// @todo: scope?
 
-  .pagination
+.pagination
+  display: none
+
+  +bp($ui_mobile_app_controls_breakpoint)
+    display: flex
+
+.search-results-count
+  > .pagination--label
     display: none
 
     +bp($ui_mobile_app_controls_breakpoint)
-      display: flex
+      display: block
 
+.search-results-header
+  position: fixed
+  z-index: 12
+  top: calc(#{$masthead_height} + #{rv($mobile_edge_padding_factor)})
+  left: 0
+  right: 0
+  padding: 0 rv($mobile_edge_padding_factor) $mobile_overlay_spacing rv($mobile_edge_padding_factor)
+  width: 100%
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+  display: none
+
+  +bp($ui_mobile_app_controls_breakpoint)
+    display: flex
+    flex-direction: column
+    position: initial
+    top: initial
+    left: initial
+    right: initial
+    padding: 0 0 $mobile_overlay_spacing 0
+    justify-content: flex-start
+    align-items: flex-start
+
+  > *
+    +bp($ui_mobile_app_controls_breakpoint)
+      display: flex
+      align-items: center
+      margin-left: $ui_element_spacing
+
+      &:first-child
+        margin-left: 0
+
+  label
+    @extend %labels-controls
+
+.search-results-footer
+  padding-top: rv($mobile_edge_padding_factor)
+  margin-top: rv($mobile_edge_padding_factor)
+  border-top: 1px solid neutral(30)
 
 #mobile-browse-controls
   @extend %browser-mobile-toolbar
 
 #browser--mobile-close-btn
   @extend %mobile-close-btn
-  display: none
 
 // Template: search/results-header-footer
 
+.search-sort
+  display: flex
+  align-items: center
+
 label[for="sort"]
-  margin-left: 0
+  margin: 0 $text_element_spacing 0 0
+
+.search-results-display
+  @extend %ui-display-mode-controls
 

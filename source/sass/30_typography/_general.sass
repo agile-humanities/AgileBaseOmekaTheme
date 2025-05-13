@@ -6,8 +6,17 @@
  *
  **/
 
+$label_color: neutral(70)
+$value_color: neutral(90)
+$label_reversed_color: neutral(30)
+$value_reversed_color: neutral(20)
 
 // Primary Elements
+
+*
+  text-rendering: optimizeLegibility
+  -moz-osx-font-smoothing: grayscale
+  -webkit-font-smoothing: antialiased
 
 strong
   font-weight: $medium
@@ -21,6 +30,24 @@ ul
 
   +bp($tablet)
     padding-inline-start: rv($edge_padding_factor)
+
+a
+  text-decoration-color: $link_colour
+  border-bottom-color: $link_colour
+
+  &:hover, &.active
+    color: $link_colour_active
+    text-decoration-color: $link_colour_active
+    border-bottom-color: $link_colour_active
+
+  +reversed
+    color: $link_colour_reversed
+    text-decoration-color: $link_colour_reversed
+
+    &:hover, &.active
+      color: $link_colour_active_reversed
+      text-decoration-color: $link_colour_active_reversed
+      border-bottom-color: $link_colour_active_reversed
 
 hr
   margin: rv($mobile_edge_padding_factor) * 2 0
@@ -84,11 +111,11 @@ figcaption, .caption
 
 label, .label, .metadata-label
   +font-size(-1)
-  color: neutral(70)
+  color: $label_color
   line-height: 1.25
 
   @at-root .reversed &
-    color: neutral(30)
+    color: $label_reversed_color
 
   @at-root .field-meta &
     text-transform: uppercase
@@ -102,7 +129,11 @@ label, .label, .metadata-label
 
 .label, .metadata-label
   & + .value, & + .values, & + .metadata-value
-    margin-top: rv(-4)
+    margin-top: 2px
+
+.emphasized-text
+  font-weight: $bold
+  color: set-color(3)
 
 .read-more-link
   @extend %inline-anchor-block
@@ -157,6 +188,10 @@ $summary_text_font_size: clamped(-1,0)
   color: $black
   text-decoration: none
   border: 0
+
+
+.summary--text + .summary--text
+  margin-left: $text_element_spacing * 2
 
 a.summary--text
   @extend .summary--text

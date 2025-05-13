@@ -1,0 +1,40 @@
+{
+  "selectedTheme": "dark",
+  "themes": {
+    "dark": {
+      "palette": {
+        "type": "dark",
+        "primary": {
+          "main": "#4db6ac"
+        },
+        "secondary": {
+          "main": "#4db6ac"
+        },
+        "shades": {
+          "dark": "#101820",
+          "main": "#3e4034",
+          "light": "#616161"
+        }
+      }
+    }
+  },
+  "window": {
+    "allowClose": false,
+    "allowFullscreen": true,
+    "allowMaximize": false,
+    "allowTopMenuButton": false
+  },
+  "thumbnailNavigation": {
+    "defaultPosition": "far-bottom",
+    "displaySettings": false,
+    "height": 130,
+    "width": 100
+  },
+  "workspace": {
+    "draggingEnabled": false,
+    "allowNewWindows": false,
+    "isWorkspaceAddVisible": false,
+    "showZoomControls": true,
+    "type": "mosaic"
+  }
+}

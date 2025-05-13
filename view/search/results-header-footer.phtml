@@ -33,6 +33,7 @@ $paginationPerPages = isset($displayParts['per_page']) ? ($searchConfig->subSett
 $sortFields = isset($displayParts['sort']) ? $searchConfig->subSetting('results', 'sort_list') : [];
 $gridListMode = $searchConfig->subSetting('results', 'grid_list_mode', 'auto');
 $multiMode = isset($displayParts['grid_list']) && !in_array($gridListMode, ['list_only', 'grid_only']);
+$isHeader = $resultPart ==='header';
 ?>
 <!-- RESULTS-HEADER-FOOTER BEGIN search/results-header-footer.phtml dev -->
 

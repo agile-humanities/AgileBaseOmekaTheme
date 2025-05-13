@@ -8,7 +8,7 @@
   background-color: neutral(2)
   padding: rv($mobile_edge_padding_factor)
   margin-bottom: rv($mobile_block_spacing)
-  font-size: rv(-1)
+  font-size: clamped(-1,0)
 
   +bp($tablet)
     margin-bottom: rv($block_spacing)
@@ -36,31 +36,57 @@
 
     overflow-x: hidden
 
+  .facet--controls
+    display: flex
+    margin-top: $ui_element_spacing
+
+    button:first-child
+      margin-right: $ui_element_spacing
+
+  .facet--expand
+    +background-icon-right('accordion-expand',10px,'neutral','default')
+    border-bottom-width: 0 !important
+
+  .facet--collapse
+    +background-icon-right('accordion-expand',10px,'neutral','default')
+    border-bottom-width: 0 !important
+
+    &:after
+      transform: rotate(180deg)
+
+
+  // Hide inactive facets.
+  // Active facets will be displayed via advancedSearchSupport.js
+
+  .active
+    a
+      color: $link_colour_active
+      text-decoration-color: $link_colour_active
+
+  .inactive
+    display: none
+
   details
     summary //prevent horizontal scroll from ::after element (arrows)
+      @extend h4
       overflow: hidden
       position: relative
       width: 100%
+      border-bottom: 1px solid $black
       +background_icon_right('accordion-expand')
 
       &:after
         position: absolute
         right: 0
-        +fadeInDown($heartbeat,$heartbeat)
+        transform: rotate(90deg)
 
       &:hover:after
-        +fadeInDown($heartbeat,$heartbeat)
+        animation: none
 
     &[open]
       summary
         &:after
-          display: inline-flex
-          transform: rotate(45deg)
-          +fadeInUp($heartbeat,$heartbeat)
-
-        &:hover:after
-          +fadeInUp($heartbeat,$heartbeat)
-
+          transform: rotate(0deg)
 
   .more-options
     display: none

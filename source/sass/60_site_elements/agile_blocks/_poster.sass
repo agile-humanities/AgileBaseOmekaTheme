@@ -1,78 +1,89 @@
-/**
- *  @file _poster.sass
- *  @category 60_site_elements
- *  @description Styling for poster block */
-
-
 .poster
-  min-height: 34rem
   width: 100%
-  padding: rv($mobile_edge_padding_factor) !important
+  padding: rv($mobile_edge_padding_factor) * 3
   position: relative
-  background: set-color(1)
-  color: $white
 
+  @at-root main &
+    +bp($desktop)
+      min-height: 28rem
+      margin: rv($edge_padding_factor) * 4 0
 
-  +bp($tablet)
-    padding: rv($edge_padding_factor) !important
+  .poster-title
+    margin-bottom: rv(2)
+    font-family: $headingfont
+    font-weight: $bold
+    font-size: clamped(2,5)
+    text-align: center
 
-  .poster-container
-    text-align: left
-    width: 100%
-    padding-top: rv(8)
-    word-wrap: break-word
-    overflow: hidden
-
-
-    +bp($tablet)
-      padding-top: 0
-      width: 80%
-
-    .pathways-mobile-bg
-      position: absolute
-      top: 0
-      left: 0
-      width: 80%
-
-      +bp($tablet)
-        display: none
-
-    .poster-title
-      font-family: $headingfont
-      font-size: clamped(3, 4, 'sml', 'xlrg')
-
-    .poster-text
-      position: relative
-      z-index: 1
-      color: $white
-      font-size: clamped(0, 2, 'sml', 'xlrg')
-      +line-height(1.25)
-
-      a
-        @extend %inline-anchor-reverse
 
   .image-container
+    position: absolute
     width: 100%
-    position: relative
-    z-index: 1
+    height: 100%
+    top: 0
+    left: 0
 
-    figure.figure-landscape
-      +proportional-height(100%,0.75)
+    figure
+      height: 100%
 
       img
+        filter: sepia()
+        mix-blend-mode: multiply
         object-fit: cover
+        height: 100%
+        opacity: 0.2
 
-  .pathways-bg
-
-    +bp($tablet)
-      display: block
-      max-height: 32rem
-      z-index: 0
-      width: auto
-      position: absolute
-      bottom: 0
-      right: 0
-      pointer-events: none
+  .poster-text
+    margin-top: rv($edge_padding_factor)
+    position: relative
+    z-index: 1
+    
+    p
+      font-family: $headingfont
+      font-weight: $normal
+      text-align: left
 
 
+  &.colour-scheme-1
+    background: set-colour(2,10)
 
+    &:after
+      content: " "
+
+    .poster-title,
+    .poster-text
+      color: $black
+
+
+  &.colour-scheme-2
+    background: linear-gradient(0deg, rgba(242,169,0,1) 0%, rgba(16,24,32,0.9) 40%, rgba(16,24,32,1) 90%)
+    mix-blend-mode: multiply
+
+    .image-background figure img
+      opacity: 0.4
+
+    &:after
+      content: " "
+
+    .poster-title,
+    .poster-text
+      color: $white
+
+
+
+  &.text-treatment-1
+    .poster-text
+      p
+        font-size: clamped(2,3)
+        line-height: 1.25
+        +bp($tablet)
+          font-size: font-value(3,4)
+
+
+  &.text-treatment-2
+    .poster-text
+      p
+        font-size: clamped(1,2)
+        line-height: 1.25
+        +bp($tablet)
+          font-size: font-value(2,3)

@@ -8,6 +8,16 @@ $dateHandler = $this->plugin('dateHandler');
 /** @var \AgileThemeTools\View\Helper\AgileSearchHelper $searchHelper */
 $searchHelper = $this->plugin('agileSearchHelper');
 $this->htmlElement("body")->appendAttribute("class", "item resource show");
+$itemSetFacetHandler = $plugins->get('itemSetFacetHandler');
+$itemSetFacetHandler->getPublicItemSets();
+
+// Displays browser links for set properties.
+
+$searchHelper->setSearchInclusionList([
+  'dcterms:creator','dcterms:publisher','dcterms:language','dcterms:subject','dcterms:spatial','dcterms:temporal',
+  'dcterms:type','dcterms:medium','dcterms:format'
+]);
+
 
 // This is deprecated
 $embedMedia = $this->siteSetting("item_media_embed", false);
@@ -48,9 +58,10 @@ $keyTerms = ['dcterms:creator'=>'Creator','dcterms:date'=>'Date','dcterms:source
 
 $searchMainPage = $this->siteSetting('advancedsearch_main_config');
 /** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
-//$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
-$searchConfig = $plugins->get('getSearchConfig');
+$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
+
 // Updated way of handling facets
+$searchFacets = $searchConfig->subSetting('facet', 'facets', []);
 $facetElements = $plugins->get('facetElements');
 $facetParams = ['template'=>'search/facet-link'];
 
@@ -131,9 +142,7 @@ if ($hasMedia) {
   // Identify viewer
 
   if($mediaType) {
-    if ($mediaType === 'application/pdf') {
-      $viewer = 'viewer-pdf';
-    } elseif(strpos($mediaType,'video') > -1) {
+    if (strpos($mediaType,'video') > -1) {
       $viewer = 'viewer-video';
     } elseif (($uv && in_array(strtolower($label), $uv_media)) || in_array($mediaType, $uv_mime_types)) {
       $viewer = 'viewer-uv';
@@ -145,7 +154,6 @@ if ($hasMedia) {
 ?>
 
 <!-- BEGIN agile-theme-tools/agile-item/show.phtml -->
-
 <?php $this->trigger("view.show.before"); ?>
 <div class='item-container'>
   <div class='item-viewer <?= $viewer ?>'>
@@ -155,9 +163,7 @@ if ($hasMedia) {
       if ($viewer === 'viewer-default' && (($itemMedia) || $oEmbed)): ?>
         <div class="media-embeds">
           <?php
-          foreach ($itemMedia as $media):
-            echo $media->render();
-          endforeach;
+          echo $item->primaryMedia()->render();
           ?>
         </div>
       <?php
@@ -166,9 +172,7 @@ if ($hasMedia) {
         $options = [];
         $options['attributes'] = 'allowfullscreen="allowfullscreen" zoom="page-fit"';
         ?>
-
         <object height="100%" width="100%" <?= $options['attributes'] ?> data="<?= $escapeAttr($source) ?>" type="<?= $mediaType ?>"></object>
-
       <?php
       elseif ($viewer === 'viewer-video' && $source):
         ?>
@@ -176,9 +180,9 @@ if ($hasMedia) {
           <source src="<?= $escapeAttr($source) ?>"  type="<?= $mediaType ?>" />
         </video>
       <?php
-      elseif ($viewer === 'viewer-mirador' && $source):
+      elseif ($viewer === 'viewer-mirador'):
         echo $this->mirador($item);
-      // This will display UV or other media players assigned to view.show.after.
+      // This will display UV if it exists or other media players assigned to view.show.after.
       else:
         $this->trigger("view.show.after");
       endif;

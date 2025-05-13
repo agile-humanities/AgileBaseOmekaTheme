@@ -20,9 +20,12 @@ $texts = [
     'default' => '%1$s',
 ];
 ?>
-
+<!-- TEMPLATE BEGIN search/facet-actives.phtml -->
 <ul class="facets-active">
     <?php foreach ($activeFacets as $name => $facetValues) foreach ($facetValues as $facetKey => $facetValue): ?>
+        <?php
+            $facetValue['fieldLabel'] =  $facetValue['fieldLabel'] == "Item Set" ? "Collection" : $facetValue['fieldLabel'];
+        ?>
     <li class="facet-active">
         <span class="facet-active-label"><?= $escape($translate($facetValue['fieldLabel'])) ?></span>
         <?= sprintf('<a class="lozenge facet-active-value" href="%1$s" data-facet-name="facet[%2$s][%3$s]" data-facet-value="%4$s">%5$s</a>',
@@ -34,3 +37,4 @@ $texts = [
     </li>
     <?php endforeach; ?>
 </ul>
+<!-- TEMPLATE END search/facet-actives.phtml -->

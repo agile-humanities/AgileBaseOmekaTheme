@@ -6,6 +6,29 @@
  */
 
 
+body.browse
+  #item-set-page
+    padding-bottom: rv($edge_padding_factor)
+    border-bottom: 1px solid neutral(50)
+    margin-bottom: rv($edge_padding_factor)
+
+
+  .metadata
+    > .value
+      margin-bottom: $ui_element_spacing
+
+      &:last-child
+        margin-bottom: 0
+
+  .collection-link
+    margin-top: rv($edge_padding_factor)
+
+  #primary-content
+    #search-form
+      margin-bottom: rv($edge_padding_factor)
+
+
+
 .browser
   ul
     padding-inline-start: 0

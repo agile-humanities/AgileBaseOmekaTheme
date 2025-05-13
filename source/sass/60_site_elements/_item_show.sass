@@ -94,6 +94,18 @@
       font-style: italic
       font-size: rv(2)
 
+  .tab-ui
+    margin-bottom: rv($edge_padding_factor) * 2
+
+    &:after
+      background-color: neutral(70)
+
+  .metadata-panel > *
+    margin-bottom: $ui_element_spacing
+
+    &:last-child
+      margin-bottom: 0
+
   .item-metadata-block
     +metadata-block()
 

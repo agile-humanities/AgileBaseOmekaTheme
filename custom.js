@@ -1,5 +1,5 @@
 /**
- *  @file user-scripts.js
+ *  @file custom.js
  *  @description A file for front-end developers to add customized javascript without rebuilding the asset folder
  *    from source. The “asset” folder is volatile, meaning that it gets deleted and rebuilt when the theme assets
  *    are rebuilt using gulp. Moreover, the JavaScript is compiled and difficult to work with.

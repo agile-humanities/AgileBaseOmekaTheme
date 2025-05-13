@@ -69,10 +69,34 @@ switch($cardObjectClass) {
     if (method_exists($item,'resourceClass') && $item->resourceClass() !== null) {
       $resourceClassLabel = $item->resourceClass()->label();
       $resourceIndicator = "resource-id-" . $item->resourceClass()->id();
-      $label = $resourceClassLabel . ($year ? " {$year}" : '');
     }
 
-    $thumbnail = !empty($altText) ? $this->thumbnail($item, $thumbnailSize,['alt' => $escape(strip_tags($altText)),'class' => "{$resourceIndicator} {$resourceClassName}"]) : $this->thumbnail($item, $thumbnailSize,['class' => "{$resourceIndicator} {$resourceClassName}"]);
+    $label = !empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item';
+
+    // Use primary media thumbnail if it exists
+
+    $hasPrimaryMedia = $item->primaryMedia() ? true : false;
+
+    $mimetype = $hasPrimaryMedia ? $item->primaryMedia()->mediaType() : null;
+    $hasThumbnail = $mimetype && strpos('image',$mimetype) !== -1; //  $item->thumbnailDisplayUrl($thumbnailSize) !== null;
+
+    $thumbnailObject = $item;
+
+
+    // If primary media is not an image, look for other attached images.
+    // Use the first image (if any) as the thumbnail image.
+
+    if (!$hasThumbnail) {
+      foreach ($item->media() as $media) {
+        $this_mimetype = $media->mediaType();
+        if (!$hasThumbnail && $this_mimetype && strpos('image', $this_mimetype) >= 0) {
+          $thumbnailObject = $media;
+          $hasThumbnail = true;
+        }
+      }
+    }
+
+    $thumbnail = !empty($altText) ? $this->thumbnail($thumbnailObject, $thumbnailSize,['alt' => $escape(strip_tags($altText)),'class' => "{$resourceIndicator} {$resourceClassName}"]) : $this->thumbnail($item, $thumbnailSize,['class' => "{$resourceIndicator} {$resourceClassName}"]);
     $contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item');
     $heading = !empty($heading) ? $heading : $item->displayTitle();
     $body = $body ?? $item->displayDescription();
@@ -83,9 +107,9 @@ switch($cardObjectClass) {
     $heading = $headingTerm ? $item->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $item->displayTitle(null, $valueLang);
     $header = $escape($heading);
     $thumbnail = $thumbnailer($item, $thumbnailType);
-    $label = 'Item Set';
+    $label = 'Collection';
     $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$label)));
-
+    $type = 'Item Set';
     if (empty($body)) {
       $body = $bodyTerm ? $item->value($bodyTerm, ['lang' => $valueLang]) : $item->displayDescription(null, $valueLang);
     }
@@ -102,11 +126,12 @@ switch($cardObjectClass) {
     break;
   default: // Resources
     $url = $item->url();
-    $heading = $headingTerm ? $item->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : '$item_';
+    $heading = $headingTerm ? $item->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $item->displayTitle(null, $valueLang);
     $header = $escape($heading);
     $thumbnail = $thumbnailer($item, $thumbnailType);
     $label = 'Resource';
     $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$label)));
+    $type = 'Resource';
 
     if (empty($body)) {
       $body = $bodyTerm ? $item->value($bodyTerm, ['lang' => $valueLang]) : $item->displayDescription(null, $valueLang);
@@ -125,7 +150,7 @@ if (strpos($this->classes, 'card') === false) {
 }
 ?>
 <!-- BEGIN TEMPLATE: /agile-item/card -->
-<<?= $containerElement; ?> class="<?= $cardStyle ?> <?= $this->classes ?>"<?php echo isset($slot) ? " slot={$slot}" : '' ?>>
+<<?= $containerElement; ?> class="<?= $cardStyle ?> <?= $this->classes ?>"<?=  isset($slot) ? " slot={$slot}" : '' ?>>
 <a <?= !empty($url) ? 'href="'. $url .'"' : ''; ?>>
   <?php if (!empty($thumbnail)): ?>
     <figure class="item-thumbnail <?= $resourceClassName ?> <?= $resourceClassName ?>">

@@ -28,6 +28,7 @@ if (!isset($sortBy)) {
 
 }
 ?>
+<!-- BEGIN TEMPLATE common/sort-selector -->
 <form class="sorting" action="">
     <?php echo $this->queryToHiddenInputs(['sort_by', 'sort_order']); ?>
     <select name="sort_by" aria-label="<?php echo $translate('Sort by'); ?>">
@@ -44,3 +45,4 @@ if (!isset($sortBy)) {
         <button type="submit"><?php echo $translate('Sort'); ?></button>
     </div>
 </form>
+<!-- END TEMPLATE common/sort-selector -->
