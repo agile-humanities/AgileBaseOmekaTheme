@@ -45,6 +45,9 @@ main, #feature-tier-1
       > *
         +inset-text()
 
+        &.inset-text, &.inset
+          +inset-text()
+
         // Apply consistent bottom margin
         &.block, &[class$="-block"]
           margin-bottom: rv($block_spacing)
@@ -52,13 +55,13 @@ main, #feature-tier-1
         &.block-html
           margin-bottom: $paragraph_spacing // not a relative value in this implementation
 
-        &.block-linkCards, &.block-itemListing
+        &.extra-wide, &.block-linkCards, &.block-itemListing
           +negative-content-margin(9)
 
-        &.block-browsePreview
+        &.full-width, &.block-browsePreview, &.block-searchingForm
           +inset-full()
 
-        &.block.resource-list, &.explore-the-archive, &.media-list-wrapper, &.listing-cards, &.preview-block
+        &.wide, &.block.resource-list, &.explore-the-archive, &.media-list-wrapper, &.listing-cards, &.preview-block
           +negative-content-margin(7)
 
         &.slideshow-block

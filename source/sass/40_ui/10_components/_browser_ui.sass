@@ -26,18 +26,23 @@ $mobile_sidebar_content_clearance: 150px // The browser <aside> contents need to
 // Drupal does not require this as facets are assigned to sidebars as blocks,
 // but Omeka and other systems must manage their own browser grid
 
+// Note that the container MUST contain a .with-sidebar class for the container
+// grid to apply.
+
 %browser-container-grid
   display: grid
   grid-column-gap: rv(1)
   grid-template-columns: 1fr
 
-  // Includes <aside>, which is hidden on mobile
-  +bp($ui_mobile_app_controls_breakpoint)
-    grid-template-columns: minmax(min-content,#{$left_sidebar_width}) 1fr
+  &.with-sidebar
 
-  &.sidebar-after
+    // Includes <aside>, which is hidden on mobile
     +bp($ui_mobile_app_controls_breakpoint)
-      grid-template-columns: 1fr minmax(min-content,#{$right_sidebar_width})
+      grid-template-columns: minmax(min-content,#{$left_sidebar_width}) 1fr
+
+    &.sidebar-after
+      +bp($ui_mobile_app_controls_breakpoint)
+        grid-template-columns: 1fr minmax(min-content,#{$right_sidebar_width})
 
 
 // Apply to sidebars with facet browsers. Turns them into overlay controls on

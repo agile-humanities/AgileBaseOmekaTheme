@@ -1,5 +1,5 @@
 /**
- *  @file advancedSearchSupport.js
+ *  @file omekaAdvancedSearchSupport.js
  *  @description Supports the transformation of the advanced search module’s UI into the Agile Collection Browser interface
  *
  */
@@ -33,7 +33,7 @@ if (searchViewType === null) {
         }
     })
     */
-    
+
     // Hide filter button if filter sidebar doesn’t exist
 
     if(facetSidebar.length === 0) {
@@ -142,7 +142,7 @@ if (searchViewType === null) {
     $('.facet').each(function (i) {
       const facet = $(this);
       const visibleOptions = parseInt(facet.attr('data-visible-options'));
-      const facetOptions = facet.find('.search-facet-items > *');
+      const facetOptions = facet.find('.facet-items > *');
 
       // All items are marked inactive by default
       // Show active options

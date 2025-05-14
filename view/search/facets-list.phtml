@@ -44,115 +44,105 @@ if (!empty($itemSet)) {
     unset($facets['item_set_id']);
     unset($activeFacets['item_set_id']);
 }
-
 ?>
 <!-- TEMPLATE BEGIN search/facets-list -->
 <div id="search-facets" class="facets">
 
-    <?php if ($label = $searchConfig->subSetting('facet', 'label', $translate('Filter results'))): ?>
-    <h3><?= $escape($label) ?></h3>
+    <?php if ($label = $searchConfig->subSetting('facet', 'label', $translate('Facets'))): ?>
+        <h2><?= $escape($label) ?></h2>
     <?php endif; ?>
 
-    <!-- Suppress active facets (moved to search.phtml)
-        <?php if ($displayActive && count($activeFacets)): ?>
+    <?php if ($displayActive && count($activeFacets)): ?>
         <?php if ($label = $searchConfig->subSetting('facet', 'label_active_facets', $translate('Active facets'))): ?>
-        <h4><?= $escape($label) ?></h4>
+            <h3><?= $escape($label) ?></h3>
         <?php endif; ?>
         <?= $facetActives(null, $activeFacets, $searchConfig->setting('facet')) ?>
-        <?php endif; ?>
-    -->
+    <?php endif; ?>
+
     <form id="form-facets">
 
         <?php if ($displayFacetButton): ?>
-        <?= $this->hiddenInputsFromFilteredQuery(null, ['facet', 'refine', 'page', 'limit', 'offset', 'per_page']) ?>
+            <?= $this->hiddenInputsFromFilteredQuery(null, ['facet', 'refine', 'page', 'limit', 'offset', 'per_page']) ?>
         <?php endif; ?>
 
         <?php $displayButtonReset = $displayReset === 'above' || $displayReset === 'both'; ?>
         <?php $displayButtonSubmit = $displayFacetButton && ($displaySubmit === 'above' || $displaySubmit === 'both'); ?>
         <?php if ($displayButtonReset || $displayButtonSubmit): ?>
-        <div class="facets-actions facets-actions-top">
-            <?php if ($displayButtonSubmit): ?>
-            <button id="facets-apply" class="facets-apply" type="submit"><?= $escape($labelSubmit) ?></button>
-            <?php endif; ?>
-            <?php if ($displayButtonReset): ?>
-            <button id="facets-reset" class="facets-reset" type="reset"><?= $escape($labelReset) ?></button>
-            <?php endif; ?>
-        </div>
+            <div class="facets-actions facets-actions-top">
+                <?php if ($displayButtonSubmit): ?>
+                    <button id="facets-apply" class="facets-apply" type="submit"><?= $escape($labelSubmit) ?></button>
+                <?php endif; ?>
+                <?php if ($displayButtonReset): ?>
+                    <button id="facets-reset" class="facets-reset" type="reset"><?= $escape($labelReset) ?></button>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
 
         <?php if ($displayRefine): ?>
-        <div class="facets-refine">
-            <?php if ($labelRefine): ?>
-            <h4><label for="search-refine"><?= $escape($labelRefine) ?></label></h4>
-            <?php endif; ?>
+            <div class="facets-refine">
+                <?php if ($labelRefine): ?>
+                    <h3><label for="search-refine"><?= $escape($labelRefine) ?></label></h3>
+                <?php endif; ?>
                 <input id="search-refine" name="refine" class="search-refine" value="<?= $escape($query->getQueryRefine()) ?>"<?= $labelRefine ? ' data-placeholder="' . $escapeAttr($labelRefine) . '"' : '' ?>/>
-            <?php if (!$displayButtonSubmit): ?>
-            <button id="search-refine-submit" class="search-refine" type="submit"><?= $escape($translate('Submit')) ?></button>
-            <?php endif; ?>
-        </div>
+                <?php if (!$displayButtonSubmit): ?>
+                    <button id="search-refine-submit" class="search-refine" type="submit"><?= $escape($translate('Submit')) ?></button>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
 
         <?php if (empty($facets) && empty($activeFacets)): ?>
-        <?php if ($label = $searchConfig->subSetting('facet', 'label_no_facets', $translate('No facets'))): ?>
-        <p><?= $escape($label) ?></p>
-        <?php endif; ?>
+            <?php if ($label = $searchConfig->subSetting('facet', 'label_no_facets', $translate('No facets'))): ?>
+                <p><?= $escape($label) ?></p>
+            <?php endif; ?>
         <?php else: ?>
             <ul class="facets-list--ignore"><?php /* ignore default facet list styles. Check for compatibility */?>
-            <?php foreach ($facets as $name => $facetValues): ?>
+                <?php foreach ($facets as $name => $facetValues): ?>
 
                     <?php $facetParams = $searchFacets[$name]; ?>
-                $facetClass = urlencode(strtolower(str_replace(' ','-',$label)));
-                $stateExpand = $facetParams['state'] === 'expand' || ($facetParams['state'] === 'collapse_unless_set' && !empty($activeFacets[$name]));
-                ?>
-            <?php $hasState = in_array($facetParams['state'] ?? '', ['expand', 'collapse', 'collapse_unless_set']); ?>
-                    <li id='facet_<?= $facetParams["field"] ?>' class="facet<?= empty($facetParams['attributes']['class']) ? '' : ' ' . $escapeAttr($facetParams['attributes']['class']) ?>" data-visible-options="<?php echo(trim($facetParams['more'])) ?>">
-                        <details open="<?= $stateExpand ? 'true' : 'false' ?>" aria-label="<?= $translate($stateExpand ? 'Collapse' : 'Expand') ?>" >
-                    <summary><?= $escape($translate($facetParams['label'] ?? $name)) ?></summary>
-                    <div class="facet-elements<?= $hasState ? ' collapsible' : '' ?>"<?= $hasState && $facetParams['state'] === 'collapse' ? ' hidden="hidden"' : '' ?>>
-                        <?php
 
-                        /* The item set’s label is empty when an item set id is passed to the checkbox facet.
-                         * This conditional works in tandem with logic in the facet-checkboxes.phtml, which adds an extra facet
-                         * value key with the Item Set’s display name. Adding a key should keep it backwards compatible if this is fixed
-                         * (or properly configured, if that's the issue).
-                         */
-
-                        if ($facetParams['field'] === 'item_set_id') {
-                            /** @var Omeka\Api\Manager $api */
-                            $api = $plugins->get('api');
-
-                            foreach ($facetValues as &$value) {
-                                /** @var Omeka\Api\Representation\ItemSetRepresentation $itemSet */
-                                $itemSet = $api->read('item_sets',$value['value'])->getContent();
-                                $value['item_set_label'] = $itemSet->displayTitle();
-                            }
-                        }
-                        ?>
-                        <?= $facetElements($facetParams['field'], $facetValues, $facetParams) ?>
-                            <?php if (($facetParams['more'] ?? '') !== '' && in_array($facetParams['type'] ?? '', ['', 'Checkbox', 'Link', 'Tree', 'TreeLink', 'Thesaurus', 'ThesaurusLink']) && count($facetValues) > (int) trim($facetParams['more'])): ?>
-                                <div class="facet--controls">
-                                    <button type="button" class="ghost facet--expand">More options</button>
-                                    <button type="button" class="ghost facet--collapse" style="display:none">Fewer options</button>
-                        </div>
+                    <?php foreach($facetValues as &$value) {
+                        // Pitts specific: Pass the field value downstream as it is need to identify which facts
+                        // are item sets / collections
+                        $value['field'] = $facetParams["field"];
+                        $more = (int) array_key_exists('more',$facetParams) ? $facetParams['more'] : 20;
+                    } ?>
+                    <?php $hasState = in_array($facetParams['state'] ?? '', ['expand', 'collapse', 'collapse_unless_set']); ?>
+                    <li id='facet_<?= $facetParams["field"] ?>' class="facet<?= empty($facetParams['attributes']['class']) ? '' : ' ' . $escapeAttr($facetParams['attributes']['class']) ?>" data-visible-options="<?= $more ?>">
+                        <?php $stateExpand = $hasState && ($facetParams['state'] === 'expand' || ($facetParams['state'] === 'collapse_unless_set' && !empty($activeFacets[$name]))); ?>
+                        <?php if ($facetParams['state'] !== 'static'): ?>
+                            <details open="<?= $stateExpand ? 'true' : 'false' ?>" aria-label="<?= $translate($stateExpand ? 'Collapse' : 'Expand') ?>" >
+                                <summary><?= $escape($translate($facetParams['label'] ?? $name)) ?></summary>
+                        <?php else: ?>
+                            <h3><?= $escape($translate($facetParams['label'] ?? $name)) ?></h3>
                         <?php endif; ?>
-                    </div>
-                </details>
-            </li>
-            <?php endforeach; ?>
-        </ul>
+                                <div class="facet-elements<?= $hasState ? ' collapsible' : '' ?>"<?= $hasState && $facetParams['state'] === 'collapse' ? ' hidden="hidden"' : '' ?>>
+                                    <?= $facetElements($facetParams['field'], $facetValues, $facetParams) ?>
+                                    <?php if (($more ?? '') !== '' && in_array($facetParams['type'] ?? '', ['', 'Checkbox', 'Link', 'Tree', 'TreeLink', 'Thesaurus', 'ThesaurusLink']) && count($facetValues) > $more): ?>
+                                        <div class="facet--controls">
+                                            <button type="button" class="ghost facet--expand">More options</button>
+                                            <button type="button" class="ghost facet--collapse" style="display:none">Fewer options</button>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                       <?php if ($facetParams['state'] !== 'static'): ?>
+                            </details>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
         <?php endif; ?>
 
         <?php $displayButtonReset = $displayReset === 'below' || $displayReset === 'both'; ?>
         <?php $displayButtonSubmit = $displayFacetButton && ($displaySubmit === 'below' || $displaySubmit === 'both'); ?>
         <?php if ($displayButtonReset || $displayButtonSubmit): ?>
-        <div class="facets-actions facets-actions-bottom">
-            <?php if ($displayButtonSubmit): ?>
-            <button id="facets-apply" class="facets-apply" type="submit"><?= $escape($labelSubmit) ?></button>
-            <?php endif; ?>
-            <?php if ($displayButtonReset): ?>
-            <button id="facets-reset" class="facets-reset" type="reset"><?= $escape($labelReset) ?></button>
-            <?php endif; ?>
-        </div>
+            <div class="facets-actions facets-actions-bottom">
+                <?php if ($displayButtonSubmit): ?>
+                    <button id="facets-apply" class="facets-apply" type="submit"><?= $escape($labelSubmit) ?></button>
+                <?php endif; ?>
+                <?php if ($displayButtonReset): ?>
+                    <button id="facets-reset" class="facets-reset" type="reset"><?= $escape($labelReset) ?></button>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
 
     </form>

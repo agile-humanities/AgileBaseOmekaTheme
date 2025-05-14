@@ -47,16 +47,16 @@ $ribbon_padding_factor: -3
   @extend %underscore
 
   &:hover, &:focus
-    color: $impact
-    text-decoration-color: $impact
+    color: $link_colour
+    text-decoration-color: $link_colour
     border-bottom: 0
 
   +reversed
-    color: $white
+    color: $link_colour_reversed
 
     &:hover
-      color: $white
-      text-decoration-color: $impact
+      color: $link_colour_active_reversed
+      text-decoration-color: $link_colour_active_reversed
 
 %inline-anchor-block
   display: inline-block
@@ -64,12 +64,12 @@ $ribbon_padding_factor: -3
 
 %inline-anchor-reverse
   @extend %inline-anchor
-  color: $white
-  text-decoration-color: $white
+  color: $link_colour_reversed
+  text-decoration-color: $link_colour_reversed
 
   &:hover, &:focus
-    color: set-colour-tint(4, 50)
-    text-decoration-color: set-colour-tint(4, 50)
+    color: $link_colour_active_reversed
+    text-decoration-color: $link_colour_active_reversed
 
 // Extras
 

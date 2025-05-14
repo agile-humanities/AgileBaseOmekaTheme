@@ -23,7 +23,10 @@
     margin-bottom: 0
 
   a
-    @extend %inline-anchor-reverse
+    @extend %inline-anchor
+
+    +reversed
+      @extend %inline-anchor
 
   .deck > p
     @extend .deck

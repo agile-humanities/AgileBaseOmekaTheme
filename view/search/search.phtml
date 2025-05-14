@@ -48,6 +48,9 @@ $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $easyMeta = $plugins->get('easyMeta');
 
+/** @var \AgileThemeTools\View\Helper\ItemSetFacetHandler $agileItemSetHelper */
+$agileItemSetHelper = $plugins->get('itemSetFacetHandler');
+
 $breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
 
 $vars = $this->vars();
@@ -79,7 +82,10 @@ $activeFacets = $query->getActiveFacets();
 
 $facets = $searchConfig->engineAdapter()->getAvailableFacetFields();
 
+
 $searchFacets = $searchConfig->subSetting('facet', 'facets', []);
+$hasFacets = count($searchFacets) > 0;
+
 
 if ($itemSet && $site) {
     $redirectItemSets = $this->siteSetting('advancedsearch_redirect_itemsets', ['default' => 'browse']);
@@ -142,11 +148,11 @@ $this->headScript()
             <div class="item-set-items">
                 <h2><?= $translate('Items') ?></h2>
             </div>
-        <?php else: ?>
+        <?php elseif (empty($isPartial)): // Only display title if not partial ?>
             <?php $this->htmlElement('body')->appendAttribute('class', 'search-page resource browse'); ?>
             <div class="title-block">
                 <div container>
-                    <h1>Browse the Collection</h1>
+                    <h1>Browse</h1>
                     <!-- <div class='deck'>Browse deck text not available</div>-->
                 </div>
             </div>
@@ -160,10 +166,10 @@ $this->headScript()
             ?>
         </div>
 
-        <div class="search-results-wrapper<?= $displayFacets ? " with-sidebar sidebar-{$displayFacets}" : ""; ?>">
+        <div class="search-results-wrapper<?= $displayFacets && $hasFacets ? " with-sidebar sidebar-{$displayFacets}" : ""; ?>">
 
             <?php if ($displayFacets === 'before'): ?>
-            <aside id="browser-sidebar" class="search-facets">
+            <aside id="browser-sidebar" class="search-facets" <?= !$hasFacets ? 'style="display: none"' : '' ?> >
                 <a id="browser--mobile-close-btn">Close</a>
                 <?= $partial('search/facets-list') ?>
             </aside>
@@ -189,12 +195,18 @@ $this->headScript()
                                 <?= $searchConfig->renderSearchFilters($query, ['template' => 'common/search-filters-links']) ?>
                                 <?php if($activeFacets):
                                     foreach($activeFacets as $facet => $facetValues):
-                                        $facets[$facet]['label'] =  $facets[$facet]['label'] == "Item Set" ? "Collection" : $facets[$facet]['label'];
+                                        $isItemSet = strtolower($facets[$facet]['label']) == "item set";
+                                        $facets[$facet]['label'] = $isItemSet ? "Collection" : $facets[$facet]['label'];
+
                                 ?>
                                         <div class="search-filters">
                                             <span class="summary--text--label"><?= array_key_exists($facet,$facets) ? $facets[$facet]['label'] : $facet ?></span>
                                             <?php
                                                 foreach($facetValues as $facetValue):
+                                                    // Handles instances where item sets are indexed by id
+                                                    if ($isItemSet && ((int) $facetValue == $facetValue)) {
+                                                        $facetValue = $agileItemSetHelper->getItemSetLabelById($facetValue);
+                                                    }
                                                     printf("<span class='summary--text'>%s</span>",$facetValue);
                                                 endforeach;
                                             ?>

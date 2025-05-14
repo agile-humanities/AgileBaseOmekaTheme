@@ -10,20 +10,25 @@
 
 $page_header_border_color: neutral(70)
 
-body > header
-  +standard_edge_padding()
-  width: 100%
-
-  > div
-    display: flex
-    flex-direction: row
-    justify-content: space-between
-    align-items: center
+body
+  > header
+    +standard_edge_padding()
     width: 100%
-    height: $masthead_height
-    position: relative
-    padding-bottom: $masthead_clearance
-    border-bottom: 1px solid $page_header_border_color
+
+    > div
+      display: flex
+      flex-direction: row
+      justify-content: space-between
+      align-items: center
+      width: 100%
+      height: $masthead_height
+      position: relative
+      padding-bottom: $masthead_clearance
+      border-bottom: 1px solid $page_header_border_color
+
+  &.has-admin-bar
+    > header
+      margin-top: $admin_bar_height
 
   // Responsive visibility
 

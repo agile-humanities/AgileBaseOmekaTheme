@@ -10,15 +10,34 @@
 
 ul.sf-menu
 
+  // Top-level menu styles
+
   > li
     text-transform: uppercase
-
-  li
-    font-weight: normal
     background: $menu_background
 
     &.sfHover, &:hover
       background: $menu_background
+
+
+    a
+      height: $ui_element_height
+      display: flex
+      align-items: center
+
+    // Drop down styles
+
+    li
+      font-weight: normal
+      background: mix($menu_background,$white,20)
+
+      &.sfHover, &:hover
+        background: $white
+
+  // Common list styles (top level and drop down)
+
+  li
+    text-transform: none
 
     a
       border: 0
@@ -27,10 +46,6 @@ ul.sf-menu
 
       &:hover
         color: $impact
-
-  ul
-    li
-      text-transform: none
 
 
 .sf-arrows

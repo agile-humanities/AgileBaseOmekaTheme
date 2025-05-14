@@ -88,8 +88,8 @@
   +bp($desktop)
 
     .card
-      border-right: 1px solid neutral(10)
-      padding-right: rv($grid_gap_factor)
+      // border-right: 1px solid neutral(10)
+      // padding-right: rv($grid_gap_factor)
 
       // current grid treatment creates uneven thumbnails, because the padding removal of the 3rd column
       // slightly increases the size of the card, making the thumbnails look off.
@@ -99,12 +99,12 @@
       figure:before
         padding-top: 300px
 
-      &:nth-child(3n)
+  /*    &:nth-child(3n)
         border-right: 0
         padding-right: 0
 
 
-  /*      &:nth-child(3n-2)
+        &:nth-child(3n-2)
         padding-left: 0
         padding-right: rv($grid_gap_factor)
 
@@ -135,7 +135,7 @@
 aside
   @at-root .search-results-wrapper > &
     @extend %browser-sidebar
-    background-color: neutral(5)
+    background-color: darken($bgcolor, 10)
     border-radius: 0
 
     +bp($ui_mobile_app_controls_breakpoint)
