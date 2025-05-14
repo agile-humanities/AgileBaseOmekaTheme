@@ -1,10 +1,11 @@
-<div id="block-<?php echo $this->blockId; ?>" class="section-list section-list-cards region <?php echo $this->regionClass; ?> <?php echo $this->classes ?>" data-target-region-id="<?php echo $this->targetID; ?>">
+<!-- BEGIN TEMPLATE common/block-layout/section-list-cards -->
+<div id="block-<?= $this->blockId; ?>" class="section-list section-list-cards region <?= $this->regionClass; ?> <?= $this->classes ?>" data-target-region-id="<?= $this->targetID; ?>">
     <?php if ($this->hasTitle): ?>
-        <h2><?php echo $this->title; ?></h2>
+        <h2><?= $this->title; ?></h2>
     <?php endif; ?>
     <?php if ($this->hasIntroduction): ?>
         <div class='block-introduction'>
-            <?php echo $this->introduction; ?>
+            <?= $this->introduction; ?>
         </div>
     <?php endif; ?>
     <?php if ($this->hasPages): ?>
@@ -12,13 +13,15 @@
         <ul class="cards grid">
             <?php foreach($this->pages as $page): ?>
                 <li class='item'>
-                    <a title="See <?php echo $page['o:title']; ?>" class="card" href='<?= $page['o:url']; ?>'>
+                    <a title="See <?= $page['o:title']; ?>" class="card" href='<?= $page['o:url']; ?>'>
                         <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('representativeImage',$page['embeddedBlocks'])): ?>
                             <?= $page['embeddedBlocks']['representativeImage'][0]; ?>
                         <?php endif; ?>
                         <div class="item-info">
-                            <div class="item-label">Exhibit</div>
-                            <h3 class="item-title"><?php echo $page['o:title']; ?></h3>
+                            <?php if (!empty($this->cardLabel)): ?>
+                              <div class="item-label"><?= $this->cardLabel ?></div>
+                            <?php endif; ?>
+                            <h3 class="item-title"><?= $page['o:title']; ?></h3>
                             <div class="item-description">
                                 <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('byline',$page['embeddedBlocks'])): ?>
                                     <?= $page['embeddedBlocks']['byline'][0]; ?>
@@ -27,7 +30,7 @@
                                     <?= $page['embeddedBlocks']['excerpt'][0]; ?>
                                 <?php endif; ?>
                             </div>
-                            <div class='more'>See this exhibit</div>
+                            <div class='more'>View</div>
                         </div>
                     </a>
                 </li>
@@ -36,3 +39,4 @@
     </div>
     <?php endif; ?>
 </div>
+<!-- END TEMPLATE common/block-layout/section-list-cards -->

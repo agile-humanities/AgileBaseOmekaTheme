@@ -1,7 +1,7 @@
 (function($) {
   $(document).ready(function() {
 
-    const wrappingClasses = ['full-width','inset','inset-text','wide','extra-wide'];
+    const wrappingClasses = ['full-width','inset','inset-text','wide','extra-wide','section-list-cards'];
 
     $('#content-stack > * > *').each(function() {
       const _this = $(this);

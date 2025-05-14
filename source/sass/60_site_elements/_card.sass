@@ -16,9 +16,12 @@ main
   @extend %card
 
   .item-info
-    border-top-color: set-color(1)
+    border-top-color: $link_colour
     border-top-width: 10px
     border-top-style: solid
+
+    &:hover
+      border-top-color: $link_colour_active
 
 
 .list-item
