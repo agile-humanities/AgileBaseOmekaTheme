@@ -11,25 +11,67 @@ $subdir_icons: '/icons'
 $subdir_marks: '/marks'
 $logo_path: map-get($asset_dirs,'svg') + $subdir_marks + '/logo.svg'
 $visibility_stack: ('main > div','#secondary-content','#tertiary-content','#quaternary-content','.block-facets-block','#block-responses-profile-feature')
-$remove_visibility_class: true
-$visibility_offset: 50
-$visibility_threshold: 0.2
-$visibility_stack_animation_speed: 0
-$visibility_stack_animation_delay: null
-$clr1: #062D19  // Leafy Green
-$clr2: #E75930  // Tomato Red
-$clr3: #A1CAC0  // River Blue
-$clr4: #F5C231  // Cob Yellow
-$clr5: #B8396C  // Beet Purple
-$clr6: #A4A006  // Pea Green
-$clr7: #FBF5EE  // Linen
-$clr8: #983619  // Heirloom Red
-$clr9: #4D8C82  // Ocean Blue
-$clr10: #D78818 // Mustard Yellow
-$clr11: #6F122D // Eggplant Purple
-$clr12: #53731B // Collard Green
-$black: #000000
+$clr1: #00BDD4
+$clr2: #BF609B
+$clr3: #D98536
+$clr4: #315FAA
+$clr5: #7DBF60
+$clr6: #E1BB0B
+$clr7: #E5336D
+$clr8: #00171A
+$clr9: #000000
+$black: $clr8
 $white: white
+$bgcolor: $white
+$footer_bg: $black
+$impact: $clr2
+$cta: $clr1
+$de_emphasized: neutral(50)
+$de_activated: neutral(30)
+$link_colour: $black
+$link_colour_active: $clr3
+$link_colour_reversed: $white
+$link_colour_active_reversed: neutral(5)
+$rootsize: 100%
+$basesize: 1rem
+$base_line_height: 1.5
+$blh: $basesize * $base_line_height
+$scale: 1.33
+$max_width: 1900px
+$legible_inset_width: 920px
+$mobile_grid_gap_factor: -1
+$grid_gap_factor: 0
+$block_spacing: 2
+$mobile_block_spacing: -2
+$edge_padding_factor: 0
+$mobile_edge_padding_factor: -1
+$text_element_spacing: 3px
+$masthead_height: 50px
+$footer_height: 100px
+$admin_bar_height: 40px
+$admin_bar_tray: 40px // Second-tier admin bar
+$masthead_clearance: rv(0)
+$masthead_clearance_mobile: rv(-1)
+$splash_height_mobile: auto
+$splash_height_tablet: auto
+$splash_height_desktop: 100vh
+$min_splash_height: 700px
+$proportional_width_unit: math.div(100% - math.div(100,$scale),2)
+$standard_sidebar_width: $proportional_width_unit
+$right_sidebar_width: $standard_sidebar_width
+$left_sidebar_width: $standard_sidebar_width * 2
+$footer_branding_width: 150px
+$footer_badge_width: $footer_branding_width * 1.5
+$basetypesize: 1rem
+$min_sizefactors: (base: -1, h1: 3, h2: 2, h3: 1, h4: 0, h5: -1, h6: -1)
+$sizefactors: (base: 0, h1: 4, h2: 3, h3: 2, h4: 1, h5: 0, h6: 0)
+$line_heights: (base: $base_line_height, h1: 1.1, h2: 1.25, h3: 1.25, h4: $base_line_height, h5: $base_line_height, h6: $base_line_height)
+$typescale: (base: 1, xsml: 1, sml: 1, med:1, lrg: 1, xlrg: 1, xxlrg: 1)
+$paragraph_spacing: clamped(map-get($min_sizefactors,'base'),map-get($sizefactors,'base'),$default-min-bp,$default-max-bp,map-get($line_heights,base))
+$basefont: Roboto, Tahoma, Arial, sans-serif
+$headingfont: Roboto, Tahoma, Arial, sans-serif
+$altfont: Georgia, serif
+$codefont: 'IBM Plex Mono', Monaco, Courier New, monospace
 $lightest_neutral: neutral(5)
 $lighter_neutral: neutral(30)
 $light_neutral: neutral(40)
@@ -38,44 +80,6 @@ $mid_neutral: neutral(60)
 $dark_neutral: neutral(70)
 $darker_neutral: neutral(80)
 $darkest_neutral: neutral(90)
-$bgcolor: $clr7 // Linen
-$footer_bg: $clr1 // Leafy Green
-$impact: $clr2 // Tomato Red
-$cta: $clr8 // Heirloom Red
-$de_emphasized: $light_neutral
-$de_activated: $lighter_neutral
-$link_colour: $clr1 // Leafy Green
-$link_colour_active: $clr2 // Tomato Red
-$link_colour_reversed: $white
-$link_colour_active_reversed: $white
-$rootsize: 100%
-$basesize: 1rem
-$base_line_height: 1.5
-$blh: $basesize * $base_line_height
-$scale: 1.33
-$max_width: 1900px
-$legible_inset_width: 750px
-$masthead_height: 60px
-$footer_height: 100px
-$admin_bar_height: 40px
-$admin_bar_tray: 40px // Second-tier admin bar
-$masthead_clearance: rv(0)
-$masthead_clearance_mobile: rv(-1)
-$splash_height_mobile: 50vh
-$splash_height_tablet: 50vh
-$splash_height_desktop: 100vh
-$min_splash_height: 700px
-$proportional_width_unit: math.div(100% - math.div(100,$scale),2)
-$standard_sidebar_width: $proportional_width_unit
-$right_sidebar_width: $standard_sidebar_width * 2
-$left_sidebar_width: $standard_sidebar_width
-$mobile_grid_gap_factor: -1
-$grid_gap_factor: 0
-$block_spacing: 2
-$mobile_block_spacing: -2
-$edge_padding_factor: 1
-$mobile_edge_padding_factor: 0
-$text_element_spacing: 3px
 $breakpoints: (xsml: 21em, sml: 30em, med: 46.25em, lrg: 75em, xlrg: 112.5em, xxlrg: 130em)
 $stack_breakpoint: med
 $tablet_breakpoint: med
@@ -86,16 +90,6 @@ $tablet: $tablet_breakpoint
 $desktop: $desktop_breakpoint
 $ultrawide: $ultrawide_breakpoint
 $font_path: '../fonts'
-$basetypesize: 0.9rem
-$min_sizefactors: (base: -1, h1: 3, h2: 2, h3: 1, h4: 0, h5: -1, h6: -1)
-$sizefactors: (base: 0, h1: 4, h2: 3, h3: 2, h4: 1, h5: 0, h6: 0)
-$line_heights: (base: $base_line_height, h1: 1, h2: 1.2, h3: 1.2, h4: 1.2, h5: 1.2, h6: 1.2)
-$typescale: (base: 1, xsml: 1, sml: 1, med:1, lrg: 1, xlrg: 1, xxlrg: 1)
-$paragraph_spacing: clamped(map-get($min_sizefactors,'base'),map-get($sizefactors,'base'),$default-min-bp,$default-max-bp,map-get($line_heights,base))
-$basefont: Roboto, Tahoma, Arial, sans-serif
-$headingfont: 'Source Serif',Georgia,serif
-$altfont: 'Source Serif',Georgia,serif
-$codefont: 'IBM Plex Mono', Monaco, Courier New, monospace
 $row_header_bg: neutral(10)
 $row_border_color: neutral(10)
 $row_zebra_stripe_color: neutral(3)
@@ -105,64 +99,60 @@ $h3fontsize: map-get($sizefactors,'h3')
 $h4fontsize: map-get($sizefactors,'h4')
 $h5fontsize: map-get($sizefactors,'h5')
 $h6fontsize: map-get($sizefactors,'h6')
-$menu_background: transparent
-$ui_padding: 8px
-$ui_element_height: 40px
+$ui_padding: 10px
+$ui_element_height: 50px
 $ui_minheight: $ui_element_height
 $ui_maxheight: 60px
-$ui_compactheight: 25px
+$ui_compactheight: 40px
 $ui_largeheight: 80px
 $ui_max_text_width: 500px
 $ui_element_spacing: rv($mobile_edge_padding_factor)
-$ui_border_radius: 5px
+$ui_border_radius: 8px
 $ui_border_width: 1px
 $ui_border_color: neutral(40)
 $ui_hover_border_color: $impact
 $ui_checkbox_height: 20px
-$ui_element_font_size: rv(0)
-$ui_checkbox_label_font_size: rv(-2)
-$ui_icon_height: $ui_minheight * 0.4
-$ui_select_indicator_size: $ui_icon_height
+$ui_element_font_size: clamped(-1,0)
+$ui_checkbox_label_font_size: clamped(-1,0)
+$ui_form_text_color: neutral(90)
+$ui_icon_size: 25px
 $mobile_overlay_spacing: rv(2)
-$ui_mobile_app_controls_footer_height: $masthead_height
-$ui_mobile_app_controls_breakpoint: $tablet
-$ui_display_controls_icon_size: $ui_mobile_app_controls_footer_height * 0.5
-$border_radius: $ui_border_radius
 $mobile_filter_height: rv(5)
-$btn_padding: 5px rv(0)
-$btn_border_width: $ui_border_width
+$border_radius: $ui_border_radius
+$btn_padding: 5px $ui_padding
+$btn_border_width: 0
 $btn_border_radius: $ui_border_radius
-$btn_height: $ui_element_height
+$btn_height: $ui_maxheight
 $btn_min_width: 200px
 $btn_width: 280px
 $btn_compactwidth: 180px
 $btn_largewidth: 280px
 $btn_max_width: 375px
-$btn_icon_size: $btn_height * 0.5
+$btn_icon_size: 25px
 $btn_fontsize: clamped(0,1)
 $btn_compact_fontsize: clamped(-1,0)
 $btn_minwidth: 250px
-$btn_submit_img_size: $ui_icon_height
+$btn_submit_img_size: rv(1)
 $btn_color: $black
-$btn_bg_color: neutral(5)
+$btn_bg_color: neutral(20)
 $btn_border_color: $ui_border_color
-$btn_hover_color: neutral(70)
+$btn_hover_color: $black
 $btn_hover_border_color: neutral(60)
-$btn_hover_bg_color: neutral(10)
+$btn_hover_bg_color: neutral(40)
 $btn_submit_color: $white
-$btn_submit_bg_color: $cta
+$btn_submit_bg_color: $impact
 $btn_submit_border_width: 0
-$btn_submit_border_color: $cta
+$btn_submit_border_color: $impact
 $btn_submit_hover_color: $white
-$btn_submit_hover_border_color: mix($black,$cta,10%)
-$btn_submit_hover_bg_color: mix($black,$cta,10%)
-$btn_search_color: $black
-$btn_search_bg_color: transparent
+$btn_submit_hover_border_color: mix($white,$impact,10%)
+$btn_submit_hover_bg_color: mix($white,$impact,10%)
+$btn_search_color: neutral(60)
+$btn_search_bg_color: $white
 $btn_search_border_width: $ui_border_width
 $btn_search_border_color: $ui_border_color
-$btn_search_hover_color: $black
-$btn_search_hover_border_color: $ui_hover_border_color
-$btn_search_hover_bg_color: neutral(1)
+$btn_search_hover_color: $white
+$btn_search_hover_border_color: $impact
+$btn_search_hover_bg_color: $white
 $btn_reset_color: neutral(90)
 $btn_reset_bg_color: neutral(30)
 $btn_reset_border_width: 0
@@ -173,8 +163,9 @@ $btn_reset_hover_border_color: neutral(90)
 $outline_btn_color: $mid_neutral
 $outline_btn_hover_color: $ui_hover_border_color
 $ui_select_width: fit-content
-$ui_select_min_width: 200px
+$ui_select_min_width: $btn_width
 $ui_select_max_width: 100%
+$menu_background: transparent
 $callout_shift: 0
 $callout_width: 40%
 $callout_inset: null
@@ -182,6 +173,11 @@ $callout_breakpoint: lrg
 $heartbeat: 0.2s
 $standard_properties: translate3d scale opacity background-color
 $base_delay: null
+$remove_visibility_class: true
+$visibility_offset: 50
+$visibility_threshold: 0.2
+$visibility_stack_animation_speed: 0
+$visibility_stack_animation_delay: null
 $very_fast: $heartbeat
 $fast: $heartbeat * 2
 $slow: $heartbeat * 4
@@ -254,3 +250,11 @@ $slide_item_caption_padding: 0 $slide_viewer_padding
 $slide_item_caption_height: auto
 $slide_item_caption_position: absolute
 $slide_item_caption_bottom: 0
+$exposed_facet_desktop_width: 350px
+$ui_mobile_app_controls_breakpoint: $desktop
+$ui_display_controls_icon_size: $ui_mobile_app_controls_footer_height * 0.6
+$ui_mobile_app_controls_footer_height: $masthead_height
+$mirador_height_mobile: 60vh
+$mirador_height_tablet: 50vh
+$mirador_height_desktop: 60vh
+$mirador_min_height: 400px
