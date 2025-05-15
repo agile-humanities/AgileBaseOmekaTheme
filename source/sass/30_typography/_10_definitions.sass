@@ -181,7 +181,7 @@ $ribbon_padding_factor: -3
     margin-right: rv(-2)
 
 %more
-  font-size: clamped(0,1)
+  font-size: clamped(0,0)
   color: $black
   display: flex
   flex-direction: row
@@ -189,7 +189,7 @@ $ribbon_padding_factor: -3
   justify-content: flex-start
   border-bottom: 0
   text-decoration: none
-  +background-icon-right('arrow')
+  +background-icon-right('arrow',rv(-1))
 
   &:hover
     border-bottom: 0

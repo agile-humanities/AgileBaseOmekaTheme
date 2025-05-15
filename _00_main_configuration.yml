@@ -14,16 +14,20 @@ visibility_stack_animation_speed: 0
 visibility_stack_animation_delay: null
 
 ## 01 COLOUR AND PATTERNS
-clr1: #00BDD4  // Agile Blue
-clr2: #BF609B  // Deep Pink
-clr3: #D98536  // Orange
-clr4: #315FAA  // Periwinkle
-clr5: #7DBF60  // Green
-clr6: #E1BB0B  // Gold
-clr7: #E5336D  // Fusciha
-clr8: #00171A  // Black
-clr9: #000000  // True Black
-black: $clr8
+# SFW Brand Colors
+clr1: #062D19  // Leafy Green
+clr2: #E75930  // Tomato Red
+clr3: #A1CAC0  // River Blue
+clr4: #F5C231  // Cob Yellow
+clr5: #B8396C  // Beet Purple
+clr6: #A4A006  // Pea Green
+clr7: #FBF5EE  // Linen
+clr8: #983619  // Heirloom Red
+clr9: #4D8C82  // Ocean Blue
+clr10: #D78818 // Mustard Yellow
+clr11: #6F122D // Eggplant Purple
+clr12: #53731B // Collard Green
+black: #000000
 white: white
 
 # Neutral aliases
@@ -37,23 +41,23 @@ darker_neutral: neutral(80)
 darkest_neutral: neutral(90)
 
 # Background
-bgcolor: $white
-footer_bg: $black
+bgcolor: $clr7 // Linen
+footer_bg: $clr1 // Leafy Green
 
 # Colour Aliases
-impact: $clr2
-cta: $clr1
+impact: $clr2 // Tomato Red
+cta: $clr8 // Heirloom Red
 de_emphasized: $light_neutral
 de_activated: $lighter_neutral
-link_colour: $black
-link_colour_active: $clr3
+link_colour: $clr1 // Leafy Green
+link_colour_active: $clr2 // Tomato Red
 link_colour_reversed: $white
 link_colour_active_reversed: $white
 
 ## 02 LAYOUT
 rootsize: 100%
 basesize: 1rem
-base_line_height: 1.4
+base_line_height: 1.5
 blh: $basesize * $base_line_height
 scale: 1.33
 max_width: 1900px
@@ -132,10 +136,9 @@ h5fontsize: "map-get($sizefactors,'h5')"
 h6fontsize: "map-get($sizefactors,'h6')"
 
 
-## 04 UI | Needs an overhaul
+## 04 UI
 
-#
-menu_background: $white
+menu_background: transparent
 
 #base ui
 
@@ -187,11 +190,11 @@ btn_minwidth: 250px
 btn_submit_img_size: $ui_icon_height
 
 btn_color: $black
-btn_bg_color: neutral(20)
+btn_bg_color: neutral(5)
 btn_border_color: $ui_border_color
 btn_hover_color: neutral(70)
 btn_hover_border_color: neutral(60)
-btn_hover_bg_color: neutral(40)
+btn_hover_bg_color: neutral(10)
 
 btn_submit_color: $white
 btn_submit_bg_color: $cta

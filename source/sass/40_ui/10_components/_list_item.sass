@@ -34,17 +34,14 @@ $list_item_figure_width: 125px
   figure
     width: $list_item_figure_width
     min-width: $list_item_figure_width
-    padding: rv($mobile_edge_padding_factor) 0 rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor)
-
-    +bp($ui_mobile_app_controls_breakpoint)
-      width: auto
-      min-width: auto
-      padding: 0
-      position: absolute
-      top: 0
-      left: 0
-      right: calc(100% - #{$list_item_figure_width})
-      bottom: 0
+    width: auto
+    min-width: auto
+    padding: 0
+    position: absolute
+    top: 0
+    left: 0
+    right: calc(100% - #{$list_item_figure_width})
+    bottom: 0
 
     img
       width: 100%
@@ -90,7 +87,13 @@ $list_item_figure_width: 125px
 
   .item-info
     border: 0 !important
-    padding: rv($mobile_edge_padding_factor)
+
+  figure + .item-info
+    padding-left: calc(#{$list_item_figure_width} + #{rv($mobile_edge_padding_factor)})
+
+    +bp($tablet)
+      padding-left: calc(#{$list_item_figure_width} + #{rv($edge_padding_factor)})
+
 
     > *
       margin-bottom: $text_element_spacing !important
