@@ -13,6 +13,9 @@
  *   gulp build --config my-site
  *   gulp build --config /var/www/html/files/theme-assets/<theme>/<site-slug>/config.yml --dest /var/www/html/files/theme-assets/<theme>/<site-slug>.building
  *
+ * Default configuration under another name (relative to the theme, or absolute):
+ *   gulp build --mainconfig my-configuration.yml
+ *
  * Alternative source folder / image folder (relative to the theme, or absolute):
  *   gulp build --source ./alt-source-folder --sourceimgs ./alt-img-folder
  *
@@ -89,7 +92,11 @@ var settings = {
 var package_dir = "./node_modules/stop14-themesystem-legacy/source";
 var asset_basename = 'asset';
 var alt_config_dir = './alt-config';
-var main_config_file = './_00_main_configuration.yml';
+// --mainconfig <path>: the theme's default configuration when it is not ./_00_main_configuration.yml
+// (relative to the theme, or absolute). A theme that renames the file declares it in theme.ini (agile_build_config).
+var main_config_file = (typeof argv.mainconfig === "string" && argv.mainconfig !== '')
+  ? (path.isAbsolute(argv.mainconfig) ? argv.mainconfig : './' + argv.mainconfig.replace(/^\.\//, ''))
+  : './_00_main_configuration.yml';
 const ymlFilePattern = /([^.]*)\.ya?ml$/i;
 
 // A relative --source/--sourceimgs is relative to the theme root; absolute paths are used as is.
