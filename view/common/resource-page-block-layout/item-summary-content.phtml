@@ -1,0 +1,118 @@
+<?php
+/**
+ * Item Summary block: the Summary / Full Metadata / Transcription tabs.
+ * The title area is the separate Item Header block (item-heading-content).
+ * The legacy single-block version is item-header-content.
+ *
+ * Panels size to their content. Unlike the legacy block, they are not held to the
+ * viewer's height (see omekaItemShowTabToggle.js).
+ *
+ * @var \Omeka\Api\Representation\ItemRepresentation $resource
+ */
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$searchHelper = $this->plugin('agileSearchHelper');
+$valueDisplay = $this->plugin('valueDisplay');
+$propertyTerms = $this->plugin('propertyTerms');
+$itemSetFacetHandler = $this->plugin('itemSetFacetHandler');
+$itemSetFacetHandler->getPublicItemSets();
+
+$item = $resource;
+
+$rights = [];
+$rights['value'] = $item->value('dcterms:rights');
+$rights['uriLabel'] = $item->value('dcterms:rights', ['type' => 'uri']);
+
+$hasTranscription = !empty($item->value("vra:text"));
+
+$keyTerms = $propertyTerms->fromThemeSetting('key_terms') ?: ['dcterms:created','dcterms:date','dcterms:temporal','dcterms:subject','dcterms:spatial'];
+?>
+<!-- BEGIN common/resource-page-block-layout/item-summary-content -->
+<div class='item-summary'>
+  <div class="container-with-tabs-and-panels">
+    <div class="tab-ui ruled">
+      <a class="tab-ui--control description-tab active">Summary</a>
+      <a class="tab-ui--control metadata-tab">Full Metadata</a>
+      <?php if ($hasTranscription): ?>
+        <a class="tab-ui--control transcription-tab">Transcription</a>
+      <?php endif; ?>
+    </div>
+    <div class="panels">
+      <div class="description-panel">
+        <p class="description-text">
+          <?php $values = $item->value('dcterms:description', ['all' => true]); foreach ($values as $value) { echo $value->asHtml(); }?>
+        </p>
+        <div class='key-metadata'>
+          <div class='metadata-list metadata-list-top'>
+            <?php
+            // Display key terms
+            $activeTerms = [];
+            $itemValues = $item->values();
+            foreach ($keyTerms as $term) {
+              if (isset($itemValues[$term])) {
+                $activeTerms[$term] = $itemValues[$term];
+              }
+            }
+
+            foreach($activeTerms as $term => $propertyData):
+              if (!empty($propertyData['values'][0])):
+                /** @var \Omeka\Api\Representation\PropertyRepresentation $property */
+                $property = $propertyData['property'];
+
+                printf("<div class='property' data-term='%s'>\n",$term);
+                printf("   <div class='metadata-label'>%s</div>",!empty($propertyData['alternate_label']) ? $propertyData['alternate_label'] : $property->label());
+                print ("    <div class='values'>");
+                /** @var Omeka\Api\Representation\ValueRepresentation $value */
+                foreach($propertyData['values'] as $value)
+                  if($value->isPublic()):
+                    printf("       <div class='value'>%s</div>",$valueDisplay($value));
+                  endif;
+                print ("    </div>");
+                print ("</div>");
+              endif;
+            endforeach;
+            ?>
+            <div class="property">
+              <?php $itemSets = $item->itemSets(); ?>
+              <?php if (count($itemSets) > 0): ?>
+                <div class="label label-item-info metadata-label"><?= $translate(
+                    "Collections"
+                  ); ?></div>
+                <?php foreach ($itemSets as $itemSet): ?>
+                  <?php
+                  if ($itemSet->isPublic()):
+                    ?>
+                    <div class="value"><a class="item-set-link-top" href="<?= $escape(
+                        $itemSet->url()
+                      ); ?>"><?= $itemSet->displayTitle(); ?></a></div>
+                  <?php endif; ?>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </div>
+          </div>
+        </div>
+        <?php if (!empty($rights['value'])): ?>
+          <div class='rights'>
+            <div class="label">License</div>
+            <div class="value"><?= $valueDisplay($rights['value'], ['link' => false]); ?></div>
+            <div class="label">Copyright status</div>
+            <div class='value license-and-icon rights-statement'>
+              <div><?= $rights['uriLabel'] ? $valueDisplay($rights['uriLabel']) : '' ?></div>
+            </div>
+          </div>
+        <?php endif; ?>
+      </div>
+      <div class="metadata-panel metadata-list">
+        <?php // The site's Full Metadata Terms, in order; when none are set, every property alphabetically (see resource-values). ?>
+        <?= $item->displayValues(['orderTerms' => $propertyTerms->fromThemeSetting('full_metadata_terms')]); ?>
+      </div>
+      <?php if ($hasTranscription): ?>
+        <div class="transcription-panel">
+          <p class="metadata-label">Transcription of this Item</p>
+          <?= $valueDisplay($item->value("vra:text"), ['link' => false]); ?>
+        </div>
+      <?php endif; ?>
+    </div>
+  </div>
+</div>
+<!-- END common/resource-page-block-layout/item-summary-content -->

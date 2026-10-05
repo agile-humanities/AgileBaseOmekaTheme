@@ -17,9 +17,6 @@ slide-item
   a
     text-decoration: none
 
-  .more
-    +icon_with_label_right('arrow',$btn_icon_size,'reversed','active')
-
   p:last-of-type
     margin-bottom: $paragraph_spacing
 
@@ -56,26 +53,11 @@ slide-item
       &:last-of-type
         margin-bottom: 0
 
-    [slot=slide-content]
-      &:before
-        background-color: $black
-        opacity: 0.8
-
-    [slot=slide-caption]
-      padding-top: 0
-      border: 0
-      justify-content: center
-      max-height: 80%
-      overflow-x: scroll
-
     img
       border-radius: $card-border-radius
-      height: 60%
-      width: auto
-      object-fit: cover
 
-      + .slide-title-content
-          margin-top: rv($edge_padding_factor)
+  .more
+    margin-top: rv($mobile_edge_padding_factor)
 
   [slot="slide-content"]
     +gradient-overlay-slide($black,60%)
@@ -85,32 +67,61 @@ slide-item
     right: 0
     bottom: 0
     z-index: 0
+
   $integrated_nav_height: 34px
 
   [slot='slide-caption']
     $element_spacing: rv(0)
-    margin: rv($mobile_edge_padding_factor)
     padding-top: rv($mobile_edge_padding_factor)
     padding-bottom: calc(#{rv($mobile_edge_padding_factor)} + #{$integrated_nav_height}) // cheat: actual height of nav
-    margin-top: 0
     border-top: 1px solid $white
     display: flex
     flex-direction: column
     justify-content: flex-end
     color: $white
 
+    +bp($desktop)
+      padding-bottom: rv($edge_padding_factor)
+      //padding-bottom: calc(#{rv($edge_padding_factor)} + #{$integrated_nav_height}) // cheat: actual height of nav
+
+    .item-info
+      display: flex
+      align-items: flex-start
+      width: 100%
+
+      img
+        height: 50px
+        width: auto
+        margin-right: rv($mobile_edge_padding_factor)
+
+    .metadata-container
+      display: flex
+
+    .metadata-item
+      display: flex
+      flex-direction: column
+      margin-right: rv($mobile_edge_padding_factor)
+
+      +bp($tablet)
+        flex-direction: row
+
+      .label
+        margin-right: rv($mobile_edge_padding_factor) * 0.5
+
+      .value
+        margin: 0
+
+      a
+        text-decoration: underline
+
     *
       color: inherit
 
-    h2, h3
-      margin: 0
-
-    .item-description
-      margin-top: rv($mobile_edge_padding_factor)
-
-    +bp($desktop)
-      margin: rv($edge_padding_factor)
-      padding-bottom: calc(#{rv($edge_padding_factor)} + #{$integrated_nav_height}) // cheat: actual height of nav
+    h3
+      font-family: $labelfont
+      +font-size(1)
+      font-weight: $bold
+      margin: 0 0 rv(-6) 0
 
     .btn
       +font-size(0)
@@ -120,9 +131,6 @@ slide-item
 
     p + .btn
       margin-top: $element_spacing
-
-    .arrow-container
-      margin-top: $element_spacing * 2
 
   &:after
     content: ''

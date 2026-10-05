@@ -30,7 +30,7 @@
    If the container has an additional .ruled element a horizontal rule beneath the container is added, aligned to
    active markers. You can also set the active-tab-marker as a mixin based on the preset examples below */
 
-$tab_marker_distance: rv(-1)
+$tab_marker_distance: rv(0)
 $tab_size: 10px
 
 =tab-marker-circle
@@ -79,9 +79,8 @@ $tab_size: 10px
       z-index: -1
 
 .tab-ui--tab, .tab-ui--control
-  font-family: $basefont
+  font-family: $labelfont
   +font-size(0)
-  text-transform: uppercase
   position: relative
   text-decoration: none
   border-bottom: none
@@ -89,7 +88,7 @@ $tab_size: 10px
 
   +bp($tablet)
     text-transform: uppercase
-  color: neutral(50)
+    color: neutral(50)
 
 
   &:before
@@ -125,8 +124,8 @@ $tab_size: 10px
     font-weight: inherit
 
     +bp($tablet)
-    text-decoration: none
-    border-bottom: none
+      text-decoration: none
+      border-bottom: none
 
 
     &.active, &:hover

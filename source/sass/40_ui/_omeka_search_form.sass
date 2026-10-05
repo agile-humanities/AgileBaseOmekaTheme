@@ -6,12 +6,8 @@
  *
  **/
 
-#search-form, #advanced-search-form
+#search-form
   @extend %search-form-container
-  margin-bottom: rv($mobile_edge_padding_factor)
-
-  // img
-  //  width: 24px
 
   input[name='search'], input[type='search'], input[name='fulltext_search'], input[name='q']
     @extend %search-form-textfield
@@ -19,8 +15,10 @@
 
     // Search plus submit
 
-    & + button[type='submit']
+    & ~ button[type='submit']
       @extend %search-form-submit
+      margin-left: auto
+
 
   input:focus
     border: solid 1px $black
@@ -33,7 +31,7 @@
     a
       @extend %inline-anchor
 
-.search-form-clear
+button.search-form-clear
   all: unset
   cursor: pointer
   color: neutral(20)
@@ -42,6 +40,7 @@
   right: 35px
   top: 0
   height: 100%
+
   &:hover, &.active
     background-color: transparent
     color: $black

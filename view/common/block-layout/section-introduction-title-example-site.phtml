@@ -1,0 +1,17 @@
+<?php
+/*
+ * EXAMPLE of a site-specific template. Safe to delete.
+ *
+ * Templates rendered through the sitePartial helper have a per-site variant: when a file named
+ * <template>-<site slug>.phtml exists, the site with that slug gets it instead of <template>.phtml.
+ * This file is the variant of common/block-layout/section-introduction-title.phtml for a site whose
+ * slug is "example-site"; every other site gets the standard file. To use the mechanism, copy a template,
+ * add your site's slug to the file name, and change the copy.
+ *
+ * Here the variant adds a second rule beneath the title of a Section Introduction block.
+ */
+?>
+<!-- BEGIN common/block-layout/section-introduction-title-example-site -->
+<hr>
+<hr class="section-intro-rule-example">
+<!-- END common/block-layout/section-introduction-title-example-site -->

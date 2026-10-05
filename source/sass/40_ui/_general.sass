@@ -1,5 +1,7 @@
 button[type="submit"] //Button
   @extend %button-submit
+  &:before
+    background-image: url(get_svg_url('icons/checkmark-default'))
 
 input[name="refine"]
   @extend %input-text
@@ -8,26 +10,24 @@ input[type="number"]
   height: $ui_element_height
   min-height: $ui_element_height
 
-input[type="checkbox"]
-  flex-shrink: 0
-
-  & + label
-    padding-left: rv(-1) // Padding issue corrected in later core theme system update
-
 button[type="reset"]
   +background_icon_left('reset',$btn_icon_size,'default','reversed')
   justify-content: center
+  background-color: $btn_reset_bg_color !important
+
+  &:hover
+    background-color: $btn_reset_hover_bg_color !important
 
 .btn
   @extend %button
 
 .button, .btn
-  font-family: $basefont
+  font-family: $labelfont
   font-weight: $bold
 
 button.ghost
   all: unset
-  font-family: $basefont
+  font-family: $labelfont
   color: neutral(80)
   border-width: 0 0 1px 0
   border-bottom-color: neutral(70)

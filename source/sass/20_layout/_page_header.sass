@@ -25,6 +25,7 @@ body
       position: relative
       padding-bottom: $masthead_clearance
       border-bottom: 1px solid $page_header_border_color
+      box-sizing: content-box // Important to ensure size is exactly $masthead_height
 
   &.has-admin-bar
     > header
@@ -43,4 +44,17 @@ body
 
     +bp($desktop)
       display: none
+
+  // Header search. Desktop only: the mobile overlay carries its own search form.
+
+  #nav-search
+    display: none
+    position: relative // anchors the clear button
+    flex: 0 1 300px
+
+    +bp($desktop)
+      display: block
+
+    #search-form
+      margin-bottom: 0
 

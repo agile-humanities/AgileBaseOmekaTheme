@@ -1,3 +1,5 @@
+$ui_mobile_app_controls_footer_height: 50px
+
 %mobile-close-btn
   +icon_with_label_right('close')
   position: fixed
@@ -10,7 +12,7 @@
   left: 0
   right: 0
   bottom: 0
-  height: $mobile_filter_height
+  height: 25px // formerly $mobile_filter_height
   z-index: 4
   display: flex
   flex-direction: row
@@ -18,7 +20,9 @@
   align-items: center
   background: $black
   padding: rv($mobile_edge_padding_factor)
+  padding-bottom: calc(#{rv($mobile_edge_padding_factor)} + env(safe-area-inset-bottom))
   border-top: 3px solid $white
+  transform: translateZ(0)
 
   +bp($ui_mobile_app_controls_breakpoint)
     display: none

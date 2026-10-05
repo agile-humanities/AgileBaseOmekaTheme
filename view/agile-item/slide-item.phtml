@@ -3,6 +3,7 @@ use Omeka\Api\Representation\ItemRepresentation;
 
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
+$valueDisplay = $this->plugin('valueDisplay');
 $plugins = $this->getHelperPluginManager();
 $thumbnailer = $plugins->get('thumbnail');
 $thumbnailSize = 'large';
@@ -14,12 +15,33 @@ try {
 } catch (Exception $e)  {
   $textSummary = null;
 }
+
 ?>
 <!-- BEGIN agile-item/slide-item.phtml -->
 <slide-item class="slide-card">
   <?php
   /** @var Omeka\Api\Representation\ItemRepresentation */
   if ($item):
+    $date = [];
+    $date['label'] = !empty($itemValue['dcterms:created']['alternate_label']) ?  $itemValue['dcterms:created']['alternate_label'] : 'Date';
+    $date['value'] = $item->value('dcterms:created');
+
+    $backupDate = [];
+    $backupDate['label'] = !empty($itemValue['dcterms:date']['alternate_label']) ?  $itemValue['dcterms:date']['alternate_label'] : 'Date';
+    $backupDate['value'] = $item->value('dcterms:date');
+
+    $itemSets = [];
+
+    // Create an array of Item Set links. Keyed by title for sorting.
+
+    foreach($item->itemSets() as $itemSet) {
+      $itemSets[$itemSet->title()] = $itemSet->linkPretty();
+    }
+
+    // Sort Item Sets.
+
+    ksort($itemSets);
+
     ?>
     <?php
     /** @var \Omeka\Api\Representation\MediaRepresentation $media */
@@ -38,7 +60,6 @@ try {
       </div>
     <?php endif; ?>
     <div class='reversed' slot='slide-caption'>
-      <a href="<?= $item->url() ?>" aria-labelledby="caption-title-<?= $item->id() ?>">
         <div class="item-info">
           <div class="item title-container">
             <?php if ($showTitleOption == 'item_title'): ?>
@@ -46,22 +67,40 @@ try {
             <?php elseif ($showTitleOption == 'file_name'): ?>
               <h3 id="caption-title-<?= $item->id() ?>"><?= $media->displayTitle(); ?></h3>
             <?php endif; ?>
-            <?php if ($contributors): ?>
-              <div class="contributor">
-                <?php foreach ($contributors as $contributor) { echo $contributor->asHtml(); }?>
+            <div class="item item-description">
+              <?php
+              if ($caption):
+                echo $caption;
+              endif;
+              ?>
+              <div class="metadata-container">
+                <?php if (!empty($date['value'])) : ?>
+                  <div class='metadata-item' data-term='dcterms:created'>
+                    <div class='label'><?php echo($date['label']); ?></div>
+                    <div class='value'><?php echo $valueDisplay($date['value'], ['link' => false]); ?></div>
+                  </div>
+                <?php elseif (!empty($backupDate['value'])) : ?>
+                  <div class='metadata-item' data-term='dcterms:date'>
+                    <div class='label'><?php echo($backupDate['label']); ?></div>
+                    <div class='value'><?php echo $valueDisplay($backupDate['value'], ['link' => false]); ?></div>
+                  </div>
+                <?php else: ?>
+                <?php endif; ?>
+                <?php $itemSets = $item->itemSets(); ?>
+                <?php if (!empty($itemSets)): ?>
+                  <div class='metadata-item' data-term=''>
+                    <div class='label'>Collection</div>
+                    <div class='value'>
+                      <a class='item-set-link' href="<?php echo $this->plugin('agile_search_helper')->siteSearchPath(); ?>?limit[item_set_ss][0]=<?php echo $itemSet->displayTitle(); ?>"><?php echo $itemSet->displayTitle(); ?></a>
+                    </div>
+                  </div>
+                <?php endif; ?>
               </div>
-            <?php endif; ?>
+              <div id="caption-more-<?= $item->id() ?>"><a class="more" href="<?= $item->url() ?>" aria-labelledby="caption-title-<?= $item->id() ?>">More about this item</a></div>
+            </div>
           </div>
-          <div class="item item-description">
-            <?php
-            if ($caption):
-              echo $caption;
-            endif;
-            ?>
-            <div id="caption-more-<?= $item->id() ?>" class="more">Find out more</div>
-          </div>
+
         </div>
-      </a>
     </div>
   <?php endif; ?>
 </slide-item>

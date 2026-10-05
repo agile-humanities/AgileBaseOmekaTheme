@@ -1,12 +1,15 @@
 // MOBILE NAVIGATION //
 
-$mobile_menu_background_color: 3
+$mobile_menu_background_color: $black
 
 #mobile-menu--button
   +icon-with-label-right('hamburger-menu')
 
 #mobile-menu--close
-  +icon-with-label('close')
+  +icon-with-label-right('close',$btn_icon_size,'reversed','active')
+  color: $white
+  justify-content: flex-end
+
 
 #mobile-menu--search
   padding: rv($mobile_edge_padding_factor) 0
@@ -15,11 +18,11 @@ $mobile_menu_background_color: 3
   display: none
   position: absolute
   width: auto
-  top: calc(#{$masthead_height} + #{rv($mobile_edge_padding_factor)} - 1px) // displays beneath the header. 1px for border clearance.
-  left: rv($mobile_edge_padding_factor)
-  right: rv($mobile_edge_padding_factor)
-  bottom: rv($mobile_edge_padding_factor)
-  z-index: 1
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  z-index: 10
   +standard_edge_padding()
   border: 1px solid $page_header_border_color
   overflow-x: hidden
@@ -33,7 +36,7 @@ $mobile_menu_background_color: 3
     bottom: 0
     left: 0
     right: 0
-    background-color: set-color($mobile_menu_background_color,7)
+    background-color: $mobile_menu_background_color
     opacity: 0.98
     z-index: -1
 
@@ -45,6 +48,10 @@ $mobile_menu_background_color: 3
   ul
     list-style-type: none
     font-size: clamped(0,1)
+    color: $white
+
+    li
+      color: $white
 
   // Top-level menus
 
@@ -52,14 +59,14 @@ $mobile_menu_background_color: 3
     margin: 0
     text-transform: uppercase
     position: relative
-    color: $black
+    color: $white
     padding-left: 0
 
     // Child menus
 
     ul
       text-transform: none
-      color: neutral(80)
+      color: neutral(20)
       margin-top: 0
 
     > li
@@ -67,7 +74,10 @@ $mobile_menu_background_color: 3
 
     a
       text-decoration: none
-      color: inherit
+      color: $link_colour_reversed
+
+      &:hover, &.active, &:active
+        color: $link_colour_active_reversed
 
 // @todo: what is this?
 .nav-icons

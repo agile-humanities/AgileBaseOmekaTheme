@@ -9,8 +9,7 @@ $list_item_figure_width: 125px
 
 %list-item
   width: 100%
-  border-top-left-radius: 0 !important
-  border-bottom-left-radius: 0 !important
+  border: 0
 
 
   > *
@@ -20,11 +19,6 @@ $list_item_figure_width: 125px
     align-items: flex-start
     justify-content: flex-start
     text-decoration: none
-    background: $white
-    border-color: $black
-    border-width: 0 0 0 10px
-    border-style: solid
-    border-collapse: collapse
     overflow: hidden
     position: relative
 
@@ -34,14 +28,10 @@ $list_item_figure_width: 125px
   figure
     width: $list_item_figure_width
     min-width: $list_item_figure_width
-    width: auto
-    min-width: auto
-    padding: 0
-    position: absolute
-    top: 0
-    left: 0
-    right: calc(100% - #{$list_item_figure_width})
-    bottom: 0
+    padding: rv($mobile_edge_padding_factor) 0 rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor)
+
+    +bp($ui_mobile_app_controls_breakpoint)
+      +proportional-height(125px,0.75)
 
     img
       width: 100%
@@ -56,7 +46,7 @@ $list_item_figure_width: 125px
         background-position: top
 
   .item-description
-    line-height: 1.5
+    display: none
 
   .metadata-list
     all: unset
@@ -66,6 +56,7 @@ $list_item_figure_width: 125px
 
     > *
       display: flex
+      align-items: flex-end
       margin-right: rv($mobile_edge_padding_factor)
       margin-bottom: 4px
 
@@ -87,13 +78,10 @@ $list_item_figure_width: 125px
 
   .item-info
     border: 0 !important
+    padding: rv($mobile_edge_padding_factor) 0 0 rv($mobile_edge_padding_factor)
 
-  figure + .item-info
-    padding-left: calc(#{$list_item_figure_width} + #{rv($mobile_edge_padding_factor)})
-
-    +bp($tablet)
-      padding-left: calc(#{$list_item_figure_width} + #{rv($edge_padding_factor)})
-
+    +bp($ui_mobile_app_controls_breakpoint)
+     padding: rv($edge_padding_factor) 0 0 rv($edge_padding_factor)
 
     > *
-      margin-bottom: $text_element_spacing !important
+      margin-bottom: rv(-5) !important

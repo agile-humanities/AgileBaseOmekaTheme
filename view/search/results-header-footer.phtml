@@ -36,22 +36,71 @@ $multiMode = isset($displayParts['grid_list']) && !in_array($gridListMode, ['lis
 $isHeader = $resultPart ==='header';
 ?>
 <!-- RESULTS-HEADER-FOOTER BEGIN search/results-header-footer.phtml dev -->
+<?php // Grid/list. ?>
 
-<?php // Active Facets. ?>
+<?php if ($multiMode): ?>
+    <?php if ($isHeader): ?>
+        <div class="search--tier-one">
+    <?php endif; ?>
+            <div class="tab-ui">
+                <a class="tab-ui--tab search-view-type search-view-type-grid<?= $gridListMode === 'grid' ? ' active' : '' ?>" href="#"><?= $translate('Item View') ?></a>
+                <a class="tab-ui--tab search-view-type search-view-type-list<?= $gridListMode === 'list' ? ' active' : '' ?>" href="#"><?= $translate('List View') ?></a>
+            </div>
+    <?php // Pagination. ?>
 
-<?php if (isset($displayParts['active_facets']) && $activeFacets = $response->getActiveFacets()): ?>
-<?php $facetActives = $plugins->get('facetActives'); ?>
-<?= $facetActives(null, $activeFacets, $searchConfig->setting('facet', [])) ?>
+            <?php if ($resultPart == 'header'): ?>
+                <div>
+                    <?php
+                    if ($itemSet && $site):
+                        // Forward-compatible: AdvancedSearch 3.4.64 deletes the legacy alias "advancedsearch_redirect_itemsets".
+                        $redirectItemSets = $this->siteSetting('advancedsearch_item_sets_redirects', ['default' => 'browse']);
+                        $redirectItemSet = $redirectItemSets[$itemSet->id()] ?? $redirectItemSets['default'] ?? 'browse';
+                        echo $redirectItemSet === 'all'
+                          ? $this->paginationSearch('common/pagination-mini', $response->getTotalResults(), $response->getCurrentPage(), $response->getPerPage())
+                          : $this->pagination('common/pagination-mini');
+                    else:
+                        echo $this->pagination('common/pagination-mini');
+                    endif;
+                    ?>
+                </div>
+            <?php endif; ?>
+
+    <?php if ($isHeader): ?>
+         </div>
+    <?php endif; ?>
+<?php endif; ?>
+<?php if ($isHeader): ?>
+    <div class="search--tier-two">
+<?php endif; ?>
+        <div class="search--summary">
+            <?php // Total results. ?>
+
+            <?php if (isset($displayParts['total_results'])): ?>
+                <div class="search-results-count-total summary--text">
+                    <?php $totalResults = $response->getResourceTotalResults('items'); ?>
+                    <?= sprintf($translatePlural('%s resource', '%s resources', $totalResults), $totalResults) ?>
+                </div>
+            <?php endif; ?>
+
+            <?php // Active Facets. ?>
+
+            <?php if (isset($displayParts['active_facets']) && $activeFacets = $response->getActiveFacets()): ?>
+                <?php $facetActives = $plugins->get('facetActives'); ?>
+                <?= $facetActives(null, $activeFacets, $searchConfig->setting('facet', [])) ?>
+            <?php endif; ?>
+        </div>
+
+
+        <?php // Sort. ?>
+
+        <?php if (count($sortFields)): ?>
+            <?= $this->searchSortSelector($query, $sortFields, ['as_url' => true, 'label' => $searchConfig->subSetting('results', 'label_sort')]) ?>
+        <?php endif; ?>
+
+<?php if ($isHeader): ?>
+    </div>
 <?php endif; ?>
 
-<?php // Total results. ?>
-
-<?php if (isset($displayParts['total_results'])): ?>
-<div class="search-results-count-total">
-    <?php $totalResults = $response->getTotalResults(); ?>
-    <?= sprintf($translatePlural('%s resource', '%s resources', $totalResults), $totalResults) ?>
-</div>
-<?php endif; ?>
 
 <?php // Search form simple. ?>
 
@@ -71,10 +120,11 @@ $isHeader = $resultPart ==='header';
 <div class="search-results-count <?= isset($displayParts['total_results']) ? 'no-total-results' : '' ?>">
     <?php
     if ($itemSet && $site):
-        $redirectItemSets = $this->siteSetting('advancedsearch_redirect_itemsets', ['default' => 'browse']);
+        // Forward-compatible: AdvancedSearch 3.4.64 deletes the legacy alias "advancedsearch_redirect_itemsets".
+        $redirectItemSets = $this->siteSetting('advancedsearch_item_sets_redirects', ['default' => 'browse']);
         $redirectItemSet = $redirectItemSets[$itemSet->id()] ?? $redirectItemSets['default'] ?? 'browse';
         echo $redirectItemSet === 'all'
-            ? $this->paginationSearch('common/pagination', $response->getTotalResults(), $response->getCurrentPage(), $response->getPerPage())
+            ? $this->paginationSearch('common/pagination',$response->getTotalResults(), $response->getCurrentPage(), $response->getPerPage())
             : $this->pagination('common/pagination');
     else:
         echo $this->pagination('common/pagination');
@@ -89,18 +139,4 @@ $isHeader = $resultPart ==='header';
 <?= $this->searchPaginationPerPageSelector($query, $paginationPerPages, true) ?>
 <?php endif; ?>
 
-<?php // Sort. ?>
-
-<?php if (count($sortFields)): ?>
-<?= $this->searchSortSelector($query, $sortFields, ['as_url' => true, 'label' => $searchConfig->subSetting('results', 'label_sort')]) ?>
-<?php endif; ?>
-
-<?php // Grid/list. ?>
-
-<?php if ($multiMode): ?>
-<div class="search-results-display">
-    <a class="search-view-type search-view-type-list<?= $gridListMode === 'list' ? ' active' : '' ?>" href="#"><?= $translate('list') ?></a>
-    <a class="search-view-type search-view-type-grid<?= $gridListMode === 'grid' ? ' active' : '' ?>" href="#"><?= $translate('grid') ?></a>
-</div>
-<?php endif; ?>
 <!-- RESULTS-HEADER-FOOTER END search/results-header-footer.phtml dev -->

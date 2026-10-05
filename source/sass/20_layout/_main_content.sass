@@ -45,24 +45,44 @@ main, #feature-tier-1
       > *
         +inset-text()
 
-        &.inset-text, &.inset
-          +inset-text()
+        // Blocks after callout blocks should clear floats to prevent collisions
+
+        &.block-callout + .block
+          clear: both
 
         // Apply consistent bottom margin
         &.block, &[class$="-block"]
           margin-bottom: rv($block_spacing)
 
+        &.block-itemListing
+          +inset-full()
+
         &.block-html
           margin-bottom: $paragraph_spacing // not a relative value in this implementation
 
-        &.extra-wide, &.block-linkCards, &.block-itemListing
-          +negative-content-margin(9)
+        &.block-linkCards
+          +negative-content-margin(11)
 
-        &.full-width, &.block-browsePreview, &.block-searchingForm, &.section-list-cards
+        &.block-browsePreview
           +inset-full()
 
-        &.wide, &.block.resource-list, &.explore-the-archive, &.media-list-wrapper, &.listing-cards, &.preview-block
+        &.block.resource-list, &.explore-the-archive, &.media-list-wrapper, &.listing-cards, &.preview-block
           +negative-content-margin(7)
+
+        // Layout classes an editor can give a block (the block's "Class" field). omekaContentBlockProcessing.js
+        // lifts them from a block's single child to the block itself.
+
+        &.inset-text, &.inset
+          +inset-text()
+
+        &.wide
+          +negative-content-margin(7)
+
+        &.extra-wide
+          +negative-content-margin(9)
+
+        &.full-width, &.block-searchingForm, &.section-list-cards
+          +inset-full()
 
         &.slideshow-block
           width: 100%

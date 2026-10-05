@@ -15,15 +15,13 @@
   a
     display: inline-flex
     align-items: center
-    text-decoration: none
-    color: neutral(70)
-    border-bottom: none
-    font-weight: $normal
+    font-family: $labelfont
+    text-transform: uppercase
+    font-weight: $bold
     line-height: 1
 
-    &:hover,
-    &:focus
-      color: $impact
+    &:first-child:before
+      display: none
 
     &.icon-home
       height: rv(-1)

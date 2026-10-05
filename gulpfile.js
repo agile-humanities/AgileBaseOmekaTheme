@@ -1,8 +1,68 @@
 /**
+ * Gulp Packages
+ */
+
+/*
+ * Key Commands.
+ *
+ * Default build (source ./source, output ./asset, config ./_00_main_configuration.yml):
+ *   gulp build
+ *
+ * Site build from an alternative config. A bare name is looked up as ./alt-config/<name>.yml and,
+ * unless --dest is given, built to ./asset-<name>; a path (anything containing a slash) is used as is:
+ *   gulp build --config my-site
+ *   gulp build --config /var/www/html/files/theme-assets/<theme>/<site-slug>/config.yml --dest /var/www/html/files/theme-assets/<theme>/<site-slug>.building
+ *
+ * Alternative source folder / image folder (relative to the theme, or absolute):
+ *   gulp build --source ./alt-source-folder --sourceimgs ./alt-img-folder
+ *
+ * The alternative config is layered over the main configuration. Both are converted to SASS in a
+ * temporary directory that is put first on the SASS load path, so nothing is generated inside ./source.
+ * Missing config or source directories are hard errors (non-zero exit), never silent fallbacks.
+ */
+
+// General
+var {gulp, src, dest, watch, series, parallel, task} = require('gulp');
+var del = require('del');
+var flatmap = require('gulp-flatmap');
+var lazypipe = require('lazypipe');
+var rename = require('gulp-rename');
+var header = require('gulp-header');
+var package = require('./package.json');
+var os = require('os');
+var yaml = require('js-yaml');
+var fs = require('fs');
+var path = require('path');
+var argv = require('yargs').argv; // Must be version 16, as 17 is ES-only.
+
+// Scripts
+var eslint = require('gulp-eslint');
+var concat = require('gulp-concat');
+var uglify = require('gulp-terser');
+var modernizr = require('gulp-modernizr');
+
+// Styles
+var sass = require('gulp-dart-sass');
+var sourcemaps = require("gulp-sourcemaps");
+var postcss = require('gulp-postcss');
+var autoprefixer = require('autoprefixer');
+var cssnano = require('cssnano');
+
+// PNG
+
+var imagemin = require('gulp-imagemin');
+imagemin.optipng({optimizationLevel: 7});
+
+// SVGs
+var svgmin = require('gulp-svgmin');
+
+// BrowserSync
+var browserSync = require('browser-sync');
+
+/**
  * Settings
  * Turn on/off build features
  */
-
 
 var settings = {
   clean: true,
@@ -20,59 +80,99 @@ var settings = {
 };
 
 
+
 /**
  * Paths to project folders
  */
 
+
 var package_dir = "./node_modules/stop14-themesystem-legacy/source";
-var source_dir = './source';
-var build_dir = './asset';
+var asset_basename = 'asset';
+var alt_config_dir = './alt-config';
+var main_config_file = './_00_main_configuration.yml';
+const ymlFilePattern = /([^.]*)\.ya?ml$/i;
 
-var paths = {
-  input: source_dir,
-  output: build_dir,
-  scripts: {
-    core: package_dir + '/js',
-    input: source_dir + '/js',
-    output: build_dir + '/js/',
-    coreFilename: 'core',
-    cfilename: 'default', // Output file name for concatenated scripts. Set to false to use output folder name
-    vfilename: 'vendor' // Output file name for vendor scripts
-  },
-  styles: {
-    input: source_dir + '/sass/**/*.{scss,sass}',
-    output: build_dir + '/css',
-    vfilename: 'vendor', // Output file name for vendor styles
-    sassIncludePaths: [package_dir + '/sass/a_components',package_dir + '/sass/b_profiles',source_dir + '/sass',package_dir + '/sass/a_components/00_general',package_dir + '/sass/a_components/10_colours_and_patterns', package_dir + '/sass/a_components/20_layout',package_dir + '/sass/a_components/30_typography',package_dir + '/sass/a_components/40_ui',package_dir + '/sass/a_components/50_animation',package_dir + '/sass/a_components/60_site_elements','node_modules']
-  },
-  img: {
-    input: source_dir + '/img/**/*',
-    output: build_dir + '/img'
-  },
-  svgs: {
-    input: source_dir + '/img/svg/**/*.svg',
-    output: build_dir + '/img/svg/',
-  },
-  pngs: {
-    input: source_dir + '/img/png/**/*.png',
-    output: build_dir + '/img/png/',
-  },
-  jpgs: {
-    input: source_dir + '/img/jpg/**/*.jpg',
-    output: build_dir + '/img/jpg/',
-  },
-  fonts: {
-    input: source_dir + '/fonts/**/*',
-    output: build_dir + '/fonts',
-  },
-  copy: {
-    input: source_dir + '/copy/**/*',
-    output: build_dir
-  },
-  reload: './'
-};
+// A relative --source/--sourceimgs is relative to the theme root; absolute paths are used as is.
+function resolveDirArg(value) {
+  if (typeof value === "undefined" || value === '' || value === true) return null;
+  return path.isAbsolute(value) ? value : './' + value.replace(/^\.\//, '');
+}
+
+// --config <name|path>: a bare name means ./alt-config/<name>.yml; anything with a slash is a path.
+function resolveConfigArg(value) {
+  if (typeof value === "undefined" || value === '' || value === true) return null;
+  const str = String(value);
+  if (str.includes('/') || str.includes('\\')) {
+    const file = path.resolve(str);
+    return { name: path.basename(file).replace(ymlFilePattern, '$1'), path: file };
+  }
+  const name = str.replace(ymlFilePattern, '$1');
+  return { name: name, path: path.resolve(alt_config_dir, name + '.yml') };
+}
+
+var alt_config = resolveConfigArg(argv.config);
+var source_dir = resolveDirArg(argv.source) || './source';
+var source_image_dir = resolveDirArg(argv.sourceimgs);
+var build_dir = typeof argv.dest !== "undefined" && argv.dest !== true && argv.dest !== ''
+  ? path.resolve(argv.dest)
+  : './' + asset_basename + (alt_config ? '-' + alt_config.name : '');
+
+// Generated SASS configuration lives here for the life of this process, never inside ./source.
+// Removed on exit, including after a failed task.
+var generated_config_dir = fs.mkdtempSync(path.join(os.tmpdir(), 's14-config-'));
+process.on('exit', function() {
+  try { fs.rmSync(generated_config_dir, {recursive: true, force: true}); } catch (e) { /* best effort */ }
+});
+
+var paths = getPaths(source_dir,build_dir);
 
 
+function getPaths(source_dir,build_dir) {
+  return {
+     input: source_dir,
+     output:  build_dir,
+     scripts: {
+       core: package_dir + '/js',
+       input: source_dir + '/js',
+       output: build_dir + '/js/',
+       coreFilename: 'core',
+       cfilename: 'default', // Output file name for concatenated scripts. Set to false to use output folder name
+       vfilename: 'vendor' // Output file name for vendor scripts
+     },
+     styles: {
+       generatedConfig: generated_config_dir, // Where the YAML configuration is converted to SASS
+       input: source_dir + '/sass/**/*.{scss,sass}',
+       output: build_dir + '/css',
+       vfilename: 'vendor', // Output file name for vendor styles
+       sassIncludePaths: [generated_config_dir, package_dir + '/sass/a_components',package_dir + '/sass/b_profiles',source_dir + '/sass',package_dir + '/sass/a_components/00_general',package_dir + '/sass/a_components/10_colours_and_patterns', package_dir + '/sass/a_components/20_layout',package_dir + '/sass/a_components/30_typography',package_dir + '/sass/a_components/40_ui',package_dir + '/sass/a_components/50_animation',package_dir + '/sass/a_components/60_site_elements','node_modules']
+     },
+     img: {
+       input: source_image_dir ? source_image_dir + '/**/*' : source_dir + '/img/**/*',
+       output: build_dir + '/img'
+     },
+     svgs: {
+       input: source_image_dir ? source_image_dir + '/svg/**/*.svg' : source_dir + '/img/svg/**/*.svg',
+       output: build_dir + '/img/svg/',
+     },
+     pngs: {
+       input: source_image_dir ? source_image_dir + '/png/**/*.png' : source_dir + '/img/png/**/*.png',
+       output: build_dir + '/img/png/',
+     },
+     jpgs: {
+       input: source_image_dir ? source_image_dir + '/jpg/**/*.jpg' : source_dir + '/img/jpg/**/*.jpg',
+       output: build_dir + '/img/jpg/',
+     },
+     fonts: {
+       input: source_dir + '/fonts/**/*',
+       output: build_dir + '/fonts',
+     },
+     copy: {
+       input: source_dir + '/copy/**/*',
+       output: build_dir
+     },
+     reload: './'
+   };
+}
 /**
  * Copy third-party scripts and styles.
  */
@@ -135,45 +235,6 @@ if (typeof package === "undefined") {
   };
 }
 
-
-/**
- * Gulp Packages
- */
-
-// General
-var {gulp, src, dest, watch, series, parallel} = require('gulp');
-var del = require('del');
-var flatmap = require('gulp-flatmap');
-var lazypipe = require('lazypipe');
-var rename = require('gulp-rename');
-var header = require('gulp-header');
-var package = require('./package.json');
-var exec = require('gulp-exec');
-
-// Scripts
-var eslint = require('gulp-eslint');
-var concat = require('gulp-concat');
-var uglify = require('gulp-terser');
-var modernizr = require('gulp-modernizr');
-
-// Styles
-var sass = require('gulp-dart-sass');
-var sourcemaps = require("gulp-sourcemaps");
-var postcss = require('gulp-postcss');
-var autoprefixer = require('autoprefixer');
-var cssnano = require('cssnano');
-
-// PNG
-
-var imagemin = require('gulp-imagemin');
-imagemin.optipng({optimizationLevel: 7});
-
-// SVGs
-var svgmin = require('gulp-svgmin');
-
-// BrowserSync
-var browserSync = require('browser-sync');
-
 /**
  *  Define CSS Plugins
  */
@@ -194,103 +255,81 @@ var cleanDist = function (done) {
 
   // Make sure this feature is activated before running
   if (!settings.clean) return done();
+  console.log("Cleaning: " + paths.output);
 
-  // Clean the build folder
-  del.sync([
-    paths.output
-  ]);
+  // The destination may be outside the theme (Omeka's files/ directory), which del refuses without
+  // force. Guard force against destinations that could take the theme or the system with them.
+  const target = path.resolve(paths.output);
+  const cwd = process.cwd();
+  if (target === path.parse(target).root || target === cwd || cwd.startsWith(target + path.sep) || target.split(path.sep).filter(Boolean).length < 3) {
+    throw new Error("Refusing to clean unsafe destination " + target);
+  }
+  del.sync([target], {force: true});
 
   // Signal completion
   return done();
 };
 
 // Repeated JavaScript tasks
-var jsTasks = lazypipe()
+var jsTasks = defineJsTasks();
+
+
+function getOutputPath() {
+  return paths.scripts.output;
+}
+
+function defineJsTasks() {
+ return lazypipe()
   .pipe(header, banner.full, {package: package})
   .pipe(dest, paths.scripts.output)
   .pipe(rename, {suffix: '.min'})
   .pipe(uglify)
   .pipe(header, banner.min, {package: package})
   .pipe(dest, paths.scripts.output);
+}
 
-// Lint, cssnano, and concatenate scripts
-var buildCoreScripts = function (done) {
+// Resolve when a stream has been fully consumed, or reject on its first error.
+function streamDone(stream) {
+  return new Promise((resolve, reject) => {
+    stream.on('error', reject).on('end', resolve).resume();
+  });
+}
 
-  // Make sure this feature is activated before running
-  if (!settings.coreScripts) return done();
-
-  // Run tasks on script files
-  return src(paths.scripts.core)
+// Each directory under the input is concatenated into one script (named by filenameOption, or after the
+// directory when false); loose files are processed individually. Every inner pipeline is awaited, so the
+// task cannot finish before the scripts are written or hide an error raised while writing them.
+function buildScriptSet(input, filenameOption) {
+  jsTasks = defineJsTasks(); // The output directory may have changed since load.
+  const pending = [];
+  const outer = src(input)
     .pipe(flatmap(function(stream, file) {
-
-      // If the file is a directory
       if (file.isDirectory()) {
-
-        // Setup a suffix variable
-        var suffix = '';
-
-        // Setup a filename.
-
-        var filename = paths.scripts.coreFilename === false ? file.relative : paths.scripts.coreFilename;
-
-
-        // Grab all files and concatenate them
-
-        src(file.path + '/*.js')
-          .pipe(sourcemaps.init()) // TO DO: Sourcemaps not working as expected.
-          .pipe(concat(filename + suffix + '.js'))
-          .pipe(jsTasks())
-          .pipe(sourcemaps.write('./'));
-
+        const filename = filenameOption === false ? file.relative : filenameOption;
+        pending.push(streamDone(
+          src(file.path + '/*.js')
+            .pipe(sourcemaps.init())
+            .pipe(concat(filename + '.js'))
+            .pipe(jsTasks())
+            .pipe(sourcemaps.write('./'))
+            .pipe(dest(paths.scripts.output))
+        ));
         return stream;
-
       }
-
-      // Otherwise, process the file
       return stream.pipe(jsTasks());
-
     }));
+  return streamDone(outer).then(() => Promise.all(pending));
+}
 
+// Theme system core scripts (from the stop14 package)
+var buildCoreScripts = function (done) {
+  if (!settings.coreScripts) return done();
+  return buildScriptSet(paths.scripts.core, paths.scripts.coreFilename);
 };
 
-// Lint, cssnano, and concatenate scripts
+// Theme scripts
 var buildScripts = function (done) {
-
-  // Make sure this feature is activated before running
   if (!settings.scripts) return done();
-
-  // Run tasks on script files
-  return src(paths.scripts.input)
-    .pipe(flatmap(function(stream, file) {
-
-      // If the file is a directory
-      if (file.isDirectory()) {
-
-        // Setup a suffix variable
-        var suffix = '';
-
-        // Setup a filename.
-
-        var filename = paths.scripts.cfilename === false ? file.relative : paths.scripts.cfilename;
-
-
-        // Grab all files and concatenate them
-
-        src(file.path + '/*.js')
-          .pipe(sourcemaps.init()) // TO DO: Sourcemaps not working as expected.
-          .pipe(concat(filename + suffix + '.js'))
-          .pipe(jsTasks())
-          .pipe(sourcemaps.write('./'));
-
-        return stream;
-
-      }
-
-      // Otherwise, process the file
-      return stream.pipe(jsTasks());
-
-    }));
-
+  return buildScriptSet(paths.scripts.input, paths.scripts.cfilename);
 };
 
 var buildVendorScripts = function(done) {
@@ -336,21 +375,81 @@ var buildModernizr = function(done) {
     .pipe(dest(paths.scripts.output));
 }
 
-var buildSassConfig = function(done) {
-  const options = {
-    continueOnError: false, // default = false, true means don't emit error event
-    pipeStdout: true, // default = false, true means stdout is written to file.contents
-  };
+// Last-resort reader for configuration files that are not valid YAML, e.g. old generated files with
+// doubled quotes (basefont: ""Open Sans", sans-serif"). Mirrors the theme system's original sed/awk
+// parser: one `key: value` per line, one layer of matching outer quotes stripped, no nesting.
+function lenientConfigLoad(text) {
+  const result = {};
+  text.split(/\r?\n/).forEach(function(line) {
+    const m = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*?)\s*$/);
+    if (!m || m[1] === '') return;
+    let value = m[2];
+    if (value.length >= 2 && ((value[0] === '"' && value[value.length - 1] === '"') || (value[0] === "'" && value[value.length - 1] === "'"))) {
+      value = value.slice(1, -1);
+    }
+    result[m[1]] = value === 'null' ? null : value;
+  });
+  return result;
+}
 
-  const reportOptions = {
-    err: false, // default = true, false means don't write err
-    stderr: false, // default = true, false means don't write stderr
-    stdout: false // default = true, false means don't write stdout
+// Convert a YAML configuration file to SASS variable declarations. Values are emitted as written (a YAML
+// string "'../img'" becomes $dir_image: '../img'; "$white" stays a SASS reference). YAML null becomes
+// SASS null, which the theme system uses to mean "off" (callout_inset, base_delay); an empty string
+// means "unset" and is skipped so the library default applies. Nested maps are flattened by
+// concatenating their keys and a repeated key overrides the earlier one, as the original parser did.
+function yamlToSass(ymlPath, sassPath) {
+  const header = fs.readFileSync('./node_modules/stop14-themesystem-legacy/boilerplate/sass_config_header.txt', 'utf8');
+  const lines = [];
+  const emit = function(prefix, value) {
+    Object.keys(value || {}).forEach(function(key) {
+      const item = value[key];
+      if (typeof item === "undefined") return;
+      if (item === null) {
+        lines.push('$' + prefix + key + ': null');
+      } else if (typeof item === "object" && !Array.isArray(item)) {
+        emit(prefix + key, item);
+      } else if (String(item).trim() !== '') {
+        lines.push('$' + prefix + key + ': ' + String(item));
+      }
+    });
   };
+  if (ymlPath) {
+    const text = fs.readFileSync(ymlPath, 'utf8');
+    let parsed;
+    try {
+      parsed = yaml.safeLoad(text, {json: true});
+    } catch (e) {
+      console.warn("WARNING: " + ymlPath + " is not valid YAML (" + e.reason + (e.mark ? ", line " + (e.mark.line + 1) : '') + "). " +
+        "Read leniently, line by line; fix the file or regenerate it from the site's theme settings.");
+      parsed = lenientConfigLoad(text);
+    }
+    if (parsed !== null && typeof parsed !== "object") {
+      throw new Error("Configuration file " + ymlPath + " must contain a YAML mapping.");
+    }
+    emit('', parsed);
+  }
+  fs.mkdirSync(path.dirname(sassPath), {recursive: true});
+  fs.writeFileSync(sassPath, header + lines.join('\n') + '\n');
+  console.log("Configuration " + (ymlPath || '(none)') + " -> " + sassPath + " (" + lines.length + " variables)");
+}
 
-  return src(paths.styles.input)
-    .pipe(exec(file => `parse-yaml _00_main_configuration.yml`),options)
-    .pipe(exec.reporter(reportOptions));
+// Generate the SASS configuration from the main YAML file and, when given, the alternative config.
+// Stale generated files inside ./source would shadow the fresh ones (relative imports win), so they
+// are removed.
+var buildSassConfig = function (done) {
+  ['_00_main_configuration.sass', '_00_temp_configuration.sass'].forEach(function(name) {
+    const stale = path.join(source_dir, 'sass', '00_configuration', name);
+    if (fs.existsSync(stale)) {
+      console.warn("Removing stale generated file " + stale + " (configuration is now generated outside ./source)");
+      fs.unlinkSync(stale);
+    }
+  });
+  if (!fs.existsSync(main_config_file)) {
+    throw new Error("Main configuration file " + main_config_file + " does not exist.");
+  }
+  yamlToSass(main_config_file, path.join(paths.styles.generatedConfig, '_00_main_configuration.sass'));
+  yamlToSass(alt_config ? alt_config.path : null, path.join(paths.styles.generatedConfig, '_00_temp_configuration.sass'));
+  done();
 }
 
 // Process, lint, and cssnano Sass files
@@ -359,14 +458,15 @@ var buildStyles = function (done) {
   // Make sure this feature is activated before running
   if (!settings.styles) return done();
 
-  // Run tasks on all Sass files
+  // Run tasks on all Sass filesbuild
 
   return src(paths.styles.input)
     .pipe(sourcemaps.init())
     .pipe(sass({
       outputStyle: 'compressed',
       includePaths: paths.styles.sassIncludePaths, // Allows @import declarations deeper in the tree to target top-level directories. Useful for loading in components and profiles.
-      srcComments: false
+      srcComments: false,
+      silenceDeprecations: ['legacy-js-api', 'import', 'global-builtin','mixed-decls'], // The IDs of deprecations you want to silence
     }))
     .pipe(header(banner.full, { package : package }))
     .pipe(dest(paths.styles.output))
@@ -404,6 +504,8 @@ var buildImages = function (done) {
   // Make sure this feature is activated before running
   if (!settings.img) return done();
 
+  console.log("images");
+  console.log(paths.img.output);
   // Optimize SVG files
   return src(paths.img.input)
     .pipe(dest(paths.img.output));
@@ -429,7 +531,7 @@ var buildPNGs = function (done) {
   // Make sure this feature is activated before running
   if (!settings.pngs) return done();
 
-  // Optimize SVG files
+  // Optimize PNG files
   return src(paths.pngs.input)
     .pipe(imagemin())
     .pipe(dest(paths.pngs.output));
@@ -445,6 +547,7 @@ var buildJPGs = function (done) {
   return src(paths.jpgs.input)
     .pipe(dest(paths.jpgs.output));
 };
+
 
 // Copy Font Files
 var buildFonts = function (done) {
@@ -525,9 +628,76 @@ var watchMin = function (done) {
   done();
 };
 
+/*
+function getAlternativeConfigFiles() {
+  if (fs.existsSync(alt_config_dir)) {
+    const files = fs.readdirSync(alt_config_dir);
 
+    // Ensure that config files have yml extension.
+    // This prevents processing of stray files, like the Mac file system’s hidden .DS_Store files
+    return filteredFiles = files.filter(filename => {
+      return ymlFilePattern.test(filename)
+    });
+    } else {
+    return [];
+    }
+}*/
 
+var testSourceDirectory = function(done) {
+  if (!fs.existsSync(paths.input)) {
+    throw new Error("Source directory " + paths.input + " does not exist.");
+  }
+  done();
+}
 
+// Remove the generated SASS configuration directory.
+var cleanupGeneratedConfig = function(done) {
+  del.sync([paths.styles.generatedConfig], {force: true});
+  done();
+}
+
+// Validate the alternative configuration (--config). A missing file is an error: building with the
+// default configuration instead would silently overwrite the wrong asset folder.
+var configAltAssets = function(done) {
+  if (alt_config === null) {
+    done();
+    return;
+  }
+  if (!fs.existsSync(alt_config.path)) {
+    throw new Error("Configuration file " + alt_config.path + " does not exist.");
+  }
+  console.log("Building with configuration " + alt_config.path + " into " + path.resolve(paths.output));
+  done();
+}
+
+// Report where the build landed.
+var reportBuild = function(done) {
+  console.log("Build complete: " + path.resolve(paths.output));
+  done();
+}
+
+function buildAll(done) {
+  series(
+    testSourceDirectory,
+    configAltAssets,
+    cleanDist,
+    buildSassConfig,
+    buildStyles,
+    lintScripts,
+    buildCoreScripts,
+    buildScripts,
+    buildVendorScripts,
+    buildVendorStyles,
+    buildImages,
+    buildSVGs,
+    buildPNGs,
+    buildJPGs,
+    buildFonts,
+    copyFiles,
+    buildModernizr,
+    reportBuild,
+    cleanupGeneratedConfig)(done);
+}
 
 /**
  * Export Tasks
@@ -536,30 +706,18 @@ var watchMin = function (done) {
 // Default task
 // gulp
 exports.default = series(
-  cleanDist,
-  buildSassConfig,
-  parallel(
-    lintScripts,
-    buildCoreScripts,
-    buildScripts,
-    buildVendorScripts,
-    buildStyles,
-    buildVendorStyles,
-    buildImages,
-    buildSVGs,
-    buildPNGs,
-    buildJPGs,
-    buildFonts,
-    copyFiles
-  ),
-  buildModernizr
+  buildAll
 );
 
-exports.build = exports.default;
+exports.build = series(
+  buildAll
+);
 
 exports.sass = series(
+  configAltAssets,
   buildSassConfig,
-  buildStyles
+  buildStyles,
+  reportBuild
 );
 
 // No config

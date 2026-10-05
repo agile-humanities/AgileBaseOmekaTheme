@@ -1,0 +1,34 @@
+/**
+ * @file _03_load_font.sass
+ * @theme LOCAL
+ * @description STOPGAP. Redefines the theme system's load_font mixin as it now stands in the library: woff2 only.
+ *
+ *   stop14-themesystem-legacy up to 2.0.8 / 3.0.0 lists the font sources as: a format-less .eot (which modern
+ *   browsers must download to reject), then .otf, then .woff twice, and never .woff2, so visitors were served the
+ *   largest files. The library's load_font now emits woff2 only ($formats adds others, e.g. (woff2, woff)); the
+ *   old all-formats loader lives on there as load_font_legacy.
+ *
+ *   DELETE this file (and its import in _index.sass) once the installed library contains the new mixin. It must be
+ *   imported before _04_typography_fonts.sass, which calls the mixin.
+ */
+
+$font_format_hints: (woff2: 'woff2', woff: 'woff', ttf: 'truetype', otf: 'opentype')
+
+
+=load_font($family,$basefilename,$weights: (400,700),$styles:(normal,italic),$formats: (woff2),$path: $font_path)
+
+  @each $weight in $weights
+    @each $style in $styles
+
+      $file: '#{$path}/#{$basefilename}-#{$weight}/#{$basefilename}-#{$style}-#{$weight}'
+      $sources: ()
+      @each $format in $formats
+        @if not map-has-key($font_format_hints, $format)
+          @error 'load_font: unknown font format "#{$format}". Known formats: #{map-keys($font_format_hints)}'
+        $sources: append($sources, url('#{$file}.#{$format}') format('#{map-get($font_format_hints, $format)}'), comma)
+      @font-face
+        font-display: swap
+        font-family: $family
+        font-style: $style
+        font-weight: $weight
+        src: $sources

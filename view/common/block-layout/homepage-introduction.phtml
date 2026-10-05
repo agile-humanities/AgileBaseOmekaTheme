@@ -1,64 +1,72 @@
 <?php
-// Variables also available:
-// $labelText
-// $subtitle
-// $buttonText
+/*
+ * Homepage Introduction block: a welcome panel beside, above or over a slide viewer.
+ *
+ * The block's "composition" option sets a class on the wrapper, styled in 60_site_elements/_welcome_block.sass:
+ *   slide-viewer-with-title-default   panel beneath the slides
+ *   slide-viewer-with-title-overlay   panel laid over the slides (desktop)
+ *   slide-viewer-with-title-grid      panel and slides side by side (desktop)
+ *
+ * Also available from the block: $labelText, $subtitle, $buttonText.
+ */
+$escape = $this->plugin('escapeHtml');
+$partial = $this->plugin('sitePartial');
+$site = $this->currentSite();
+$container = $site->publicNav()->getContainer();
+$composition = $this->compositionClass ?: 'slide-viewer-with-title-default';
 
-$partial = $this->plugin('partial');
-$searchMainPage = $this->siteSetting('advancedsearch_main_config');
+// Theme setting "Site welcome banner logo". No logo is shown when it is empty.
+$welcomeLogo = $this->themeSetting('welcome_logo') ? $this->themeSettingAssetUrl('welcome_logo') : null;
 ?>
-<!-- HOMEPAGE INTRODUCTION BLOCK TEMPLATE  common/block-layout/homepage-introduction.phtml -->
-<div id="block-<?= $this->blockId; ?>" class="homepage-introduction  <?= $this->compositionClass; ?>  viewer slideviewer-container region <?= $this->regionClass; ?>" data-target-region-id="<?= $this->targetID; ?>">
-
-  <div class="title-area reversed discovery-tool">
+<!-- BEGIN common/block-layout/homepage-introduction.phtml -->
+<div id="block-<?= $this->blockId; ?>" class="homepage-introduction <?= $escape($composition) ?> viewer slideviewer-container region <?= $this->regionClass; ?>" data-target-region-id="<?= $this->targetID; ?>">
+  <div id="welcome-block" class="welcome-block title-area reversed discovery-tool">
       <div>
-        <?php if (!empty($labelText)): ?>
+        <?php if ($welcomeLogo): ?>
+          <img alt="<?= $escape($site->title()) ?>" class="welcome-logo" src="<?= $escape($welcomeLogo) ?>">
+          <hr class="welcome-block-hr">
+        <?php endif; ?>
+        <div class="welcome-menu">
+          <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' => 0]); ?>
+        </div>
+        <div class='introductory-text'>
+          <?php if (!empty($labelText)): ?>
             <div class='label'><?= $labelText; ?></div>
-        <?php endif; ?>
-        <?php if (!empty($titleSlideTitle)): ?>
+          <?php endif; ?>
+          <?php if (!empty($titleSlideTitle)): ?>
             <h1><?= $titleSlideTitle; ?></h1>
-        <?php endif; ?>
-        <?php if (!empty($subtitle)): ?>
+          <?php endif; ?>
+          <?php if (!empty($subtitle)): ?>
             <div class='subtitle'><?= $subtitle; ?></div>
+          <?php endif; ?>
+          <?php if (!empty($titleSlideIntro)): ?>
+            <?= $titleSlideIntro; ?>
+          <?php endif; ?>
+        </div>
+        <div class="welcome-search-form-block">
+          <div id="welcome-search">
+            <?= $this->partial('common/search-form'); ?>
+            <button class="search-form-clear" type="button" title="Clear search">x</button>
+          </div>
+        </div>
+        <?php if (!empty($buttonText) && $hasAttachments): ?>
+          <a class='slickNext next-slide btn'><?= $buttonText; ?></a>
         <?php endif; ?>
-        <?php if (!empty($titleSlideIntro)): ?>
-            <div class='introductory-text deck'>
-              <?= $titleSlideIntro; ?>
-            </div>
-        <?php endif; ?>
-          <?= $this->partial(
-              'common/search-form',
-              ['query' => $this->params()->fromQuery(), 'resourceType' => 'user','searchType' => 'browser']
-          ); ?>
-
-          <?php if (!empty($buttonText)): ?>
-            <a class='slickNext next-slide btn'><?= $buttonText; ?></a>
-        <?php endif; ?>
+        <button type="button" class="scroll-down-btn" aria-label="Scroll down"></button>
       </div>
   </div>
-  <?php if($hasAttachments): ?>
+  <?php if ($hasAttachments): ?>
     <div class='slide-container'>
       <slide-viewer class="<?= $hasAudioAttachment ? 'slideshow-with-audio' : ''; ?>" option-slidesPerRow='<?= $optionSlidesPerRow; ?>' option-slidesToShow='<?= $optionSlidesToShow; ?>' option-autoplay='<?= $optionAutoPlay; ?>' option-fade='<?= $optionFade; ?>' integratedcontrols>
         <div slot='slides'>
-            <?php foreach ($attachments as $attachment): ?>
-                <?php
-                $item = $attachment->item();
-                ?>
-                <?= $partial('agile-item/slide-item', [
-                  'item' => $item,
-                  'media' => $attachment->media() ?? $item->primaryMedia(),
-                  'caption' => $attachment->caption() ?? $item->displayDescription(),
-                  'imageSize' => 'large'
-                ])
-                ?>
-            <?php endforeach; ?>
-          </div>
+          <?= $partial('agile-item/slide-item-attachments-home',['attachments' => $attachments]) ?>
+        </div>
           <?php if($hasAudioAttachment): ?>
               <div class="audio-controls">
                   <div class="audio-player">
                       <?= $audioAttachment->media()->render(); ?>
                       <div class="audio-message">
-                          <a href=='#' class='audio-text-play-control' title='Play audio' data-playbtnmsg='Play audio slideshow' data-stopbtnmsg='Pause audio slideshow'>Play audio slideshow.</a>
+                          <a href='#' class='audio-text-play-control' title='Play audio' data-playbtnmsg='Play audio slideshow' data-stopbtnmsg='Pause audio slideshow'>Play audio slideshow.</a>
                       </div>
                   </div>
                   <?php if ($audioAttachment->caption()): ?>
@@ -70,8 +78,6 @@ $searchMainPage = $this->siteSetting('advancedsearch_main_config');
           <?php endif; ?>
       </slide-viewer>
     </div>
-  <?php endif;?>
+  <?php endif; ?>
 </div>
-<!-- END HOMEPAGE INTRODUCTION BLOCK TEMPLATE -->
-
-
+<!-- END common/block-layout/homepage-introduction.phtml -->

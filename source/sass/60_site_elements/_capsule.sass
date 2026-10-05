@@ -3,7 +3,7 @@
    @category 60_site_elements
    @theme LOCAL
    @component main
-   @description An encapsulated design pattern for displaying media. Used for inline media, etc.  */
+   @description An encapsulated design pattern for displaying media.  */
 
 
 .capsule
@@ -11,17 +11,20 @@
     background-color: $black
     padding: rv($mobile_edge_padding_factor)
     color: $white
-    border-top: 2px solid $white
+    border-top: 4px solid $white
 
-    *
+    div, h3, p
       color: inherit
 
     .content-label
       color: set-color(2)
+      font-weight: $normal
 
     h3
       font-size: clamped(0,1)
       margin-top: 0
+      font-family: $labelfont
+      font-weight: $normal
 
     img
       &:hover
@@ -29,8 +32,10 @@
 
     .item-description
       font-size: clamped(-2,-1)
+      display: none
 
     .more
+      color: $white
       margin-top: rv($mobile_edge_padding_factor)
       margin-bottom: 0
 

@@ -18,16 +18,16 @@ slide-viewer,
   width: 100%
 
 .slideviewer-container
-  position: relative
-  flex-direction: column-reverse
-  background: $black
+    position: relative
+    flex-direction: column-reverse
+    background: $black
     isolation: isolate
 
-  +bp($desktop)
-    display: flex
-    flex-direction: row-reverse
-    flex-wrap: nowrap
-    align-items: center
+    +bp($desktop)
+      display: flex
+      flex-direction: row-reverse
+      flex-wrap: nowrap
+      align-items: center
 
 .slide-item-content
   height: 100%
@@ -35,15 +35,15 @@ slide-viewer,
 slide-viewer
   background-size: cover
   background-color: neutral(3)
-  height: 60vh
+  height: 80vh
   --sequential-nav-justify-content: center
   --sequential-nav-top: #{$sequential_nav_top}
-  --sequential-nav-left: #{$sequential_nav_left}
-  --sequential-nav-right: #{$sequential_nav_right}
+  --sequential-nav-left: 0
+  --sequential-nav-right: 0
   --sequential-nav-bottom: 0
   --sequential-nav-transform: #{$sequential_nav_transform}
   --slide-nav-background: none
-  --sequential-nav-background: #{neutral(90)}
+  --sequential-nav-background: transparent
   --sequential-nav-border: 1px solid transparent
   --sequential-nav-border-radius: #{$ui_border_radius}
   --sequential-control-spacing: 5px
@@ -54,9 +54,9 @@ slide-viewer
   --page-marker-margin: 8px
   --sequential-control-background-size: 75%
   --slide-item-landscape-object-fit: cover
+  --slide-nav-justify-content: left
 
   +bp($tablet)
-    height: 70vh
     --sequential-nav-bottom: #{$sequential_nav_bottom}
     --sequential-nav-left: #{$sequential_nav_left}
     --sequential-nav-right: #{$sequential_nav_right}
@@ -77,5 +77,3 @@ slide-viewer
     +bp($desktop)
       display: flex
       align-items: center
-
-

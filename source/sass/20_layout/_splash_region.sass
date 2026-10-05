@@ -18,12 +18,15 @@ body
   > *
     // height: calc(100vh - #{$masthead_height} - #{$masthead_clearance_mobile})
 
+    // Height is calculated as the height of the page header minus the clearance value minus the borders (top, bottom,
+    // beneath the header) minus 1px for the page header border. This should frame the vertical splash area evenly.
+
     +bp($desktop)
       position: relative
-      height: calc(100vh - #{$masthead_height} - #{rv($edge_padding_factor) * 3})
+      height: calc(100vh - #{$masthead_height} - #{$masthead_clearance} - #{rv($edge_padding_factor)} * 3 - 1px)
       min-height: $min_splash_height
+
 
     @at-root .has-admin-bar &
       +bp($desktop)
-        height: calc(100vh - #{$masthead_height} - #{$admin_bar_height} - #{rv($edge_padding_factor) * 3})
-
+        height: calc(100vh - #{$masthead_height} - #{$admin_bar_height} - #{$masthead_clearance}  - #{rv($edge_padding_factor)} * 3 - 1px)

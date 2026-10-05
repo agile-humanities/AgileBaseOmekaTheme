@@ -1,61 +1,175 @@
-<div class="item-with-metadata card">
-  <?php foreach($attachments as $attachment): ?>
-    <div class="item resource">
-      <?php $item = $attachment->item(); ?>
-      <?php if (empty($item)) continue; ?>
-      <div class="resource show">
-        <?php if($item->media()): ?>
-          <div class="media-list image-container">
-            <?php foreach ($item->media() as $media):
-              echo $media->linkRaw($this->thumbnail($media, 'large', ['title' => $media->displayTitle()]), null, ['class' => 'media resource']);
-            endforeach; ?>
-          </div>
-        <?php endif; ?>
-
-        <div class="container-with-tabs-and-panels">
-          <div class="panels wrapper">
-            <div class="description-panel item-info">
-              <?php $institution = $item->value('vra:placeOfRepository'); if ($institution): ?>
-                <div class="item-label"><?php echo $institution; ?></div>
-              <?php endif; ?>
-              <h3><?php echo $item->link($item->displayTitle()); ?></h3>
-              <?php $caption = $attachment->caption(); if ($caption): ?>
-                <div class="caption"><?php echo $caption; ?></div>
-              <?php endif; ?>
-              <?php $values = $item->value('dcterms:description', ['all' => true]); ?>
-              <?php if ($values): ?>
-                <p class="description-text">
-                  <?php foreach ($values as $value) { echo $value->asHtml(); }?></p>
-              <?php endif; ?>
-              <div class="item-link">
-                <?php echo $item->link($item->value($this->siteSetting('browse_heading_property_term', 'Find Out More'), ['default' => $this->plugin('translate')('Find Out More')])); ?> 
-              </div>
-              <details>
-                <summary>Metadata</summary>
-                <div class="item-metadata-block">
-                  <div class='metadata-list'>
-                    <?php echo $item->displayValues(); ?>
-                    <div class="property">
-                      <?php $itemSets = $item->itemSets(); ?>
-                      <?php if (count($itemSets) > 0): ?>
-                        <div class="metadata-label">
-                          <?php echo $translate("Item sets"); ?>
-                        </div>
-                        <?php foreach ($itemSets as $itemSet): ?>
-                          <div class="value">
-                            <a class="item-set-link" href="<?php echo $escape($itemSet->url()); ?>">
-                              <?php echo $itemSet->displayTitle(); ?></a>
-                          </div>
-                        <?php endforeach; ?>
-                      <?php endif; ?>
-                    </div>
-                  </div>    
-                </div>
-              </details>
+<?php
+$translate = $this->plugin('translate');
+$valueDisplay = $this->plugin('valueDisplay');
+?>
+<div class="item-with-metadata">
+<?php foreach($attachments as $attachment): ?>
+    <?php $item = $attachment->item(); ?>
+    <?php if (empty($item)) continue; ?>
+    <div class="resource show">
+        <figure>
+        <?php
+        $media = $attachment->media() ?: $item->primaryMedia();
+        if ($media):
+            echo $this->thumbnail($media, 'large');
+        endif;
+        ?>
+        </figure>
+        <div class='item-media-overlay'>
+            <div class="browse-controls top">
+                <?php 
+                    $contentType = [];
+                    $typeValue = $item->value('dcterms:type');
+                    $contentType['value'] = $typeValue ? $valueDisplay($typeValue, ['link' => false]) : 'Item';
+                ?>
+                <span><?php echo($contentType['value']); ?></span> 
+                <ul class='tab-ui' data-target-id='browse-panels'>
+                    <li class='tab-control description-panel-tab-control' data-panel-class="description-panel">
+                    <a class='active'>Description</a>
+                    <span class='tab-marker'>⬥</span>
+                    </li>
+                    <li class='tab-control information-panel-tab-control' data-panel-class="information-panel">
+                    <a>Information</a>
+                    <span class='tab-marker'>⬥</span>
+                    </li>
+                </ul>
             </div>
-          </div>
+            <div class='item-data'>
+                <div class='tab-panel description-panel'>
+                    <?php echo $this->pageTitle($item->displayTitle(), 3); ?>
+                    <div class='item-description'>
+                        <p><?php $values = $item->value('dcterms:description', ['all' => true]);
+                        foreach ($values as $value) { echo $value->asHtml(); }?></p>
+                    </div>
+                    <div class='view-item-page'>
+                        <?php $viewItemPageTerm = $this->siteSetting('browse_heading_property_term', 'More about this item'); ?>
+                        <?php $viewItemPage = $item->value($viewItemPageTerm, ['default' => $translate('More about this item')]); ?>
+                        <?php echo $item->link($viewItemPage); ?>
+                    </div>
+                </div>
+                <div class='tab-panel information-panel'>
+                    <?php echo $this->pageTitle($item->displayTitle(), 3); ?>
+                    <div class='metadata'>
+                        <div class='metadata-items'>
+                            <?php
+                                $date = [];
+                                $date['label'] = !empty($itemValue['dcterms:created']['alternate_label']) ?  $itemValue['dcterms:created']['alternate_label'] : 'Date';
+                                $date['value'] = $item->value('dcterms:created');
+
+                                $backupDate = [];
+                                $backupDate['label'] = !empty($itemValue['dcterms:date']['alternate_label']) ?  $itemValue['dcterms:date']['alternate_label'] : 'Date';
+                                $backupDate['value'] = $item->value('dcterms:date');
+
+                                $itemSets = [];
+                    
+                                // Create an array of Item Set links. Keyed by title for sorting.
+                                    
+                                foreach($item->itemSets() as $itemSet) {
+                                $itemSets[$itemSet->title()] = $itemSet->linkPretty();
+                                }
+                                
+                                // Sort Item Sets.
+                                
+                                ksort($itemSets);
+
+                                $license = [];
+                                $license['label'] = !empty($itemValue['dcterms:license']['alternate_label']) ? $itemValue['dcterms:license']['alternate_label'] : 'License';
+                                $license['value'] = $item->value('dcterms:license');
+                                $license['link'] = $item->value('dcterms:license', ['type' => 'uri', 'all' => true]);
+
+                                $topic = [];
+                                $topic['label'] = !empty($itemValue['dcterms:subject']['alternate_label']) ? $itemValue['dcterms:subject']['alternate_label'] : 'Subject - Topic/Names';
+                                $topic['values'] = $item->value('dcterms:subject', ['all' => true]);
+
+                                $geographic = [];
+                                $geographic['label'] = !empty($itemValue['dcterms:spatial']['alternate_label']) ? $itemValue['dcterms:spatial']['alternate_label'] : 'Subject - Geographic';
+                                $geographic['value'] = $item->value('dcterms:spatial');
+                                $geographic['values'] = $item->value('dcterms:spatial', ['all' => true]);
+
+                                $timePeriod = [];
+                                $timePeriod['label'] = !empty($itemValue['dcterms:temporal']['alternate_label']) ?  $itemValue['dcterms:temporal']['alternate_label'] : 'Subject - Time Period';
+                                $timePeriod['value'] = $item->value('dcterms:temporal');
+                            ?>
+                            <!-- Figure out the right date that goes here -->
+                            <?php
+                            if (!empty($date['value'])) :
+                            ?>
+                            <div class='metadata-item' data-term='dcterms:created'>
+                                <div class='label'><?php echo($date['label']); ?></div>
+                                <div class='value'><?php echo $valueDisplay($date['value'], ['link' => false]); ?></div>
+                            </div>
+                            <?php else: ?>
+                            <div class='metadata-item' data-term='dcterms:date'>
+                                <div class='label'><?php echo($backupDate['label']); ?></div>
+                                <div class='value'><?php echo $backupDate['value'] ? $valueDisplay($backupDate['value'], ['link' => false]) : ''; ?></div>
+                            </div>
+                            <?php endif; ?>
+                            <div class='metadata-item' data-term=''>
+                                <div class='label'>Collection</div>
+                                <div class='value'><?php echo(join(', ',$itemSets)); ?></div>
+                            </div>
+                            <div class='metadata-item' data-term='dcterms:license'>
+                                <div class='label'><?php echo($license['label']); ?></div>
+                                <div class='value'><?php foreach ($license['link'] as $link) { echo $link->asHtml(); }; ?></div>
+                            </div>
+                            <div class='metadata-item' data-term='dcterms:subject'>
+                                <div class='label'><?php echo($topic['label']); ?></div>
+                                <div class='value'><?php foreach ($topic['values'] as $value) { echo $value->asHtml(); }; ?></div>
+                            </div>
+                            <?php if (($geographic['value']) != ''): ?>
+                            <div class='metadata-item' data-term='dcterms:spatial'>
+                                <div class='label'><?php echo($geographic['label']); ?></div>
+                                <div class='value'><?php foreach ($geographic['values'] as $value) { echo $value->asHtml(); };?></div>
+                            </div>
+                            <?php endif; ?>
+                            <div class='metadata-item' data-term='dcterms:temporal'>
+                                <div class='label'><?php echo($timePeriod['label']); ?></div>
+                                <div class='value'><?php echo $timePeriod['value'] ? $valueDisplay($timePeriod['value'], ['link' => false]) : ''; ?></div>
+                            </div>
+                        </div>
+                        <div class='license-img-wrapper'> 
+                            <!-- the following conditional statements may need to be revised as more items with difference license types are tested -->
+                            <img class='license-img' src='
+                            <?php 
+                            if (($license['value'] == 'CC BY-NC-SA 4.0') || ($license['value'] == 'Transcript is licensed under the following CC BY-NC 4.0 license.')) 
+                                echo $this->assetUrl('img/png/ui/check-yellow.png')
+                            ?>'
+                            >
+                            <span>
+                            <?php 
+                            if (($license['value'] == 'CC BY-NC-SA 4.0') || ($license['value'] == 'Transcript is licensed under the following CC BY-NC 4.0 license.')) 
+                                echo 'Free to use'
+                            ?>
+                            </span>
+                        </div>
+                    </div>
+                    <div class='view-item-page'>
+                            <?php echo $item->link($viewItemPage); ?>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
+    <!-- <?php echo $item->displayValues(); ?>
+    <?php if($item->itemSets()): ?>
+        <div class="property">
+            <h4><?php echo $translate('Item sets'); ?></h4>
+            <?php foreach ($item->itemSets() as $itemSet): ?>
+            <div class="value"><?php echo $itemSet->link($itemSet->displayTitle()); ?></div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+    <?php if($item->media()): ?>
+        <div class="media-list">
+        <?php
+        foreach ($item->media() as $media):
+            echo $media->linkRaw($this->thumbnail($media, 'medium', ['title' => $media->displayTitle()]), null, [
+                'class' => 'media resource'
+            ]);
+        endforeach;
+        ?>
+        </div>
+    <?php endif; ?> -->
     </div>
-  <?php endforeach; ?>
+<?php endforeach; ?>
 </div>

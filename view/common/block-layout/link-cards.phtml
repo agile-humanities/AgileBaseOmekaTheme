@@ -1,5 +1,11 @@
-<div id="block-<?php echo $this->blockId; ?>" class="region site-link-cards <?php echo $this->classes; ?> <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?> ">
+<?php
+  $partial = $this->plugin('sitePartial');
+
+?>
+<!-- BEGIN /common/block-layout/link-cards -->
+  <div id="block-<?php echo $this->blockId; ?>" class="region site-link-cards <?php echo $this->classes; ?> <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?> ">
   <div class="site-link-cards-intro">
+    <?= $partial('common/block-layout/link-cards-ornament',['attachments' => $attachments]) ?>
     <?php if ($this->hasTitle || $this->hasIntroduction): ?>
       <div class='title-area'>
         <?php if ($this->hasTitle): ?>
@@ -28,7 +34,6 @@
       ?>
       <div class="item resource link-card">
         <a title='<?php echo $this->itemFields[$i]["title"]; ?>' href='<?php echo $this->itemFields[$i]["url"]; ?>'>
-          <figure>
             <?php
             if (!empty($this->itemFields[$i]["thumbnailUrl"])):
               printf('<figure><img src="%s" alt="%s" /></figure>',$this->itemFields[$i]["thumbnailUrl"],$this->itemFields[$i]["title"] . " Thumbnail");
@@ -39,7 +44,6 @@
               endif;
             endif;
             ?>
-          </figure>
           <div class="link-card-info">
             <?php if (!empty($this->itemFields[$i]["label"])): ?>
               <div class='content-label'><?php echo  $this->itemFields[$i]["label"]; ?></div>
@@ -62,3 +66,4 @@
     <?php $i++; ?>
   <?php endforeach; ?>
 </div>
+<!-- END /common/block-layout/link-cards -->

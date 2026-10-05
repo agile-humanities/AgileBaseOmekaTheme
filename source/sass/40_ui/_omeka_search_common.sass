@@ -45,12 +45,14 @@
     right: initial
     padding: 0 0 $mobile_overlay_spacing 0
     justify-content: flex-end
+    flex-wrap: wrap
 
   > *
     +bp($ui_mobile_app_controls_breakpoint)
       display: flex
       align-items: center
       margin-left: $ui_element_spacing
+      margin-bottom: $ui_element_spacing
 
       &:first-child
         margin-left: 0
@@ -71,3 +73,6 @@
 
 .search-view-type-grid
   +icon_with-label-right('grid',$btn_icon_size,'neutral')
+
+.search-results-count-total
+  @extend .label

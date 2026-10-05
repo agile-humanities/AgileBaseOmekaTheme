@@ -3,6 +3,9 @@
  * Used to add fonts using the system’s font-loader tool. Font families still must be declared in the main configuration YAML file or here.
  */
 
-+load_font('Roboto','roboto',($light,$normal,$bold),(normal,italic))
+// Only faces that exist as woff2 in source/fonts are loaded (load_font is woff2-only). There is no woff2 for
+// Roboto bold italic or for the IBM Plex Mono italics yet: browsers synthesise them until the files are added.
++load_font('Roboto','roboto',($light,$normal),(normal,italic))
++load_font('Roboto','roboto',($bold),(normal))
 +load_font('Source Serif','source-serif',($normal,$bold),(normal,italic))
-+load_font('IBM Plex Mono','ibmplexmono',($normal,$bold),(normal,italic))
++load_font('IBM Plex Mono','ibmplexmono',($normal,$bold),(normal))

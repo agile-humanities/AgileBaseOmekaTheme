@@ -9,6 +9,7 @@ $searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPa
 
 $params = $this->params()->fromQuery() ?: [];
 $hasFacet = array_key_exists('facet',$params);
+
 switch ($searchType) {
     case 'cross-site':
         $searchAction = $this->url('site/cross-site-search', ['action' => 'results'], true);
@@ -23,6 +24,34 @@ switch ($searchType) {
 ?>
 
 <!-- BEGIN SEARCH FORM TEMPLATE  common/search-form.phtml -->
+<?php
+/*
+ * AUTOSUGGEST — not implemented. See codebase/_advanced_search_autosuggest_README.md.
+ *
+ * This header search input has no autosuggest markup, so it will not suggest even
+ * once the library is enabled in search/search-form-main-headers.phtml. To add it
+ * (after a Solr suggester is built and the dropdown is designed):
+ *
+ *  - Add class="autosuggest" and autocomplete="off" to the text input below.
+ *    AdvancedSearch's search.js only attaches to input[type=text].autosuggest and
+ *    input[type=search].autosuggest.
+ *  - Add data-autosuggest-url="<?= $escapeAttr($searchConfig->siteUrl() . '/suggest') ?>",
+ *    but only when the main search config has a suggester
+ *    ($searchConfig && $searchConfig->subSetting('q', 'suggester')), and guard for a
+ *    null $searchConfig. This is the same url the module renders on the q field of
+ *    the search page, e.g. /s/digital-collections/search/suggest.
+ *  - Optionally add data-autosuggest-fill-input="1" when
+ *    $searchConfig->subSetting('q', 'suggest_fill_input') is set: a chosen suggestion
+ *    then fills the field instead of submitting the form.
+ *  - Nothing else changes: the suggest request always sends ?q=, whatever the input
+ *    name, and the form already submits "q" to the main search page (sitewide branch).
+ *
+ * Alternative once AdvancedSearch is updated to 3.4.64 or later: call
+ * $this->searchQuickReplacement() first and output it when not empty (site setting
+ * "advancedsearch_main_config_replace_quick"); it renders the module's own simple
+ * search form, autosuggest included, in place of this one.
+ */
+?>
 <form action="<?= $searchAction ?>" id="search-form">
     <input type="text" name="<?= $name ?>" value="<?php echo $searchValue; ?>"
            placeholder="<?php echo $translate('Search by collection, item name, or keyword'); ?>"
@@ -34,6 +63,22 @@ switch ($searchType) {
             <?php endforeach; ?>
         <?php endforeach; ?>
     <?php endif; ?>
+    <?php
+        if (strpos($_SERVER['REQUEST_URI'],'item-set') > -1) {
+            $urlElements = explode('/',$_SERVER['REQUEST_URI']);
+            $id = (int) array_pop($urlElements);
+
+            if ($id) {
+                /** @var \Omeka\Api\Representation\ItemSetRepresentation $itemSet */
+                $itemSet = $this->plugin('itemSetFacetHandler')->getItemSetById($id);
+
+                // Keeps a search made from an item set's page inside that item set.
+                if ($itemSet) {
+                    printf('<input type="hidden" name="item_set_id[]" value="%d" />', $itemSet->id());
+                }
+            }
+        }
+    ?>
     <button class='search-submit' aria-label="<?php echo $translate('Submit search'); ?>" type="submit" tabindex="0"></button>
 </form>
 <!-- END SEARCH FORM TEMPLATE -->

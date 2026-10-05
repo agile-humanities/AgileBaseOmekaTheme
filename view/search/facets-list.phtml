@@ -101,32 +101,26 @@ if (!empty($itemSet)) {
                     <?php $facetParams = $searchFacets[$name]; ?>
 
                     <?php foreach($facetValues as &$value) {
-                        // Pitts specific: Pass the field value downstream as it is need to identify which facts
+                        // Pass the field value downstream: it is needed to identify which facets
                         // are item sets / collections
                         $value['field'] = $facetParams["field"];
-                        $more = (int) array_key_exists('more',$facetParams) ? $facetParams['more'] : 20;
                     } ?>
                     <?php $hasState = in_array($facetParams['state'] ?? '', ['expand', 'collapse', 'collapse_unless_set']); ?>
-                    <li id='facet_<?= $facetParams["field"] ?>' class="facet<?= empty($facetParams['attributes']['class']) ? '' : ' ' . $escapeAttr($facetParams['attributes']['class']) ?>" data-visible-options="<?= $more ?>">
+                    <li id='facet_<?= $facetParams["field"] ?>' class="facet<?= empty($facetParams['attributes']['class']) ? '' : ' ' . $escapeAttr($facetParams['attributes']['class']) ?>" data-visible-options="<?= $escapeAttr(trim((string) ($facetParams['more'] ?? ''))) ?>">
                         <?php $stateExpand = $hasState && ($facetParams['state'] === 'expand' || ($facetParams['state'] === 'collapse_unless_set' && !empty($activeFacets[$name]))); ?>
-                        <?php if ($facetParams['state'] !== 'static'): ?>
-                            <details open="<?= $stateExpand ? 'true' : 'false' ?>" aria-label="<?= $translate($stateExpand ? 'Collapse' : 'Expand') ?>" >
-                                <summary><?= $escape($translate($facetParams['label'] ?? $name)) ?></summary>
-                        <?php else: ?>
-                            <h3><?= $escape($translate($facetParams['label'] ?? $name)) ?></h3>
-                        <?php endif; ?>
-                                <div class="facet-elements<?= $hasState ? ' collapsible' : '' ?>"<?= $hasState && $facetParams['state'] === 'collapse' ? ' hidden="hidden"' : '' ?>>
-                                    <?= $facetElements($facetParams['field'], $facetValues, $facetParams) ?>
-                                    <?php if (($more ?? '') !== '' && in_array($facetParams['type'] ?? '', ['', 'Checkbox', 'Link', 'Tree', 'TreeLink', 'Thesaurus', 'ThesaurusLink']) && count($facetValues) > $more): ?>
-                                        <div class="facet--controls">
-                                            <button type="button" class="ghost facet--expand">More options</button>
-                                            <button type="button" class="ghost facet--collapse" style="display:none">Fewer options</button>
-                                        </div>
-                                    <?php endif; ?>
+
+                        <details open="<?= $stateExpand ? 'true' : 'false' ?>" aria-label="<?= $translate($stateExpand ? 'Collapse' : 'Expand') ?>" >
+                        <summary><?= $escape($translate($facetParams['label'] ?? $name)) ?></summary>
+                        <div class="facet-elements<?= $hasState ? ' collapsible' : '' ?>"<?= $hasState && $facetParams['state'] === 'collapse' ? ' hidden="hidden"' : '' ?>>
+                            <?= $facetElements($facetParams['field'], $facetValues, $facetParams) ?>
+                            <?php if (($facetParams['more'] ?? '') !== '' && in_array($facetParams['type'] ?? '', ['', 'Checkbox', 'Link', 'Tree', 'TreeLink', 'Thesaurus', 'ThesaurusLink']) && count($facetValues) > (int) trim((string) $facetParams['more'])): ?>
+                                <div class="facet--controls">
+                                    <button type="button" class="ghost facet--expand">More options</button>
+                                    <button type="button" class="ghost facet--collapse" style="display:none">Fewer options</button>
                                 </div>
-                       <?php if ($facetParams['state'] !== 'static'): ?>
-                            </details>
-                        <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
+                        </details>
                     </li>
                 <?php endforeach; ?>
             </ul>

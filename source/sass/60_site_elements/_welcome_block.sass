@@ -1,17 +1,149 @@
 /**
  *  @file _welcome_block.sass
  *  @category 60_site_elements
- *  @description Styles for the Homepage welcome block.
+ *  @description Styles for the Homepage Introduction block's welcome panel, and its three compositions.
+ *
+ *  The block's "composition" option puts one of these classes on the block wrapper (.homepage-introduction):
+ *    .slide-viewer-with-title-default   panel beneath the slides, at every width
+ *    .slide-viewer-with-title-overlay   panel laid over the slides
+ *    .slide-viewer-with-title-grid      panel and slides side by side
+ *  Below the desktop breakpoint overlay and grid are the same: the panel, then the slides.
  */
 
 
-.homepage-introduction
-  .discovery-tool
-    +bp($desktop)
-      z-index: 2
-      width: 37.3%
-      position: absolute
-      right: rv($edge_padding_factor)
-      margin-top: auto
-      margin-bottom: auto
+$welcome_box_width: 33vw
+$max_height_breakpoint: 700px
+$welcome_box_min_width_bp: 1049px
 
+// Overlay: the panel floats over the slide viewer.
+
+.slide-viewer-with-title-overlay #welcome-block
+  +bp($desktop)
+    position: absolute
+    background-color: rgba($welcome_block_bg, 0.9)
+    width: $welcome_box_width
+    margin: initial
+    right: rv($edge_padding_factor)
+    top: rv($edge_padding_factor)
+    z-index: 2
+
+    @media screen and (max-height: $max_height_breakpoint) and (min-width: $welcome_box_min_width_bp)
+      right: 0
+      top: 0
+      overflow: scroll
+      height: 100%
+      border-left: 6px solid $welcome_block_color
+
+// Default: the panel sits beneath the slide viewer, at full width. The panel comes first in the markup, so the
+// order is reversed here.
+
+.homepage-introduction.slide-viewer-with-title-default
+  display: flex
+  flex-direction: column-reverse
+  align-items: stretch
+
+  +bp($desktop)
+    flex-direction: column-reverse
+    align-items: stretch
+
+// Grid: the panel and the slide viewer share a row.
+
+.homepage-introduction.slide-viewer-with-title-grid
+  +bp($desktop)
+    display: grid
+    grid-template-columns: minmax(320px, #{$welcome_box_width}) minmax(0, 1fr)
+    align-items: stretch
+
+    #welcome-block
+      display: flex
+      align-items: center
+
+#welcome-block
+  background-color: $welcome_block_bg
+  font: 1rem $headingfont
+  color: $welcome_block_color
+  padding: rv($mobile_edge_padding_factor)
+
+  +bp($tablet)
+    padding: rv($edge_padding_factor)
+
+  .welcome-menu .navigation
+    display: none
+
+    +bp($desktop)
+      display: flex
+      flex-wrap: wrap
+      list-style-type: none
+      padding: initial
+      margin-bottom: 0
+
+      li
+        list-style-type: none
+        padding: 0 rv(1) rv(-5) 0
+        margin-bottom: 0
+
+        a
+          font: $semibold 0.9rem $labelfont
+          text-transform: uppercase
+          color: $welcome_block_color
+          display: block
+          &:hover, &:focus
+            color: $cta
+
+  .introductory-text p
+    line-height: 1.5
+
+  .welcome-logo
+    margin: rv($mobile_edge_padding_factor) 0
+
+    +bp($desktop)
+      margin: 0
+
+  .welcome-search-form-block
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin: rv($mobile_edge_padding_factor) 0 0 0
+
+    #welcome-search
+      flex: 1 1 auto
+      position: relative
+
+
+  .search-suggestions
+    ul
+      display: flex
+      flex-wrap: wrap
+      margin: initial
+      padding: initial
+
+    li
+      font-family: $labelfont
+      list-style-type: none
+      padding: initial
+      padding-right: 10px
+      font-size: 0.8rem
+      letter-spacing: 0.8px
+      line-height: 1.5
+
+    a
+      color: $white
+
+  .scroll-down-btn
+    all: unset
+    height: 15px
+    width: 15px
+    background: url(get_svg_url('icons/arrow-reversed')) no-repeat center
+    background-size: contain
+    position: relative
+    left: 50%
+    transform: translateX(-50%) rotate(90deg)
+    margin: rv($mobile_edge_padding_factor) 0
+
+
+    +bp($desktop)
+      display: none
+
+  .welcome-block-hr
+    margin: rv($mobile_edge_padding_factor) 0
+    border-color: $white

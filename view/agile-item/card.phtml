@@ -10,12 +10,16 @@
 
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
-$partial = $this->plugin('partial');
+$partial = $this->plugin('sitePartial');
+$searchHelper = $this->plugin('agileSearchHelper');
+$valueDisplay = $this->plugin('valueDisplay');
+$propertyTerms = $this->plugin('propertyTerms');
 $plugins = $this->getHelperPluginManager();
 $filterLocale = (bool) $this->siteSetting('filter_locale_values');
 $lang = $this->lang();
 $valueLang = $filterLocale ? [$lang, ''] : null;
-$assetUrl = $plugins->get('assetUrl');
+$assetUrl = $plugins->get('siteAssetUrl');
+$keyTerms = $propertyTerms->fromThemeSetting('card_terms') ?: ['dcterms:created','dcterms:date'];
 
 try {
   $textSummary = $this->plugin('textSummary');
@@ -29,10 +33,11 @@ $type = 'item';
 
 $bodyTerm = $this->siteSetting('browse_body_property_term');
 $viewItemPageLabelTerm  = $this->siteSetting('browse_view_item_page_term');
-$viewItemPageLabel = $viewItemPageLabelTerm ? $item->value($viewItemPageLabelTerm, ['default' => $translate('View')]) : 'View';
+$viewItemPageLabel = $viewItemPageLabelTerm ? $item->value($viewItemPageLabelTerm, ['default' => $translate('View')]) : 'View item';
 
 $untitled = $translate('[Untitled]');
 $thumbnailSize = 'large';
+$defaultThumbnail = false;
 $contentType = [];
 
 $selectionButton = isset($site) && $plugins->has('selectionButton') && $this->siteSetting('selection_append_items_browse_individual') ? $plugins->get('selectionButton') : null;
@@ -47,8 +52,34 @@ $creator = '';
 $resourceIndicator = '';
 $url = '';
 $heading = '';
+$itemValues = $item->values();
 
-$thumbnailType = $thumbnailType ?? 'medium';
+$itemSets = [];
+
+$date = [];
+$date['label'] = !empty($itemValue['dcterms:created']['alternate_label']) ?  $itemValue['dcterms:created']['alternate_label'] : 'Date';
+$date['value'] = $item->value('dcterms:created');
+
+$backupDate = [];
+$backupDate['label'] = !empty($itemValue['dcterms:date']['alternate_label']) ?  $itemValue['dcterms:date']['alternate_label'] : 'Date';
+$backupDate['value'] = $item->value('dcterms:date');
+
+$license = [];
+$license['label'] = 'Copyright'; //!empty($itemValue['dcterms:license']['alternate_label']) ? $itemValue['dcterms:license']['alternate_label'] : 'License';
+$license['value'] = $item->value('dcterms:license');
+$license['link'] = $item->value('dcterms:license', ['type' => 'uri', 'all' => true]);
+
+$rights = [];
+$rights['label'] = !empty($itemValue['dcterms:rights']['alternate_label']) ? $itemValue['dcterms:rights']['alternate_label'] : 'Rights Statement';
+$rights['value'] = $item->value('dcterms:rights');
+$rights['uriLabel'] = $item->value('dcterms:rights', ['type' => 'uri']);
+$rights['link'] = $item->value('dcterms:rights', ['type' => 'uri', 'all' => true]);
+
+
+$free_to_use = $rights['uriLabel'] != 'IN COPYRIGHT';
+
+$thumbnailType = $thumbnailType ?? 'large';
+
 
 $headingTerm = $this->siteSetting('browse_heading_property_term');
 $bodyTerm = $this->siteSetting('browse_body_property_term');
@@ -71,7 +102,8 @@ switch($cardObjectClass) {
       $resourceIndicator = "resource-id-" . $item->resourceClass()->id();
     }
 
-    $label = !empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item';
+    $typeValue = $item->value('dcterms:type');
+    $label = $typeValue ? strip_tags($valueDisplay($typeValue, ['link' => false])) : 'Item';
 
     // Use primary media thumbnail if it exists
 
@@ -97,9 +129,31 @@ switch($cardObjectClass) {
     }
 
     $thumbnail = !empty($altText) ? $this->thumbnail($thumbnailObject, $thumbnailSize,['alt' => $escape(strip_tags($altText)),'class' => "{$resourceIndicator} {$resourceClassName}"]) : $this->thumbnail($item, $thumbnailSize,['class' => "{$resourceIndicator} {$resourceClassName}"]);
+    // Omeka's stock thumbnails (no image derivative exists): flagged so they can be styled as placeholders.
+    // A theme fork can swap in its own artwork here.
+
+    foreach (['audio.png', 'video.png', 'document.png', 'default.png'] as $stockThumbnail) {
+      if (str_contains($thumbnail, $stockThumbnail)) {
+        $defaultThumbnail = true;
+      }
+    }
+
+
     $contentType['value'] = ucfirst(!empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item');
     $heading = !empty($heading) ? $heading : $item->displayTitle();
     $body = $body ?? $item->displayDescription();
+
+    /** @var Omeka\Api\Representation\ItemSetRepresentation $itemSet */
+    foreach($item->itemSets() as $itemSet) {
+      if ($itemSet->isPublic()) {
+        $itemSets[$itemSet->title()] = sprintf("<a class='card--item-set-link' href='%s'>%s</a>", $itemSet->url(), $itemSet->title());
+      }
+    }
+
+    // Sort Item Sets.
+
+    ksort($itemSets);
+
     break;
 
   case 'Omeka\Api\Representation\ItemSetRepresentation':
@@ -113,16 +167,6 @@ switch($cardObjectClass) {
     if (empty($body)) {
       $body = $bodyTerm ? $item->value($bodyTerm, ['lang' => $valueLang]) : $item->displayDescription(null, $valueLang);
     }
-    break;
-  case 'Omeka\Api\Representation\SitePageRepresentation':
-    /** @var Omeka\Api\Representation\SitePageRepresentation $item */
-    $url = $item->url();
-    $heading = $item->title();
-    $header = $escape($heading);
-    $thumbnail = $thumbnailer($item, $thumbnailType);
-    $label = 'Page';
-    $resourceClassName = "resource-". urlencode(strtolower(str_replace(' ','-',$label)));
-
     break;
   default: // Resources
     $url = $item->url();
@@ -140,6 +184,7 @@ switch($cardObjectClass) {
 
 $heading_fragment = "“" . substr($heading,0,20) . (strlen($heading > 20) ? "... " : ''). "”";
 $cardStyle = isset($cardStyle) ? $cardStyle : 'card';
+
 // @todo: The logic below is wonky. The base theme styling looks for .card.list , so .card is always a class
 // This is a source of some complexity in the theme, so it's best to have either .card OR .list and style
 // accordingly.
@@ -151,26 +196,90 @@ if (strpos($this->classes, 'card') === false) {
 ?>
 <!-- BEGIN TEMPLATE: /agile-item/card -->
 <<?= $containerElement; ?> class="<?= $cardStyle ?> <?= $this->classes ?>"<?=  isset($slot) ? " slot={$slot}" : '' ?>>
-<a <?= !empty($url) ? 'href="'. $url .'"' : ''; ?>>
-  <?php if (!empty($thumbnail)): ?>
-    <figure class="item-thumbnail <?= $resourceClassName ?> <?= $resourceClassName ?>">
+<div>
+  <a <?= !empty($url) ? 'href="'. $url .'"' : ''; ?>>
+    <figure class="item-thumbnail <?= $defaultThumbnail || empty($thumbnail) ? "default" : '' ?> <?= $resourceClassName ?> <?= $resourceClassName ?>">
       <?= $thumbnail ?>
     </figure>
-  <?php endif; ?>
+  </a>
   <div class="item-info">
     <div class="item-label"><?= $label ?></div>
     <?php if (!empty($heading)): ?>
-      <h3 class="item-title"><?= $heading ?></h3>
+      <h3 class="item-title title-clamp"> <a <?= !empty($url) ? 'href="'. $url .'"' : ''; ?>><?= $heading ?></a></h3>
     <?php endif; ?>
     <?php if (!empty($creator)): ?>
-      <div class="item-sublabel"><?= $creator ?></div>
+      <div class="item-sublabel sublabel"><?= $valueDisplay($creator, ['link' => false]) ?></div>
     <?php endif ?>
     <?php if (!empty($body) && $textSummary): ?>
       <div class="item-description"><?= $textSummary->summarize($escape($body),600); ?></div>
     <?php elseif(!empty($body)):?>
       <div class="item-description"><?= $escape($body); ?></div>
     <?php endif; ?>
-    <div class="more"><?= $viewItemPageLabel ?></div>
+    <?php if ($type != 'Item Set'): ?>
+      <div class='metadata-list'>
+        <?php
+        $activeTerms = [];
+        foreach ($keyTerms as $term) {
+          if (isset($itemValues[$term])) {
+            $activeTerms[$term] = $itemValues[$term];
+          }
+        }
+
+        foreach($activeTerms as $term => $propertyData):
+          if (!empty($propertyData['values'][0])):
+            /** @var \Omeka\Api\Representation\PropertyRepresentation $property */
+            $property = $propertyData['property'];
+            printf("<div class='property' data-term='%s'>\n",$term);
+            printf("   <div class='label'>%s</div>",!empty($propertyData['alternate_label']) ? $propertyData['alternate_label'] : $property->label());
+            print ("    <div class='values'>");
+            /** @var Omeka\Api\Representation\ValueRepresentation $value */
+            foreach($propertyData['values'] as $value)
+              if($value->isPublic()):
+                printf("       <div class='value'>%s</div>",$valueDisplay($value));
+              endif;
+            print ("    </div>");
+            print ("</div>");
+          endif;
+        endforeach; ?>
+        <!-- DEPRECATED.
+        <?php
+        if (!empty($date['value'])) :
+          ?>
+          <div class='metadata-item' data-term='dcterms:created'>
+            <div class='label'><?= ($date['label']); ?></div>
+            <div class='value'><?=  $date['value'] ? $valueDisplay($date['value'], ['link' => false]) : ''; ?></div>
+          </div>
+        <?php else: ?>
+          <div class='metadata-item' data-term='dcterms:date'>
+            <div class='label'><?= ($backupDate['label']); ?></div>
+            <div class='value'><?=  $backupDate['value'] !== null ? $valueDisplay($backupDate['value'], ['link' => false]) : '' ?></div>
+          </div>
+        <?php endif; ?>
+        -->
+        <?php
+        if (count($itemSets) > 0) :
+        ?>
+        <div class='metadata-item'>
+          <div class='label'>Collection<?= count($itemSets) > 1 ? 's' : '' ?></div>
+          <div class='value'><?= (join(', ',$itemSets)); ?></div>
+        </div>
+        <?php
+        endif;
+        ?>
+        <div class='metadata-item license'>
+          <div class='label'><?= ($license['label']); ?></div>
+          <div class='value license-and-icon'>
+            <div><?= $rights['uriLabel'] ? $valueDisplay($rights['uriLabel']) : '' ?></div>
+          </div>
+        </div>
+      </div>
+    <?php endif; ?>
+    <?php if (!empty($body) && $textSummary): ?>
+      <div class="item-description"><?= $textSummary->summarize($escape($body),600); ?></div>
+    <?php elseif(!empty($body)):?>
+      <div class="item-description"><?= $escape($body); ?></div>
+    <?php endif; ?>
+    <!-- <a class="more" <?= !empty($url) ? 'href="'. $url .'"' : ''; ?>><?= $viewItemPageLabel ?></a> -->
     <?php if ($selectionButton || $contactUsSelector): ?>
       <footer>
         <?php if ($selectionButton): ?>
@@ -184,7 +293,7 @@ if (strpos($this->classes, 'card') === false) {
 
 
   </div>
-</a>
+</div>
 </<?php print $containerElement; ?> >
 <!-- END TEMPLATE: /agile-item/card -->
 

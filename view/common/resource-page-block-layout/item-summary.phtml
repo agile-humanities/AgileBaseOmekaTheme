@@ -1,0 +1,4 @@
+<?php
+// Defers to item-summary-content template so allow for site-specific implementations via the sitePartial helper
+$partial = $this->plugin('sitePartial');
+echo $partial('common/resource-page-block-layout/item-summary-content',['resource'=>$resource]);

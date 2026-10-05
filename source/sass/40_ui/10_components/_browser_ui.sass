@@ -14,34 +14,31 @@
 
 $grid_gap_size: rv($grid_gap_factor)
 $mobile_sidebar_content_clearance: 150px // The browser <aside> contents need to clear some absolutely positioned controls.
+$ui_mobile_app_controls_footer_height: 50px // Explicit value: the configured one does not resolve here.
 
 \:root
   --grid-gap-size: #{strip-unit(convert($grid_gap_size,'px'))}
 // General wrapper for all browser items
 
 %browser-container
+  background-color: neutral(2)
 
 // Applies to the container with a sidebar and results area.
 // Drupal does not require this as facets are assigned to sidebars as blocks,
 // but Omeka and other systems must manage their own browser grid
-
-// Note that the container MUST contain a .with-sidebar class for the container
-// grid to apply.
 
 %browser-container-grid
   display: grid
   grid-column-gap: rv(1)
   grid-template-columns: 1fr
 
-  &.with-sidebar
+  // Includes <aside>, which is hidden on mobile
+  +bp($ui_mobile_app_controls_breakpoint)
+    grid-template-columns: minmax(min-content,#{$left_sidebar_width}) 1fr
 
-    // Includes <aside>, which is hidden on mobile
+  &.sidebar-after
     +bp($ui_mobile_app_controls_breakpoint)
-      grid-template-columns: minmax(min-content,#{$left_sidebar_width}) 1fr
-
-    &.sidebar-after
-      +bp($ui_mobile_app_controls_breakpoint)
-        grid-template-columns: 1fr minmax(min-content,#{$right_sidebar_width})
+      grid-template-columns: 1fr minmax(min-content,#{$right_sidebar_width})
 
 
 // Apply to sidebars with facet browsers. Turns them into overlay controls on
@@ -54,7 +51,7 @@ $mobile_sidebar_content_clearance: 150px // The browser <aside> contents need to
   bottom: $ui_mobile_app_controls_footer_height
   left: 0
   right: 0
-  z-index: 11
+  z-index: 20 // Above the page header, below the admin bar
   overflow-y: scroll
   transition: height $heartbeat ease-in // Manage transition when filter button is tapped
   padding: $mobile_sidebar_content_clearance rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor)
@@ -82,7 +79,7 @@ $mobile_sidebar_content_clearance: 150px // The browser <aside> contents need to
 
   input, button
     max-width: 100%
-    min-width: auto
+    min-width: $ui_checkbox_height // to prevent checkbox inputs from collapsing
 
   h2
     font-size: clamped(2,3)
@@ -96,7 +93,7 @@ $mobile_sidebar_content_clearance: 150px // The browser <aside> contents need to
       overflow: auto
 
   #form-facets
-    height: calc(70vh - #{$mobile_filter_height})
+    height: calc(100vh - 50px) // formerly $mobile_filter_height. Value corresponds with _browser_mobile_base
     overflow-y: scroll
 
     +bp($desktop)

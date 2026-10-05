@@ -13,6 +13,7 @@ $value_reversed_color: neutral(20)
 
 // Primary Elements
 
+
 *
   text-rendering: optimizeLegibility
   -moz-osx-font-smoothing: grayscale
@@ -73,6 +74,7 @@ hr
 
 .content-label, .item-label
   +font-size(-1)
+  font-family: $labelfont
   text-transform: uppercase
   font-weight: $bold
   color: set-color(2)
@@ -87,9 +89,12 @@ figcaption, .caption
   +font-size(2)
 
 .deck
-  font-size: clamped(1,2)
-  line-height: 1.5
-  margin-bottom: rv(0)
+  font-family: $altfont
+  line-height: 1.2
+  font-weight: $normal
+  font-style: italic
+  font-size: clamped(0,2)
+  margin-bottom: rv(2)
 
   p
     font-size: inherit
@@ -105,11 +110,13 @@ figcaption, .caption
   font-style: italic
   font-size: clamped(-1,0)
 
+
 .callout-text
   @extend %impact-text
   line-height: 1.25
 
 label, .label, .metadata-label
+  font-family: $labelfont
   +font-size(-1)
   color: $label_color
   line-height: 1.25
@@ -125,8 +132,12 @@ label, .label, .metadata-label
 
 .value, .metadata-value
   @extend %small-text
+  font-family: $labelfont
   line-height: 1.25
-  word-break: break-word
+  color: $value_color
+
+  @at-root .reversed &
+    color: $value_reversed_color
 
 .label, .metadata-label
   & + .value, & + .values, & + .metadata-value
@@ -146,7 +157,7 @@ label, .label, .metadata-label
   @extend %more
 // Separate fields
 
-fieldset, .field
+fieldset, .field, span // spaces fieldsets in forms. <span> is there because of an edge case in the advanced search form.
   + fieldset, + .field
     margin-top: rv(0)
 
@@ -177,12 +188,12 @@ fieldset, .field
 $summary_text_font_size: clamped(-1,0)
 
 .summary--text--group
-  font-family: $basefont
+  font-family: $labelfont
   font-size: clamped(0,1)
   color: neutral(60)
 
 .summary--text, .filter-value
-  font-family: $basefont
+  font-family: $labelfont
   font-weight: $bold
   text-transform: uppercase
   font-size: $summary_text_font_size
@@ -203,7 +214,7 @@ a.summary--text
     text-decoration-color: $link_colour_active
 
 .summary--text--label, .filter-label
-  font-family: $basefont
+  font-family: $labelfont
   font-size: $summary_text_font_size
   color: $impact
   font-weight: $bold
@@ -236,3 +247,8 @@ a.summary--text
 
   +bp($desktop)
     align-items: flex-start
+
+// .submission class is part of core styling
+
+.submission--label
+  font-weight: $semibold

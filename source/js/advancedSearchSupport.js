@@ -1,5 +1,5 @@
 /**
- *  @file omekaAdvancedSearchSupport.js
+ *  @file advancedSearchSupport.js
  *  @description Supports the transformation of the advanced search module’s UI into the Agile Collection Browser interface
  *
  */
@@ -33,6 +33,7 @@ if (searchViewType === null) {
         }
     })
     */
+
 
     // Hide filter button if filter sidebar doesn’t exist
 
@@ -113,10 +114,12 @@ if (searchViewType === null) {
 
 
     // Modify browse collection search button to conform to design
-    $('#form-search').find('button.search-submit').attr('aria-describedby','Submit search request').html('');
+    //$('#form-search').find('button.search-submit').attr('aria-describedby','Submit search request').html('');
+
+    $('#form-search').find('> .field').wrapAll('<div class="search-fields-wrapper">');
 
     // Reset button is not fully implemented. See advanced search module search.js
-    $('#facets-reset').on('click', function () {
+    $('#facets-reset, #search-reset').on('click', function () {
       const url = window.location.href;
       window.history.pushState({}, '', url.split(/[?#]/)[0]);
       window.location.reload();
@@ -142,7 +145,7 @@ if (searchViewType === null) {
     $('.facet').each(function (i) {
       const facet = $(this);
       const visibleOptions = parseInt(facet.attr('data-visible-options'));
-      const facetOptions = facet.find('.facet-items > *');
+      const facetOptions = facet.find('.search-facet-items > *');
 
       // All items are marked inactive by default
       // Show active options
@@ -203,6 +206,50 @@ if (searchViewType === null) {
 
     });
 
+    /* Apply Select2 to Advanced Search Filters when dynamically created. */
+
+    let observer = new MutationObserver(mutations => {
+
+      for(let mutation of mutations) {
+
+        for(let node of mutation.addedNodes) {
+          if (!(node instanceof HTMLElement)) continue;
+          updateSelect(node);
+          // Check to see if child nodes of newly created element are select elements.
+          if (node.hasChildNodes()) {
+            for (const childNode of node.childNodes) {
+              if (!(childNode instanceof HTMLElement)) continue;
+              updateSelect(childNode);
+            }
+          }
+        }
+      }
+
+    });
+
+    function updateSelect(element) {
+      // Ignore non-select elements
+      if (element.tagName != "SELECT") {
+        return;
+      }
+
+      const select = $(element);
+
+      if (!select.data('select2')) { // Only update if not already a select2 element
+        if (!select.hasClass('no-select2')) {
+          select.select2({
+            width: 'element',
+            minimumResultsForSearch: 40
+          });
+        }
+      }
+    }
+
+    const searchFilters = document.getElementById("search-filters");
+
+    if(searchFilters instanceof Node) {
+      observer.observe(searchFilters, {childList: true, subtree: true});
+    }
   });
 
 })(jQuery);

@@ -27,8 +27,8 @@ $texts = [
             $facetValue['fieldLabel'] =  $facetValue['fieldLabel'] == "Item Set" ? "Collection" : $facetValue['fieldLabel'];
         ?>
     <li class="facet-active">
-        <span class="facet-active-label"><?= $escape($translate($facetValue['fieldLabel'])) ?></span>
-        <?= sprintf('<a class="lozenge facet-active-value" href="%1$s" data-facet-name="facet[%2$s][%3$s]" data-facet-value="%4$s">%5$s</a>',
+        <span class="summary--text--label"><?= $escape($translate($facetValue['fieldLabel'])) ?></span>
+        <?= sprintf('<a class="summary--text facet-active-value" href="%1$s" data-facet-name="facet[%2$s][%3$s]" data-facet-value="%4$s">%5$s</a>',
             $escapeAttr($facetValue['url']),
             $escapeAttr($name),
             is_numeric($facetKey) ? '' : $escapeAttr($facetKey),

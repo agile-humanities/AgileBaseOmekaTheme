@@ -9,17 +9,41 @@ if (!count($filters)) return;
 $plugins = $this->getHelperPluginManager();
 $escape = $plugins->get('escapeHtml');
 $escapeAttr = $this->plugin('escapeHtmlAttr');
+
+/** @var \AgileThemeTools\View\Helper\AgileSearchHelper $agileSearchHelper */
+//$agileSearchHelper = $this->plugin('agileSearchHelper');
+
+/** @var AdvancedSearch\Api\Representation\SearchConfigRepresentation $advancedSearchConfig */
+//$advancedSearchConfig = $agileSearchHelper->getAdvancedSearchConfig();
+
+//var_dump($advancedSearchConfig->settings()['form']['advanced']['fields']);
+
+//$params = $plugins->get('params');
+//$request = $params->fromQuery();
+
+/** Bug note: Solr mapped fields are returning “Unknown field” in this template, owing to some login in the
+ *   Advanced Search module. It uses the EasyMeta library to map field names to field labels, but is only
+ *   returning internal names (e.g. dcterms:creator) and their defined labels.
+ *
+ *   Not sure why the Solr map labels aren't being used for Solr configurations. Moreover, there could be a way
+ *   of mapping labels as defined by admins in the Search Config form, but for some reason the field that contains
+ *   these values is empty here (they're correct and persistent in the form itself and are used for generating
+ *   Advanced Search Filters).
+ */
+
 ?>
-<!-- TEMPLATE BEGIN search/search-filters-links.phtml -->
+<!-- TEMPLATE BEGIN common/search-filters-links.phtml -->
 <div class="search-filters">
     <?php foreach ($filters as $filterLabel => $filterValues): ?>
     <div class="filter">
         <?php
             $filterLabel =  $filterLabel == "Item Set" ? "Collection" : $filterLabel;
+            $filterLabel =  str_replace('Unknown field contains','Results contain',$filterLabel);
+            $filterLabel =  str_replace('Unknown field is exactly','Results are exactly',$filterLabel);
         ?>
-        <span class="filter-label label"><?= $escape($filterLabel) ?></span>
+        <span class="filter-label summary--text--label"><?= $escape($filterLabel) ?></span>
         <?php foreach ($filterValues as $urlQuery => $filterValue): ?>
-        <a class='lozenge' href="<?= $escapeAttr($urlQuery) ?>" class="filter-value"><?= $escape($filterValue) ?></a>
+        <a class='summary--text' href="<?= $escapeAttr($urlQuery) ?>" class="filter-value"><?= $escape($filterValue) ?>&nbsp;</a>
         <?php endforeach; ?>
     </div>
     <?php endforeach; ?>

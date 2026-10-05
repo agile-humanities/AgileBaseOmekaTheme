@@ -1,0 +1,47 @@
+/*
+   @file _circular_audio.sass
+   @category 60_site_elements
+   @theme LOCAL
+   @component main
+   @description Theme styling for Agile Theme Tools circular audio player  */
+
+$player_colour: 2
+
+.ca-player-container
+  svg
+
+    +bp($desktop)
+      width: 280px
+
+    +bp($ultrawide)
+      width: 400px
+
+    g.control
+      line
+        fill: $circular_audio_color
+        stroke: $circular_audio_color
+      path
+        fill: $circular_audio_color
+
+    circle.controls
+      fill: $circular_audio_color
+
+    .progress-track, .precache-bar, .progress-bar
+      stroke: $circular_audio_color
+
+  .ca-caption
+    color: $circular_audio_caption_color
+
+    *
+      color: inherit
+
+/** This style is only relevant in a circular player context
+
+.vtt-segment:hover
+  background-color: $transcript_hover
+
+.media-render + .media-render
+  margin-top: rv($mobile_edge_padding_factor)
+
+  +bp($tablet)
+    margin-top: rv($edge_padding_factor)

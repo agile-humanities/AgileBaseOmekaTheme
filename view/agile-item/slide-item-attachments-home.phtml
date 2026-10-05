@@ -1,0 +1,23 @@
+<?php
+  /*
+   * Called from the homepage-introduction block template. It is a separate file so that a site can
+   * replace it with its own variant (e.g. static slides): see sitePartial and README, "Site-specific templates".
+   */
+
+  $partial = $this->plugin('sitePartial');
+
+?>
+<!-- BEGIN TEMPLATE agile-item/slide-item-attachments-home.phtml -->
+<?php foreach ($attachments as $attachment): ?>
+  <?php
+  $item = $attachment->item();
+  ?>
+  <?= $partial('agile-item/slide-item', [
+    'item' => $item,
+    'media' => $attachment->media() ?? $item->primaryMedia(),
+    'caption' => $attachment->caption() ?? $item->displayDescription(),
+    'imageSize' => 'large'
+  ])
+  ?>
+<?php endforeach; ?>
+<!-- END TEMPLATE agile-item/slide-item-attachments-home.phtml -->

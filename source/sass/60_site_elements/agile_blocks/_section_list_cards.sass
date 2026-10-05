@@ -8,6 +8,7 @@
 .section-list-cards
   .card-container
     @extend %browser-container
+    +standard_edge_padding()
 
   .cards
     @extend %card-grid
@@ -45,8 +46,7 @@
       padding: 0 rv(3)
       max-width: rv(11)
 
-
-.link-card
+/*.link-card
   padding: rv(1)
   +bp($tablet)
     flex-grow: 1
@@ -86,5 +86,5 @@
       font: $bold $basefont
       text-decoration: underline
       color: $black
-      display: inline-block
+      display: inline-block*/
 

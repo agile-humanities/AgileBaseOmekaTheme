@@ -43,18 +43,8 @@ $ribbon_padding_factor: -3
 
 %inline-anchor
   color: inherit
+  border-bottom: 0
   @extend %underscore
-
-  &:hover, &:focus
-    color: $link_colour
-    text-decoration-color: $link_colour
-
-  +reversed
-    color: $link_colour_reversed
-
-    &:hover
-      color: $link_colour_active_reversed
-      text-decoration-color: $link_colour_active_reversed
 
 %inline-anchor-block
   display: inline-block
@@ -62,12 +52,6 @@ $ribbon_padding_factor: -3
 
 %inline-anchor-reverse
   @extend %inline-anchor
-  color: $link_colour_reversed
-  text-decoration-color: $link_colour_reversed
-
-  &:hover, &:focus
-    color: $link_colour_active_reversed
-    text-decoration-color: $link_colour_active_reversed
 
 // Extras
 
@@ -181,27 +165,31 @@ $ribbon_padding_factor: -3
     margin-right: rv(-2)
 
 %more
-  font-size: clamped(0,0)
-  color: $black
   display: flex
-  flex-direction: row
-  align-items: center
+  font-family: $labelfont
+  font-size: clamped(-1,0)
+  color: $black
+  font-weight: $bold
+  text-transform: uppercase
   justify-content: flex-start
-  border-bottom: 0
   text-decoration: none
-  +background-icon-right('arrow',rv(-1))
+  border-bottom: 1px solid $link_colour_active
+  padding-bottom: 5px
+  width: fit-content
 
   &:hover
-    border-bottom: 0
     text-decoration: none
-    color: $impact
+    color: $link_colour_active
+    border-bottom: 1px solid $link_colour_active
 
   +reversed
-    color: $white
+    color: $link_colour_reversed
+    border-bottom-color: $link_colour_active_reversed
 
     &:hover
-      color: set-color(1)
-      text-decoration-color: set-color(1)
+      color: $link_colour_active_reversed
+      text-decoration-color: $link_colour_active_reversed
+      border-bottom-color: $link_colour_active_reversed
 
 %highlight
   color: set-color(2)
@@ -225,14 +213,14 @@ $ribbon_padding_factor: -3
 %content-list
   ol
     list-style: none
-    counter-reset: pitts-counter
+    counter-reset: content-list-counter
     position: relative
 
     li
-      counter-increment: pitts-counter
+      counter-increment: content-list-counter
       list-style-type: revert
       &::before
-        content: counter(pitts-counter)""
+        content: counter(content-list-counter)""
         position: absolute
         left: calc(#{rv(10)} - 6px)
   ul

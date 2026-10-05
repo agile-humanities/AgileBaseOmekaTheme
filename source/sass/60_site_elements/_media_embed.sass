@@ -6,21 +6,13 @@
 
 .file
   .attachments
-    margin-bottom: 0
+    width: 100%
+    display: flex
+    flex-direction: column
+    align-items: center
 
-  // Large attachments can’t be set left or right
 
-  &.large
-    .attachments
-      width: 100% !important
-      padding-left: 0 !important
-      padding-right: 0 !important
-      margin-bottom: rv($mobile_edge_padding_factor)
-
-      +bp($desktop)
-        margin-bottom: rv($edge_padding_factor)
-
-  // Set left and right settings
+  // NO LONGER SUPPORTED BY OMEKA. Left for reference.
 
   @at-root .block-layout-alignment-block-right &
     .attachments
@@ -33,19 +25,31 @@
 
 
   // Set sizing
+.media-embed
+  &.square .attachment
+    width: 100%
 
-  &.square
-    .attachments
-      img
-        +proportional_height(100%, 1)
+    +bp($tablet)
+      width: 50%
 
-  &.large
-    .attachments
-      +bp($desktop)
-        width: $legible_inset_width * .5
+    +bp($desktop)
+      width: 33%
 
-  &.large.center
-      .attachments
-        +bp($desktop)
-          width: 100%
+    .file
+      +proportional_height(100%, 1)
 
+
+
+  &.large .attachment
+    width: 100%
+
+  &.medium .attachment
+    width: 50%
+
+  // Not an option right now
+
+  &.small .attachment
+    width: 33%
+
+    +bp($desktop)
+      width: 25%

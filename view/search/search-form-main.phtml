@@ -46,15 +46,18 @@ if ($filters) {
 }
 */
 ?>
-<!-- SEARCH-FORM-MAIN TEMPLATE BEGIN search/search-form-main.phtml dev -->
-
+<!-- SEARCH-FORM-MAIN TEMPLATE BEGIN search/search-form-main.phtml -->
 <div id="advanced-search-form-wrapper">
     <div id="advanced-search-form" class="advanced-search-form">
         <?= $this->form()->openTag($form) ?>
         <?= $this->formCollection($form) ?>
         <div class="search-form-buttons">
             <?= $reset ? $this->formButton($reset) : null ?>
-            <?= $submit ? $this->formButton($submit) : null ?>
+            <?php // Manually add submit button in for now for demo purposes. ?>
+            <button type="submit" name="submit" value="" aria-describedby="Submit search request">Submit</button>
+            <!-- <button type="submit" name="submit" id="search-submit" class="search-submit button" value="" aria-describedby="Submit search request">Submit Search</button>-->
+                <?php $submit=false; echo $submit ? $this->formButton($submit) : null ?>
+
         </div>
         <?= $this->form()->closeTag() ?>
     </div>

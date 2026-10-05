@@ -231,8 +231,10 @@ if ($isSiteRequest) {
             </optgroup>
           </select>
           <?= $queryText($isSubQuery ? [] : $property, $index) ?>
+          <!--
           <?= $dataTypeHelper->getSelect($stem . '[text]', "property[$index][text]" ?? null, ['multiple' => false, 'class' => 'query-text query-data-type chosen-select no-select2', 'aria-label' => 'Data types', 'data-placeholder' => $translate('Select data type…')]) // TODO Manage search on property for multiple data types. ?>
           <?= $formSelect($selectMainDataType->setName($stem . '[text]')->setValue("property[$index][text]" ?? null)) ?>
+          -->
           <button type="button" class="as--remove o-icon-delete remove-value button" aria-label="<?= $translate('Remove value') ?>" title="<?= $translate('Remove value') ?>">Remove value</button>
         </div>
         <div class="value-common sub-query">

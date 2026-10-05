@@ -1,5 +1,5 @@
 /**
- *  @file pathwaysFormElements.js
+ *  @file formElements.js
  *
  *  Modifications to the PTD form elements
  *
@@ -13,7 +13,7 @@
 
         $('select').each(function() {
           const select = $(this);
-          
+
           if (!select.hasClass('no-select2')) {
             $(this).select2({
               width: 'element',

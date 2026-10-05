@@ -16,10 +16,18 @@
     max-width: 100%
     width: 100%
 
-// Hide advanced search for now
 #advanced-search-form-wrapper
-  margin: $ui_element_spacing 0
-  display: none
+  margin-bottom: rv($edge_padding_factor)
+
+
+  // Corrects iconfont issue
+  .search-filter-minus::before
+    content: '—'
+    font-weight: $heavy
+
+  .search-filter-plus:before
+    content: '+'
+    font-weight: $heavy
 
 #form-search
   @extend %advanced_search_filter_ui
@@ -73,9 +81,20 @@
 
 .search--tier-two
   display: flex
+  flex-direction: column-reverse
   justify-content: space-between
   width: 100%
   margin-top: $ui_element_spacing
+
+  +bp($tablet)
+    flex-direction: row
+
+  .search-sort
+    flex-direction: column
+    margin: rv($edge_padding_factor)
+
+    +bp($tablet)
+      flex-direction: row
 
 
 #collection-list
@@ -88,8 +107,8 @@
   +bp($desktop)
 
     .card
-      // border-right: 1px solid neutral(10)
-      // padding-right: rv($grid_gap_factor)
+      border-right: 1px solid neutral(10)
+      padding-right: rv($grid_gap_factor)
 
       // current grid treatment creates uneven thumbnails, because the padding removal of the 3rd column
       // slightly increases the size of the card, making the thumbnails look off.
@@ -99,12 +118,12 @@
       figure:before
         padding-top: 300px
 
-  /*    &:nth-child(3n)
+      &:nth-child(3n)
         border-right: 0
         padding-right: 0
 
 
-        &:nth-child(3n-2)
+  /*      &:nth-child(3n-2)
         padding-left: 0
         padding-right: rv($grid_gap_factor)
 
@@ -135,14 +154,14 @@
 aside
   @at-root .search-results-wrapper > &
     @extend %browser-sidebar
-    background-color: darken($bgcolor, 10)
+    background-color: neutral(5)
     border-radius: 0
 
     +bp($ui_mobile_app_controls_breakpoint)
       border-radius: $border_radius 0 0 $border_radius
 
     h2
-      font-family: $headingfont
+      font-family: $labelfont
       font-size: clamped(1,2)
       text-transform: uppercase
       font-weight: $bold
@@ -192,17 +211,20 @@ aside
     @extend %exposed-facet
 
   .search-facet-items
-    padding-left: 0
-
     li
-      font-family: $basefont
+      font-family: $labelfont
       line-height: 1.7
-      color: neutral(60)
       display: flex
       align-items: flex-start
       list-style-type: none
 
-      &::before
+      span.count
+        color: neutral(60) !important // override facet-checkboxes span below.
+
+    &.facet-links
+      padding-left: 0
+
+      li::before
         content: '◆'
         font-size: rv(-2)
         position: relative
@@ -210,15 +232,33 @@ aside
         display: block
         margin-right: rv(-3)
 
-      &.count
-        color: neutral(70)
+        &.count
+          color: neutral(70)
 
-      a
-        color: $black
-        text-decoration: underline
+        a
+          color: $black
+          text-decoration: underline
 
-        &:hover, &.active
-          color: $link_colour_active
+          &:hover, &.active
+            color: $link_colour_active
+
+    &.facet-checkboxes
+      list-style-type: none
+      input[type=checkbox]
+        background-size: 80% !important  // core component issue, corrected in later release but not in deployed version
+        background-position: 50% !important // ditto
+        height: $ui_checkbox_height !important // ditto
+        width: $ui_checkbox_height !important // ditto
+
+      input[type=checkbox]+label
+        padding: 0 0 0 rv(-2) // base component spacing is off and its calculation needs revisiting
+
+      label
+        font-size: unset
+
+      li
+        span
+          color: $black
 
 
 // @todo: scope?
@@ -263,7 +303,9 @@ aside
   > *
     +bp($ui_mobile_app_controls_breakpoint)
       display: flex
-      align-items: center
+      flex-direction: column
+      align-items: flex-start
+      justify-content: flex-start
       margin-left: $ui_element_spacing
 
       &:first-child
@@ -282,6 +324,10 @@ aside
 
 #browser--mobile-close-btn
   @extend %mobile-close-btn
+
+  // The sidebar is only an overlay below this breakpoint; above it there is nothing to close.
+  +bp($ui_mobile_app_controls_breakpoint)
+    display: none
 
 // Template: search/results-header-footer
 

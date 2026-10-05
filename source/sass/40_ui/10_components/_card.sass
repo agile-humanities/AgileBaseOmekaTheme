@@ -39,10 +39,10 @@
       height: auto
       object-fit: initial
       position: relative
-
-    &.img-portrait
-      object-fit: cover
-      max-height: 600px
+      
+      &.img-portrait
+        object-fit: cover
+        max-height: 600px
 
   &:hover
     border-color: $impact
@@ -55,6 +55,8 @@
 
   .item-info
     padding: rv($mobile_edge_padding_factor)
+    border-top-width: 10px
+    border-top-style: solid
 
   .item-sublabel
     margin: rv(-3) 0

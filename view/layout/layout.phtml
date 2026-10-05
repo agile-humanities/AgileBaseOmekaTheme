@@ -1,43 +1,40 @@
 <! -- START OF /LAYOUT/LAYOUT.PHTML -->
 <?php
+
+/** @var \Omeka\Api\Representation\SiteRepresentation $site */
 $escape = $this->plugin('escapeHtml');
+$siteAssetUrl = $this->plugin('siteAssetUrl');
 $siteTitle = $site->title();
 $this->htmlElement('html')->setAttribute('lang', $this->lang());
 $this->headMeta()->setCharset('utf-8');
 $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1');
 $this->headTitle($this->setting('installation_title', 'Omeka S'))->setSeparator(' · ');
-$this->headLink()->prependStylesheet($this->assetUrl('css/vendor.min.css'));
-$this->headLink()->prependStylesheet($this->assetUrl('css/iconfonts.css', 'Omeka'));
-$this->headLink()->appendStylesheet($this->assetUrl('css/style.min.css'));
-$this->headScript()->prependFile($this->assetUrl('js/default.min.js'));
-$this->headScript()->prependFile($this->assetUrl('js/core.min.js'));
-$this->headScript()->prependFile($this->assetUrl('js/global.js', 'Omeka'));
-$this->headScript()->prependFile($this->assetUrl('js/vendor.js'));
-$this->headScript()->prependFile($this->assetUrl('vendor/jquery/jquery.min.js', 'Omeka'));
+$this->themeFonts()->inject(); // Google fonts chosen in Theme > Configure theme styles, before the stylesheets.
+$this->headLink()->prependStylesheet($siteAssetUrl('css/vendor.min.css'));
+$this->headLink()->prependStylesheet($siteAssetUrl('css/iconfonts.css', 'Omeka'));
+$this->headLink()->appendStylesheet($siteAssetUrl('css/style.min.css'));
+$this->headScript()->prependFile($siteAssetUrl('js/default.js'));
+$this->headScript()->prependFile($siteAssetUrl('js/core.min.js'));
+$this->headScript()->prependFile($siteAssetUrl('js/global.js', 'Omeka'));
+$this->headScript()->prependFile($siteAssetUrl('js/vendor.js'));
+$this->headScript()->prependFile($siteAssetUrl('vendor/jquery/jquery.min.js', 'Omeka'));
 
-// Custom stylesheets.
-$this->headLink()->appendStylesheet($this->assetUrl('../custom.css'));
-$this->headScript()->appendFile($this->assetUrl('../custom.js'));
-
+// Custom stylesheets: the theme's own custom.css (developer, in git), then the CSS administrators write in Omeka
+// (Settings > Theme styling for all sites, then Site settings > Theme styling for this site), loaded last.
+$this->headLink()->appendStylesheet($siteAssetUrl('../custom.css'));
+$this->headScript()->appendFile($siteAssetUrl('../custom.js'));
+$this->customCss()->inject();
 
 $this->trigger('view.layout');
-$title = $this->pageTitle($site->title());
-$userBar = $this->userBar();
-$sitePermissions = $site->sitePermissions();
-$userLoggedIn = $this->identity() !== null;
 
-//var_dump(get_class_methods($this->identity()->));
-$userName = $userLoggedIn ? $this->identity()->getName() : 'Guest';
-$siteUrl = $site->url();
+$userBar = $this->userBar();
 $nav = $site->publicNav();
 $container = $nav->getContainer();
 $activePage = $nav->findActive($container);
 
-/*  Search page 1 doesn't exist out of the box. Refactor
-if ($activePage && key_exists('page',$activePage) && is_object($activePage['page']) && $activePage['page']->route === 'search-page-1') {
-  $this->headTitle('Browse the collection');
-}
-*/
+// Theme setting "Top Navigation Depth": 0 shows every level.
+$navDepth = (int) $this->themeSetting('nav_depth', 0);
+$navOptions = $navDepth > 0 ? ['maxDepth' => $navDepth - 1] : [];
 
 // Add the page slug as a body class in case it’s needed for styling.
 
@@ -45,7 +42,13 @@ if ($activePage && method_exists($activePage['page'],'getParams') && array_key_e
     $this->htmlElement('body')->appendAttribute('class', $activePage['page']->getParams()['page-slug']);
 }
 
-if (!empty($this->userBar())) {
+// Add the site slug as a body class, so one stylesheet can carry site-specific rules.
+
+if ($site && $site->slug()) {
+  $this->htmlElement('body')->appendAttribute('class',"site-". $site->slug());
+}
+
+if (!empty($userBar)) {
     $this->htmlElement('body')->appendAttribute('class','has-admin-bar');
 }
 
@@ -55,12 +58,13 @@ if (!empty($this->userBar())) {
     <head>
         <?= $this->headMeta(); ?>
         <?= $this->headTitle(); ?>
+        <?php if ( !empty($this->themeSetting('font_embed'))): ?>
+        <?= $this->themeSetting('font_embed'); ?>
+        <?php endif; ?>
         <?= $this->headLink(); ?>
-        <link rel="icon" type="image/png" href=<?= $this->assetUrl('img/png/favicon/favicon.png'); ?>>
+        <link rel="icon" type="image/png" href=<?= $siteAssetUrl('img/png/favicon/favicon.png'); ?>>
         <?= $this->headStyle(); ?>
         <?= $this->headScript(); ?>
-        <link href=<?= $this->assetUrl('../custom.css'); ?> media="screen" rel="stylesheet" type="text/css">
-        <script src=<?= $this->assetUrl('../custom.js'); ?>></script>
     </head>
 
     <?= $this->htmlElement('body'); ?>
@@ -72,15 +76,21 @@ if (!empty($this->userBar())) {
                 <?php if ($this->themeSetting('logo')): ?>
                   <img src="<?= $this->themeSettingAssetUrl('logo'); ?>" alt="<?= $escape($siteTitle); ?>" />
                 <?php else: ?>
-                  <img src="<?= $this->assetUrl("img/svg/marks/logo.svg"); ?>" alt="<?= $escape($siteTitle); ?>" />
+                  <img src="<?= $siteAssetUrl('img/svg/marks/logo.svg'); ?>" alt="<?= $escape($siteTitle); ?>" />
                 <?php endif; ?>
               </a>
             </div>
               <!--DESKTOP MENU START-->
-              <nav id="main-nav" class="desktop-nav" aria-label="Main navigation for <?= $siteTitle ?>">
-                  <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' =>2]); ?>
+              <nav id="main-nav" class="desktop-nav" aria-label="Main navigation for <?= $escape($siteTitle) ?>">
+                  <?= $this->navigation($this->subNav)->menu()->renderMenu($container, $navOptions); ?>
               </nav>
               <!--DESKTOP MENU END-->
+
+              <!--HEADER SEARCH (desktop; the mobile overlay has its own) -->
+              <div id="nav-search" class="header-search">
+                <?= $this->partial('common/search-form'); ?>
+                <button class="search-form-clear" type="button" title="Clear search">x</button>
+              </div>
 
               <!--MOBILE MENU START-->
               <div id="mobile-menu" aria-label='Mobile Menu'>
@@ -132,25 +142,31 @@ if (!empty($this->userBar())) {
                 <?php if ($this->themeSetting('footer_logo')): ?>
                   <img src="<?= $this->themeSettingAssetUrl('footer_logo'); ?>" alt="<?= $escape($siteTitle); ?>" />
                 <?php else: ?>
-                  <img src="<?= $this->assetUrl("img/svg/marks/logo_reversed.svg"); ?>" alt="<?= $escape($siteTitle); ?>" />
+                  <img src="<?= $siteAssetUrl('img/svg/marks/logo_reversed.svg'); ?>" alt="<?= $escape($siteTitle); ?>" />
                 <?php endif; ?>
               </a>
             </div>
-            <div class="footer--main">
+            <?php if (!empty($this->themeSetting('footer'))): ?>
               <div class="footer--text">
-                <?php if (!empty($this->themeSetting('footer'))): ?>
-                  <?= $this->themeSetting('footer') ; ?>
-                <?php endif; ?>
+                <?= $this->themeSetting('footer') ; ?>
               </div>
+            <?php endif; ?>
+            <?php if (!empty($this->themeSetting('footer_links'))): ?>
               <div class="footer--links">
-                <?php if (!empty($this->themeSetting('footer_links'))): ?>
-                  <?= $this->themeSetting('footer_links'); ?>
-                <?php endif; ?>
+                <?= $this->themeSetting('footer_links'); ?>
               </div>
-            </div>
-            <div class="footer--logo">
-              <!-- No logos -->
-            </div>
+            <?php endif; ?>
+            <?php if (!empty($this->themeSetting('footer_sponsor_logos'))): ?>
+              <div class="footer--sponsor-logos">
+                <img src="<?= $this->themeSettingAssetUrl('footer_sponsor_logos'); ?>" alt="<?= $escape($siteTitle); ?>" />
+              </div>
+            <?php endif; ?>
+            <?php if (!empty($this->themeSetting('footer_sponsor_html'))): ?>
+              <div class="footer--sponsor-html">
+                <?= $this->themeSetting('footer_sponsor_html'); ?>
+              </div>
+            <?php endif; ?>
+
           </section>
         </footer>
         <!-- Mobile overlay -->
@@ -159,7 +175,7 @@ if (!empty($this->userBar())) {
           <div id="mobile-menu--search">
             <?= $this->partial('common/search-form', ['query' => $this->params()->fromQuery(), 'resourceType' => 'user','searchType' => 'browser']); ?>
           </div>
-          <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' =>2]); ?>
+          <?= $this->navigation($this->subNav)->menu()->renderMenu($container, $navOptions); ?>
         </div>
         <!-- Mobile overlay end-->
     </body>

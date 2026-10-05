@@ -5,6 +5,7 @@
 
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
+$valueDisplay = $this->plugin('valueDisplay');
 $this->htmlElement('body')->appendAttribute('class', 'browse card-view');
 // $cardViewer = $this->plugin('card');
 $plugins = $this->getHelperPluginManager();
@@ -14,7 +15,6 @@ $partial = $plugins->get('partial');
 /** @var \AgileThemeTools\View\Helper\AgileSearchHelper $searchHelper */
 $searchHelper = $this->plugin('agileSearchHelper');
 
-
 $query = $this->params()->fromQuery();
 
 $itemSetShow = isset($itemSet);
@@ -23,22 +23,22 @@ if ($itemSetShow):
     $query['item_set_id'] = $itemSet->id();
 endif;
 $sortHeadings = [
-  [
-    'label' => $translate('Sort by Title'),
-    'value' => 'dcterms:title'
-  ],
-  [
-    'label' => $translate('Identifier'),
-    'value' => 'dcterms:identifier'
-  ],
-  [
-    'label' => $translate('Class'),
-    'value' => 'resource_class_label'
-  ],
-  [
-    'label' => $translate('Sort by Date'),
-    'value' => 'dcterms:coverage'
-  ],
+    [
+        'label' => $translate('Sort by Title'),
+        'value' => 'dcterms:title'
+    ],
+    [
+        'label' => $translate('Identifier'),
+        'value' => 'dcterms:identifier'
+     ],
+     [
+         'label' => $translate('Class'),
+         'value' => 'resource_class_label'
+     ],
+     [
+         'label' => $translate('Sort by Date'),
+         'value' => 'dcterms:coverage'
+     ],
 ];
 ?>
 <div id="browse" class='browse-tool' <?php if ($itemSetShow): ?>data-redirect="<?= $searchHelper->getSolrItemSetUrl($itemSet->id()) ?>" <?php endif; ?>>
@@ -54,17 +54,21 @@ $sortHeadings = [
                         <div class="item-label"><?= $translate('Collection') ?></div>
                         <?= $this->pageTitle($itemSet->displayTitle(), 1) ?>
                         <p>
-                            <?= $itemSet->value('dcterms:description'); ?>
+                            <?= $itemSet->value('dcterms:description') ? $valueDisplay($itemSet->value('dcterms:description'), ['link' => false]) : ''; ?>
                         </p>
-                        <?php if ($itemSet->value('dcterms:relation')): ?>
-                            <div class="label">See also</div>
-                            <div class="value">
-                                <a target="_blank" href="<?= $itemSet->value('dcterms:relation')->uri() ?>"><?= $itemSet->value('dcterms:relation') ?></a>
-                            </div>
-                        <?php endif; ?>
+                        <div class="metadata">
+                            <?php if ($itemSet->value('dcterms:relation')): ?>
+                                <div class="label"><?= $translate('See also') ?></div>
+                                <div class="value">
+                                    <?= $valueDisplay($itemSet->value('dcterms:relation'), ['link' => false]) ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                         <?php
-                        $url = $searchHelper->getSolrItemSetUrl($itemSet->id());
-                        printf("       <div class='collection-link'><a class='button' href='%s'>%s</a></div>",$url,"View Full Collection");
+                            // The item set's contents on the main search page: by indexed title on Solr, by id on the internal engine.
+                            $url = $searchHelper->getSolrItemSetUrl($itemSet->id())
+                                ?: $searchHelper->getAdvancedSearchUrl() . '?' . http_build_query(['item_set_id' => [$itemSet->id()]]);
+                            printf("       <div class='collection-link'><a class='button' href='%s'>%s</a></div>", $escape($url), $translate('View Full Collection'));
                         ?>
 
                     </div>
@@ -73,47 +77,42 @@ $sortHeadings = [
                 <?php endif; ?>
             </div>
         </div>
-        <?php if ($itemSetShow): ?>
-        <?php else: ?>
         <div class="browse-search-form">
             <?php echo $this->partial('common/search-form'); ?>
         </div>
-        <?php //echo $this->hyperlink($translate('Search by ID'), $this->url('site/resource', ['controller' => 'item', 'action' => 'search'], ['query' => $query], true), ['class' => 'search-by-id']); ?>
     </div>
-    <?php endif; ?>
-</div>
 
-<?= $this->searchFilters(); ?>
+    <?= $this->searchFilters(); ?>
 
-<div class="top-bar-ui">
+    <div class="top-bar-ui">
 
-    <div class="browse-controls">
-        <div class='sort-selector'>
-            <?php echo $this->sortSelector($sortHeadings); ?>
+        <div class="browse-controls">
+            <div class='sort-selector'>
+                <?php echo $this->sortSelector($sortHeadings); ?>
+            </div>
+
+        </div>
+    </div>
+        <div class="browser browser-container">
+            <ul class="list">
+                <?php foreach ($items as $item): ?>
+                  <?=
+                  $partial('agile-item/card', [
+                  'containerElement' => 'li',
+                  'cardStyle' => 'list-item',
+                  'item' => $item
+                  ]) ?>
+                <?php endforeach; ?>
+            </ul>
         </div>
 
+        <?php echo ($itemSetShow) ? '</div>' : ''; ?>
+        <div class="bottom-bar-ui">
+            <?php echo $this->pagination(); ?>
+        </div>
+        <div>
+            <?= $partial('search/mobile-browse-controls'); ?>
+        </div>
     </div>
-</div>
-<div class="browser browser-container">
-    <ul class="list">
-        <?php foreach ($items as $item): ?>
-            <?=
-            $partial('agile-item/card', [
-              'containerElement' => 'li',
-              'cardStyle' => 'list-item',
-              'item' => $item
-            ]) ?>
-        <?php endforeach; ?>
-    </ul>
-</div>
-
-<?php echo ($itemSetShow) ? '</div>' : ''; ?>
-<div class="bottom-bar-ui">
-    <?php echo $this->pagination(); ?>
-</div>
-<div>
-    <?= $partial('search/mobile-browse-controls'); ?>
-</div>
-</div>
 </div>
 <! -- END OF /AGILE-THEME-TOOLS/AGILE-ITEM/BROWSE.PHTML -->

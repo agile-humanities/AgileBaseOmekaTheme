@@ -1,0 +1,49 @@
+<?php
+
+/** @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource */
+$resourceMedia = $resource->media();
+$partial = $this->plugin('sitePartial');
+$assetUrl = $this->plugin('siteAssetUrl');
+$options = ['hasVtt'=>$hasVtt];
+
+/** @var \Omeka\Api\Representation\MediaRepresentation $primaryMedia */
+
+?>
+<!-- TEMPLATE BEGIN (theme) common/resource-page-block-layout/item-media.phtml -->
+<?php if ($resourceMedia): ?>
+  <div class="item-viewer media-embeds <?= $usePrimary ? 'primary-media' : '' ?>  <?= $hasVtt ? 'has-vtt' : '' ?>">
+
+    <?php
+      if ($useMirador):
+        /** @var \Mirador\View\Helper\Mirador $mirador */
+        $mirador = $this->plugin('mirador');
+        echo $mirador($resource);
+
+      elseif ($useUV):
+        $uv = $this->plugin('universalViewer');
+        echo $uv($resource);
+      elseif ($usePrimary): ?>
+        <?= $primaryMedia->render(); ?>
+      <?php else: ?>
+        <?php
+          /** @var \Omeka\Api\Representation\MediaRepresentation $media */
+          foreach ($resourceMedia as $media): ?>
+          <?php if ($hasVtt) {
+            $options['label'] = sprintf("Transcript (%s)",$media->extension());
+          }
+          ?>
+          <?php
+            if ($audioPrimary && $media->mediaType() && strpos($media->mediaType(),'pdf') > -1):
+              echo $partial('common/media/file-renderer/download',['label'=>'PDF','mediaUrl'=>$media->originalUrl(),'fileName'=>$media->filename()]);
+            else:
+              echo $media->render($options);
+            endif;
+          ?>
+        <?php endforeach; ?>
+      <?php endif; ?>
+  </div>
+<?php else: ?>
+  <?= $partial('common/resource-page-block-layout/item-media-placeholder') ?>
+<?php endif; ?>
+
+<!-- TEMPLATE END common/resource-page-block-layout/item-media.phtml -->

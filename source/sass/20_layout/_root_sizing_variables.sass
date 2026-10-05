@@ -1,0 +1,31 @@
+/**
+ *  @file _root_sizing_variables.sass
+ *  @category 20_layout
+ *  @theme LOCAL
+ *  @description Exposes the theme system's spacing, type, layout and font settings as CSS custom properties, so
+ *    custom CSS written in Omeka (Site settings > Theme styling, Settings > Theme styling) can use the same values
+ *    as the compiled styles. Colours (--colour--*) and breakpoints (--breakpoint-*) are exported by the theme
+ *    system itself. Candidate for the stop14 library's root variables component.
+ *
+ *    --space-N is rv(N) and --type-N is font-value(N) for N from -4 to 6; negative N is written n4 … n1. */
+
+:root
+  --scale: #{$scale}
+  --line-height: #{$base_line_height}
+  --max-width: #{$max_width}
+  --legible-width: #{$legible_inset_width}
+  --masthead-height: #{$masthead_height}
+  --ui-height: #{$ui_element_height}
+  --ui-radius: #{$ui_border_radius}
+  --font-base: #{$basefont}
+  --font-heading: #{$headingfont}
+  --font-alt: #{$altfont}
+  --font-label: #{$labelfont}
+  --font-list: #{$listfont}
+  --font-code: #{$codefont}
+
+@for $i from -4 through 6
+  $suffix: if($i < 0, 'n' + (-$i), $i)
+  :root
+    --space-#{$suffix}: #{rv($i)}
+    --type-#{$suffix}: #{font-value($i)}

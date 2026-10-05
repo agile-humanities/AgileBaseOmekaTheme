@@ -6,75 +6,21 @@ subdir_marks: "'/marks'"
 logo_path: "map-get($asset_dirs,'svg') + $subdir_marks + '/logo.svg'"
 
 # KEY VALUES
-
-## 00 VISIBILITY CONTROL
-# Adds a “visible” class to the listed elements when they are visible in the viewport. Works with various animation scripts.
-visibility_stack: "('main > div','#secondary-content','#tertiary-content','#quaternary-content','.block-facets-block','#block-responses-profile-feature')"
-
-## 01 COLOUR AND PATTERNS
-clr1: #00BDD4
-clr2: #BF609B
-clr3: #D98536
-clr4: #315FAA
-clr5: #7DBF60
-clr6: #E1BB0B
-clr7: #E5336D
-clr8: #00171A
-clr9: #000000
-black: $clr8
-white: white
-
-# Background
-bgcolor: $white
-footer_bg: $black
-
-# Colour Aliases
-impact: $clr2
-cta: $clr1
-de_emphasized: neutral(50)
-de_activated: neutral(30)
-link_colour: $black
-link_colour_active: $clr3
-link_colour_reversed: $white
-link_colour_active_reversed: neutral(5)
-
-## 02 LAYOUT
-rootsize: 100%
-basesize: 1rem
+rootsize: "100%"
 base_line_height: 1.5
-blh: $basesize * $base_line_height
 scale: 1.33
 max_width: 1900px
 legible_inset_width: 920px
 
-## Spacing
-
-mobile_grid_gap_factor: -1
-grid_gap_factor: 0
-block_spacing: 2
-mobile_block_spacing: -2
-edge_padding_factor: 0
-mobile_edge_padding_factor: -1
-text_element_spacing: 3px
-
-# Structure
-masthead_height: 50px
-footer_height: 100px
-admin_bar_height: 40px
-admin_bar_tray: 40px // Second-tier admin bar
-masthead_clearance: rv(0)
-masthead_clearance_mobile: rv(-1)
-splash_height_mobile: auto
-splash_height_tablet: auto
-splash_height_desktop: 100vh
-min_splash_height: 700px
-proportional_width_unit: "math.div(100% - math.div(100,$scale),2)"
-standard_sidebar_width: $proportional_width_unit
-right_sidebar_width: $standard_sidebar_width
-left_sidebar_width: $standard_sidebar_width * 2
-
-footer_branding_width: 150px
-footer_badge_width: $footer_branding_width * 1.5
+# Fonts
+# Note that fonts must be loaded to make them available.
+# Font-loading can be configured in ./source/sass/00_configuration/_04_typography_fonts.sass
+basefont: "Roboto, Tahoma, Arial, sans-serif"
+headingfont: "Roboto, Tahoma, Arial, sans-serif"
+altfont: "Georgia, serif"
+labelfont: $basefont
+listfont: $basefont
+codefont: "'IBM Plex Mono', Monaco, Courier New, monospace"
 
 # Font sizing / Fluid type
 basetypesize: 1rem
@@ -86,34 +32,87 @@ line_heights: "(base: $base_line_height, h1: 1.1, h2: 1.25, h3: 1.25, h4: $base_
 typescale: "(base: 1, xsml: 1, sml: 1, med:1, lrg: 1, xlrg: 1, xxlrg: 1)"
 paragraph_spacing: "clamped(map-get($min_sizefactors,'base'),map-get($sizefactors,'base'),$default-min-bp,$default-max-bp,map-get($line_heights,base))"
 
-# Fonts
-basefont: "Roboto, Tahoma, Arial, sans-serif"
-headingfont: "Roboto, Tahoma, Arial, sans-serif"
-altfont: "Georgia, serif"
-codefont: "'IBM Plex Mono', Monaco, Courier New, monospace"
+## 01 COLOUR AND PATTERNS
+clr1: "#00BDD4"
+clr2: "#BF609B"
+clr3: "#D98536"
+clr4: "#315FAA"
+clr5: "#7DBF60"
+clr6: "#E1BB0B"
+clr7: "#E5336D"
+clr8: "#00171A"
+clr9: "#000000"
+black: $clr8
+white: white
+true_black: "#000000"
 
-## ADVANCED SETTINGS
+# Background
+bgcolor: $white
+footer_bg: $black
+menu_background: transparent
 
-# Additional Colour settings
+# Colour Aliases
+impact: $clr2
+cta: $clr1
+de_emphasized: "neutral(50)"
+de_activated: "neutral(30)"
+link_colour: $black
+link_colour_active: $clr3
+link_colour_reversed: $white
+link_colour_active_reversed: "neutral(5)"
 
 # Neutral aliases
-# Deprecated
-lightest_neutral: neutral(5)
-lighter_neutral: neutral(30)
-light_neutral: neutral(40)
-neutral: neutral()
-mid_neutral: neutral(60)
-dark_neutral: neutral(70)
-darker_neutral: neutral(80)
-darkest_neutral: neutral(90)
+# NOTE: These values are deprecated and left backwards-compatibility. Use neutral() directly or make
+# more meaningful aliases.
+lightest_neutral: "neutral(5)"
+lighter_neutral: "neutral(30)"
+light_neutral: "neutral(40)"
+neutral: "neutral()"
+mid_neutral: "neutral(60)"
+dark_neutral: "neutral(70)"
+darker_neutral: "neutral(80)"
+darkest_neutral: "neutral(90)"
+
+## 02 LAYOUT
+basesize: 1rem
+blh: "$basesize * $base_line_height"
+
+# Structure
+masthead_height: 40px
+footer_height: 100px
+admin_bar_height: 40px
+admin_bar_tray: 40px // Second-tier admin bar
+masthead_clearance: "rv($edge_padding_factor)"
+masthead_clearance_mobile: "rv($mobile_edge_padding_factor)"
+splash_height_mobile: auto
+splash_height_tablet: auto
+splash_height_desktop: 100vh
+min_splash_height: 700px
+proportional_width_unit: "math.div(100% - math.div(100,$scale),2)"
+standard_sidebar_width: $proportional_width_unit
+right_sidebar_width: $standard_sidebar_width
+left_sidebar_width: "$standard_sidebar_width * 2"
+
+footer_branding_width: 150px
+footer_badge_width: "$footer_branding_width * 1.5"
+
+# Spacing
+
+mobile_grid_gap_factor: -1
+grid_gap_factor: 0
+block_spacing: 2
+mobile_block_spacing: -2
+edge_padding_factor: 0
+mobile_edge_padding_factor: -1
+text_element_spacing: 3px
 
 # Breakpoints
 breakpoints: "(xsml: 21em, sml: 30em, med: 46.25em, lrg: 75em, xlrg: 112.5em, xxlrg: 130em)"
 
-stack_breakpoint: 'med'
-tablet_breakpoint: 'med'
-desktop_breakpoint: 'lrg'
-ultrawide_breakpoint: 'xlrg'
+stack_breakpoint: "'med'"
+tablet_breakpoint: "'med'"
+desktop_breakpoint: "'lrg'"
+ultrawide_breakpoint: "'xlrg'"
 
 stack: $stack_breakpoint
 tablet: $tablet_breakpoint
@@ -125,11 +124,10 @@ ultrawide: $ultrawide_breakpoint
 
 font_path: "'../fonts'"
 
-
 # Tables
-row_header_bg: neutral(10)
-row_border_color: neutral(10)
-row_zebra_stripe_color: neutral(3)
+row_header_bg: "neutral(10)"
+row_border_color: "neutral(10)"
+row_zebra_stripe_color: "neutral(3)"
 
 # Deprecated. Use definitions e.g. %h1-font-size
 h1fontsize: "map-get($sizefactors,'h1')"
@@ -139,8 +137,8 @@ h4fontsize: "map-get($sizefactors,'h4')"
 h5fontsize: "map-get($sizefactors,'h5')"
 h6fontsize: "map-get($sizefactors,'h6')"
 
-
-## 04 UI
+## 04 UI | Needs an overhaul
+ui_icon_size: 25px
 ui_padding: 10px
 ui_element_height: 50px
 ui_minheight: $ui_element_height
@@ -151,18 +149,17 @@ ui_max_text_width: 500px
 ui_element_spacing: "rv($mobile_edge_padding_factor)"
 ui_border_radius: 8px
 ui_border_width: 1px
-ui_border_color: neutral(40)
+ui_border_color: "neutral(40)"
 ui_hover_border_color: $impact
 ui_checkbox_height: 20px
-ui_element_font_size: clamped(-1,0)
-ui_checkbox_label_font_size: clamped(-1,0)
-ui_form_text_color: neutral(90)
-ui_icon_size: 25px
+ui_element_font_size: "clamped(-1,0)"
+ui_checkbox_label_font_size: "clamped(-1,0)"
+ui_form_text_color: "neutral(90)"
 
 # mobile ui controls
 
-mobile_overlay_spacing: rv(2)
-mobile_filter_height: rv(5)
+mobile_overlay_spacing: "rv(2)"
+mobile_filter_height: "rv(5)"
 
 # legacy
 border_radius: $ui_border_radius
@@ -182,14 +179,14 @@ btn_icon_size: 25px
 btn_fontsize: "clamped(0,1)"
 btn_compact_fontsize: "clamped(-1,0)"
 btn_minwidth: 250px
-btn_submit_img_size: rv(1)
+btn_submit_img_size: "rv(1)"
 
 btn_color: $black
-btn_bg_color: neutral(20)
+btn_bg_color: "neutral(20)"
 btn_border_color: $ui_border_color
 btn_hover_color: $black
-btn_hover_border_color: neutral(60)
-btn_hover_bg_color: neutral(40)
+btn_hover_border_color: "neutral(60)"
+btn_hover_bg_color: "neutral(40)"
 
 btn_submit_color: $white
 btn_submit_bg_color: $impact
@@ -199,8 +196,7 @@ btn_submit_hover_color: $white
 btn_submit_hover_border_color: "mix($white,$impact,10%)"
 btn_submit_hover_bg_color: "mix($white,$impact,10%)"
 
-
-btn_search_color: neutral(60)
+btn_search_color: "neutral(60)"
 btn_search_bg_color: $white
 btn_search_border_width: $ui_border_width
 btn_search_border_color: $ui_border_color
@@ -208,76 +204,76 @@ btn_search_hover_color: $white
 btn_search_hover_border_color: $impact
 btn_search_hover_bg_color: $white
 
-btn_reset_color: neutral(90)
-btn_reset_bg_color: neutral(30)
+btn_reset_color: "neutral(90)"
+btn_reset_bg_color: "neutral(30)"
 btn_reset_border_width: 0
-btn_reset_border_color: neutral(90)
-btn_reset_hover_color: neutral(10)
-btn_reset_hover_bg_color: neutral(90)
-btn_reset_hover_border_color: neutral(90)
-
+btn_reset_border_color: "neutral(90)"
+btn_reset_hover_color: "neutral(10)"
+btn_reset_hover_bg_color: "neutral(90)"
+btn_reset_hover_border_color: "neutral(90)"
 
 outline_btn_color: $mid_neutral
 outline_btn_hover_color: $ui_hover_border_color
 
 ui_select_width: fit-content
 ui_select_min_width: $btn_width
-ui_select_max_width: 100%
+ui_select_max_width: "100%"
 
-# Menu
-menu_background: transparent
-
-# Callouts
+#Callouts
 
 callout_shift: 0
-callout_width: 40%
+callout_width: "40%"
 callout_inset: null
 callout_breakpoint: lrg
 
 # Animation
-
 heartbeat: 0.2s
 standard_properties: "translate3d scale opacity background-color"
 base_delay: null
-remove_visibility_class: true
 
-## Visibility
+## 00 VISIBILITY CONTROL
+# Elements in the visibility stack are invisible (opacity: 0) by default. A “visible” class is added when the element
+# scrolls into the viewport, allowing for build animations to be triggered.
+
+visibility_stack: "('main > div','#secondary-content','#tertiary-content','#quaternary-content','.block-facets-block','#block-responses-profile-feature')"
+remove_visibility_class: true
 visibility_offset: 50
 visibility_threshold: 0.2
 visibility_stack_animation_speed: 0
 visibility_stack_animation_delay: null
 
-
 # Aliases
 very_fast: $heartbeat
-fast: $heartbeat * 2
-slow: $heartbeat * 4
-very_slow: $heartbeat * 16
-sluggish: $heartbeat * 32
+fast: "$heartbeat * 2"
+slow: "$heartbeat * 4"
+very_slow: "$heartbeat * 16"
+sluggish: "$heartbeat * 32"
 
 # Slide Timing
 slide_transition: $slow
 
-
 ## 06 SITE ELEMENTS
 
 card_border_radius: $border-radius
+welcome_block_bg: $black
+welcome_block_color: $white
+menu_color: $black
 
 # 06 Slide Viewer
 default_next_btn: "'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNi4yNCAzMCI+PGRlZnM+PHN0eWxlPi5ie2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9ImIiIGQ9Ik0xNi4yNCwxNWMwLC4zMi0uMTIsLjYzLS4zNiwuODdMMi4xMSwyOS42NGMtLjQ4LC40OC0xLjI3LC40OC0xLjc1LDAtLjQ4LS40OC0uNDgtMS4yNywwLTEuNzVMMTMuMjUsMTUsLjM2LDIuMTFDLS4xMiwxLjYzLS4xMiwuODQsLjM2LC4zNiwuODQtLjEyLDEuNjMtLjEyLDIuMTEsLjM2TDE1Ljg3LDE0LjEzYy4yNCwuMjQsLjM2LC41NiwuMzYsLjg3WiIvPjwvc3ZnPg=='"
 default_prev_btn: "'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNi4yNCAzMCI+PGRlZnM+PHN0eWxlPi5ie2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9ImIiIGQ9Ik0wLDE1YzAtLjMyLC4xMi0uNjMsLjM2LS44N0wxNC4xMywuMzZjLjQ4LS40OCwxLjI3LS40OCwxLjc1LDAsLjQ4LC40OCwuNDgsMS4yNywwLDEuNzVMMi45OSwxNWwxMi44OSwxMi44OWMuNDgsLjQ4LC40OCwxLjI3LDAsMS43NS0uNDgsLjQ4LTEuMjcsLjQ4LTEuNzUsMEwuMzYsMTUuODdDLjEyLDE1LjYzLDAsMTUuMzIsMCwxNVoiLz48L3N2Zz4='"
 default_slide_item_template: 1
 default_slide_viewer_template: 2
-slide_viewer_padding: rv(0)
+slide_viewer_padding: "rv(0)"
 slide_viewer_marker_size: 10px
-slide_viewer_ui_spacing: rv(-1)
-slide_viewer_midpoint: 50%
+slide_viewer_ui_spacing: "rv(-1)"
+slide_viewer_midpoint: "50%"
 slide_viewer_background: $black
 
-page_marker_background: neutral(30)
+page_marker_background: "neutral(30)"
 page_marker_background_hover: $clr2
 page_marker_background_active: $clr2
-page_marker_border_radius: 50%
+page_marker_border_radius: "50%"
 
 page_marker_transform: none
 page_marker_transform_hover: none
@@ -288,14 +284,19 @@ page_marker_height: $slide_viewer_marker_size
 sequential_control_btn_height: 2rem
 sequential_control_btn_width: 1.5rem
 
-next_btn_background: no-repeat url(#{$default_next_btn})
-previous_btn_background: no-repeat right url(#{$default_prev_btn})
+next_btn_background: "no-repeat url(#{$default_next_btn})"
+previous_btn_background: "no-repeat right url(#{$default_prev_btn})"
 
+circular_audio_color: $cta
+circular_audio_background: $white
+circular_audio_caption_color: $black
+transcript_highlight: "set-color(2,50)"
+transcript_hover: "set-color(2,30)"
 
 slide_content_background: none
 slide_caption_background: none
-slide_item_content_width: 100%
-slide_item_caption_width: 100%
+slide_item_content_width: "100%"
+slide_item_caption_width: "100%"
 
 slide_item_portrait_object_fit: contain
 slide_item_portrait_position: center
@@ -322,16 +323,15 @@ slide_nav_height: $sequential_control_btn_height
 
 page_marker_margin: 0 $slide_viewer_ui_spacing 0 0
 
-
 # Sequential Slider Nav (next/previous)
 
 sequential_nav_top: initial
-sequential_nav_bottom: rv($mobile_edge_padding_factor)
-sequential_nav_left: 50%
+sequential_nav_bottom: "rv($mobile_edge_padding_factor)"
+sequential_nav_left: "50%"
 sequential_nav_right: auto
-sequential_nav_transform: translateX(-50%)
 sequential_nav_justify_content: space-between
 sequential_nav_align_items: center
+sequential_nav_transform: "translateX(-50%)"
 sequential_control_spacing: $slide_viewer_ui_spacing
 
 # Figure container (content + caption)
@@ -339,8 +339,8 @@ sequential_control_spacing: $slide_viewer_ui_spacing
 slide_item_slide_display: flex
 slide_item_slide_flex_direction: column
 slide_item_slide_flex_grow: 1
-slide_item_slide_width: 100%
-slide_item_slide_height: 100%
+slide_item_slide_width: "100%"
+slide_item_slide_height: "100%"
 
 slide_item_slide_padding: 0
 slide_item_slide_margin: 0
@@ -360,7 +360,7 @@ slide_item_caption_bottom: 0
 
 exposed_facet_desktop_width: 350px
 ui_mobile_app_controls_breakpoint: $desktop
-ui_display_controls_icon_size: $ui_mobile_app_controls_footer_height * 0.6
+ui_display_controls_icon_size: "$ui_mobile_app_controls_footer_height * 0.6"
 ui_mobile_app_controls_footer_height: $masthead_height
 
 #mirador

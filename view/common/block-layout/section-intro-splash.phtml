@@ -1,3 +1,7 @@
+<?php
+  $partial = $this->plugin('sitePartial');
+?>
+
 <!-- BEGIN TEMPLATE: /common/block-layout/section-intro-splash.phtml -->
 <div id="block-<?php echo $this->blockId; ?>" class="section-intro-block title-block region <?php echo $this->regionClass; ?>  <?php echo $titleSlideTextAlignment ?>" data-target-region-id="<?php echo $this->targetID; ?> ">
   <div class="title-area">
@@ -7,6 +11,9 @@
       <?php endif; ?>
       <?php if (!empty($titleSlideIntro)): ?>
         <?php echo $titleSlideIntro; ?>
+      <?php endif; ?>
+      <?php if ($titleSlideIntro || $titleSlideTitle): ?>
+        <?= $partial('common/block-layout/section-introduction-title'); ?>
       <?php endif; ?>
     </div>
   </div>

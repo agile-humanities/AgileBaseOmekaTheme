@@ -43,6 +43,7 @@
   position: relative
   overflow: hidden
 
+  // Long unbroken values (URLs, identifiers) must not widen the block.
   *
     word-break: break-word
 
@@ -57,13 +58,6 @@
   +bp($desktop)
     &.reversed
       padding: rv($gap)  !important
-
-
-  a
-    text-decoration: none
-
-    &:hover
-      color: $clr1
 
 
   .metadata-list

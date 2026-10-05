@@ -1,6 +1,6 @@
 <?php
   $translate = $this->plugin('translate');
-  $partial = $this->plugin('partial');
+  $partial = $this->plugin('sitePartial');
 ?>
 <!-- BEGIN TEMPLATE: /common/block-layout/item-listing.phtml -->
 <div id="block-<?php echo $this->blockId; ?>" class="item-listing region <?php echo $this->regionClass; ?>" data-target-region-id="<?php echo $this->targetID; ?> ">
@@ -19,7 +19,8 @@
             <?php endif; ?>
         </div>
     <?php endif; ?>
-    <ul class="listing masonry-grid resource-list search-results-list grid">
+    <?php /** For masonry add masonry-grid class to ul below */ ?>
+    <ul class="listing resource-list search-results-list grid">
           <?php
           $headingTerm = $this->siteSetting('browse_heading_property_term');
           $bodyTerm = $this->siteSetting('browse_body_property_term');

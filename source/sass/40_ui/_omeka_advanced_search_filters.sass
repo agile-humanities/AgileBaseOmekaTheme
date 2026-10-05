@@ -1,0 +1,148 @@
+/*
+ *  @file _omeka_advanced_search_filters
+ *  @group 40_ui
+ *
+ *  @description Manages the Advanced Search module’s advanced filters. Used in place of the styles in
+ *   the Advanced Search module’s search.css
+ */
+
+
+/*
+ * Notes:
+ *
+ * This implementation provides a more compact view of the advanced search form. It should be considered provisional,
+ * as much of the styling is supplied by the Advanced Search module via the form collection or supporting JavaScript
+ * and is liable to change in future releaseds.
+ *
+ * It assumes that the first element is the search box (q) and the second is an advanced search form. Both get 100%
+ * width treatments. Other elements are arranged in a flexbox with set widths at different breakpoints. Particular
+ * configurations may require that this be adjusted.
+ *
+ * Also note that the Advanced Search module duplicates the form identifier (#form-search), which is applied to both
+ * the <form> tag and the interior <fieldset>. This styling isolates the two.
+ *
+ */
+
+form#form-search
+  +standard_edge_padding()
+  background-color: set-color(2,5)
+
+#form-search
+  fieldset
+    margin: 0
+    padding: 0
+
+    // all: unset
+
+  label[for="q"]
+    visibility: hidden
+
+  > fieldset#form-search
+    margin-top: rv($mobile_edge_padding_factor)
+    margin-bottom: 0
+
+    display: flex
+    flex-direction: row
+    flex-wrap: wrap
+
+    // Sets the number of columns for Advanced search elements via percentrages
+
+    > *
+      padding-right: rv($grid_gap_factor)
+      width: 100%
+
+      +bp($tablet)
+        width: 50%
+
+      +bp($desktop)
+        width: 25%
+
+      +bp($ultrawide)
+        width: 20%
+
+      .inputs, span, select
+        width: 100%
+
+      // Assumed to be the search box, which is 100% at all breakpoints.
+      &:nth-child(1)
+        width: 100%
+        padding-right: 0
+
+      // Assumed to be the Advanced Search form. This may need to change as it can affect non-advanced search form
+      // implementations.
+
+      &:nth-child(2)
+        +bp($desktop)
+          padding-right: 0
+          width: 100%
+
+
+    input[name=q]
+      background-color: $white
+
+    .select2-container, .select2-container + input
+      margin-bottom: rv($mobile_edge_padding_factor)
+
+      +bp($desktop)
+        margin-bottom: 0
+
+#search-filters
+  display: flex
+  flex-direction: column
+
+  > fieldset
+    margin-bottom: 0
+
+  .filter
+    display: flex
+    flex-direction: column
+
+    +bp($desktop)
+      flex-direction: row
+      margin-bottom: rv($mobile_edge_padding_factor)
+
+    > *
+      margin-right: rv($grid_gap_factor)
+
+      &:last-child
+        margin-right: 0
+
+      // Currently the boolean selector
+
+      &:first-child
+        width: 100px
+        min-width: 100px
+
+    // Currently the field selector and the operation selector
+
+    > span:nth-of-type(2), > span:nth-of-type(3)
+        width: 200px !important // Overrides javascript-set width
+
+    > input[type=text]
+      +bp($tablet)
+        width: 300px
+      +bp($desktop)
+        width: 400px
+
+  > legend
+    visibility: hidden
+
+  .search-filter-plus
+    margin-top: rv($grid_gap_factor)
+    order: 2 // Required to put the plus action below the filters as per note in MainSearchForm.php
+
+  .search-filter-action
+    width: $ui_element_height
+    min-width: $ui_element_height
+
+.search-form-buttons
+  +horizontal-list(0)
+  flex-direction: row-reverse
+  justify-content: flex-end
+  margin-top: rv($grid_gap_factor)
+
+  > *
+    &:last-child
+      margin-right: rv($grid_gap_factor)
+
+

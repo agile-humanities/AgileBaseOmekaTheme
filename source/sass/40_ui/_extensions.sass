@@ -8,15 +8,45 @@
 
 // SELECT2
 
+// Move this to core components
+.select2-container.select2-container--default .select2-selection--single .select2-selection__arrow
+  background-position: right $ui_padding center
+
 .select2-container--default
   .select2-selection--multiple
     border-radius: $border_radius
     border-color: $ui_border_color
     min-height: $ui_element_height
+    overflow: hidden
+    padding: 6px // matches vendor
+
 
 .select2-selection__choice
   height: 20px
   font-size: clamped(-1,0)
+
+  @at-root .select2-container--default .select2-selection--multiple &
+    all: unset
+    display: inline-flex
+    align-items: center
+    justify-content: flex-start
+    border: 1px solid neutral(50)
+    border-radius: $border-radius * 0.5
+    padding-left: 20px
+    margin: 1px
+    position: relative
+    max-width: 100%
+    overflow: hidden
+    text-overflow: ellipsis
+    vertical-align: bottom
+    white-space: nowrap
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove
+  min-width: unset
+  height: unset
+  border-top-left-radius: $border-radius * 0.5
+  border-bottom-left-radius: $border-radius * 0.5
+  border-right: 0
 
   button
     height: 100% !important

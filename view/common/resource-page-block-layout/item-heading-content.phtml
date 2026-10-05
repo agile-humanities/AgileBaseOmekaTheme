@@ -1,0 +1,63 @@
+<?php
+/**
+ * Item Header block: wayfinding, content type, title, subtitle and creator.
+ * The Summary / Full Metadata tabs are the separate Item Summary block (item-summary-content).
+ * The legacy single-block version is item-header-content.
+ *
+ * @var \Omeka\Api\Representation\ItemRepresentation $resource
+ * @var string $siteUrl
+ */
+$searchHelper = $this->plugin('agileSearchHelper');
+$valueDisplay = $this->plugin('valueDisplay');
+
+$searchMainPage = $this->siteSetting('advancedsearch_main_config');
+/** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
+$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
+
+$item = $resource;
+
+$typeValue = $item->value('dcterms:type');
+$label = $typeValue ? strip_tags($valueDisplay($typeValue, ['link' => false])) : 'Item';
+$creator = $item->value('dcterms:creator');
+?>
+<!-- BEGIN common/resource-page-block-layout/item-heading-content -->
+<div class='item-heading'>
+  <div class='wayfinding'>
+    <a class="wayfinding--breadcrumb icon-home" href="<?= $siteUrl; ?>"><span class="screen-reader-text">Home</span></a>
+    <span>></span>
+    <a class="wayfinding--breadcrumb" href="<?= $searchConfig->siteUrl() ?>">Discover</a>
+    <?php
+    /** @var Omeka\Api\Representation\ItemSetRepresentation $itemSet */
+    $itemSets = $item->itemSets();
+    $firstItemSet = null;
+    ?>
+    <span>></span>
+    <?php
+    foreach ($itemSets as $itemSet):
+      if ($itemSet->isPublic()) {
+        $firstItemSet = $itemSet;
+      }
+    endforeach;
+    ?>
+    <?php if ($firstItemSet): ?>
+      <?= sprintf("<a class='wayfinding--breadcrumb key-item-set' href='%s'>%s</a>",$firstItemSet->url(),$firstItemSet->title()) ?>
+    <?php endif; ?>
+  </div>
+  <header>
+    <div class="item-label"><?= $label ?></div>
+    <?= $this->pageTitle($item->displayTitle(), 1); ?>
+  </header>
+  <?php if ($item->value('dcterms:alternative')): ?>
+    <div class='subtitle'>
+      <?= $valueDisplay($item->value('dcterms:alternative'), ['link' => false]); ?>
+    </div>
+  <?php endif; ?>
+  <?php if ($creator): ?>
+    <div class='deck'>
+      <?php
+        printf("       <div class='value'>%s</div>",$valueDisplay($creator));
+        ?>
+    </div>
+  <?php endif; ?>
+</div>
+<!-- END common/resource-page-block-layout/item-heading-content -->

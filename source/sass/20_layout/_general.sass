@@ -1,9 +1,9 @@
-/** 
- *  @file _general.sass 
+/**
+ *  @file _general.sass
  *  @category 10_layout
  *  @theme LOCAL
  *  @description Additional classes for general layout. **/
- 
+
 body
   min-height: 100vh
   display: flex
@@ -17,12 +17,12 @@ section.empty
   display: none
 
   // Remove extra padding when splash is empty
-  
+
   + section
     padding-top: rv($mobile_edge_padding_factor)
 
     +bp($desktop)
-    padding-top: 0
+      padding-top: 0
 
     main
       padding-top: 0

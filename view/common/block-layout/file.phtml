@@ -2,45 +2,47 @@
 <div class="<?= $this->alignmentClass . ' ' . $this->thumbnailType; ?> <?= $this->escapeHtml(implode(' ', $classes)); ?> file">
   <div class="attachments">
     <?php foreach($this->attachments as $attachment): ?>
-    <div class="item resource capsule">
-      <?php /** @var \Omeka\Api\Representation\ItemRepresentation $item */ ?>
-      <?php $item = $attachment->item();
+    <div class="attachment">
+      <div class="item resource capsule">
+        <?php /** @var \Omeka\Api\Representation\ItemRepresentation $item */ ?>
+        <?php $item = $attachment->item();
 
-      if ($item):?>
-        <?php
-          $media = $attachment->media() ?: $item->primaryMedia();
-          if ($media):
-              echo $media->render([
-                  'thumbnailType' => $thumbnailType,
-                  'link' => $link,]);
-          endif;
-        ?>
-      <div class="media-embed-info item-info">
-        <?php
-          $label = !empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item';
-          if ($label):?>
-            <div class="content-label"><?= $label; ?></div>
+        if ($item):?>
+          <?php
+            $media = $attachment->media() ?: $item->primaryMedia();
+            if ($media):
+                echo $media->render([
+                    'thumbnailType' => $thumbnailType,
+                    'link' => $link,]);
+            endif;
+          ?>
+        <div class="media-embed-info item-info">
+          <?php
+            $label = !empty($item->value('dcterms:type')) ? $item->value('dcterms:type') : 'Item';
+            if ($label):?>
+              <div class="content-label"><?= $label; ?></div>
+            <?php endif; ?>
+          <?php $showTitleOption = $this->showTitleOption; ?>
+          <?php if ($showTitleOption == 'item_title'): ?>
+            <h3 class="item-title"><?= $item->displayTitle(); ?></h3>
+              <?php elseif ($showTitleOption == 'file_name'): ?>
+            <h3 class="item-title"><?= $media->displayTitle(); ?></h3>
           <?php endif; ?>
-        <?php $showTitleOption = $this->showTitleOption; ?>
-        <?php if ($showTitleOption == 'item_title'): ?>
-          <h3 class="item-title"><?= $item->displayTitle(); ?></h3>
-            <?php elseif ($showTitleOption == 'file_name'): ?>
-          <h3 class="item-title"><?= $media->displayTitle(); ?></h3>
-        <?php endif; ?>
-        <?php $textSummary = $this->plugin('textSummary')?>
-        <div class="item-description"><?= $textSummary->summarize($this->plugin('escapeHtml')($this->siteSetting('browse_body_property_term') ? $item->value($this->siteSetting('browse_body_property_term')) : $item->displayDescription()),600); ?></div>
+          <?php $textSummary = $this->plugin('textSummary')?>
+          <div class="item-description"><?= $textSummary->summarize($this->plugin('escapeHtml')($this->siteSetting('browse_body_property_term') ? $item->value($this->siteSetting('browse_body_property_term')) : $item->displayDescription()),600); ?></div>
 
-        <?php $caption = $attachment->caption();
-        if ($caption): ?>
-          <div class="caption item-description"><?= $caption; ?></div>
+          <?php $caption = $attachment->caption();
+          if ($caption): ?>
+            <div class="caption item-description"><?= $caption; ?></div>
+          <?php endif; ?>
+          <div class="item-link">
+            <?= $item->link($item->value($this->siteSetting('browse_heading_property_term', 'Find Out More'), ['default' => $this->plugin('translate')('Find Out More')]),null,['class' => 'more']); ?>
+          </div>
         <?php endif; ?>
-        <div class="item-link">
-          <?= $item->link($item->value($this->siteSetting('browse_heading_property_term', 'Find Out More'), ['default' => $this->plugin('translate')('Find Out More')]),null,['class' => 'more']); ?>
         </div>
-      <?php endif; ?>
       </div>
-     <?php endforeach; ?>
     </div>
+    <?php endforeach; ?>
   </div>
 </div>
 <!-- END TEMPLATE: /common/block-layout/file.phtml -->

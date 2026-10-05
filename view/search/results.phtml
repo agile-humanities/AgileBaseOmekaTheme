@@ -18,7 +18,7 @@ $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $thumbnail = $plugins->get('thumbnail');
-$partial = $plugins->get('partial');
+$partial = $plugins->get('sitePartial');
 $escapeValueOrGetHtml = $plugins->get('escapeValueOrGetHtml');
 
 $selectionButton = $site && $plugins->has('selectionButton') && $this->siteSetting('selection_append_items_browse_individual') ? $plugins->get('selectionButton') : null;
@@ -44,6 +44,7 @@ $masonry = $masonry ?? true;
 // A list does not have html-code in a consistant user interface.
 $allowHtml = (bool) $searchConfig->subSetting('results', 'allow_html');
 
+
 $thumbnailMode = $searchConfig->subSetting('results', 'thumbnail_mode', 'default');
 $noThumbnail = $thumbnailMode === 'none';
 $allThumbnail = $thumbnailMode === 'all';
@@ -56,6 +57,7 @@ $thumbnailType = $searchConfig->subSetting('results', 'thumbnail_type', 'medium'
 <!-- RESULTS TEMPLATE BEGIN search/results.phtml -->
 
 <ul id='collection-list' class="resource-list search-results-list<?= $masonry ? ' masonry-grid' : ''?><?= $gridListMode === 'list_only' ? ' list' : ($gridListMode === 'grid_only' ? ' grid' : '') ?>">
+
     <?php /** @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource */
     foreach ($resources as $resource):
         $resourceUrl = isset($site) ? $resource->siteUrl($siteSlug) : $resource->adminUrl();

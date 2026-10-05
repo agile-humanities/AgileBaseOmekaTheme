@@ -82,7 +82,7 @@
     .item:first-child
       display: block
 
-// Splash version, originally from Pitts build
+// Splash version
 // @todo: Provide template options through configuration (regular, splash compact, splash full height)
 
 .section-intro-block.region-splash
@@ -90,6 +90,13 @@
   color: $white
   background-color: neutral(95)
   isolation: isolate
+  border-top: 2px solid $white
+
+  @at-root .has-admin-bar #splash &
+    top: -26px
+
+  *
+    color: inherit
 
   @at-root #splash &
     height: auto
