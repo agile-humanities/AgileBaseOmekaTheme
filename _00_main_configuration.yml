@@ -77,6 +77,17 @@ darkest_neutral: "neutral(90)"
 basesize: 1rem
 blh: "$basesize * $base_line_height"
 
+# Spacing
+# Defined before Structure: masthead_clearance and others below are calculated from these factors.
+
+mobile_grid_gap_factor: -1
+grid_gap_factor: 0
+block_spacing: 2
+mobile_block_spacing: -2
+edge_padding_factor: 0
+mobile_edge_padding_factor: -1
+text_element_spacing: 3px
+
 # Structure
 masthead_height: 40px
 footer_height: 100px
@@ -95,16 +106,6 @@ left_sidebar_width: "$standard_sidebar_width * 2"
 
 footer_branding_width: 150px
 footer_badge_width: "$footer_branding_width * 1.5"
-
-# Spacing
-
-mobile_grid_gap_factor: -1
-grid_gap_factor: 0
-block_spacing: 2
-mobile_block_spacing: -2
-edge_padding_factor: 0
-mobile_edge_padding_factor: -1
-text_element_spacing: 3px
 
 # Breakpoints
 breakpoints: "(xsml: 21em, sml: 30em, med: 46.25em, lrg: 75em, xlrg: 112.5em, xxlrg: 130em)"
@@ -360,8 +361,8 @@ slide_item_caption_bottom: 0
 
 exposed_facet_desktop_width: 350px
 ui_mobile_app_controls_breakpoint: $desktop
-ui_display_controls_icon_size: "$ui_mobile_app_controls_footer_height * 0.6"
 ui_mobile_app_controls_footer_height: $masthead_height
+ui_display_controls_icon_size: "$ui_mobile_app_controls_footer_height * 0.6"
 
 #mirador
 mirador_height_mobile: 60vh
