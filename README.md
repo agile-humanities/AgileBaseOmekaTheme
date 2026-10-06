@@ -1,4 +1,6 @@
-﻿**Readme**
+**Developers: start with [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** — build paths, output directories, the configuration file's rules, and how the Simplified theme is derived.
+
+**Readme**
 
 About
 

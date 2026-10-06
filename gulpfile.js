@@ -13,6 +13,17 @@
  *   gulp build --config my-site
  *   gulp build --config /var/www/html/files/theme-assets/<theme>/<site-slug>/config.yml --dest /var/www/html/files/theme-assets/<theme>/<site-slug>.building
  *
+ * CSS variables (opt-in): after the build, rewrite the stylesheet so its palette and fonts read from CSS
+ * variables (tools/css-variables.js; adds a minute or two). The Simplified theme is made this way; the
+ * Advanced theme builds plain CSS unless asked.
+ *   gulp build --variables
+ *
+ * Everything at once: the default build, then one build per ./alt-config/*.yml (each to its own
+ * asset-<name>), each in its own process so one failure does not stop the rest; a summary and a
+ * non-zero exit when any failed. --configs <dir> reads the configs from another directory.
+ *   gulp build --all
+ *   gulp build --all --configs ./my-configs
+ *
  * Default configuration under another name (relative to the theme, or absolute):
  *   gulp build --mainconfig my-configuration.yml
  *
@@ -683,6 +694,19 @@ var reportBuild = function(done) {
   done();
 }
 
+// --variables: run tools/css-variables.js on what was just built (see the notes at the top).
+function applyCssVariables(done) {
+  if (!argv.variables) return done();
+  const { spawnSync } = require('child_process');
+  const toolArgs = [path.join(__dirname, 'tools', 'css-variables.js'), '--write', '--css-dir', path.join(paths.output, 'css')];
+  if (alt_config) toolArgs.push('--config', alt_config.path);
+  if (typeof argv.mainconfig === 'string' && argv.mainconfig !== '') toolArgs.push('--mainconfig', argv.mainconfig);
+  console.log('Rewriting the stylesheet to read its palette and fonts from CSS variables…');
+  const result = spawnSync(process.execPath, toolArgs, { cwd: __dirname, stdio: 'inherit' });
+  if (result.status !== 0) return done(new Error('css-variables.js failed' + (result.error ? ': ' + result.error.message : ' (exit ' + result.status + ')')));
+  done();
+}
+
 function buildAll(done) {
   series(
     testSourceDirectory,
@@ -702,8 +726,51 @@ function buildAll(done) {
     buildFonts,
     copyFiles,
     buildModernizr,
+    applyCssVariables,
     reportBuild,
     cleanupGeneratedConfig)(done);
+}
+
+/**
+ * --all: every configuration, one build per process (see the notes at the top).
+ */
+function buildEveryConfig(done) {
+  const { spawnSync } = require('child_process');
+  const configDir = resolveDirArg(argv.configs) || alt_config_dir;
+  const configs = fs.existsSync(configDir)
+    ? fs.readdirSync(configDir).filter((f) => ymlFilePattern.test(f)).sort()
+    : [];
+  if (argv.configs && !fs.existsSync(configDir)) {
+    return done(new Error("Config directory " + configDir + " does not exist."));
+  }
+
+  // Options that apply to every build are passed on; --config/--dest are per build.
+  const shared = [];
+  ['mainconfig', 'source', 'sourceimgs'].forEach((name) => {
+    if (typeof argv[name] === 'string' && argv[name] !== '') shared.push('--' + name, argv[name]);
+  });
+  if (argv.variables) shared.push('--variables');
+  const gulpBin = path.join(__dirname, 'node_modules', 'gulp', 'bin', 'gulp.js');
+  const runs = [{ label: 'default (' + asset_basename + ')', args: [] }].concat(configs.map((file) => ({
+    label: file.replace(ymlFilePattern, '$1') + ' (' + asset_basename + '-' + file.replace(ymlFilePattern, '$1') + ')',
+    args: ['--config', path.join(configDir, file)],
+  })));
+
+  console.log("Building " + runs.length + " configuration(s): " + runs.map((r) => r.label.split(' ')[0]).join(', '));
+  const results = runs.map((run) => {
+    console.log("\n==== " + run.label + " ====");
+    const started = Date.now();
+    const result = spawnSync(process.execPath, [gulpBin, 'build'].concat(run.args, shared), { cwd: __dirname, stdio: 'inherit' });
+    return { label: run.label, ok: result.status === 0, seconds: Math.round((Date.now() - started) / 1000), status: result.status, error: result.error };
+  });
+
+  console.log("\n==== Summary ====");
+  results.forEach((r) => console.log((r.ok ? "  ok    " : "  FAIL  ") + r.label + "  (" + r.seconds + "s" + (r.ok ? "" : ", exit " + (r.error ? r.error.message : r.status)) + ")"));
+  const failed = results.filter((r) => !r.ok);
+  if (failed.length) {
+    return done(new Error(failed.length + " of " + results.length + " build(s) failed: " + failed.map((r) => r.label.split(' ')[0]).join(', ')));
+  }
+  done();
 }
 
 /**
@@ -716,7 +783,7 @@ exports.default = series(
   buildAll
 );
 
-exports.build = series(
+exports.build = argv.all ? series(buildEveryConfig) : series(
   buildAll
 );
 

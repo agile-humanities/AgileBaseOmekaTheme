@@ -5,11 +5,22 @@
 Makes the compiled stylesheet take its palette and fonts from CSS variables, so they can be changed in the
 browser — by a few lines of CSS — without rebuilding the theme. The SASS is not touched.
 
+**Where it is used.** This is the output path of the Simplified Agile Base Theme, whose themers work in CSS: its
+stylesheet is this tool's output. The Advanced theme builds plain compiled CSS by default — its themers configure
+the theme system through the admin and rebuild, or edit the SASS — and runs the tool only when asked:
+
+```bash
+gulp build --variables          # build, then rewrite the stylesheet (works with --config/--dest and --all too)
+npm run build:variables         # the same
+```
+
+**Future home.** Once stable, this belongs in the `stop14-themesystem-legacy` library, beside the colour
+functions whose output it traces, so every theme built on the library can produce variable-driven CSS the same way.
+
 ```bash
 node tools/css-variables.js            # writes asset/css/style.vars.css and a report; changes nothing else
 node tools/css-variables.js --verify   # also proves it against a real build with a random palette
 node tools/css-variables.js --write    # replaces asset/css/style.css and style.min.css
-npm run release-css                    # full build, then --write --verify
 ```
 
 It needs the theme's `node_modules` and takes a minute or two: it compiles the styles once per palette colour
