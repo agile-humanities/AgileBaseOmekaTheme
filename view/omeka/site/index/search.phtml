@@ -36,11 +36,7 @@ $resourceControllers = [
         <?php foreach ($result['resources'] as $resource): ?>
         <li>
             <?=
-            $partial('agile-item/card', [
-              'containerElement' => 'li',
-              'cardStyle' => 'list-item',
-              'item' => $resource
-            ]) ?>
+            $this->card($resource, ['containerElement' => 'li', 'cardStyle' => 'list-item']) ?>
         </li>
         <?php endforeach; ?>
     </ul>

@@ -97,11 +97,7 @@ $sortHeadings = [
             <ul class="list">
                 <?php foreach ($items as $item): ?>
                   <?=
-                  $partial('agile-item/card', [
-                  'containerElement' => 'li',
-                  'cardStyle' => 'list-item',
-                  'item' => $item
-                  ]) ?>
+                  $this->card($item, ['containerElement' => 'li', 'cardStyle' => 'list-item']) ?>
                 <?php endforeach; ?>
             </ul>
         </div>

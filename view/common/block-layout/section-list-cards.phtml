@@ -11,29 +11,9 @@
     <?php if ($this->hasPages): ?>
     <div class="card-container">
         <ul class="cards grid">
+            <?php // Each page as a card (the card display mode reads the page's Page summary block, or the older blocks). ?>
             <?php foreach($this->pages as $page): ?>
-                <li class='item'>
-                    <a title="See <?= $page['o:title']; ?>" class="card" href='<?= $page['o:url']; ?>'>
-                        <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('representativeImage',$page['embeddedBlocks'])): ?>
-                            <?= $page['embeddedBlocks']['representativeImage'][0]; ?>
-                        <?php endif; ?>
-                        <div class="item-info">
-                            <?php if (!empty($this->cardLabel)): ?>
-                              <div class="item-label"><?= $this->cardLabel ?></div>
-                            <?php endif; ?>
-                            <h3 class="item-title"><?= $page['o:title']; ?></h3>
-                            <div class="item-description">
-                                <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('byline',$page['embeddedBlocks'])): ?>
-                                    <?= $page['embeddedBlocks']['byline'][0]; ?>
-                                <?php endif; ?>
-                                <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('excerpt',$page['embeddedBlocks'])): ?>
-                                    <?= $page['embeddedBlocks']['excerpt'][0]; ?>
-                                <?php endif; ?>
-                            </div>
-                            <div class='more'>View</div>
-                        </div>
-                    </a>
-                </li>
+                <?= $this->card($page, ['containerElement' => 'li', 'classes' => 'item', 'label' => $this->cardLabel ?: null]) ?>
             <?php endforeach ?>
         </ul>
     </div>

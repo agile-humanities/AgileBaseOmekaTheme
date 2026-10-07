@@ -60,11 +60,7 @@ $sortHeadings = [
 <ul class="resource-list">
 <?php foreach ($items as $item): ?>
   <?=
-  $partial('agile-item/card', [
-    'containerElement' => 'li',
-    'cardStyle' => 'list-item',
-    'item' => $item
-  ]) ?>
+  $this->card($item, ['containerElement' => 'li', 'cardStyle' => 'list-item']) ?>
 <?php endforeach; ?>
 </ul>
 <?php echo ($itemSetShow) ? '</div>' : ''; ?>

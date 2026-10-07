@@ -1,0 +1,70 @@
+<?php
+/**
+ * The card display mode, the Advanced theme's markup. The data arrives prepared by the module (DisplayMode\Card,
+ * configured under Settings > Cards and the site's Settings > Cards); this template lays it out and nothing more.
+ * The class vocabulary is the theme's (card, item-thumbnail, item-info, item-label, item-title, item-sublabel,
+ * item-description, metadata-list …), so the SASS in 40_ui/10_components/_card.sass and 60_site_elements/_card.sass applies.
+ *
+ * @var string $containerElement
+ * @var string $cardStyle          card | list-item | item …
+ * @var string $classes
+ * @var string|null $slot
+ * @var string $type               item | item_set | media | resource | page
+ * @var string $url
+ * @var string $label
+ * @var string $title
+ * @var string $subtitle           HTML
+ * @var string $summary            escaped text
+ * @var string|null $image         thumbnail HTML
+ * @var bool $imageIsPlaceholder
+ * @var array $metadata            [['term', 'label', 'values' => [html]]]
+ * @var array $itemSets            [['title', 'url']]
+ * @var array|null $rights         ['label', 'value' => html]
+ * @var string $byline
+ */
+$escape = $this->plugin('escapeHtml');
+$translate = $this->plugin('translate');
+// The base theme styling looks for .card; a style other than card adds it.
+$classes = trim($cardStyle . ' ' . $classes . ' card-' . $type . ($cardStyle !== 'card' ? ' card' : ''));
+$resourceClassName = 'resource-' . $type;
+?>
+<!-- BEGIN TEMPLATE: common/display-mode/card -->
+<<?= $containerElement ?> class="<?= $escape($classes) ?>"<?= $slot !== null ? ' slot="' . $escape($slot) . '"' : '' ?>>
+<div>
+  <a href="<?= $escape($url) ?>">
+    <figure class="item-thumbnail <?= $imageIsPlaceholder ? 'default' : '' ?> <?= $resourceClassName ?>">
+      <?= $image ?? '' ?>
+    </figure>
+  </a>
+  <div class="item-info">
+    <?php if ($label !== ''): ?><div class="item-label"><?= $escape($label) ?></div><?php endif; ?>
+    <h3 class="item-title title-clamp"><a href="<?= $escape($url) ?>"><?= $escape($title) ?></a></h3>
+    <?php if ($subtitle !== ''): ?><div class="item-sublabel sublabel"><?= $subtitle ?></div><?php endif; ?>
+    <?php if ($byline !== ''): ?><div class="item-sublabel byline"><?= $escape($byline) ?></div><?php endif; ?>
+    <?php if ($summary !== ''): ?><div class="item-description"><?= $summary ?></div><?php endif; ?>
+    <?php if ($type !== 'item_set' && ($metadata || $itemSets || $rights)): ?>
+      <div class="metadata-list">
+        <?php foreach ($metadata as $row): ?>
+        <div class="property" data-term="<?= $escape($row['term']) ?>">
+          <div class="label"><?= $escape($row['label']) ?></div>
+          <div class="values"><?php foreach ($row['values'] as $value): ?><div class="value"><?= $value ?></div><?php endforeach; ?></div>
+        </div>
+        <?php endforeach; ?>
+        <?php if ($itemSets): ?>
+        <div class="metadata-item">
+          <div class="label"><?= $escape(count($itemSets) > 1 ? $translate('Collections') : $translate('Collection')) ?></div>
+          <div class="value"><?php foreach ($itemSets as $i => $set): ?><?= $i ? ', ' : '' ?><a class="card--item-set-link" href="<?= $escape($set['url']) ?>"><?= $escape($set['title']) ?></a><?php endforeach; ?></div>
+        </div>
+        <?php endif; ?>
+        <?php if ($rights): ?>
+        <div class="metadata-item license">
+          <div class="label"><?= $escape($rights['label']) ?></div>
+          <div class="value license-and-icon"><div><?= $rights['value'] ?></div></div>
+        </div>
+        <?php endif; ?>
+      </div>
+    <?php endif; ?>
+  </div>
+</div>
+</<?= $containerElement ?>>
+<!-- END TEMPLATE: common/display-mode/card -->

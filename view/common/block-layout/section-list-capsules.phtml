@@ -10,20 +10,16 @@
     <?php endif; ?>
     <?php if ($this->hasPages): ?>
     <div class="grid">
-        <?php foreach($this->pages as $page): ?>
+        <?php $escape = $this->plugin('escapeHtml'); ?>
+        <?php foreach($this->pages as $page): $card = $this->card()->prepare($page); if (!$card) continue; ?>
             <div class='capsule'>
-                <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('representativeImage',$page['embeddedBlocks'])): ?>
-                    <?php echo $page['embeddedBlocks']['representativeImage'][0]; ?>
+                <?php if ($card['image']): ?>
+                    <div class="representative-image"><div class="item resource"><figure><a href="<?= $escape($card['url']) ?>"><?= $card['image'] ?></a></figure></div></div>
                 <?php endif; ?>
-                <h3><a href='<?php echo $page['o:url']; ?>'><?php echo $page['o:title']; ?></a></h3>
-                <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('byline',$page['embeddedBlocks'])): ?>
-                    <?php echo $page['embeddedBlocks']['byline'][0]; ?>
-                <?php endif; ?>
-
-                <?php if ($page['hasEmbeddedBlocks'] && array_key_exists('excerpt',$page['embeddedBlocks'])): ?>
-                    <?php echo $page['embeddedBlocks']['excerpt'][0]; ?>
-                <?php endif; ?>
-                <a class='more' href='<?php echo $page['o:url']; ?>'>View this item</a>
+                <h3><a href='<?= $escape($card['url']) ?>'><?= $escape($card['title']) ?></a></h3>
+                <?php if ($card['byline'] !== ''): ?><div class="byline"><?= $escape($card['byline']) ?></div><?php endif; ?>
+                <?php if ($card['summary'] !== ''): ?><div class="excerpt"><p><?= $card['summary'] ?></p></div><?php endif; ?>
+                <a class='more' href='<?= $escape($card['url']) ?>'>View this item</a>
             </div>
         <?php endforeach ?>
     </div>

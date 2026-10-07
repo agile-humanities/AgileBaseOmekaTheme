@@ -106,6 +106,9 @@ const REWRITES = [
   { from: "$searchAction = isset($searchAction) ? $searchAction : ($searchConfig ? $searchConfig->siteUrl() : '#');", to: "$searchAction = isset($searchAction) ? $searchAction : $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], [], true);", files: ['common/search-form.phtml'] },
   { from: "$searchValue = $this->escapeHtml($this->params()->fromQuery('q', ''));\n        $name='q';", to: "$searchValue = $this->escapeHtml($this->params()->fromQuery('fulltext_search', ''));\n        $name = 'fulltext_search';", files: ['common/search-form.phtml'] },
   { from: "href=\"<?= $searchConfig->siteUrl() ?>\"", to: "href=\"<?= $this->url('site/resource', ['controller' => $this->resourceType, 'action' => 'browse'], ['query' => $this->query], true) ?>\"", files: ['common/block-layout/browse-preview.phtml'] },
+  // The module's card display mode → the theme's standalone card partial (same option names), which the Simplified
+  // theme carries as agile-item/card.phtml with the module helpers shimmed out.
+  { regex: /\$this->card\(([^,()]+?)(?:,\s*(\[[^\]]*\]))?\)/g, to: (m, thing, opts) => "$this->partial('agile-item/card', ['item' => " + thing.trim() + "] + " + (opts || '[]') + ")" },
 ];
 
 // Anything still naming a module after the rewrites stops the generation.
@@ -114,7 +117,7 @@ const FORBIDDEN = [
   helperCall('siteAssetUrl'), helperCall('sitePartial'), helperCall('themeFonts'), helperCall('valueDisplay'), helperCall('propertyTerms'),
   helperCall('textSummary'), helperCall('agileSearchHelper'), helperCall('itemSetFacetHandler'), helperCall('dateHandler'), helperCall('pageSlug'),
   helperCall('siteHelper'), helperCall('universalViewer'), helperCall('searchQuickReplacement'), helperCall('mirador'), helperCall('iiifServer'),
-  /'search_configs'/, /advancedsearch_main_config_replace/,
+  /'search_configs'/, /advancedsearch_main_config_replace/, /->card\(/, /->displayMode\(/,
   { re: helperCall('customCss'), unless: /has\('customCss'\)/ },
 ];
 const isComment = (line) => /^\s*(\/\/|\*|\/\*)/.test(line);
@@ -179,6 +182,7 @@ for (const rel of TEMPLATES) {
   for (const rule of REWRITES) {
     const applies = !rule.files || rule.files.includes(rel);
     if (!applies) continue;
+    if (rule.regex) { text = text.replace(rule.regex, rule.to); continue; }
     if (!text.includes(rule.from)) {
       if (rule.files) problems.push(rel + ': expected line not found, the Advanced template changed:\n      ' + rule.from.split('\n')[0]);
       continue;

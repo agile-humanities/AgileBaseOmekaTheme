@@ -26,10 +26,7 @@
           $bodyTerm = $this->siteSetting('browse_body_property_term');
           foreach ($attachments as $attachment):
           ?>
-            <?= $partial('agile-item/card', [
-              'item' => $attachment->item(),
-              'containerElement' => 'li'
-            ]) ?>
+            <?= $this->card($attachment->item(), ['containerElement' => 'li']) ?>
           <?php endforeach; ?>
     </ul>
 
