@@ -136,7 +136,7 @@ $item_container_object_spacing: rv($edge_padding_factor)
         align-items: center
         width: 100%
         background-color: $black
-        color: $white
+        color: $on_dark
 
         iframe
           width: 100%
@@ -196,11 +196,11 @@ $item_container_object_spacing: rv($edge_padding_factor)
         background: none
 
       .subject-title
-        color: $black
+        color: $on_light
         text-decoration: underline
 
         &:hover, &.focus
-          color: $clr2
+          color: $brand_secondary_on_light
 
   #related-items
     @extend %browser-container
@@ -217,4 +217,4 @@ $item_container_object_spacing: rv($edge_padding_factor)
       margin-bottom: rv(1)
 
       span
-        color: $impact
+        color: $brand_secondary_on_light

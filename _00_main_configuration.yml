@@ -56,14 +56,30 @@ black: "#00171A"
 white: white
 true_black: "#000000"
 
-# Colour roles (working names; the library will define these with defaults once E2 lands)
+# Colour roles (see the generic requirements, section 7.3, and the library's _01_configuration_colour_and_patterns.sass).
+# The canvas and the surfaces form a continuum:  $black | $surface_dark | $surface_light | $white
+# $white is the page, $black its inverse (the blackpoint); the surfaces are a small step in from each end, for panels
+# that stand out from the page without contrasting with it. Text colours belong to a side: $on_light reads on $white
+# and $surface_light, $on_dark on $black and $surface_dark.
 surface_dark: $clr3
 surface_light: $clr4
-on_dark: $clr4
-on_light: $clr3
+on_dark: $white
+on_light: $black
 visual_impact: $clr5
 brand_primary: $clr1
 brand_secondary: $clr2
+# Derived roles, text class (4.5:1): restated here so the library computes them from this palette.
+# A brand colour that reads on the surface is used as it is; otherwise a variant mixed toward the opposite fixed point.
+on_impact: "on-colour($visual_impact)"
+brand_primary_on_light: "ensure-contrast($brand_primary, $surface_light)"
+brand_primary_on_dark: "ensure-contrast($brand_primary, $surface_dark)"
+brand_secondary_on_light: "ensure-contrast($brand_secondary, $surface_light)"
+brand_secondary_on_dark: "ensure-contrast($brand_secondary, $surface_dark)"
+# Brand colours as surfaces (decision 2026-10-06): explicit roles with an automatically picked text colour.
+surface_brand: $brand_primary
+on_brand: "on-colour($surface_brand)"
+surface_brand_secondary: $brand_secondary
+on_brand_secondary: "on-colour($surface_brand_secondary)"
 
 # Background
 bgcolor: $white
@@ -71,14 +87,17 @@ footer_bg: $black
 menu_background: transparent
 
 # Colour Aliases
-impact: $clr2
-cta: $clr1
+# impact and cta are DEPRECATED (2026-10-07): kept for end-case themes, mapped to the brand roles. New rules bind to
+# the roles: $brand_primary / $brand_secondary for accents, $brand_*_on_light / _on_dark for text, $surface_brand for
+# a brand-coloured surface with $on_brand as its text.
+impact: $brand_secondary
+cta: $brand_primary
 de_emphasized: "neutral(50)"
 de_activated: "neutral(30)"
-link_colour: $black
-link_colour_active: $clr5
-link_colour_reversed: $white
-link_colour_active_reversed: "neutral(5)"
+link_colour: $on_light
+link_colour_active: $brand_primary_on_light
+link_colour_reversed: $on_dark
+link_colour_active_reversed: $brand_primary_on_dark
 
 # Neutral aliases
 # NOTE: These values are deprecated and left backwards-compatibility. Use neutral() directly or make
@@ -170,7 +189,7 @@ ui_element_spacing: "rv($mobile_edge_padding_factor)"
 ui_border_radius: 8px
 ui_border_width: 1px
 ui_border_color: "neutral(40)"
-ui_hover_border_color: $impact
+ui_hover_border_color: $brand_secondary
 ui_checkbox_height: 20px
 ui_element_font_size: "clamped(-1,0)"
 ui_checkbox_label_font_size: "clamped(-1,0)"
@@ -201,27 +220,27 @@ btn_compact_fontsize: "clamped(-1,0)"
 btn_minwidth: 250px
 btn_submit_img_size: "rv(1)"
 
-btn_color: $black
+btn_color: $on_light
 btn_bg_color: "neutral(20)"
 btn_border_color: $ui_border_color
-btn_hover_color: $black
+btn_hover_color: $on_light
 btn_hover_border_color: "neutral(60)"
 btn_hover_bg_color: "neutral(40)"
 
-btn_submit_color: $white
-btn_submit_bg_color: $impact
+btn_submit_color: $on_impact
+btn_submit_bg_color: $visual_impact
 btn_submit_border_width: 0
-btn_submit_border_color: $impact
-btn_submit_hover_color: $white
-btn_submit_hover_border_color: "mix($white,$impact,10%)"
-btn_submit_hover_bg_color: "mix($white,$impact,10%)"
+btn_submit_border_color: $visual_impact
+btn_submit_hover_color: "on-colour(mix($white,$visual_impact,10%))"
+btn_submit_hover_border_color: "mix($white,$visual_impact,10%)"
+btn_submit_hover_bg_color: "mix($white,$visual_impact,10%)"
 
-btn_search_color: "neutral(60)"
+btn_search_color: "neutral(70)"
 btn_search_bg_color: $white
 btn_search_border_width: $ui_border_width
 btn_search_border_color: $ui_border_color
-btn_search_hover_color: $white
-btn_search_hover_border_color: $impact
+btn_search_hover_color: $on_light
+btn_search_hover_border_color: $brand_secondary
 btn_search_hover_bg_color: $white
 
 btn_reset_color: "neutral(90)"
@@ -276,8 +295,8 @@ slide_transition: $slow
 
 card_border_radius: $border-radius
 welcome_block_bg: $black
-welcome_block_color: $white
-menu_color: $black
+welcome_block_color: $on_dark
+menu_color: $on_light
 
 # 06 Slide Viewer
 default_next_btn: "'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNi4yNCAzMCI+PGRlZnM+PHN0eWxlPi5ie2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9ImIiIGQ9Ik0xNi4yNCwxNWMwLC4zMi0uMTIsLjYzLS4zNiwuODdMMi4xMSwyOS42NGMtLjQ4LC40OC0xLjI3LC40OC0xLjc1LDAtLjQ4LS40OC0uNDgtMS4yNywwLTEuNzVMMTMuMjUsMTUsLjM2LDIuMTFDLS4xMiwxLjYzLS4xMiwuODQsLjM2LC4zNiwuODQtLjEyLDEuNjMtLjEyLDIuMTEsLjM2TDE1Ljg3LDE0LjEzYy4yNCwuMjQsLjM2LC41NiwuMzYsLjg3WiIvPjwvc3ZnPg=='"
@@ -291,8 +310,8 @@ slide_viewer_midpoint: "50%"
 slide_viewer_background: $black
 
 page_marker_background: "neutral(30)"
-page_marker_background_hover: $clr2
-page_marker_background_active: $clr2
+page_marker_background_hover: $brand_secondary
+page_marker_background_active: $brand_secondary
 page_marker_border_radius: "50%"
 
 page_marker_transform: none
@@ -307,9 +326,9 @@ sequential_control_btn_width: 1.5rem
 next_btn_background: "no-repeat url(#{$default_next_btn})"
 previous_btn_background: "no-repeat right url(#{$default_prev_btn})"
 
-circular_audio_color: $cta
+circular_audio_color: $brand_primary
 circular_audio_background: $white
-circular_audio_caption_color: $black
+circular_audio_caption_color: $on_light
 transcript_highlight: "set-color(2,50)"
 transcript_hover: "set-color(2,30)"
 

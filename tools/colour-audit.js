@@ -418,7 +418,7 @@ function evaluate(expr) {
   const lit = toRgb(s);
   if (lit) return lit;
   if ((m = s.match(/^neutral\(\s*(\d+)?\s*\)$/))) {
-    const bk = colourVars.black && colourVars.black.rgb, wh = colourVars.white && colourVars.white.rgb;
+    const bk = (colourVars.surface_dark || colourVars.black || {}).rgb, wh = (colourVars.surface_light || colourVars.white || {}).rgb;
     return bk && wh ? sassMix(bk, wh, m[1] != null ? +m[1] : 50) : null;
   }
   if ((m = s.match(/^mix\(\s*(.+?)\s*,\s*(.+?)\s*,\s*([\d.]+)%\s*\)$/))) {
@@ -566,9 +566,10 @@ const unreferenced = inventory.filter((v) => v.group === 'palette' && !/^clr(1\d
 md.push(`Palette slots never used directly in a rule (only through aliases or the CSS-variable export): ${unreferenced.map((v) => '`$' + v.name + '`' + (inventory.filter((w) => w.pointsAt.includes(v.name) && !/_map$/.test(w.name)).length ? ' (via ' + inventory.filter((w) => w.pointsAt.includes(v.name) && !/_map$/.test(w.name)).map((w) => '`$' + w.name + '`').join(', ') + ')' : ' (unused)')).join(', ')}.`);
 
 h('## 5. Same variable, different roles');
-md.push('A variable used both as a text colour and as a background (or border) has two different contrast obligations: whatever a themer picks for it has to read as text on the page background *and* carry text on top of it. These are the variables that cannot be given one usage recommendation as things stand.');
+md.push('A variable used both as a text colour and as a background (or border) has two different contrast obligations. The canvas pair (`$black`, `$white`), the surfaces and the on-* roles are left out: on the continuum each of them is both a surface and a text colour by design. What remains cannot be given one usage recommendation.');
 md.push('');
-const conflicting = inventory.filter((v) => v.uses.roles.text && (v.uses.roles.background || v.uses.roles.border));
+// $black/$white (the canvas and its text), the surfaces and the on-* roles are both surfaces and text by design (the continuum).
+const conflicting = inventory.filter((v) => !/^(black|white|surface[-_](light|dark|brand(?:[-_]secondary)?)|on[-_](light|dark|brand(?:[-_]secondary)?|impact))$/.test(v.name) && v.uses.roles.text && (v.uses.roles.background || v.uses.roles.border));
 table(['Variable', 'As text in', 'As background in', 'As border in'], conflicting.map((v) => {
   const rf = byVar['$' + v.name].roleFiles;
   const list = (r) => rf[r] ? [...rf[r]].map((f) => f.replace(/^sass\//, '')).join('<br>') : '';
@@ -620,7 +621,9 @@ md.push('**Library defaults for the semantic aliases** (from `10_colours_and_pat
 md.push('');
 const setColour = occurrences.filter((o) => /set-colou?r/.test(o.wrapper) && o.scope !== 'library-uncompiled');
 if (colourVars.neutral && bk && wh) {
-  const expected = sassMix(bk, wh, 50), actual = colourVars.neutral.rgb;
+  // neutral() mixes the poles when the library defines them (colour roles), black and white otherwise.
+  const poleDark = colourVars.surface_dark && colourVars.surface_dark.rgb || bk, poleLight = colourVars.surface_light && colourVars.surface_light.rgb || wh;
+  const expected = sassMix(poleDark, poleLight, 50), actual = colourVars.neutral.rgb;
   if (toHex(expected) !== toHex(actual)) {
     const same = inventory.filter((v) => v.group === 'neutral' && v.name !== 'neutral' && colourVars[v.name].rgb && toHex(colourVars[v.name].rgb) === toHex(actual)).map((v) => '`$' + v.name + '`');
     md.push(`**\`$neutral\` is overwritten by the library.** It is declared as \`neutral()\` (= ${toHex(expected)}) but resolves to ${toHex(actual)}${same.length ? ' (the value of ' + same.join(', ') + ')' : ''}: \`root_colour_variables/_colour_root_variables.sass\` assigns \`$neutral\` inside a top-level \`@for\` loop, and SASS treats that as an assignment to the existing global, so the loop's last step (\`neutral(90)\`) wins. Harmless today only because nothing uses \`$neutral\`.`);

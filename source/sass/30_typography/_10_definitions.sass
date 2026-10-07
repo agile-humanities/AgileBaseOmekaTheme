@@ -15,7 +15,7 @@ $ribbon_padding_factor: -3
 %small-text
   font-size: clamped(-1,-2)
   font-weight: $normal
-  color: $black
+  color: $on_light
   @extend %has-reversed
 
 %underscore
@@ -28,13 +28,13 @@ $ribbon_padding_factor: -3
   @extend %display-font
   font-size: clamped(2,3)
   font-weight: $bold
-  color: $impact
+  color: $brand_secondary_on_light
 
 // Utility
 
 %has-reversed
   @at-root .reversed &
-    color: $white
+    color: $on_dark
 
 // Anchors
 
@@ -59,7 +59,7 @@ $ribbon_padding_factor: -3
   padding: rv($ribbon_padding_factor)
   +font-size(1)
   background-color: $black
-  color: $white
+  color: $on_dark
   font-family: $headingfont
   font-weight: $bold
   width: fit-content
@@ -76,7 +76,7 @@ $ribbon_padding_factor: -3
   +line-height(1.25)
 
   +reversed
-    color: $white
+    color: $on_dark
 
 %deck
   font-family: $basefont
@@ -85,24 +85,24 @@ $ribbon_padding_factor: -3
   +line-height(1.5)
 
   +reversed
-    color: $white
+    color: $on_dark
 
 %value
-  color: $black
+  color: $on_light
   word-break: break-word
 
   +reversed
-    color: $white
+    color: $on_dark
 
 %value-label
   font-family: $basefont
   font-weight: $medium
-  color: $black
+  color: $on_light
   line-height: 1.25
   margin-bottom: rv(-4)
 
   +reversed
-    color: $white
+    color: $on_dark
 
 %h2-display
   padding-bottom: rv(-1)
@@ -116,7 +116,7 @@ $ribbon_padding_factor: -3
     bottom: 0
     width: 50%
     height: 1px
-    background: set-colour(2)
+    background: $brand_secondary // accent: a rule, carries no text
 
 %h3-display
   font-family: $headingfont
@@ -146,7 +146,7 @@ $ribbon_padding_factor: -3
 %tag
   display: inline-flex
   background: neutral(80)
-  color: $white
+  color: $on_dark
   +font-size(-1)
   justify-content: flex-start
   flex-wrap: wrap
@@ -168,7 +168,7 @@ $ribbon_padding_factor: -3
   display: flex
   font-family: $labelfont
   font-size: clamped(-1,0)
-  color: $black
+  color: $on_light
   font-weight: $bold
   text-transform: uppercase
   justify-content: flex-start
@@ -192,7 +192,7 @@ $ribbon_padding_factor: -3
       border-bottom-color: $link_colour_active_reversed
 
 %highlight
-  color: set-color(2)
+  color: $brand_secondary_on_light
   position: relative
   display: inline-block
   isolation: isolate

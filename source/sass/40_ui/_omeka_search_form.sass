@@ -21,7 +21,7 @@
 
 
   input:focus
-    border: solid 1px $black
+    border: solid 1px $on_light
 
   & + .advanced-search
     width: 100%
@@ -43,14 +43,14 @@ button.search-form-clear
 
   &:hover, &.active
     background-color: transparent
-    color: $black
+    color: $on_light
 
 
   +bp($tablet)
     right: 50px
   +bp($desktop)
     &:hover, &:focus
-      color: $cta
+      color: $brand_primary_on_light
 
 // Extensions to various new advanced search templates. This is referring to the advanced search templates
 // in common/advanced_search, NOT those supplied by the Advanced Search module.

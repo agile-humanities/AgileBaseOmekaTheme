@@ -23,7 +23,7 @@
       color: neutral(60)
 
       &:hover, &.active-tab
-        color: $black
+        color: $on_light
 
 
 /* This version expects a .tab_ui container with .tab-ui--tab child elements.
@@ -35,7 +35,7 @@ $tab_size: 10px
 
 =tab-marker-circle
   border-radius: 50%
-  background-color: $cta
+  background-color: $surface_brand
 
 =tab-marker-accordion
   +icon('accordion-expand',contain,'active')
@@ -102,7 +102,7 @@ $tab_size: 10px
       content: unset
 
   &.active, &:hover
-    color: $black
+    color: $on_light
 
     &:after
       +bp($tablet)

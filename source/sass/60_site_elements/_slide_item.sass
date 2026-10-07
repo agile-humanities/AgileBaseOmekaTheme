@@ -40,7 +40,7 @@ slide-item
     position: relative
     perspective: 8px
     perspective-origin: 50%
-    color: $white
+    color: $on_dark
 
 
     h2, .deck, .item-label
@@ -48,7 +48,7 @@ slide-item
 
     p
       @extend %small-text
-      color: $white
+      color: $on_dark
 
       &:last-of-type
         margin-bottom: 0
@@ -74,11 +74,11 @@ slide-item
     $element_spacing: rv(0)
     padding-top: rv($mobile_edge_padding_factor)
     padding-bottom: calc(#{rv($mobile_edge_padding_factor)} + #{$integrated_nav_height}) // cheat: actual height of nav
-    border-top: 1px solid $white
+    border-top: 1px solid $on_dark
     display: flex
     flex-direction: column
     justify-content: flex-end
-    color: $white
+    color: $on_dark
 
     +bp($desktop)
       padding-bottom: rv($edge_padding_factor)
@@ -125,8 +125,8 @@ slide-item
 
     .btn
       +font-size(0)
-      color: $white
-      border-color: $white
+      color: $on_dark
+      border-color: $on_dark
       width: fit-content
 
     p + .btn

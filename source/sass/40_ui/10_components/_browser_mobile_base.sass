@@ -21,7 +21,7 @@ $ui_mobile_app_controls_footer_height: 50px
   background: $black
   padding: rv($mobile_edge_padding_factor)
   padding-bottom: calc(#{rv($mobile_edge_padding_factor)} + env(safe-area-inset-bottom))
-  border-top: 3px solid $white
+  border-top: 3px solid $on_dark
   transform: translateZ(0)
 
   +bp($ui_mobile_app_controls_breakpoint)
@@ -31,7 +31,7 @@ $ui_mobile_app_controls_footer_height: 50px
 
   > a
     display: flex
-    color: $white
+    color: $on_dark
     height: 100%
     flex-direction: row
     align-items: center
@@ -43,7 +43,7 @@ $ui_mobile_app_controls_footer_height: 50px
       margin-right: rv(-1)
 
   .pagination--label, .search-view-type
-    color: $white
+    color: $on_dark
 
 %browser-mobile-paginator
   position: fixed
@@ -77,5 +77,5 @@ $ui_mobile_app_controls_footer_height: 50px
     display: none
 
   .filter-btn
-    color: $white
+    color: $on_dark
     +icon_with_label('filter',$btn_icon_size, 'reversed','active','left')

@@ -1,20 +1,20 @@
 {
-  "generated": "2026-10-06T22:25:13.779Z",
+  "generated": "2026-10-07T16:26:13.731Z",
   "theme": "/Users/bill/Sites/omeka-generic-2026/codebase/themes/AgileBaseOmekaTheme",
   "library": "/Users/bill/Sites/omeka-generic-2026/codebase/themes/AgileBaseOmekaTheme/node_modules/stop14-themesystem-legacy/source",
   "filesCompiled": {
     "theme": 100,
-    "library": 170,
+    "library": 173,
     "vendor": 0
   },
-  "libraryUncompiled": 115,
+  "libraryUncompiled": 116,
   "variables": [
     {
       "name": "bgcolor",
       "group": "semantic",
       "kind": "colour",
       "declared": "$white",
-      "declaredWhere": "_00_main_configuration.yml:69",
+      "declaredWhere": "_00_main_configuration.yml:85",
       "resolved": "white",
       "pointsAt": [
         "white"
@@ -41,67 +41,214 @@
       "resolved": "#00171A",
       "pointsAt": [],
       "uses": {
-        "theme": 45,
-        "library": 46,
-        "libraryUncompiled": 35,
+        "theme": 19,
+        "library": 31,
+        "libraryUncompiled": 21,
         "roles": {
-          "var-def": 22,
+          "var-def": 18,
+          "control": 3,
           "function-def": 2,
           "mixin-def": 3,
-          "border": 7,
           "css-var": 1,
-          "text": 37,
-          "background": 18,
-          "mixin-call": 1
+          "mixin-call": 5,
+          "background": 18
         },
         "wrappers": {
-          "mix": 14,
+          "mix": 6,
+          "if": 2,
+          "contrast": 1,
           "rgba": 3,
           "linear-gradient": 1
         },
         "files": [
           "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
+          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
           "lib:a_components/10_colours_and_patterns/00_core/11_functions/_neutral.sass",
+          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_contrast.sass",
           "lib:a_components/30_typography/00_core/12_mixins/_divider_line.sass",
-          "lib:a_components/30_typography/00_core/12_mixins/_inline_text_link.sass",
           "lib:a_components/40_ui/00_core/_04_configuration_ui.sass",
           "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass",
           "lib:a_components/10_colours_and_patterns/common_patterns/_patterns.sass",
-          "lib:a_components/30_typography/!fluid_type/_base_typography.sass",
-          "lib:a_components/30_typography/!fluid_type/_heading_collection.sass",
-          "lib:a_components/30_typography/standardized_text_collection/_text_collection.sass",
-          "lib:a_components/40_ui/ui_element_base_v002/_standardized_icons/_icons.sass",
           "lib:a_components/40_ui/ui_element_base_v002/13_definitions/_form_elements.sass",
-          "lib:a_components/40_ui/ui_element_base_v002/_ui_library_support/_component_superfish_navigation.sass",
-          "lib:a_components/40_ui/ui_element_base_v002/_ui_library_support/_component_form_select2.sass",
-          "lib:a_components/60_site_elements/figure_normalization/_figure.sass",
           "sass/30_typography/_10_definitions.sass",
           "sass/30_typography/_general.sass",
-          "sass/30_typography/_license.sass",
           "sass/40_ui/10_components/_browser_mobile_base.sass",
-          "sass/40_ui/10_components/_card.sass",
-          "sass/40_ui/10_components/_exposed_facet.sass",
-          "sass/40_ui/10_components/_library_superfish.sass",
-          "sass/40_ui/10_components/_omeka_search_form_component.sass",
-          "sass/40_ui/_general.sass",
           "sass/40_ui/_main_navigation_mobile.sass",
-          "sass/40_ui/_omeka_search_form.sass",
-          "sass/40_ui/_pagination.sass",
-          "sass/40_ui/_tab_ui.sass",
           "sass/60_site_elements/agile_blocks/_poster.sass",
           "sass/60_site_elements/agile_blocks/_section_introduction.sass",
-          "sass/60_site_elements/agile_blocks/_quotation.sass",
-          "sass/60_site_elements/_advanced_search_browser.sass",
           "sass/60_site_elements/_capsule.sass",
           "sass/60_site_elements/_item_show.sass",
           "sass/60_site_elements/_item_showcase.sass",
           "sass/60_site_elements/_item_with_metadata.sass",
-          "sass/60_site_elements/_link_cards.sass",
           "sass/60_site_elements/_slide_viewer.sass",
           "sass/60_site_elements/_slide_item.sass",
-          "sass/60_site_elements/_resources_available_downloads.sass",
-          "sass/60_site_elements/_title_area.sass",
           "sass/60_site_elements/_universal_viewer.sass"
+        ]
+      }
+    },
+    {
+      "name": "brand-primary",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "$clr1",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:80",
+      "resolved": "#00BDD4",
+      "pointsAt": [
+        "clr1"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 5,
+        "libraryUncompiled": 1,
+        "roles": {
+          "var-def": 3,
+          "css-var": 1,
+          "control": 1
+        },
+        "wrappers": {
+          "ensure-contrast": 2,
+          "in": 1
+        },
+        "files": [
+          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass"
+        ]
+      }
+    },
+    {
+      "name": "brand-primary-on-dark",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "ensure-contrast($brand-primary, $surface-dark)",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:84",
+      "resolved": "#00BDD4",
+      "pointsAt": [
+        "brand-primary",
+        "surface-dark"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 1,
+        "libraryUncompiled": 0,
+        "roles": {
+          "css-var": 1
+        },
+        "wrappers": {},
+        "files": [
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
+        ]
+      }
+    },
+    {
+      "name": "brand-primary-on-light",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "ensure-contrast($brand-primary, $surface-light)",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:83",
+      "resolved": "rgb(0, 119.28, 133.88)",
+      "pointsAt": [
+        "brand-primary",
+        "surface-light"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 2,
+        "libraryUncompiled": 0,
+        "roles": {
+          "css-var": 1,
+          "text": 1
+        },
+        "wrappers": {},
+        "files": [
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/13_definitions/_form_elements.sass"
+        ]
+      }
+    },
+    {
+      "name": "brand-secondary",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "$clr2",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:81",
+      "resolved": "#BF609B",
+      "pointsAt": [
+        "clr2"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 7,
+        "libraryUncompiled": 1,
+        "roles": {
+          "var-def": 3,
+          "css-var": 1,
+          "control": 1,
+          "border": 2
+        },
+        "wrappers": {
+          "ensure-contrast": 2,
+          "in": 1
+        },
+        "files": [
+          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/13_definitions/_form_elements.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/_form_ui.sass"
+        ]
+      }
+    },
+    {
+      "name": "brand-secondary-on-dark",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "ensure-contrast($brand-secondary, $surface-dark)",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:86",
+      "resolved": "rgb(206.36, 134.16, 179)",
+      "pointsAt": [
+        "brand-secondary",
+        "surface-dark"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 3,
+        "libraryUncompiled": 0,
+        "roles": {
+          "css-var": 1,
+          "text": 2
+        },
+        "wrappers": {},
+        "files": [
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/_standardized_icons/_icons.sass"
+        ]
+      }
+    },
+    {
+      "name": "brand-secondary-on-light",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "ensure-contrast($brand-secondary, $surface-light)",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:85",
+      "resolved": "rgb(160.44, 84.32, 134.36)",
+      "pointsAt": [
+        "brand-secondary",
+        "surface-light"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 2,
+        "libraryUncompiled": 4,
+        "roles": {
+          "css-var": 1,
+          "text": 1
+        },
+        "wrappers": {},
+        "files": [
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/_standardized_icons/_icon_mixins.sass"
         ]
       }
     },
@@ -110,18 +257,76 @@
       "group": "role",
       "kind": "colour",
       "declared": "$clr1",
-      "declaredWhere": "_00_main_configuration.yml:65",
+      "declaredWhere": "_00_main_configuration.yml:69",
       "resolved": "#00BDD4",
       "pointsAt": [
         "clr1"
       ],
       "uses": {
-        "theme": 0,
+        "theme": 2,
         "library": 0,
         "libraryUncompiled": 0,
-        "roles": {},
+        "roles": {
+          "shadow": 1,
+          "border": 1
+        },
         "wrappers": {},
-        "files": []
+        "files": [
+          "sass/40_ui/10_components/_omeka_search_form_component.sass",
+          "sass/60_site_elements/agile_blocks/_quotation.sass"
+        ]
+      }
+    },
+    {
+      "name": "brand_primary_on_dark",
+      "group": "component-setting",
+      "kind": "colour",
+      "declared": "ensure-contrast($brand_primary, $surface_dark)",
+      "declaredWhere": "_00_main_configuration.yml:75",
+      "resolved": "#00BDD4",
+      "pointsAt": [
+        "brand_primary",
+        "surface_dark"
+      ],
+      "uses": {
+        "theme": 5,
+        "library": 0,
+        "libraryUncompiled": 0,
+        "roles": {
+          "text": 5
+        },
+        "wrappers": {},
+        "files": [
+          "sass/60_site_elements/agile_blocks/_section_introduction.sass",
+          "sass/60_site_elements/_capsule.sass",
+          "sass/60_site_elements/_item_showcase.sass",
+          "sass/60_site_elements/_welcome_block.sass"
+        ]
+      }
+    },
+    {
+      "name": "brand_primary_on_light",
+      "group": "component-setting",
+      "kind": "colour",
+      "declared": "ensure-contrast($brand_primary, $surface_light)",
+      "declaredWhere": "_00_main_configuration.yml:74",
+      "resolved": "rgb(0, 119.28, 133.88)",
+      "pointsAt": [
+        "brand_primary",
+        "surface_light"
+      ],
+      "uses": {
+        "theme": 2,
+        "library": 0,
+        "libraryUncompiled": 0,
+        "roles": {
+          "text": 2
+        },
+        "wrappers": {},
+        "files": [
+          "sass/30_typography/_general.sass",
+          "sass/40_ui/_omeka_search_form.sass"
+        ]
       }
     },
     {
@@ -129,18 +334,87 @@
       "group": "role",
       "kind": "colour",
       "declared": "$clr2",
-      "declaredWhere": "_00_main_configuration.yml:66",
+      "declaredWhere": "_00_main_configuration.yml:70",
       "resolved": "#BF609B",
       "pointsAt": [
         "clr2"
       ],
       "uses": {
-        "theme": 0,
+        "theme": 5,
         "library": 0,
         "libraryUncompiled": 0,
-        "roles": {},
+        "roles": {
+          "background": 2,
+          "border": 3
+        },
+        "wrappers": {
+          "linear-gradient": 1
+        },
+        "files": [
+          "sass/30_typography/_10_definitions.sass",
+          "sass/40_ui/10_components/_card.sass",
+          "sass/40_ui/10_components/_list_item.sass",
+          "sass/40_ui/10_components/_omeka_search_form_component.sass",
+          "sass/60_site_elements/agile_blocks/_poster.sass"
+        ]
+      }
+    },
+    {
+      "name": "brand_secondary_on_dark",
+      "group": "component-setting",
+      "kind": "colour",
+      "declared": "ensure-contrast($brand_secondary, $surface_dark)",
+      "declaredWhere": "_00_main_configuration.yml:77",
+      "resolved": "rgb(206.36, 134.16, 179)",
+      "pointsAt": [
+        "brand_secondary",
+        "surface_dark"
+      ],
+      "uses": {
+        "theme": 3,
+        "library": 0,
+        "libraryUncompiled": 0,
+        "roles": {
+          "text": 3
+        },
         "wrappers": {},
-        "files": []
+        "files": [
+          "sass/60_site_elements/_capsule.sass",
+          "sass/60_site_elements/_item_with_metadata.sass"
+        ]
+      }
+    },
+    {
+      "name": "brand_secondary_on_light",
+      "group": "component-setting",
+      "kind": "colour",
+      "declared": "ensure-contrast($brand_secondary, $surface_light)",
+      "declaredWhere": "_00_main_configuration.yml:76",
+      "resolved": "rgb(160.44, 84.32, 134.36)",
+      "pointsAt": [
+        "brand_secondary",
+        "surface_light"
+      ],
+      "uses": {
+        "theme": 14,
+        "library": 0,
+        "libraryUncompiled": 0,
+        "roles": {
+          "text": 14
+        },
+        "wrappers": {},
+        "files": [
+          "sass/30_typography/_10_definitions.sass",
+          "sass/30_typography/_general.sass",
+          "sass/40_ui/10_components/_library_superfish.sass",
+          "sass/40_ui/12_mixins/_download_icons.sass",
+          "sass/40_ui/_omeka_site_page_pagination.sass",
+          "sass/40_ui/_pagination.sass",
+          "sass/60_site_elements/agile_blocks/_item_listing_block.sass",
+          "sass/60_site_elements/_advanced_search_browser.sass",
+          "sass/60_site_elements/_item_show.sass",
+          "sass/60_site_elements/_preview_block.sass"
+        ]
       }
     },
     {
@@ -148,7 +422,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(20)",
-      "declaredWhere": "_00_main_configuration.yml:205",
+      "declaredWhere": "_00_main_configuration.yml:224",
       "resolved": "rgb(204, 208.6, 209.2)",
       "pointsAt": [],
       "uses": {
@@ -169,7 +443,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "$ui_border_color",
-      "declaredWhere": "_00_main_configuration.yml:206",
+      "declaredWhere": "_00_main_configuration.yml:225",
       "resolved": "rgb(153, 162.2, 163.4)",
       "pointsAt": [
         "ui_border_color"
@@ -191,11 +465,11 @@
       "name": "btn_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$black",
-      "declaredWhere": "_00_main_configuration.yml:204",
+      "declared": "$on_light",
+      "declaredWhere": "_00_main_configuration.yml:223",
       "resolved": "#00171A",
       "pointsAt": [
-        "black"
+        "on_light"
       ],
       "uses": {
         "theme": 0,
@@ -215,7 +489,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(40)",
-      "declaredWhere": "_00_main_configuration.yml:209",
+      "declaredWhere": "_00_main_configuration.yml:228",
       "resolved": "rgb(153, 162.2, 163.4)",
       "pointsAt": [],
       "uses": {
@@ -236,7 +510,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(60)",
-      "declaredWhere": "_00_main_configuration.yml:208",
+      "declaredWhere": "_00_main_configuration.yml:227",
       "resolved": "rgb(102, 115.8, 117.6)",
       "pointsAt": [],
       "uses": {
@@ -252,11 +526,11 @@
       "name": "btn_hover_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$black",
-      "declaredWhere": "_00_main_configuration.yml:207",
+      "declared": "$on_light",
+      "declaredWhere": "_00_main_configuration.yml:226",
       "resolved": "#00171A",
       "pointsAt": [
-        "black"
+        "on_light"
       ],
       "uses": {
         "theme": 0,
@@ -276,7 +550,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(30)",
-      "declaredWhere": "_00_main_configuration.yml:228",
+      "declaredWhere": "_00_main_configuration.yml:247",
       "resolved": "rgb(178.5, 185.4, 186.3)",
       "pointsAt": [],
       "uses": {
@@ -298,7 +572,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(90)",
-      "declaredWhere": "_00_main_configuration.yml:230",
+      "declaredWhere": "_00_main_configuration.yml:249",
       "resolved": "rgb(25.5, 46.2, 48.9)",
       "pointsAt": [],
       "uses": {
@@ -319,7 +593,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(90)",
-      "declaredWhere": "_00_main_configuration.yml:227",
+      "declaredWhere": "_00_main_configuration.yml:246",
       "resolved": "rgb(25.5, 46.2, 48.9)",
       "pointsAt": [],
       "uses": {
@@ -340,7 +614,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(90)",
-      "declaredWhere": "_00_main_configuration.yml:232",
+      "declaredWhere": "_00_main_configuration.yml:251",
       "resolved": "rgb(25.5, 46.2, 48.9)",
       "pointsAt": [],
       "uses": {
@@ -362,7 +636,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(90)",
-      "declaredWhere": "_00_main_configuration.yml:233",
+      "declaredWhere": "_00_main_configuration.yml:252",
       "resolved": "rgb(25.5, 46.2, 48.9)",
       "pointsAt": [],
       "uses": {
@@ -383,7 +657,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(10)",
-      "declaredWhere": "_00_main_configuration.yml:231",
+      "declaredWhere": "_00_main_configuration.yml:250",
       "resolved": "rgb(229.5, 231.8, 232.1)",
       "pointsAt": [],
       "uses": {
@@ -404,7 +678,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "$white",
-      "declaredWhere": "_00_main_configuration.yml:220",
+      "declaredWhere": "_00_main_configuration.yml:239",
       "resolved": "white",
       "pointsAt": [
         "white"
@@ -427,7 +701,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "$ui_border_color",
-      "declaredWhere": "_00_main_configuration.yml:222",
+      "declaredWhere": "_00_main_configuration.yml:241",
       "resolved": "rgb(153, 162.2, 163.4)",
       "pointsAt": [
         "ui_border_color"
@@ -445,9 +719,9 @@
       "name": "btn_search_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "neutral(60)",
-      "declaredWhere": "_00_main_configuration.yml:219",
-      "resolved": "rgb(102, 115.8, 117.6)",
+      "declared": "neutral(70)",
+      "declaredWhere": "_00_main_configuration.yml:238",
+      "resolved": "rgb(76.5, 92.6, 94.7)",
       "pointsAt": [],
       "uses": {
         "theme": 0,
@@ -467,7 +741,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "$white",
-      "declaredWhere": "_00_main_configuration.yml:225",
+      "declaredWhere": "_00_main_configuration.yml:244",
       "resolved": "white",
       "pointsAt": [
         "white"
@@ -489,11 +763,11 @@
       "name": "btn_search_hover_border_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$impact",
-      "declaredWhere": "_00_main_configuration.yml:224",
+      "declared": "$brand_secondary",
+      "declaredWhere": "_00_main_configuration.yml:243",
       "resolved": "#BF609B",
       "pointsAt": [
-        "impact"
+        "brand_secondary"
       ],
       "uses": {
         "theme": 0,
@@ -508,11 +782,11 @@
       "name": "btn_search_hover_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$white",
-      "declaredWhere": "_00_main_configuration.yml:223",
-      "resolved": "white",
+      "declared": "$on_light",
+      "declaredWhere": "_00_main_configuration.yml:242",
+      "resolved": "#00171A",
       "pointsAt": [
-        "white"
+        "on_light"
       ],
       "uses": {
         "theme": 0,
@@ -531,11 +805,11 @@
       "name": "btn_submit_bg_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$impact",
-      "declaredWhere": "_00_main_configuration.yml:212",
-      "resolved": "#BF609B",
+      "declared": "$visual_impact",
+      "declaredWhere": "_00_main_configuration.yml:231",
+      "resolved": "#D98536",
       "pointsAt": [
-        "impact"
+        "visual_impact"
       ],
       "uses": {
         "theme": 0,
@@ -554,11 +828,11 @@
       "name": "btn_submit_border_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$impact",
-      "declaredWhere": "_00_main_configuration.yml:214",
-      "resolved": "#BF609B",
+      "declared": "$visual_impact",
+      "declaredWhere": "_00_main_configuration.yml:233",
+      "resolved": "#D98536",
       "pointsAt": [
-        "impact"
+        "visual_impact"
       ],
       "uses": {
         "theme": 0,
@@ -577,11 +851,11 @@
       "name": "btn_submit_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$white",
-      "declaredWhere": "_00_main_configuration.yml:211",
-      "resolved": "white",
+      "declared": "$on_impact",
+      "declaredWhere": "_00_main_configuration.yml:230",
+      "resolved": "#00171A",
       "pointsAt": [
-        "white"
+        "on_impact"
       ],
       "uses": {
         "theme": 0,
@@ -600,12 +874,12 @@
       "name": "btn_submit_hover_bg_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "mix($white,$impact,10%)",
-      "declaredWhere": "_00_main_configuration.yml:217",
-      "resolved": "rgb(197.4, 111.9, 165)",
+      "declared": "mix($white,$visual_impact,10%)",
+      "declaredWhere": "_00_main_configuration.yml:236",
+      "resolved": "rgb(220.8, 145.2, 74.1)",
       "pointsAt": [
         "white",
-        "impact"
+        "visual_impact"
       ],
       "uses": {
         "theme": 0,
@@ -624,12 +898,12 @@
       "name": "btn_submit_hover_border_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "mix($white,$impact,10%)",
-      "declaredWhere": "_00_main_configuration.yml:216",
-      "resolved": "rgb(197.4, 111.9, 165)",
+      "declared": "mix($white,$visual_impact,10%)",
+      "declaredWhere": "_00_main_configuration.yml:235",
+      "resolved": "rgb(220.8, 145.2, 74.1)",
       "pointsAt": [
         "white",
-        "impact"
+        "visual_impact"
       ],
       "uses": {
         "theme": 0,
@@ -648,11 +922,12 @@
       "name": "btn_submit_hover_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$white",
-      "declaredWhere": "_00_main_configuration.yml:215",
-      "resolved": "white",
+      "declared": "on-colour(mix($white,$visual_impact,10%))",
+      "declaredWhere": "_00_main_configuration.yml:234",
+      "resolved": "#00171A",
       "pointsAt": [
-        "white"
+        "white",
+        "visual_impact"
       ],
       "uses": {
         "theme": 0,
@@ -672,7 +947,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "$white",
-      "declaredWhere": "_00_main_configuration.yml:311",
+      "declaredWhere": "_00_main_configuration.yml:330",
       "resolved": "white",
       "pointsAt": [
         "white"
@@ -694,11 +969,11 @@
       "name": "circular_audio_caption_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$black",
-      "declaredWhere": "_00_main_configuration.yml:312",
+      "declared": "$on_light",
+      "declaredWhere": "_00_main_configuration.yml:331",
       "resolved": "#00171A",
       "pointsAt": [
-        "black"
+        "on_light"
       ],
       "uses": {
         "theme": 2,
@@ -718,11 +993,11 @@
       "name": "circular_audio_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$cta",
-      "declaredWhere": "_00_main_configuration.yml:310",
+      "declared": "$brand_primary",
+      "declaredWhere": "_00_main_configuration.yml:329",
       "resolved": "#00BDD4",
       "pointsAt": [
-        "cta"
+        "brand_primary"
       ],
       "uses": {
         "theme": 5,
@@ -746,22 +1021,17 @@
       "resolved": "#00BDD4",
       "pointsAt": [],
       "uses": {
-        "theme": 1,
-        "library": 7,
-        "libraryUncompiled": 4,
+        "theme": 0,
+        "library": 3,
+        "libraryUncompiled": 2,
         "roles": {
-          "var-def": 7,
-          "border": 1
+          "var-def": 3
         },
-        "wrappers": {
-          "mix": 4,
-          "set-colour": 1
-        },
+        "wrappers": {},
         "files": [
           "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
           "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
-          "sass/60_site_elements/agile_blocks/_quotation.sass"
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
         ]
       }
     },
@@ -976,38 +1246,6 @@
       }
     },
     {
-      "name": "clr1_map",
-      "group": "library-map",
-      "kind": "map",
-      "declared": "(shade: mix($black,$clr1,20%), primary: $clr1, tint: mix($white,$clr1,10%), fade: mix($white,$clr1,50%), watermark: mix($white,$clr1,80%))",
-      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:40",
-      "resolved": "(shade: rgb(136.8, 136.8, 136.8), primary: #ABABAB, tint: rgb(179.4, 179.4, 179.4), fade: #d5d5d5, watermark: rgb(238.2, 238.2, 238.2))",
-      "pointsAt": [
-        "black",
-        "clr1",
-        "clr1",
-        "white",
-        "clr1",
-        "white",
-        "clr1",
-        "white",
-        "clr1"
-      ],
-      "uses": {
-        "theme": 0,
-        "library": 2,
-        "libraryUncompiled": 0,
-        "roles": {
-          "var-def": 2
-        },
-        "wrappers": {},
-        "files": [
-          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
-        ]
-      }
-    },
-    {
       "name": "clr2",
       "group": "palette",
       "kind": "colour",
@@ -1016,36 +1254,22 @@
       "resolved": "#BF609B",
       "pointsAt": [],
       "uses": {
-        "theme": 13,
-        "library": 10,
-        "libraryUncompiled": 4,
+        "theme": 2,
+        "library": 3,
+        "libraryUncompiled": 2,
         "roles": {
-          "var-def": 7,
-          "background": 6,
-          "border": 2,
-          "text": 8
+          "var-def": 3,
+          "background": 2
         },
         "wrappers": {
-          "mix": 4,
-          "set-colour": 9
+          "set-colour": 2
         },
         "files": [
           "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
           "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
           "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
-          "lib:a_components/40_ui/ui_element_base_v002/13_definitions/_form_elements.sass",
-          "lib:a_components/40_ui/ui_element_base_v002/_form_ui.sass",
-          "sass/30_typography/_10_definitions.sass",
-          "sass/30_typography/_general.sass",
-          "sass/40_ui/12_mixins/_download_icons.sass",
           "sass/40_ui/_omeka_advanced_search_filters.sass",
-          "sass/60_site_elements/agile_blocks/_poster.sass",
-          "sass/60_site_elements/agile_blocks/_section_introduction.sass",
-          "sass/60_site_elements/agile_blocks/_section_list_capsules.sass",
-          "sass/60_site_elements/_advanced_search_browser.sass",
-          "sass/60_site_elements/_capsule.sass",
-          "sass/60_site_elements/_item_show.sass",
-          "sass/60_site_elements/_item_with_metadata.sass"
+          "sass/60_site_elements/agile_blocks/_poster.sass"
         ]
       }
     },
@@ -1071,38 +1295,6 @@
       }
     },
     {
-      "name": "clr2_map",
-      "group": "library-map",
-      "kind": "map",
-      "declared": "(shade: mix($black,$clr2,20%), primary: $clr2, tint: mix($white,$clr2,10%), fade: mix($white,$clr2,50%), watermark: mix($white,$clr2,80%))",
-      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:41",
-      "resolved": "(shade: rgb(191.2, 191.2, 191.2), primary: #EFEFEF, tint: rgb(240.6, 240.6, 240.6), fade: #f7f7f7, watermark: rgb(251.8, 251.8, 251.8))",
-      "pointsAt": [
-        "black",
-        "clr2",
-        "clr2",
-        "white",
-        "clr2",
-        "white",
-        "clr2",
-        "white",
-        "clr2"
-      ],
-      "uses": {
-        "theme": 0,
-        "library": 2,
-        "libraryUncompiled": 0,
-        "roles": {
-          "var-def": 2
-        },
-        "wrappers": {},
-        "files": [
-          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
-        ]
-      }
-    },
-    {
       "name": "clr3",
       "group": "palette",
       "kind": "colour",
@@ -1112,43 +1304,8 @@
       "pointsAt": [],
       "uses": {
         "theme": 0,
-        "library": 7,
-        "libraryUncompiled": 1,
-        "roles": {
-          "var-def": 7
-        },
-        "wrappers": {
-          "mix": 4
-        },
-        "files": [
-          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
-          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
-        ]
-      }
-    },
-    {
-      "name": "clr3_map",
-      "group": "library-map",
-      "kind": "map",
-      "declared": "(shade: mix($black,$clr3,20%), primary: $clr3, tint: mix($white,$clr3,10%), fade: mix($white,$clr3,50%), watermark: mix($white,$clr3,80%))",
-      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:42",
-      "resolved": "(shade: rgb(40.8, 40.8, 40.8), primary: #333333, tint: rgb(71.4, 71.4, 71.4), fade: #999999, watermark: rgb(214.2, 214.2, 214.2))",
-      "pointsAt": [
-        "black",
-        "clr3",
-        "clr3",
-        "white",
-        "clr3",
-        "white",
-        "clr3",
-        "white",
-        "clr3"
-      ],
-      "uses": {
-        "theme": 0,
         "library": 2,
-        "libraryUncompiled": 0,
+        "libraryUncompiled": 1,
         "roles": {
           "var-def": 2
         },
@@ -1169,45 +1326,8 @@
       "pointsAt": [],
       "uses": {
         "theme": 0,
-        "library": 8,
-        "libraryUncompiled": 3,
-        "roles": {
-          "var-def": 7,
-          "text": 1
-        },
-        "wrappers": {
-          "mix": 4
-        },
-        "files": [
-          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
-          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
-          "lib:a_components/40_ui/ui_element_base_v002/13_definitions/_form_elements.sass"
-        ]
-      }
-    },
-    {
-      "name": "clr4_map",
-      "group": "library-map",
-      "kind": "map",
-      "declared": "(shade: mix($black,$clr4,20%), primary: $clr4, tint: mix($white,$clr4,10%), fade: mix($white,$clr4,50%), watermark: mix($white,$clr4,80%))",
-      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:43",
-      "resolved": "(shade: rgb(27.2, 27.2, 27.2), primary: #222222, tint: rgb(56.1, 56.1, 56.1), fade: rgb(144.5, 144.5, 144.5), watermark: rgb(210.8, 210.8, 210.8))",
-      "pointsAt": [
-        "black",
-        "clr4",
-        "clr4",
-        "white",
-        "clr4",
-        "white",
-        "clr4",
-        "white",
-        "clr4"
-      ],
-      "uses": {
-        "theme": 0,
         "library": 2,
-        "libraryUncompiled": 0,
+        "libraryUncompiled": 3,
         "roles": {
           "var-def": 2
         },
@@ -1228,48 +1348,14 @@
       "pointsAt": [],
       "uses": {
         "theme": 0,
-        "library": 7,
+        "library": 3,
         "libraryUncompiled": 0,
         "roles": {
-          "var-def": 7
-        },
-        "wrappers": {
-          "mix": 4
-        },
-        "files": [
-          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
-          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
-        ]
-      }
-    },
-    {
-      "name": "clr5_map",
-      "group": "library-map",
-      "kind": "map",
-      "declared": "(shade: mix($black,$clr5,20%), primary: $clr5, tint: mix($white,$clr5,10%), fade: mix($white,$clr5,50%), watermark: mix($white,$clr5,80%))",
-      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:44",
-      "resolved": "(shade: rgb(13.6, 13.6, 13.6), primary: #111111, tint: rgb(40.8, 40.8, 40.8), fade: #888888, watermark: rgb(207.4, 207.4, 207.4))",
-      "pointsAt": [
-        "black",
-        "clr5",
-        "clr5",
-        "white",
-        "clr5",
-        "white",
-        "clr5",
-        "white",
-        "clr5"
-      ],
-      "uses": {
-        "theme": 0,
-        "library": 2,
-        "libraryUncompiled": 0,
-        "roles": {
-          "var-def": 2
+          "var-def": 3
         },
         "wrappers": {},
         "files": [
+          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
           "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
           "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
         ]
@@ -1283,41 +1369,6 @@
       "declaredWhere": "_00_main_configuration.yml:49",
       "resolved": "#315FAA",
       "pointsAt": [],
-      "uses": {
-        "theme": 0,
-        "library": 7,
-        "libraryUncompiled": 0,
-        "roles": {
-          "var-def": 7
-        },
-        "wrappers": {
-          "mix": 4
-        },
-        "files": [
-          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
-          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
-        ]
-      }
-    },
-    {
-      "name": "clr6_map",
-      "group": "library-map",
-      "kind": "map",
-      "declared": "(shade: mix($black,$clr6,20%), primary: $clr6, tint: mix($white,$clr6,10%), fade: mix($white,$clr6,50%), watermark: mix($white,$clr6,80%))",
-      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:45",
-      "resolved": "(shade: black, primary: #000000, tint: rgb(25.5, 25.5, 25.5), fade: rgb(127.5, 127.5, 127.5), watermark: #cccccc)",
-      "pointsAt": [
-        "black",
-        "clr6",
-        "clr6",
-        "white",
-        "clr6",
-        "white",
-        "clr6",
-        "white",
-        "clr6"
-      ],
       "uses": {
         "theme": 0,
         "library": 2,
@@ -1342,41 +1393,6 @@
       "pointsAt": [],
       "uses": {
         "theme": 0,
-        "library": 7,
-        "libraryUncompiled": 0,
-        "roles": {
-          "var-def": 7
-        },
-        "wrappers": {
-          "mix": 4
-        },
-        "files": [
-          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
-          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
-        ]
-      }
-    },
-    {
-      "name": "clr7_map",
-      "group": "library-map",
-      "kind": "map",
-      "declared": "(shade: mix($black,$clr7,20%), primary: $clr7, tint: mix($white,$clr7,10%), fade: mix($white,$clr7,50%), watermark: mix($white,$clr7,80%))",
-      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:46",
-      "resolved": "(shade: black, primary: #000000, tint: rgb(25.5, 25.5, 25.5), fade: rgb(127.5, 127.5, 127.5), watermark: #cccccc)",
-      "pointsAt": [
-        "black",
-        "clr7",
-        "clr7",
-        "white",
-        "clr7",
-        "white",
-        "clr7",
-        "white",
-        "clr7"
-      ],
-      "uses": {
-        "theme": 0,
         "library": 2,
         "libraryUncompiled": 0,
         "roles": {
@@ -1397,41 +1413,6 @@
       "declaredWhere": "_00_main_configuration.yml:51",
       "resolved": "#E1BB0B",
       "pointsAt": [],
-      "uses": {
-        "theme": 0,
-        "library": 7,
-        "libraryUncompiled": 0,
-        "roles": {
-          "var-def": 7
-        },
-        "wrappers": {
-          "mix": 4
-        },
-        "files": [
-          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
-          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
-        ]
-      }
-    },
-    {
-      "name": "clr8_map",
-      "group": "library-map",
-      "kind": "map",
-      "declared": "(shade: mix($black,$clr8,20%), primary: $clr8, tint: mix($white,$clr8,10%), fade: mix($white,$clr8,50%), watermark: mix($white,$clr8,80%))",
-      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:47",
-      "resolved": "(shade: black, primary: #000000, tint: rgb(25.5, 25.5, 25.5), fade: rgb(127.5, 127.5, 127.5), watermark: #cccccc)",
-      "pointsAt": [
-        "black",
-        "clr8",
-        "clr8",
-        "white",
-        "clr8",
-        "white",
-        "clr8",
-        "white",
-        "clr8"
-      ],
       "uses": {
         "theme": 0,
         "library": 2,
@@ -1456,41 +1437,6 @@
       "pointsAt": [],
       "uses": {
         "theme": 0,
-        "library": 7,
-        "libraryUncompiled": 0,
-        "roles": {
-          "var-def": 7
-        },
-        "wrappers": {
-          "mix": 4
-        },
-        "files": [
-          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
-          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
-        ]
-      }
-    },
-    {
-      "name": "clr9_map",
-      "group": "library-map",
-      "kind": "map",
-      "declared": "(shade: mix($black,$clr9,20%), primary: $clr9, tint: mix($white,$clr9,10%), fade: mix($white,$clr9,50%), watermark: mix($white,$clr9,80%))",
-      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:48",
-      "resolved": "(shade: black, primary: #000000, tint: rgb(25.5, 25.5, 25.5), fade: rgb(127.5, 127.5, 127.5), watermark: #cccccc)",
-      "pointsAt": [
-        "black",
-        "clr9",
-        "clr9",
-        "white",
-        "clr9",
-        "white",
-        "clr9",
-        "white",
-        "clr9"
-      ],
-      "uses": {
-        "theme": 0,
         "library": 2,
         "libraryUncompiled": 0,
         "roles": {
@@ -1504,76 +1450,30 @@
       }
     },
     {
-      "name": "colour_maps",
-      "group": "library-or-local",
-      "kind": "map",
-      "declared": "$clr1_map $clr2_map $clr3_map $clr4_map $clr5_map $clr6_map $clr7_map $clr8_map $clr9_map",
-      "declaredWhere": "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass:17",
-      "resolved": "(shade: rgb(136.8, 136.8, 136.8), primary: #ABABAB, tint: rgb(179.4, 179.4, 179.4), fade: #d5d5d5, watermark: rgb(238.2, 238.2, 238.2)) (shade: rgb(191.2, 191.2, 191.2), primary: #EFEFEF, tint: rgb(240.6, 240.6, 240.6), fade: #f7f7f7, watermark: rgb(251.8, 251.8, 251.8)) (shade: rgb(40.8, 40.8, 40.8), primary: #333333, tint: rgb(71.4, 71.4, 71.4), fade: #999999, watermark: rgb(214.2, 214.2, 214.2)) (shade: rgb(27.2, 27.2, 27.2), primary: #222222, tint: rgb(56.1, 56.1, 56.1), fade: rgb(144.5, 144.5, 144.5), watermark: rgb(210.8, 210.8, 210.8)) (shade: rgb(13.6, 13.6, 13.6), primary: #111111, tint: rgb(40.8, 40.8, 40.8), fade: #888888, watermark: rgb(207.4, 207.4, 207.4)) (shade: black, primary: #000000, tint: rgb(25.5, 25.5, 25.5), fade: rgb(127.5, 127.5, 127.5), watermark: #cccccc) (shade: black, primary: #000000, tint: rgb(25.5, 25.5, 25.5), fade: rgb(127.5, 127.5, 127.5), watermark: #cccccc) (shade: black, primary: #000000, tint: rgb(25.5, 25.5, 25.5), fade: rgb(127.5, 127.5, 127.5), watermark: #cccccc) (shade: black, primary: #000000, tint: rgb(25.5, 25.5, 25.5), fade: rgb(127.5, 127.5, 127.5), watermark: #cccccc)",
-      "pointsAt": [
-        "clr1_map",
-        "clr2_map",
-        "clr3_map",
-        "clr4_map",
-        "clr5_map",
-        "clr6_map",
-        "clr7_map",
-        "clr8_map",
-        "clr9_map"
-      ],
-      "uses": {
-        "theme": 0,
-        "library": 1,
-        "libraryUncompiled": 0,
-        "roles": {
-          "var-def": 1
-        },
-        "wrappers": {
-          "nth": 1
-        },
-        "files": [
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
-        ]
-      }
-    },
-    {
       "name": "cta",
       "group": "semantic",
       "kind": "colour",
-      "declared": "$clr1",
-      "declaredWhere": "_00_main_configuration.yml:75",
+      "declared": "$brand_primary",
+      "declaredWhere": "_00_main_configuration.yml:94",
       "resolved": "#00BDD4",
       "pointsAt": [
-        "clr1"
+        "brand_primary"
       ],
       "uses": {
-        "theme": 12,
+        "theme": 1,
         "library": 8,
         "libraryUncompiled": 2,
         "roles": {
           "var-def": 7,
           "css-var": 1,
-          "text": 7,
-          "background": 3,
-          "shadow": 1,
           "mixin-def": 1
         },
-        "wrappers": {
-          "mix": 1
-        },
+        "wrappers": {},
         "files": [
           "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
           "lib:a_components/40_ui/00_core/_04_configuration_ui.sass",
           "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
-          "sass/30_typography/_general.sass",
-          "sass/40_ui/10_components/_omeka_search_form_component.sass",
-          "sass/40_ui/12_mixins/_ui_mixins.sass",
-          "sass/40_ui/_omeka_search_form.sass",
-          "sass/40_ui/_tab_ui.sass",
-          "sass/60_site_elements/agile_blocks/_section_introduction.sass",
-          "sass/60_site_elements/_capsule.sass",
-          "sass/60_site_elements/_item_showcase.sass",
-          "sass/60_site_elements/_welcome_block.sass"
+          "sass/40_ui/12_mixins/_ui_mixins.sass"
         ]
       }
     },
@@ -1582,7 +1482,7 @@
       "group": "neutral",
       "kind": "colour",
       "declared": "neutral(70)",
-      "declaredWhere": "_00_main_configuration.yml:91",
+      "declaredWhere": "_00_main_configuration.yml:110",
       "resolved": "rgb(76.5, 92.6, 94.7)",
       "pointsAt": [],
       "uses": {
@@ -1603,7 +1503,7 @@
       "group": "neutral",
       "kind": "colour",
       "declared": "neutral(80)",
-      "declaredWhere": "_00_main_configuration.yml:92",
+      "declaredWhere": "_00_main_configuration.yml:111",
       "resolved": "rgb(51, 69.4, 71.8)",
       "pointsAt": [],
       "uses": {
@@ -1626,7 +1526,7 @@
       "group": "neutral",
       "kind": "colour",
       "declared": "neutral(90)",
-      "declaredWhere": "_00_main_configuration.yml:93",
+      "declaredWhere": "_00_main_configuration.yml:112",
       "resolved": "rgb(25.5, 46.2, 48.9)",
       "pointsAt": [],
       "uses": {
@@ -1643,7 +1543,7 @@
       "group": "semantic",
       "kind": "colour",
       "declared": "neutral(30)",
-      "declaredWhere": "_00_main_configuration.yml:77",
+      "declaredWhere": "_00_main_configuration.yml:96",
       "resolved": "rgb(178.5, 185.4, 186.3)",
       "pointsAt": [],
       "uses": {
@@ -1660,7 +1560,7 @@
       "group": "semantic",
       "kind": "colour",
       "declared": "neutral(50)",
-      "declaredWhere": "_00_main_configuration.yml:76",
+      "declaredWhere": "_00_main_configuration.yml:95",
       "resolved": "rgb(127.5, 139, 140.5)",
       "pointsAt": [],
       "uses": {
@@ -1677,7 +1577,7 @@
       "group": "semantic",
       "kind": "colour",
       "declared": "$black",
-      "declaredWhere": "_00_main_configuration.yml:70",
+      "declaredWhere": "_00_main_configuration.yml:86",
       "resolved": "#00171A",
       "pointsAt": [
         "black"
@@ -1699,46 +1599,26 @@
       "name": "impact",
       "group": "semantic",
       "kind": "colour",
-      "declared": "$clr2",
-      "declaredWhere": "_00_main_configuration.yml:74",
+      "declared": "$brand_secondary",
+      "declaredWhere": "_00_main_configuration.yml:93",
       "resolved": "#BF609B",
       "pointsAt": [
-        "clr2"
+        "brand_secondary"
       ],
       "uses": {
-        "theme": 14,
-        "library": 14,
-        "libraryUncompiled": 7,
+        "theme": 0,
+        "library": 10,
+        "libraryUncompiled": 1,
         "roles": {
           "var-def": 9,
-          "css-var": 1,
-          "text": 12,
-          "background": 3,
-          "border": 3
+          "css-var": 1
         },
         "wrappers": {
-          "mix": 4,
-          "linear-gradient": 1
+          "mix": 4
         },
         "files": [
           "lib:a_components/40_ui/00_core/_04_configuration_ui.sass",
-          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
-          "lib:a_components/40_ui/ui_element_base_v002/_standardized_icons/_icon_mixins.sass",
-          "lib:a_components/40_ui/ui_element_base_v002/_standardized_icons/_icons.sass",
-          "lib:a_components/40_ui/ui_element_base_v002/_ui_library_support/_component_superfish_navigation.sass",
-          "sass/30_typography/_10_definitions.sass",
-          "sass/30_typography/_general.sass",
-          "sass/40_ui/10_components/_card.sass",
-          "sass/40_ui/10_components/_library_superfish.sass",
-          "sass/40_ui/10_components/_list_item.sass",
-          "sass/40_ui/10_components/_omeka_search_form_component.sass",
-          "sass/40_ui/_omeka_site_page_pagination.sass",
-          "sass/40_ui/_pagination.sass",
-          "sass/60_site_elements/agile_blocks/_item_listing_block.sass",
-          "sass/60_site_elements/agile_blocks/_poster.sass",
-          "sass/60_site_elements/_item_show.sass",
-          "sass/60_site_elements/_preview_block.sass",
-          "sass/60_site_elements/_reference_block.sass"
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass"
         ]
       }
     },
@@ -1789,7 +1669,7 @@
       "group": "neutral",
       "kind": "colour",
       "declared": "neutral(40)",
-      "declaredWhere": "_00_main_configuration.yml:88",
+      "declaredWhere": "_00_main_configuration.yml:107",
       "resolved": "rgb(153, 162.2, 163.4)",
       "pointsAt": [],
       "uses": {
@@ -1813,7 +1693,7 @@
       "group": "neutral",
       "kind": "colour",
       "declared": "neutral(30)",
-      "declaredWhere": "_00_main_configuration.yml:87",
+      "declaredWhere": "_00_main_configuration.yml:106",
       "resolved": "rgb(178.5, 185.4, 186.3)",
       "pointsAt": [],
       "uses": {
@@ -1834,7 +1714,7 @@
       "group": "neutral",
       "kind": "colour",
       "declared": "neutral(5)",
-      "declaredWhere": "_00_main_configuration.yml:86",
+      "declaredWhere": "_00_main_configuration.yml:105",
       "resolved": "rgb(242.25, 243.4, 243.55)",
       "pointsAt": [],
       "uses": {
@@ -1850,11 +1730,11 @@
       "name": "link_colour",
       "group": "semantic",
       "kind": "colour",
-      "declared": "$black",
-      "declaredWhere": "_00_main_configuration.yml:78",
+      "declared": "$on_light",
+      "declaredWhere": "_00_main_configuration.yml:97",
       "resolved": "#00171A",
       "pointsAt": [
-        "black"
+        "on_light"
       ],
       "uses": {
         "theme": 2,
@@ -1879,11 +1759,11 @@
       "name": "link_colour_active",
       "group": "semantic",
       "kind": "colour",
-      "declared": "$clr5",
-      "declaredWhere": "_00_main_configuration.yml:79",
-      "resolved": "#D98536",
+      "declared": "$brand_primary_on_light",
+      "declaredWhere": "_00_main_configuration.yml:98",
+      "resolved": "rgb(0, 119.28, 133.88)",
       "pointsAt": [
-        "clr5"
+        "brand_primary_on_light"
       ],
       "uses": {
         "theme": 15,
@@ -1911,20 +1791,23 @@
       "name": "link_colour_active_reversed",
       "group": "semantic",
       "kind": "colour",
-      "declared": "neutral(5)",
-      "declaredWhere": "_00_main_configuration.yml:81",
-      "resolved": "rgb(242.25, 243.4, 243.55)",
-      "pointsAt": [],
+      "declared": "$brand_primary_on_dark",
+      "declaredWhere": "_00_main_configuration.yml:100",
+      "resolved": "#00BDD4",
+      "pointsAt": [
+        "brand_primary_on_dark"
+      ],
       "uses": {
         "theme": 8,
-        "library": 0,
+        "library": 1,
         "libraryUncompiled": 0,
         "roles": {
-          "border": 3,
-          "text": 5
+          "text": 6,
+          "border": 3
         },
         "wrappers": {},
         "files": [
+          "lib:a_components/30_typography/standardized_text_collection/_anchor.sass",
           "sass/30_typography/_10_definitions.sass",
           "sass/30_typography/_general.sass",
           "sass/40_ui/_main_navigation_mobile.sass"
@@ -1935,21 +1818,22 @@
       "name": "link_colour_reversed",
       "group": "semantic",
       "kind": "colour",
-      "declared": "$white",
-      "declaredWhere": "_00_main_configuration.yml:80",
+      "declared": "$on_dark",
+      "declaredWhere": "_00_main_configuration.yml:99",
       "resolved": "white",
       "pointsAt": [
-        "white"
+        "on_dark"
       ],
       "uses": {
         "theme": 4,
-        "library": 0,
+        "library": 1,
         "libraryUncompiled": 0,
         "roles": {
-          "text": 4
+          "text": 5
         },
         "wrappers": {},
         "files": [
+          "lib:a_components/30_typography/standardized_text_collection/_anchor.sass",
           "sass/30_typography/_10_definitions.sass",
           "sass/30_typography/_general.sass",
           "sass/40_ui/_main_navigation_mobile.sass"
@@ -1961,7 +1845,7 @@
       "group": "semantic",
       "kind": "colour",
       "declared": "transparent",
-      "declaredWhere": "_00_main_configuration.yml:71",
+      "declaredWhere": "_00_main_configuration.yml:87",
       "resolved": "transparent",
       "pointsAt": [],
       "uses": {
@@ -1983,11 +1867,11 @@
       "name": "menu_color",
       "group": "semantic",
       "kind": "colour",
-      "declared": "$black",
-      "declaredWhere": "_00_main_configuration.yml:280",
+      "declared": "$on_light",
+      "declaredWhere": "_00_main_configuration.yml:299",
       "resolved": "#00171A",
       "pointsAt": [
-        "black"
+        "on_light"
       ],
       "uses": {
         "theme": 0,
@@ -2003,7 +1887,7 @@
       "group": "neutral",
       "kind": "colour",
       "declared": "neutral(60)",
-      "declaredWhere": "_00_main_configuration.yml:90",
+      "declaredWhere": "_00_main_configuration.yml:109",
       "resolved": "rgb(102, 115.8, 117.6)",
       "pointsAt": [],
       "uses": {
@@ -2047,8 +1931,8 @@
       "group": "neutral",
       "kind": "colour",
       "declared": "neutral()",
-      "declaredWhere": "_00_main_configuration.yml:89",
-      "resolved": "rgb(25.5, 46.2, 48.9)",
+      "declaredWhere": "_00_main_configuration.yml:108",
+      "resolved": "rgb(127.5, 139, 140.5)",
       "pointsAt": [],
       "uses": {
         "theme": 0,
@@ -2060,14 +1944,249 @@
       }
     },
     {
+      "name": "on-brand",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "on-colour($surface-brand)",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:88",
+      "resolved": "#00171A",
+      "pointsAt": [
+        "surface-brand"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 2,
+        "libraryUncompiled": 0,
+        "roles": {
+          "css-var": 1,
+          "mixin-call": 1
+        },
+        "wrappers": {},
+        "files": [
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass"
+        ]
+      }
+    },
+    {
+      "name": "on-brand-secondary",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "on-colour($surface-brand-secondary)",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:90",
+      "resolved": "#00171A",
+      "pointsAt": [
+        "surface-brand-secondary"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 3,
+        "libraryUncompiled": 1,
+        "roles": {
+          "css-var": 1,
+          "mixin-call": 1,
+          "text": 1
+        },
+        "wrappers": {},
+        "files": [
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/13_definitions/_form_elements.sass"
+        ]
+      }
+    },
+    {
+      "name": "on-dark",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "$white",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:78",
+      "resolved": "white",
+      "pointsAt": [
+        "white"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 8,
+        "libraryUncompiled": 27,
+        "roles": {
+          "function-def": 1,
+          "css-var": 1,
+          "mixin-call": 2,
+          "text": 3,
+          "border": 1
+        },
+        "wrappers": {},
+        "files": [
+          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_contrast.sass",
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/_standardized_icons/_icons.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/13_definitions/_form_elements.sass"
+        ]
+      }
+    },
+    {
+      "name": "on-impact",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "on-colour($visual-impact)",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:82",
+      "resolved": "#00171A",
+      "pointsAt": [
+        "visual-impact"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 2,
+        "libraryUncompiled": 1,
+        "roles": {
+          "css-var": 1,
+          "mixin-call": 1
+        },
+        "wrappers": {},
+        "files": [
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass"
+        ]
+      }
+    },
+    {
+      "name": "on-light",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "$black",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:77",
+      "resolved": "#00171A",
+      "pointsAt": [
+        "black"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 21,
+        "libraryUncompiled": 13,
+        "roles": {
+          "function-def": 1,
+          "border": 4,
+          "css-var": 1,
+          "mixin-call": 2,
+          "text": 13
+        },
+        "wrappers": {},
+        "files": [
+          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_contrast.sass",
+          "lib:a_components/30_typography/00_core/12_mixins/_inline_text_link.sass",
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass",
+          "lib:a_components/30_typography/!fluid_type/_base_typography.sass",
+          "lib:a_components/30_typography/!fluid_type/_heading_collection.sass",
+          "lib:a_components/30_typography/standardized_text_collection/_text_collection.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/_standardized_icons/_icons.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/13_definitions/_form_elements.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/_ui_library_support/_component_superfish_navigation.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/_ui_library_support/_component_form_select2.sass",
+          "lib:a_components/60_site_elements/figure_normalization/_figure.sass"
+        ]
+      }
+    },
+    {
+      "name": "on_brand",
+      "group": "component-setting",
+      "kind": "colour",
+      "declared": "on-colour($surface_brand)",
+      "declaredWhere": "_00_main_configuration.yml:80",
+      "resolved": "#00171A",
+      "pointsAt": [
+        "surface_brand"
+      ],
+      "uses": {
+        "theme": 2,
+        "library": 0,
+        "libraryUncompiled": 0,
+        "roles": {
+          "text": 2
+        },
+        "wrappers": {},
+        "files": [
+          "sass/30_typography/_general.sass"
+        ]
+      }
+    },
+    {
+      "name": "on_brand_secondary",
+      "group": "component-setting",
+      "kind": "colour",
+      "declared": "on-colour($surface_brand_secondary)",
+      "declaredWhere": "_00_main_configuration.yml:82",
+      "resolved": "#00171A",
+      "pointsAt": [
+        "surface_brand_secondary"
+      ],
+      "uses": {
+        "theme": 2,
+        "library": 0,
+        "libraryUncompiled": 0,
+        "roles": {
+          "text": 2
+        },
+        "wrappers": {},
+        "files": [
+          "sass/60_site_elements/agile_blocks/_section_introduction.sass",
+          "sass/60_site_elements/_reference_block.sass"
+        ]
+      }
+    },
+    {
       "name": "on_dark",
       "group": "role",
       "kind": "colour",
-      "declared": "$clr4",
-      "declaredWhere": "_00_main_configuration.yml:62",
-      "resolved": "#EAF3F4",
+      "declared": "$white",
+      "declaredWhere": "_00_main_configuration.yml:66",
+      "resolved": "white",
       "pointsAt": [
-        "clr4"
+        "white"
+      ],
+      "uses": {
+        "theme": 54,
+        "library": 0,
+        "libraryUncompiled": 0,
+        "roles": {
+          "text": 46,
+          "border": 8
+        },
+        "wrappers": {},
+        "files": [
+          "sass/20_layout/_page_footer.sass",
+          "sass/30_typography/_10_definitions.sass",
+          "sass/30_typography/_20_mixin_metadata_block.sass",
+          "sass/30_typography/_general.sass",
+          "sass/40_ui/10_components/_browser_display_mode_controls.sass",
+          "sass/40_ui/10_components/_browser_mobile_base.sass",
+          "sass/40_ui/_main_navigation_mobile.sass",
+          "sass/60_site_elements/agile_blocks/_poster.sass",
+          "sass/60_site_elements/agile_blocks/_section_introduction.sass",
+          "sass/60_site_elements/agile_blocks/_slideshow_block.sass",
+          "sass/60_site_elements/_capsule.sass",
+          "sass/60_site_elements/_item_show.sass",
+          "sass/60_site_elements/_item_showcase.sass",
+          "sass/60_site_elements/_item_with_metadata.sass",
+          "sass/60_site_elements/_slide_item.sass",
+          "sass/60_site_elements/_resources_for_educators.sass",
+          "sass/60_site_elements/_title_area.sass",
+          "sass/60_site_elements/_universal_viewer.sass",
+          "sass/60_site_elements/_welcome_block.sass"
+        ]
+      }
+    },
+    {
+      "name": "on_impact",
+      "group": "role",
+      "kind": "colour",
+      "declared": "on-colour($visual_impact)",
+      "declaredWhere": "_00_main_configuration.yml:73",
+      "resolved": "#00171A",
+      "pointsAt": [
+        "visual_impact"
       ],
       "uses": {
         "theme": 0,
@@ -2082,19 +2201,42 @@
       "name": "on_light",
       "group": "role",
       "kind": "colour",
-      "declared": "$clr3",
-      "declaredWhere": "_00_main_configuration.yml:63",
-      "resolved": "#0E3A40",
+      "declared": "$black",
+      "declaredWhere": "_00_main_configuration.yml:67",
+      "resolved": "#00171A",
       "pointsAt": [
-        "clr3"
+        "black"
       ],
       "uses": {
-        "theme": 0,
+        "theme": 26,
         "library": 0,
         "libraryUncompiled": 0,
-        "roles": {},
+        "roles": {
+          "text": 23,
+          "border": 3
+        },
         "wrappers": {},
-        "files": []
+        "files": [
+          "sass/30_typography/_10_definitions.sass",
+          "sass/30_typography/_general.sass",
+          "sass/30_typography/_license.sass",
+          "sass/40_ui/10_components/_card.sass",
+          "sass/40_ui/10_components/_exposed_facet.sass",
+          "sass/40_ui/10_components/_library_superfish.sass",
+          "sass/40_ui/10_components/_omeka_search_form_component.sass",
+          "sass/40_ui/_general.sass",
+          "sass/40_ui/_omeka_search_form.sass",
+          "sass/40_ui/_pagination.sass",
+          "sass/40_ui/_tab_ui.sass",
+          "sass/60_site_elements/agile_blocks/_poster.sass",
+          "sass/60_site_elements/agile_blocks/_quotation.sass",
+          "sass/60_site_elements/_advanced_search_browser.sass",
+          "sass/60_site_elements/_item_show.sass",
+          "sass/60_site_elements/_link_cards.sass",
+          "sass/60_site_elements/_resources_available_downloads.sass",
+          "sass/60_site_elements/_title_area.sass",
+          "sass/60_site_elements/_universal_viewer.sass"
+        ]
       }
     },
     {
@@ -2102,7 +2244,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "$mid_neutral",
-      "declaredWhere": "_00_main_configuration.yml:235",
+      "declaredWhere": "_00_main_configuration.yml:254",
       "resolved": "rgb(102, 115.8, 117.6)",
       "pointsAt": [
         "mid_neutral"
@@ -2121,7 +2263,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "$ui_hover_border_color",
-      "declaredWhere": "_00_main_configuration.yml:236",
+      "declaredWhere": "_00_main_configuration.yml:255",
       "resolved": "#BF609B",
       "pointsAt": [
         "ui_hover_border_color"
@@ -2162,7 +2304,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(30)",
-      "declaredWhere": "_00_main_configuration.yml:293",
+      "declaredWhere": "_00_main_configuration.yml:312",
       "resolved": "rgb(178.5, 185.4, 186.3)",
       "pointsAt": [],
       "uses": {
@@ -2182,11 +2324,11 @@
       "name": "page_marker_background_active",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$clr2",
-      "declaredWhere": "_00_main_configuration.yml:295",
+      "declared": "$brand_secondary",
+      "declaredWhere": "_00_main_configuration.yml:314",
       "resolved": "#BF609B",
       "pointsAt": [
-        "clr2"
+        "brand_secondary"
       ],
       "uses": {
         "theme": 0,
@@ -2205,11 +2347,11 @@
       "name": "page_marker_background_hover",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$clr2",
-      "declaredWhere": "_00_main_configuration.yml:294",
+      "declared": "$brand_secondary",
+      "declaredWhere": "_00_main_configuration.yml:313",
       "resolved": "#BF609B",
       "pointsAt": [
-        "clr2"
+        "brand_secondary"
       ],
       "uses": {
         "theme": 0,
@@ -2229,7 +2371,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(10)",
-      "declaredWhere": "_00_main_configuration.yml:149",
+      "declaredWhere": "_00_main_configuration.yml:168",
       "resolved": "rgb(229.5, 231.8, 232.1)",
       "pointsAt": [],
       "uses": {
@@ -2246,7 +2388,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(10)",
-      "declaredWhere": "_00_main_configuration.yml:148",
+      "declaredWhere": "_00_main_configuration.yml:167",
       "resolved": "rgb(229.5, 231.8, 232.1)",
       "pointsAt": [],
       "uses": {
@@ -2263,7 +2405,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(3)",
-      "declaredWhere": "_00_main_configuration.yml:150",
+      "declaredWhere": "_00_main_configuration.yml:169",
       "resolved": "rgb(247.35, 248.04, 248.13)",
       "pointsAt": [],
       "uses": {
@@ -2280,7 +2422,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "$black",
-      "declaredWhere": "_00_main_configuration.yml:291",
+      "declaredWhere": "_00_main_configuration.yml:310",
       "resolved": "#00171A",
       "pointsAt": [
         "black"
@@ -2299,11 +2441,181 @@
       }
     },
     {
+      "name": "surface-brand",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "$brand-primary",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:87",
+      "resolved": "#00BDD4",
+      "pointsAt": [
+        "brand-primary"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 3,
+        "libraryUncompiled": 1,
+        "roles": {
+          "var-def": 1,
+          "css-var": 1,
+          "mixin-call": 1
+        },
+        "wrappers": {
+          "on-colour": 1
+        },
+        "files": [
+          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass"
+        ]
+      }
+    },
+    {
+      "name": "surface-brand-secondary",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "$brand-secondary",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:89",
+      "resolved": "#BF609B",
+      "pointsAt": [
+        "brand-secondary"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 5,
+        "libraryUncompiled": 3,
+        "roles": {
+          "var-def": 1,
+          "css-var": 1,
+          "mixin-call": 1,
+          "background": 2
+        },
+        "wrappers": {
+          "on-colour": 1
+        },
+        "files": [
+          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/13_definitions/_form_elements.sass",
+          "lib:a_components/40_ui/ui_element_base_v002/_ui_library_support/_component_superfish_navigation.sass"
+        ]
+      }
+    },
+    {
+      "name": "surface-dark",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "$black",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:76",
+      "resolved": "#0E3A40",
+      "pointsAt": [
+        "black"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 5,
+        "libraryUncompiled": 0,
+        "roles": {
+          "var-def": 2,
+          "css-var": 1,
+          "mixin-call": 2
+        },
+        "wrappers": {
+          "ensure-contrast": 2
+        },
+        "files": [
+          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass"
+        ]
+      }
+    },
+    {
+      "name": "surface-light",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "$white",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:75",
+      "resolved": "#EAF3F4",
+      "pointsAt": [
+        "white"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 5,
+        "libraryUncompiled": 0,
+        "roles": {
+          "var-def": 2,
+          "css-var": 1,
+          "mixin-call": 2
+        },
+        "wrappers": {
+          "ensure-contrast": 2
+        },
+        "files": [
+          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass"
+        ]
+      }
+    },
+    {
+      "name": "surface_brand",
+      "group": "component-setting",
+      "kind": "colour",
+      "declared": "$brand_primary",
+      "declaredWhere": "_00_main_configuration.yml:79",
+      "resolved": "#00BDD4",
+      "pointsAt": [
+        "brand_primary"
+      ],
+      "uses": {
+        "theme": 3,
+        "library": 0,
+        "libraryUncompiled": 0,
+        "roles": {
+          "background": 3
+        },
+        "wrappers": {
+          "mix": 1
+        },
+        "files": [
+          "sass/30_typography/_general.sass",
+          "sass/40_ui/_tab_ui.sass"
+        ]
+      }
+    },
+    {
+      "name": "surface_brand_secondary",
+      "group": "component-setting",
+      "kind": "colour",
+      "declared": "$brand_secondary",
+      "declaredWhere": "_00_main_configuration.yml:81",
+      "resolved": "#BF609B",
+      "pointsAt": [
+        "brand_secondary"
+      ],
+      "uses": {
+        "theme": 3,
+        "library": 0,
+        "libraryUncompiled": 0,
+        "roles": {
+          "background": 3
+        },
+        "wrappers": {},
+        "files": [
+          "sass/60_site_elements/agile_blocks/_section_introduction.sass",
+          "sass/60_site_elements/agile_blocks/_section_list_capsules.sass",
+          "sass/60_site_elements/_reference_block.sass"
+        ]
+      }
+    },
+    {
       "name": "surface_dark",
       "group": "role",
       "kind": "colour",
       "declared": "$clr3",
-      "declaredWhere": "_00_main_configuration.yml:60",
+      "declaredWhere": "_00_main_configuration.yml:64",
       "resolved": "#0E3A40",
       "pointsAt": [
         "clr3"
@@ -2322,7 +2634,7 @@
       "group": "role",
       "kind": "colour",
       "declared": "$clr4",
-      "declaredWhere": "_00_main_configuration.yml:61",
+      "declaredWhere": "_00_main_configuration.yml:65",
       "resolved": "#EAF3F4",
       "pointsAt": [
         "clr4"
@@ -2341,7 +2653,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "set-color(2,50)",
-      "declaredWhere": "_00_main_configuration.yml:313",
+      "declaredWhere": "_00_main_configuration.yml:332",
       "resolved": "rgb(223, 175.5, 205)",
       "pointsAt": [],
       "uses": {
@@ -2362,7 +2674,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "set-color(2,30)",
-      "declaredWhere": "_00_main_configuration.yml:314",
+      "declaredWhere": "_00_main_configuration.yml:333",
       "resolved": "rgb(235.8, 207.3, 225)",
       "pointsAt": [],
       "uses": {
@@ -2408,7 +2720,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(40)",
-      "declaredWhere": "_00_main_configuration.yml:172",
+      "declaredWhere": "_00_main_configuration.yml:191",
       "resolved": "rgb(153, 162.2, 163.4)",
       "pointsAt": [],
       "uses": {
@@ -2436,7 +2748,7 @@
       "group": "component-setting",
       "kind": "colour",
       "declared": "neutral(90)",
-      "declaredWhere": "_00_main_configuration.yml:177",
+      "declaredWhere": "_00_main_configuration.yml:196",
       "resolved": "rgb(25.5, 46.2, 48.9)",
       "pointsAt": [],
       "uses": {
@@ -2452,11 +2764,11 @@
       "name": "ui_hover_border_color",
       "group": "component-setting",
       "kind": "colour",
-      "declared": "$impact",
-      "declaredWhere": "_00_main_configuration.yml:173",
+      "declared": "$brand_secondary",
+      "declaredWhere": "_00_main_configuration.yml:192",
       "resolved": "#BF609B",
       "pointsAt": [
-        "impact"
+        "brand_secondary"
       ],
       "uses": {
         "theme": 0,
@@ -2518,11 +2830,40 @@
       }
     },
     {
+      "name": "visual-impact",
+      "group": "library-or-local",
+      "kind": "colour",
+      "declared": "$clr5",
+      "declaredWhere": "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass:79",
+      "resolved": "#D98536",
+      "pointsAt": [
+        "clr5"
+      ],
+      "uses": {
+        "theme": 0,
+        "library": 3,
+        "libraryUncompiled": 0,
+        "roles": {
+          "var-def": 1,
+          "css-var": 1,
+          "mixin-call": 1
+        },
+        "wrappers": {
+          "on-colour": 1
+        },
+        "files": [
+          "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
+          "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass"
+        ]
+      }
+    },
+    {
       "name": "visual_impact",
       "group": "role",
       "kind": "colour",
       "declared": "$clr5",
-      "declaredWhere": "_00_main_configuration.yml:64",
+      "declaredWhere": "_00_main_configuration.yml:68",
       "resolved": "#D98536",
       "pointsAt": [
         "clr5"
@@ -2545,7 +2886,7 @@
       "group": "semantic",
       "kind": "colour",
       "declared": "$black",
-      "declaredWhere": "_00_main_configuration.yml:278",
+      "declaredWhere": "_00_main_configuration.yml:297",
       "resolved": "#00171A",
       "pointsAt": [
         "black"
@@ -2570,11 +2911,11 @@
       "name": "welcome_block_color",
       "group": "semantic",
       "kind": "colour",
-      "declared": "$white",
-      "declaredWhere": "_00_main_configuration.yml:279",
+      "declared": "$on_dark",
+      "declaredWhere": "_00_main_configuration.yml:298",
       "resolved": "white",
       "pointsAt": [
-        "white"
+        "on_dark"
       ],
       "uses": {
         "theme": 3,
@@ -2599,90 +2940,84 @@
       "resolved": "white",
       "pointsAt": [],
       "uses": {
-        "theme": 71,
-        "library": 47,
-        "libraryUncompiled": 38,
+        "theme": 14,
+        "library": 30,
+        "libraryUncompiled": 10,
         "roles": {
-          "var-def": 38,
+          "var-def": 16,
+          "control": 5,
           "function-def": 2,
           "css-var": 1,
-          "text": 52,
-          "border": 9,
+          "mixin-call": 4,
           "background": 14,
           "mixin-def": 1,
           "other": 1
         },
         "wrappers": {
-          "mix": 28,
+          "mix": 4,
+          "if": 2,
+          "contrast": 1,
           "rgba": 1
         },
         "files": [
           "lib:a_components/10_colours_and_patterns/00_core/_01_configuration_colour_and_patterns.sass",
+          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass",
           "lib:a_components/10_colours_and_patterns/00_core/11_functions/_neutral.sass",
+          "lib:a_components/10_colours_and_patterns/00_core/11_functions/_contrast.sass",
           "lib:a_components/40_ui/00_core/_04_configuration_ui.sass",
           "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass",
-          "lib:a_components/40_ui/ui_element_base_v002/_standardized_icons/_icons.sass",
+          "lib:a_components/10_colours_and_patterns/colour_roles/_colour_roles.sass",
           "lib:a_components/40_ui/ui_element_base_v002/13_definitions/_form_elements.sass",
           "sass/10_colour_and_patterns/_patterns.sass",
-          "sass/20_layout/_page_footer.sass",
-          "sass/30_typography/_10_definitions.sass",
-          "sass/30_typography/_20_mixin_metadata_block.sass",
-          "sass/30_typography/_general.sass",
-          "sass/40_ui/10_components/_browser_display_mode_controls.sass",
-          "sass/40_ui/10_components/_browser_mobile_base.sass",
           "sass/40_ui/10_components/_card.sass",
           "sass/40_ui/10_components/_library_superfish.sass",
           "sass/40_ui/10_components/_omeka_search_form_component.sass",
-          "sass/40_ui/_main_navigation_mobile.sass",
           "sass/40_ui/_omeka_advanced_search_filters.sass",
-          "sass/60_site_elements/agile_blocks/_poster.sass",
           "sass/60_site_elements/agile_blocks/_section_introduction.sass",
           "sass/60_site_elements/agile_blocks/_section_list_capsules.sass",
-          "sass/60_site_elements/agile_blocks/_slideshow_block.sass",
-          "sass/60_site_elements/_capsule.sass",
           "sass/60_site_elements/_item_show.sass",
-          "sass/60_site_elements/_item_showcase.sass",
-          "sass/60_site_elements/_item_with_metadata.sass",
           "sass/60_site_elements/_map_block.sass",
           "sass/60_site_elements/_slide_item.sass",
           "sass/60_site_elements/_reference_block.sass",
-          "sass/60_site_elements/_resources_for_educators.sass",
-          "sass/60_site_elements/_title_area.sass",
-          "sass/60_site_elements/_universal_viewer.sass",
-          "sass/60_site_elements/_welcome_block.sass"
+          "sass/60_site_elements/_universal_viewer.sass"
         ]
       }
     }
   ],
   "localColourVars": [
     {
+      "name": "candidates",
+      "declarations": [
+        {
+          "where": "lib:a_components/10_colours_and_patterns/00_core/11_functions/_contrast.sass:78",
+          "value": "if(is-light($surface), ($dark, $light, $black, $white), ($light, $dark, $white, $black))"
+        }
+      ]
+    },
+    {
       "name": "colourmaps",
       "declarations": [
         {
           "where": "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass:13",
           "value": "(1: $clr1, 2: $clr2, 3: $clr3, 4: $clr4, 5: $clr5, 6: $clr6, 7: $clr7, 8: $clr8, 9: $clr9, 10: $clr10, 11: $clr11, 12: $clr12, 13: $clr13, 14: $clr14, 15: $clr15, 16: $clr16, 17: $clr17, 18: $clr18, 19: $clr19, 20: $clr20)"
-        },
-        {
-          "where": "lib:a_components/10_colours_and_patterns/00_core/11_functions/_set_colour.sass:20",
-          "value": "(1: $clr1_map, 2: $clr2_map, 3: $clr3_map, 4: $clr4_map, 5: $clr5_map, 6: $clr6_map, 7: $clr7_map, 8: $clr8_map, 9: $clr9_map)"
         }
       ]
     },
     {
-      "name": "colours",
+      "name": "s14-root-colours",
       "declarations": [
         {
-          "where": "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass:9",
-          "value": "$clr1 $clr2 $clr3 $clr4 $clr5 $clr6 $clr7 $clr8  $clr9"
+          "where": "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass:13",
+          "value": "$clr1 $clr2 $clr3 $clr4 $clr5 $clr6 $clr7 $clr8 $clr9"
         }
       ]
     },
     {
-      "name": "map",
+      "name": "toward",
       "declarations": [
         {
-          "where": "lib:a_components/10_colours_and_patterns/root_colour_variables/_colour_root_variables.sass:21",
-          "value": "nth($colour_maps,$i)"
+          "where": "lib:a_components/10_colours_and_patterns/00_core/11_functions/_contrast.sass:68",
+          "value": "if(is-light($surface), $black, $white)"
         }
       ]
     },
