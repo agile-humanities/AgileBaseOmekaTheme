@@ -220,6 +220,10 @@ fs.writeFileSync(path.join(target, 'README.md'), fs.readFileSync(path.join(simpl
 written.push('README.md');
 fs.copyFileSync(path.join(simplifiedSrc, 'agile-colour.php'), path.join(target, 'agile-colour.php'));
 written.push('agile-colour.php');
+// The theme's configuration, so Agile Theme Tools (when present) can read the palette defaults and the colour roles
+// for its Colours and fonts page. The Simplified theme has no build; the file is reference data only.
+fs.writeFileSync(path.join(target, '_00_main_configuration.yml'), '# Reference copy of the Advanced theme\'s configuration at generation (tools/build-simplified.js). This theme has no\n# build: Agile Theme Tools reads the palette defaults and colour roles from it; nothing else uses it.\n' + fs.readFileSync(path.join(theme, '_00_main_configuration.yml'), 'utf8'));
+written.push('_00_main_configuration.yml');
 if (!fs.existsSync(path.join(target, 'LICENSE.txt')) && fs.existsSync(path.join(theme, 'LICENSE.txt'))) { fs.copyFileSync(path.join(theme, 'LICENSE.txt'), path.join(target, 'LICENSE.txt')); written.push('LICENSE.txt'); }
 if (!fs.existsSync(path.join(target, 'custom.css'))) {
   fs.writeFileSync(path.join(target, 'custom.css'), fs.readFileSync(path.join(simplifiedSrc, 'custom.css'), 'utf8'));
