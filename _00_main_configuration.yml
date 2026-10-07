@@ -33,18 +33,37 @@ typescale: "(base: 1, xsml: 1, sml: 1, med:1, lrg: 1, xlrg: 1, xxlrg: 1)"
 paragraph_spacing: "clamped(map-get($min_sizefactors,'base'),map-get($sizefactors,'base'),$default-min-bp,$default-max-bp,map-get($line_heights,base))"
 
 ## 01 COLOUR AND PATTERNS
+
+# Palette slots. Each slot has a role (see the generic requirements, section 7.3):
+#   clr1  Primary brand colour; the default accent and the logo's key colour. Tested against every surface, never enforced.
+#   clr2  Secondary brand colour; accent. Tested, never enforced.
+#   clr3  Dark pole: the dark surface and the text colour on light surfaces. Dark but not $black.
+#   clr4  Light pole: the light surface and the text colour on dark surfaces. Light but not $white.
+#   clr5  Visual impact: buttons and calls to action. Its text colour is picked automatically.
+#   clr6+ Further accents (later: data-visualisation colours). Tested, never enforced.
 clr1: "#00BDD4"
 clr2: "#BF609B"
-clr3: "#D98536"
-clr4: "#315FAA"
-clr5: "#7DBF60"
-clr6: "#E1BB0B"
-clr7: "#E5336D"
-clr8: "#00171A"
-clr9: "#000000"
-black: $clr8
+clr3: "#0E3A40"
+clr4: "#EAF3F4"
+clr5: "#D98536"
+clr6: "#315FAA"
+clr7: "#7DBF60"
+clr8: "#E1BB0B"
+clr9: "#E5336D"
+
+# Fixed reference points. Contrast is measured from these; surfaces default to them but are not pinned to them.
+black: "#00171A"
 white: white
 true_black: "#000000"
+
+# Colour roles (working names; the library will define these with defaults once E2 lands)
+surface_dark: $clr3
+surface_light: $clr4
+on_dark: $clr4
+on_light: $clr3
+visual_impact: $clr5
+brand_primary: $clr1
+brand_secondary: $clr2
 
 # Background
 bgcolor: $white
@@ -57,7 +76,7 @@ cta: $clr1
 de_emphasized: "neutral(50)"
 de_activated: "neutral(30)"
 link_colour: $black
-link_colour_active: $clr3
+link_colour_active: $clr5
 link_colour_reversed: $white
 link_colour_active_reversed: "neutral(5)"
 

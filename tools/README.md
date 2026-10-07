@@ -70,3 +70,50 @@ tool could not explain. It is worth reading after changing SASS:
 
 `--verify` builds the theme with a random palette and compares every colour with what the variables give for the
 same palette. It exits with an error if any differ.
+
+## colour-audit.js
+
+Inventories the theme's colour variables and traces where each is used — in the theme's SASS and in the parts of
+`stop14-themesystem-legacy` that compile into it. It is the measuring instrument for the colour-roles work: run it
+before and after a change to see whether colour usage became more consistent.
+
+```bash
+node tools/colour-audit.js                    # writes tools/colour-audit-output/{report.md, occurrences.csv, inventory.json}
+node tools/colour-audit.js --out <dir>        # elsewhere
+node tools/colour-audit.js --library <path>   # scan another checkout of the library (default: node_modules)
+```
+
+It compiles the theme once, exactly as gulp does, to learn which files are in the build, then once more with a probe
+that prints every global variable's value, so colour variables are found by what they hold rather than by name. Each
+file is then read line by line and every colour reference is classified by the property it colours (text, background,
+border, SVG, shadow), or as an alias definition or mixin argument. The report also lists hard-coded colours, the
+transforms (`mix`, `rgba` …) applied to palette colours, WCAG contrast of each colour against the white and black
+points, and text/background pairs declared in one rule. Nothing in the theme is changed.
+
+## build-simplified.js
+
+Generates the **Simplified Agile Base Theme** from this theme (generic requirements D6/D7, decision 9: the Simplified
+theme is derived, never hand-maintained). Default target: the sibling folder `../AgileBaseOmekaThemeSimplified`.
+
+```bash
+npm run build:simplified                                  # build with CSS variables, then generate
+node tools/build-simplified.js --container <docker name>  # run the build inside the Omeka container
+node tools/build-simplified.js --from <asset dir>         # reuse an existing --variables build
+node tools/build-simplified.js --templates-only           # only the templates and theme.ini
+node tools/build-simplified.js --target <dir>             # generate somewhere else
+```
+
+What it produces: `asset/` (the `--variables` build: stylesheet with `--colour--N`/`--font-*` variables,
+`theme-variables.css`, scripts, fonts, images), a subset of `view/` for core Omeka pages and core blocks,
+`config/theme.ini`, `README.md`, `GENERATED.json`, and a `custom.css`/`custom.js` created once and never overwritten.
+
+The template subset is rewritten, not copied: every line that depends on Agile Theme Tools or another module is
+replaced by a listed, exact substitution (per-site asset URLs → the theme's assets; the module's `valueDisplay`,
+`propertyTerms` and `textSummary` helpers → inline stand-ins from `simplified/shims/`; Advanced Search's search
+page → core item browse with full-text search; the module's font and custom-CSS injection → palette and fonts from
+the theme's own settings, plus the module's CSS layers only when the module is present). A rewrite that no longer
+matches, or any surviving module helper call, stops the generation with the file and line, so a change in the
+Advanced templates cannot ship module code to the Simplified theme unnoticed.
+
+Sources for the generated parts live in `simplified/`: `theme.ini` (settings for the palette slots by role,
+fonts, logo, footer, card terms), `README.md`, `custom.css`, `shims/*.php`.

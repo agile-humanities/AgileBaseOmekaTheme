@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "css-variables": "node tools/css-variables.js",
-    "build:variables": "gulp build --variables"
+    "build:variables": "gulp build --variables",
+    "build:simplified": "node tools/build-simplified.js"
   },
   "repository": {
     "type": "git",

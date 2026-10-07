@@ -1,0 +1,13 @@
+/*
+ * Your own styles for this site. Loaded after the theme's stylesheet, so anything here wins.
+ *
+ * The palette and fonts are CSS variables; the theme settings form sets the common ones. For anything else, see
+ * asset/css/theme-variables.css — every variable the stylesheet reads, with notes on which to change — and set them
+ * here, for example:
+ *
+ * @supports (color: color-mix(in srgb, red, blue)) {
+ *   :root {
+ *     --colour--1: #663399;
+ *   }
+ * }
+ */
