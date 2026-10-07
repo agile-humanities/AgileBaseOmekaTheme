@@ -37,6 +37,12 @@
  * USAGE (from the theme folder; needs the theme's node_modules)
  *   node tools/css-variables.js                 writes asset/css/style.vars.css and a report, changes nothing else
  *   node tools/css-variables.js --write         also replaces asset/css/style.css and style.min.css
+ * Derived colour roles — configuration keys written as on-colour() / ensure-contrast() expressions, such as on_impact
+ * and brand_primary_on_light — are not linear in the palette, so they are treated as inputs of their own: the rules
+ * that use them read var(--colour--on-impact) …, their :root definitions keep the built value, and the admin's
+ * palette layer (AgileThemeTools Styling\PaletteCss, or the Simplified theme's layout) recomputes them at run time
+ * with the build's own maths when the palette changes.
+ *
  *   node tools/css-variables.js --verify        afterwards compiles with a random palette and checks that the
  *                                               variables give the same colours as that real build
  * Options: --css-dir <dir> (default asset/css), --mainconfig <file>, --config <file> (an alternative configuration
@@ -211,10 +217,13 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
   });
   if (!inputs.length) throw new Error('No colour or font inputs were found in ' + mainConfig);
   inputs.forEach((input) => { if (input.kind === 'colour') input.moved = moved(input.base); });
-  console.log(`Inputs: ${inputs.map((i) => i.key).join(', ')}`);
+  // Derived roles: keys whose value is an expression the build evaluates non-linearly. Their built value is read from
+  // the base build (the library exports --colour--<role>), or inferred from the rules that use them.
+  const roleKeys = Object.keys(config).filter((key) => /\b(ensure-contrast|on-colou?r)\s*\(/.test(String(config[key] ?? '')));
+  console.log(`Inputs: ${inputs.map((i) => i.key).join(', ')}${roleKeys.length ? `\nDerived roles: ${roleKeys.join(', ')}` : ''}`);
 
   const workDir = fs.mkdtempSync(path.join(os.tmpdir(), 'css-variables-'));
-  console.log(`Compiling ${inputs.length + 2} variants in ${workDir}`);
+  console.log(`Compiling ${inputs.length + roleKeys.length + 2} variants in ${workDir}`);
   // Each variant is the WHOLE configuration with one value changed, not that value alone: keys that refer to an
   // input (black: $clr8, impact: $clr2) only follow it when they are evaluated again after it.
   const withChanges = (changes) => {
@@ -230,6 +239,28 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
 
   const root = postcss.parse(css.base);
   const baseDecls = declarations(root);
+
+  // The derived roles as inputs. Each is given a probe colour in its variant; a role whose built value is not exported
+  // on :root is inferred from the declarations that take the probe colour exactly.
+  const rootExports = new Map();
+  baseDecls.forEach((d) => { if (d.prop.startsWith('--') && /^(:root|html)$/.test(d.parent.selector || '')) { const c = parseColourNode(valueParser(d.value).nodes[0] || { type: 'word', value: '' }); if (c && !rootExports.has(d.prop)) rootExports.set(d.prop, c); } });
+  const roleInputs = roleKeys.map((key, i) => ({ key, kind: 'colour', role: true, variable: `--colour--${key.replace(/_/g, '-')}`, base: null, moved: { r: 17 + i, g: 203 - i, b: 89 + 2 * i, a: 1 } }));
+  roleInputs.forEach((input) => { if (rootExports.has(input.variable)) input.base = rootExports.get(input.variable); });
+  if (roleInputs.length) {
+    const roleCss = await compileAll(roleInputs.map((input) => ({ name: input.key, overrides: withChanges({ [input.key]: toHex(input.moved) }) })), workDir);
+    roleInputs.forEach((input) => {
+      css[input.key] = roleCss[input.key];
+      if (input.base) return;
+      const decls = declarations(postcss.parse(roleCss[input.key]));
+      const probe = toHex(input.moved);
+      const bases = new Set();
+      decls.forEach((d, i) => { if (baseDecls[i] && d.prop === baseDecls[i].prop && d.value !== baseDecls[i].value && d.value.toLowerCase().includes(probe)) { const b = readValue(baseDecls[i].value), v = readValue(d.value); v.colours.forEach((t, j) => { if (toHex(t.colour) === probe && b.colours[j]) bases.add(cssColour(b.colours[j].colour)); }); } });
+      if (bases.size === 1) input.base = readValue([...bases][0]).colours[0].colour;
+    });
+    const unused = roleInputs.filter((i) => !i.base);
+    unused.forEach((i) => console.log(`  (${i.key} is not used by any rule and not exported; left out)`));
+    roleInputs.filter((i) => i.base).forEach((i) => inputs.push(i));
+  }
   const variants = {};
   inputs.forEach((input) => {
     const decls = declarations(postcss.parse(css[input.key]));
@@ -244,22 +275,28 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
     report.warnings.push('The configuration gives a different stylesheet when it is evaluated a second time. A key refers to another key that is defined further down the file; move the definition above its first use. The stylesheet written here uses the second evaluation.');
   }
   inputs.forEach((input) => { if (!variants[input.key]) report.structural.push(`Changing ${input.key} changes which rules are generated, not only their values. It is left out.`); });
-  const usable = inputs.filter((input) => variants[input.key]);
+  const usable = inputs.filter((input) => variants[input.key]).sort((a, b) => (b.role ? 1 : 0) - (a.role ? 1 : 0)); // roles first
+  const roleVariables = new Set(inputs.filter((i) => i.role).map((i) => i.variable));
 
   // ---- 1. for every colour in every declaration: which inputs does it follow, and in what proportion?
   const models = new Map();       // signature -> { terms, constant, alpha, uses, names }
   const sites = [];               // { decl, token, signature } in document order
   const fontSites = [];
-  const counts = { declarations: baseDecls.length, colours: 0, followInputs: 0, direct: 0, mixed: 0, fonts: 0, fixed: 0 };
+  const counts = { declarations: baseDecls.length, colours: 0, followInputs: 0, direct: 0, mixed: 0, fonts: 0, fixed: 0, roleDefinitions: 0 };
 
   baseDecls.forEach((decl, index) => {
     const base = readValue(decl.value);
     const weights = base.colours.map(() => ({}));
+    const claimed = base.colours.map(() => false);
     let trouble = null;
+
+    // The :root definition of a derived role keeps its built value: the run-time layer redefines it.
+    if (roleVariables.has(decl.prop) && /^(:root|html)$/.test(decl.parent.selector || '')) { counts.roleDefinitions++; counts.colours += base.colours.length; counts.fixed += base.colours.length; return; }
 
     usable.forEach((input) => {
       const other = variants[input.key][index];
       if (other.value === decl.value) return;
+      if (!input.role && claimed.every(Boolean) && claimed.length) return; // every colour here is a role: the palette moves it only through the role
       if (input.kind === 'font') {
         // The sentinel stands where the font list stood: what surrounds it must be unchanged.
         const sentinel = input.sentinel;
@@ -282,6 +319,7 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
       base.colours.forEach((token, t) => {
         const a = token.colour, b = variant.colours[t].colour;
         if (a.r === b.r && a.g === b.g && a.b === b.b && a.a === b.a) return;
+        if (claimed[t]) return; // follows a derived role exactly; the palette's effect on it goes through the role
         if (Math.abs(a.a - b.a) > 1e-6) { trouble = `changes opacity when ${input.key} changes`; return; }
         const w = ['r', 'g', 'b'].map((ch) => (b[ch] - a[ch]) / (input.moved[ch] - input.base[ch]));
         const mean = (w[0] + w[1] + w[2]) / 3;
@@ -290,6 +328,7 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
           return;
         }
         weights[t][input.key] = Math.min(1, Math.max(0, mean));
+        if (input.role && Math.abs(mean - 1) <= TOLERANCE) { weights[t] = { [input.key]: 1 }; claimed[t] = true; }
       });
     });
 
@@ -403,6 +442,7 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
 
   // ---- 4. the definitions: built values first (for every browser), then how each follows the inputs.
   const missingInputs = inputs.filter((input) => input.kind === 'colour' && !declaredOn.has(input.variable));
+  counts.roles = inputs.filter((i) => i.role).length;
   const fallbackLines = ['  --agile-css-variables: 1; /* marker: this stylesheet reads its palette and fonts from variables */']
     .concat(missingInputs.map((input) => `  ${input.variable}: ${toHex(input.base)};`))
     .concat(generated.map(({ name, model }) => `  ${name}: ${cssColour(model.built)};`));
@@ -445,7 +485,7 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
     out();
     comment('PALETTE — change these. Every derived colour below follows them.');
     out();
-    inputs.filter((i) => i.kind === 'colour').forEach((input) => {
+    inputs.filter((i) => i.kind === 'colour' && !i.role).forEach((input) => {
       const roles = usedBy(input.key);
       const notes = [];
       if (roles.length) notes.push(`the configuration\'s ${roles.join(', ')}`);
@@ -453,6 +493,14 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
       out(`    ${input.variable}: ${toHex(input.base)};${' '.repeat(Math.max(1, 34 - input.variable.length - toHex(input.base).length))}/* ${input.key}: ${notes.join('; ')} */`);
     });
     out();
+    if (inputs.some((i) => i.role)) {
+      comment('DERIVED ROLES — text colours the build worked out from the palette by rule (legibility), not by proportion: a brand colour\nas it is when it reads on its surface, otherwise darkened or lightened until it does. The admin\'s palette layer recomputes\nthem when the palette changes. Set one here only to pin it.');
+      out();
+      inputs.filter((i) => i.role).forEach((input) => {
+        out(`    ${input.variable}: ${cssColour(input.base)};${' '.repeat(Math.max(1, 46 - input.variable.length - cssColour(input.base).length))}/* ${input.key}: ${String(config[input.key]).trim()} */`);
+      });
+      out();
+    }
     comment('FONTS — change these. A family must be available to the browser: a system font, a font the theme bundles, or one loaded by your own @import or <link>.');
     out();
     inputs.filter((i) => i.kind === 'font').forEach((input) => {
@@ -517,7 +565,8 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
 
   console.log(`\nDeclarations: ${counts.declarations}. Colours found: ${counts.colours}.`);
   console.log(`  follow the palette: ${counts.followInputs}  (${counts.direct} a palette colour as it is, ${counts.mixed} a mix)`);
-  console.log(`  fixed (do not follow any input): ${counts.fixed}`);
+  console.log(`  fixed (do not follow any input): ${counts.fixed}${counts.roleDefinitions ? ` (of which ${counts.roleDefinitions} are the built values of derived roles)` : ''}`);
+  if (counts.roles) console.log(`  derived roles treated as inputs: ${counts.roles}`);
   console.log(`  font declarations now reading a variable: ${counts.fonts}`);
   console.log(`  derived colours: ${[...models.values()].filter((m) => !isInputItself(m)).length} (${generated.length} newly named)`);
   if (report.warnings.length) console.log('  ! ' + report.warnings.join('\n  ! '));
@@ -528,7 +577,7 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
   // ---- 6. verify against a real build with another palette
   if (flag('verify')) {
     const palette = {};
-    const colourInputs = usable.filter((i) => i.kind === 'colour');
+    const colourInputs = usable.filter((i) => i.kind === 'colour'); // includes the derived roles: as literals they override their expressions
     colourInputs.forEach((input) => { palette[input.key] = { r: Math.floor(Math.random() * 256), g: Math.floor(Math.random() * 256), b: Math.floor(Math.random() * 256), a: 1 }; });
     const overrides = {};
     colourInputs.forEach((input) => { overrides[input.key] = toHex(palette[input.key]); });

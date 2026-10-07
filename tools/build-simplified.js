@@ -74,7 +74,18 @@ const TEMPLATES = [
 
 // Exact replacements. `files` limits a rule to those templates; a rule listed for a file MUST match there, so a
 // change in the Advanced template that breaks the rewrite is caught instead of silently shipping module code.
-const shim = (name) => fs.readFileSync(path.join(simplifiedSrc, 'shims', name + '.php'), 'utf8').trim();
+// The colour part of the theme's configuration, baked into the palette shim so the Simplified theme can recompute its
+// derived colour roles (agile-colour.php) from a changed palette without the module or a build.
+const yaml = require('js-yaml');
+function colourConfigLiteral() {
+  const config = yaml.load(fs.readFileSync(path.join(theme, '_00_main_configuration.yml'), 'utf8')) || {};
+  const NAMED = /^(white|black|transparent|red|blue|green|yellow|orange|purple|gray|grey|silver|navy|teal|maroon|olive|aqua|cyan|fuchsia|magenta|lime)$/i;
+  const isColourish = (v) => NAMED.test(v) || /^(#[0-9a-f]{3,8}|\$[\w-]+|rgba?\(.*\)|mix\(.*\)|neutral\(.*\)|ensure-contrast\(.*\)|on-colou?r\(.*\)|set-colou?r\(.*\))$/i.test(v) && !/font|size|width|height|rem|px|em$/.test(v);
+  const skipKey = /font|size|width|height|spacing|padding|margin|radius|scale|factor|breakpoint|delay|speed|path|dir|template|transform|display|position|direction|wrap|justify|align|fit|top|bottom|left|right|threshold|offset|stack|count|rows|properties|heartbeat|remove/;
+  const entries = Object.keys(config).filter((k) => !skipKey.test(k) && typeof config[k] !== 'object' && config[k] !== null && isColourish(String(config[k]).trim())).map((k) => `    '${k}' => '${String(config[k]).trim().replace(/'/g, "\\'")}'`);
+  return '[\n' + entries.join(',\n') + ',\n]';
+}
+const shim = (name) => fs.readFileSync(path.join(simplifiedSrc, 'shims', name + '.php'), 'utf8').trim().replace('__AGILE_COLOUR_CONFIG__', colourConfigLiteral());
 const REWRITES = [
   // The module's per-site asset resolver → the theme's own assets.
   { from: "$siteAssetUrl = $this->plugin('siteAssetUrl');", to: "$siteAssetUrl = $this->plugin('assetUrl'); // Simplified theme: its own assets, no per-site builds", files: ['layout/layout.phtml'] },
@@ -207,6 +218,8 @@ written.push('config/theme.ini');
 
 fs.writeFileSync(path.join(target, 'README.md'), fs.readFileSync(path.join(simplifiedSrc, 'README.md'), 'utf8').replace(/\{\{version\}\}/g, version));
 written.push('README.md');
+fs.copyFileSync(path.join(simplifiedSrc, 'agile-colour.php'), path.join(target, 'agile-colour.php'));
+written.push('agile-colour.php');
 if (!fs.existsSync(path.join(target, 'LICENSE.txt')) && fs.existsSync(path.join(theme, 'LICENSE.txt'))) { fs.copyFileSync(path.join(theme, 'LICENSE.txt'), path.join(target, 'LICENSE.txt')); written.push('LICENSE.txt'); }
 if (!fs.existsSync(path.join(target, 'custom.css'))) {
   fs.writeFileSync(path.join(target, 'custom.css'), fs.readFileSync(path.join(simplifiedSrc, 'custom.css'), 'utf8'));

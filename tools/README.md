@@ -38,6 +38,11 @@ mixed with something else. Each such value is then replaced with a variable:
   kept where they exist (`--colour--neutral--20`), the rest are numbered (`--colour--derived-3`);
 - a font list becomes `var(--font-base)`, `var(--font-heading)` and so on.
 
+- a derived colour role — a configuration key written as `on-colour(…)` or `ensure-contrast(…)`, such as
+  `on_impact` or `brand_primary_on_light` — is treated as an input of its own: rules that use it read
+  `var(--colour--on-impact)`, its `:root` definition keeps the built value, and the admin's palette layer (or the
+  Simplified theme's layout) recomputes it from the palette at run time with the build's own maths.
+
 Sizes and spacing are left alone. They come from the modular scale and need a build.
 
 ### Restyling without a build
