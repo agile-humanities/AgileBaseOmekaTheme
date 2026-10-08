@@ -1,0 +1,26 @@
+/**
+ *  @file _form_omeka_core_browse.sass
+ *  @group 40_ui
+ *  @target Omeka core browse controls on the item browse page (theme view/omeka/site/item/browse.phtml).
+ *  @covers .browse-controls form / .sort-block (view/common/sort-selector.phtml), select[name=sort_by].
+ **/
+.browse-controls
+  form, .sort-block
+    display: flex
+    flex-direction: column
+    +ui-form-spacing
+
+    +bp($tablet)
+      flex-direction: row
+
+  // Oddity of select2. This will treat this element like the first child and adjust margins to be flush left
+
+  select[name="sort_by"] + span
+    margin-left: 0
+
+// Select widths (library 3.0.0: no global <select> width).
+
+.browse-controls select
+  width: $ui_select_width
+  min-width: $ui_select_min_width
+  max-width: $ui_select_max_width

@@ -1,0 +1,57 @@
+/**
+ *  @file _buttons.sass
+ *  @group 40_ui
+ *  @target The theme's button vocabulary. The library applies %button and the modifier classes to
+ *    $ui_button_classes (".agile-button, .btn" in _00_main_configuration.yml); this file adds the theme's font and its
+ *    submit / reset variants. Nothing here targets the bare <button> element: a form's target file applies these
+ *    placeholders to its own buttons by class (.agile-button submit, emitted by AgileThemeTools' form-layout
+ *    partials) or by container.
+ *  @covers .agile-button (+ .submit .reset .ghost …), .btn (the module's block templates), %theme-button-submit and
+ *    %theme-button-reset for _facets.sass, _form_advanced_search.sass and _form_omeka_core*.sass.
+ **/
+
+// Theme variants of the library's submit and reset: a dark checkmark (the submit colour is light here), the reset
+// icon, centred.
+
+%theme-button-submit
+  @extend %button-submit
+
+  &:before
+    background-image: url(get_svg_url('icons/checkmark-default'))
+
+%theme-button-reset
+  @extend %button-reset
+  +background_icon_left('reset',$btn_icon_size,'default','reversed')
+  justify-content: center
+  background-color: $btn_reset_bg_color
+
+  &:hover
+    background-color: $btn_reset_hover_bg_color
+
+.agile-button, .btn
+  font-family: $labelfont
+  font-weight: $bold
+
+.agile-button
+  &.submit
+    @extend %theme-button-submit
+
+  &.reset
+    @extend %theme-button-reset
+
+  // A text-only button that reads as a link (the facets' "More options").
+  &.ghost
+    all: unset
+    font-family: $labelfont
+    color: neutral(80)
+    border-width: 0 0 1px 0
+    border-bottom-color: neutral(70)
+    border-bottom-style: solid
+    padding: 0
+    font-size: clamped(-2,-1)
+    cursor: pointer
+
+    &:hover
+      background: none
+      color: $on_light
+      border-bottom-color: black

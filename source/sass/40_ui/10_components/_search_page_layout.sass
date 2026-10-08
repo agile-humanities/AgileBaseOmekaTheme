@@ -1,13 +1,11 @@
 /**
- *  @file _browser_ui_definintions.sass
- *  @category 40_ui
- *  @theme LOCAL
- *  @description Common definitions for card browsers.
- *  @alsosee js/advancedSearchSupport.js, and js/masonryCardGrid.js, other components in 40_ui/10_components
- *
+ *  @file _search_page_layout.sass
+ *  @group 40_ui/10_components
+ *  @description Placeholders for the search page's results area and sidebar: %browser-container,
+ *    %browser-container-grid (results + <aside> grid), %browser-sidebar (the facets sidebar, an overlay panel below
+ *    the mobile controls breakpoint). Applied in 60_site_elements/_search_page.sass and the listing blocks.
+ *    Also sets --grid-gap-size for js/01_masonryCardGrid.js.
  **/
-
-
 // Create a root variable that can be retrieved in javascript.
 // Used to set the gutter width for Masonry views, which requires
 // it to be manually set. See js/01_masonryCardGrid.js

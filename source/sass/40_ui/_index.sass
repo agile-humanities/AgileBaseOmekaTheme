@@ -1,18 +1,22 @@
 /*
    @file _index.sass
    @theme LOCAL
-   @description  Loads SASS files for local theme.  */
+   @description  Loads the 40_ui files. Form files are named by the form they target (see each file's header):
+     _form_elements (bare elements and buttons), _form_omeka_core* (Omeka core public forms), _form_advanced_search
+     (the Advanced Search module's forms), _select_select2 (the Select2 skin). */
 
 @import 10_components/_index
 @import 12_mixins/_index
 @import _download_item
-@import _extensions
+@import _select_select2
 @import _icons
-@import _general
+@import _form_elements
+@import _buttons
 @import _main_navigation_mobile
-@import _omeka_advanced_search_filters
-@import _omeka_browse_controls
-@import _omeka_search_form
+@import _form_advanced_search
+@import _facets
+@import _form_omeka_core_browse
+@import _form_omeka_core
 @import _omeka_site_page_pagination
 @import _pagination
 @import _tab_ui

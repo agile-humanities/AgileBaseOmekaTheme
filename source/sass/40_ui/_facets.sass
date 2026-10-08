@@ -1,0 +1,112 @@
+/*
+ *  @file _facets.sass
+ *  @group 40_ui
+ *  @description The facets form in the search page sidebar: actions, refine box, facet blocks (%facet), facet
+ *    item lists (links and checkboxes). Moved from 60_site_elements/_search_page.sass (Phase A2); the sidebar
+ *    itself (placement, background) stays there.
+ */
+
+aside
+  .facets-refine
+    display: none
+
+  .active-facets
+    > ul
+      display: flex
+      justify-content: flex-start
+      gap: rv(0)
+      list-style: none
+      padding: 0
+
+  .facets-actions
+    display: flex
+
+    +bp($ui_mobile_app_controls_breakpoint)
+      flex-direction: column
+
+    button
+      margin-right: $ui_element_spacing
+      margin-bottom: $ui_element_spacing
+
+      +bp($ui_mobile_app_controls_breakpoint)
+        width: 100%
+
+  // Facets
+
+  #form-facets
+    > ul
+        list-style-type: none
+        padding-left: 0
+
+  #search-refine-submit
+    width: 100%
+    margin-top: $ui_element_spacing
+
+  #search-refine
+    width: 100%
+    +background-icon-base('search',$btn_icon_size,'neutral','default','right')
+    background-position: right #{$ui_padding} center
+
+  .facet
+    @extend %exposed-facet
+
+  .search-facet-items
+    li
+      font-family: $labelfont
+      line-height: 1.7
+      display: flex
+      align-items: flex-start
+      list-style-type: none
+
+      span.count
+        color: neutral(60) !important // override facet-checkboxes span below.
+
+    &.facet-links
+      padding-left: 0
+
+      li::before
+        content: '◆'
+        font-size: rv(-2)
+        position: relative
+        color: neutral(60)
+        display: block
+        margin-right: rv(-3)
+
+        &.count
+          color: neutral(70)
+
+        a
+          color: $on_light
+          text-decoration: underline
+
+          &:hover, &.active
+            color: $link_colour_active
+
+    &.facet-checkboxes
+      list-style-type: none
+      input[type=checkbox]
+        background-size: 80% !important  // core component issue, corrected in later release but not in deployed version
+        background-position: 50% !important // ditto
+        height: $ui_checkbox_height !important // ditto
+        width: $ui_checkbox_height !important // ditto
+
+      input[type=checkbox]+label
+        padding: 0 0 0 rv(-2) // base component spacing is off and its calculation needs revisiting
+
+      label
+        font-size: unset
+
+      li
+        span
+          color: $on_light
+
+// The facets form's own controls (library 3.0.0: nothing comes from element types any more).
+
+input[name="refine"]
+  @extend %input-text
+
+.facets-apply, #search-refine-submit
+  @extend %theme-button-submit
+
+.facets-reset
+  @extend %theme-button-reset

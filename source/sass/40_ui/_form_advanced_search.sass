@@ -1,12 +1,14 @@
-/*
- *  @file _omeka_advanced_search_filters
+/**
+ *  @file _form_advanced_search.sass
  *  @group 40_ui
- *
- *  @description Manages the Advanced Search module’s advanced filters. Used in place of the styles in
- *   the Advanced Search module’s search.css
- */
-
-
+ *  @target The Advanced Search module's search form (AdvancedSearch 3.4.64), both the stock form
+ *    (view/search/search-form-main.phtml) and the Agile adapter's form (AgileThemeTools
+ *    view/search/agile/form.phtml) — they share the ids and classes below until the split in the design pass.
+ *  @covers form#form-search, #form-search > fieldset#form-search > * (the fields, laid out by POSITION — see the
+ *    note), input[name=q], .select2-container; #search-filters .filter rows, .search-filter-plus,
+ *    .search-filter-action (AdvancedSearch asset/js/search.js adds rows from the template row); .search-form-buttons;
+ *    #advanced-search-form-wrapper (the wrapper and the iconfont fix for the plus/minus buttons).
+ **/
 /*
  * Notes:
  *
@@ -132,6 +134,9 @@ form#form-search
     order: 2 // Required to put the plus action below the filters as per note in MainSearchForm.php
 
   .search-filter-action
+    @extend %button
+    font-family: $labelfont
+    font-weight: $bold
     width: $ui_element_height
     min-width: $ui_element_height
 
@@ -145,4 +150,53 @@ form#form-search
     &:last-child
       margin-right: rv($grid_gap_factor)
 
+  // PHASE C HOLD: the list spacing above zeroes the buttons' padding; the submit used to get it back from the
+  // library's button[type=submit] rule (higher specificity), which library 3.0.0 no longer has. Revisit in the
+  // design pass together with the layout rules.
+  > .agile-button
+    padding-top: nth($btn_padding, 1)
+    padding-bottom: nth($btn_padding, 1)
+    padding-left: nth($btn_padding, 2)
 
+
+
+// Moved from 60_site_elements/_search_page.sass (Phase A2): the form wrapper and the filter fieldset reset.
+
+#advanced-search-form-wrapper
+  margin-bottom: rv($edge_padding_factor)
+
+
+  // Corrects iconfont issue
+  .search-filter-minus::before
+    content: '—'
+    font-weight: $heavy
+
+  .search-filter-plus:before
+    content: '+'
+    font-weight: $heavy
+
+#form-search
+  @extend %advanced_search_filter_ui
+
+// PHASE B HOLD (form refactor, 2026-10-08). The Agile adapter's form now renders in Omeka's row vocabulary
+// (.field > .field-meta + .inputs, see AgileThemeTools view/common/form-layout/field.phtml), so the theme's generic
+// row rules — the sibling spacing in 30_typography/_general.sass and its uppercase .field-meta label — started to
+// apply to it. These rules hold the pre-refactor look of the faceted browse interface until the design pass
+// restyles every form through _form_row.sass. Remove them then.
+
+.agile-search-form
+  .field + .field, fieldset + .field, span + .field, .field + fieldset
+    margin-top: 0
+
+  .field-meta label
+    text-transform: none
+    +font-size(-1)
+    font-weight: inherit
+    color: $label_color
+
+// Select widths (library 3.0.0: no global <select> width). Select2 reads the element's width when it initialises.
+
+#form-search select, .search-results-part select
+  width: $ui_select_width
+  min-width: $ui_select_min_width
+  max-width: $ui_select_max_width

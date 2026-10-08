@@ -13,7 +13,7 @@ $pagination->setFragment($fragment);
 <div class="linked-header">
     <div id="linked-filter">
         <h4><?php echo $translate('Filter by property'); ?></h4>
-        <select id="filter-property" name="property" data-url="<?php echo $escape($this->url(null, [], true)); ?>" data-fragment="<?php echo $escape($fragment); ?>">
+        <select id="filter-property" class="agile-select" name="property" data-url="<?php echo $escape($this->url(null, [], true)); ?>" data-fragment="<?php echo $escape($fragment); ?>">
             <option value=""><?php echo $translate('All'); ?></option>
             <?php foreach ($properties as $prop): ?>
             <option value="<?php echo $escape($prop->id()); ?>"<?php echo $prop->id() == $property ? ' selected="selected"' : ''; ?>><?php echo $escape(sprintf('%s (%s)', $prop->label(), $prop->term())); ?></option>

@@ -1,15 +1,13 @@
 /*
    @file _index.sass
    @theme LOCAL
-   @description  Loads SASS files for local theme. */
+   @description  Loads the 40_ui placeholder components (no CSS of their own until extended). Import order is
+     significant: @extend places the extending selectors where the placeholder is defined. */
 
-@import _browser_advanced_search_filters
-@import _browser_display_mode_controls
-@import _browser_mobile_base
-@import _browser_ui
-@import _card
-@import _card_grid
-@import _exposed_facet
+@import _search_page_filter_area
+@import _display_mode_controls
+@import _mobile_filter_panel
+@import _search_page_layout
+@import _facet
 @import _library_superfish
-@import _list_item
-@import _omeka_search_form_component
+@import _search_box

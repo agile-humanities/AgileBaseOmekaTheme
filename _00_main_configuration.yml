@@ -204,11 +204,11 @@ mobile_filter_height: "rv(5)"
 border_radius: $ui_border_radius
 
 #Buttons
+ui_button_classes: '".agile-button, .btn"'  # the selector(s) that carry the button design (library 3.0.0); Omeka core uses .button itself
 btn_padding: "5px $ui_padding"
 btn_border_width: 0
 btn_border_radius: $ui_border_radius
 btn_height: $ui_maxheight
-btn_min_width: 200px
 btn_width: 280px
 btn_compactwidth: 180px
 btn_largewidth: 280px

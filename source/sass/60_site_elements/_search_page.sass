@@ -1,11 +1,12 @@
 /*
- *  @file _advanced_search_browser.sass
+ *  @file _search_page.sass
  *  @category 60_site_elements
  *  @theme LOCAL
- *  @description Creates a faceted browsing interface built on top of the Advanced Search module.
- *  @see 40_ui/10_components/_component_omeka_browser_ui
+ *  @description The search page (AgileThemeTools view/search/agile/search.phtml, the Advanced Search page
+ *    template): title block, results header and footer, the results grid, the facets sidebar's placement and the
+ *    mobile controls. Form rules live in 40_ui (_form_advanced_search.sass, _facets.sass).
+ *  @see 40_ui/10_components/_search_page_layout.sass
  */
-
 // Template: search/search
 
 #search-page
@@ -15,22 +16,6 @@
     border-bottom: 1px solid neutral(20)
     max-width: 100%
     width: 100%
-
-#advanced-search-form-wrapper
-  margin-bottom: rv($edge_padding_factor)
-
-
-  // Corrects iconfont issue
-  .search-filter-minus::before
-    content: '—'
-    font-weight: $heavy
-
-  .search-filter-plus:before
-    content: '+'
-    font-weight: $heavy
-
-#form-search
-  @extend %advanced_search_filter_ui
 
 // Title area
 
@@ -148,8 +133,8 @@
 .search-facets-list
   padding-left: 0
 
-// FACET SIDEBAR
-// Template: search/search, search/facet-list
+// FACET SIDEBAR (placement only; the facets form is in 40_ui/_facets.sass)
+// Template: search/agile/search, search/agile/facets-list
 
 aside
   @at-root .search-results-wrapper > &
@@ -166,100 +151,6 @@ aside
       text-transform: uppercase
       font-weight: $bold
       margin-top: 0
-
-  .facets-refine
-    display: none
-
-  .active-facets
-    > ul
-      display: flex
-      justify-content: flex-start
-      gap: rv(0)
-      list-style: none
-      padding: 0
-
-  .facets-actions
-    display: flex
-
-    +bp($ui_mobile_app_controls_breakpoint)
-      flex-direction: column
-
-    button
-      margin-right: $ui_element_spacing
-      margin-bottom: $ui_element_spacing
-
-      +bp($ui_mobile_app_controls_breakpoint)
-        width: 100%
-
-  // Facets
-
-  #form-facets
-    > ul
-        list-style-type: none
-        padding-left: 0
-
-  #search-refine-submit
-    width: 100%
-    margin-top: $ui_element_spacing
-
-  #search-refine
-    width: 100%
-    +background-icon-base('search',$btn_icon_size,'neutral','default','right')
-    background-position: right #{$ui_padding} center
-
-  .facet
-    @extend %exposed-facet
-
-  .search-facet-items
-    li
-      font-family: $labelfont
-      line-height: 1.7
-      display: flex
-      align-items: flex-start
-      list-style-type: none
-
-      span.count
-        color: neutral(60) !important // override facet-checkboxes span below.
-
-    &.facet-links
-      padding-left: 0
-
-      li::before
-        content: '◆'
-        font-size: rv(-2)
-        position: relative
-        color: neutral(60)
-        display: block
-        margin-right: rv(-3)
-
-        &.count
-          color: neutral(70)
-
-        a
-          color: $on_light
-          text-decoration: underline
-
-          &:hover, &.active
-            color: $link_colour_active
-
-    &.facet-checkboxes
-      list-style-type: none
-      input[type=checkbox]
-        background-size: 80% !important  // core component issue, corrected in later release but not in deployed version
-        background-position: 50% !important // ditto
-        height: $ui_checkbox_height !important // ditto
-        width: $ui_checkbox_height !important // ditto
-
-      input[type=checkbox]+label
-        padding: 0 0 0 rv(-2) // base component spacing is off and its calculation needs revisiting
-
-      label
-        font-size: unset
-
-      li
-        span
-          color: $on_light
-
 
 // @todo: scope?
 

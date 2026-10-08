@@ -31,18 +31,18 @@ if (!isset($sortBy)) {
 <!-- BEGIN TEMPLATE common/sort-selector -->
 <form class="sorting" action="">
     <?php echo $this->queryToHiddenInputs(['sort_by', 'sort_order']); ?>
-    <select name="sort_by" aria-label="<?php echo $translate('Sort by'); ?>">
+    <select name="sort_by" class="agile-select" aria-label="<?php echo $translate('Sort by'); ?>">
         <?php foreach($sortBy as $sortByHeading): ?>
             <?php $selected = ($sortByQuery === $sortByHeading['value']) ? 'selected' : ''; ?>
             <option value="<?php echo $escape($sortByHeading['value']); ?>" <?php echo $selected; ?>><?php echo $sortByHeading['label']; ?></option>
         <?php endforeach; ?>
     </select>
     <div class="sort-block">
-        <select name="sort_order" aria-label="<?php echo $translate('Sort order'); ?>">
+        <select name="sort_order" class="agile-select" aria-label="<?php echo $translate('Sort order'); ?>">
             <option value="asc" <?php echo ($sortOrderQuery === 'asc') ? 'selected' : ''; ?>><?php echo $translate('Sort Ascending'); ?></option>
             <option value="desc" <?php echo ($sortOrderQuery === 'desc') ? 'selected' : ''; ?>><?php echo $translate('Sort Descending'); ?></option>
         </select>
-        <button type="submit"><?php echo $translate('Sort'); ?></button>
+        <button type="submit" class="agile-button submit"><?php echo $translate('Sort'); ?></button>
     </div>
 </form>
 <!-- END TEMPLATE common/sort-selector -->

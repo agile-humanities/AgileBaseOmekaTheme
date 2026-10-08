@@ -1,11 +1,12 @@
 /**
- *  @file _omeka_search_form.sass
- *  @category 40_ui
- *  @theme LOCAL
- *  @see view/common/search.phtml
- *
+ *  @file _form_omeka_core.sass
+ *  @group 40_ui
+ *  @target Omeka core public forms, as overridden by this theme (Omeka S 4.2).
+ *  @covers #search-form + button.search-form-clear (theme view/common/search-form.phtml: the header and welcome
+ *    search box); #fulltext_search, input[name=q] (view/common/advanced-search/fulltext.phtml); #advanced-search
+ *    .inputs, #property-queries .value-fields / input / textarea (view/common/advanced-search/properties*.phtml,
+ *    the item/item-set advanced search page omeka/site/item/search.phtml).
  **/
-
 #search-form
   @extend %search-form-container
 
@@ -86,3 +87,8 @@ button.search-form-clear
     padding: $ui_padding
     margin: 0
     min-height: calc(#{$ui_element_height} - #{$ui_padding * 2})
+
+// omeka/site/item/search.phtml (core template, no class hook): the page's submit.
+
+#advanced-search #page-actions input[type="submit"]
+  @extend %theme-button-submit
