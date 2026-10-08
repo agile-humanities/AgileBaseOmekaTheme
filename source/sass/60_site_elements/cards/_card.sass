@@ -19,6 +19,16 @@ main
   figure
     border: 1px solid neutral(60)
 
+    // No representative image: the placeholder set (img/svg/thumbnails/<name>.svg, name = DisplayMode\Card::placeholderType).
+    // First pass, for design review.
+    &.default
+      background-color: neutral(5)
+
+      img.placeholder
+        object-fit: contain
+        padding: 22%
+        opacity: 0.8
+
   .item-info
     border: 0
     padding: rv($mobile_edge_padding_factor) 0 0 0

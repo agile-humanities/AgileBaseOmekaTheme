@@ -17,6 +17,7 @@
  * @var string $summary            escaped text
  * @var string|null $image         thumbnail HTML
  * @var bool $imageIsPlaceholder
+ * @var string|null $placeholder   the placeholder image name when there is no image (img/svg/thumbnails/<name>.svg)
  * @var array $metadata            [['term', 'label', 'values' => [html]]]
  * @var array $itemSets            [['title', 'url']]
  * @var array|null $rights         ['label', 'value' => html]
@@ -32,8 +33,12 @@ $resourceClassName = 'resource-' . $type;
 <<?= $containerElement ?> class="<?= $escape($classes) ?>"<?= $slot !== null ? ' slot="' . $escape($slot) . '"' : '' ?>>
 <div>
   <a href="<?= $escape($url) ?>">
-    <figure class="item-thumbnail <?= $imageIsPlaceholder ? 'default' : '' ?> <?= $resourceClassName ?>">
-      <?= $image ?? '' ?>
+    <figure class="item-thumbnail <?= $imageIsPlaceholder ? 'default placeholder-' . $escape($placeholder ?? 'item') : '' ?> <?= $resourceClassName ?>">
+      <?php if ($imageIsPlaceholder): ?>
+        <img class="placeholder" src="<?= $escape($this->siteAssetUrl('img/svg/thumbnails/' . ($placeholder ?? 'item') . '.svg')) ?>" alt="" loading="lazy">
+      <?php else: ?>
+        <?= $image ?? '' ?>
+      <?php endif; ?>
     </figure>
   </a>
   <div class="item-info">
