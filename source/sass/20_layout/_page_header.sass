@@ -31,14 +31,20 @@ body
     > header
       margin-top: $admin_bar_height
 
-  // Responsive visibility
+  // Responsive visibility: the desktop group (main navigation + search control) from the desktop breakpoint, the
+  // mobile menu button below it. The mobile overlay (40_ui/_main_navigation_mobile) carries its own menu and search.
 
-  .desktop-nav
+  .header-nav
     display: none
+    align-items: center
+    gap: rv(-1)
     z-index: 3 // clears the splash block
 
     +bp($desktop)
-      display: block
+      display: flex
+
+  .desktop-nav
+    z-index: 3
 
   #mobile-menu
     display: flex
@@ -47,16 +53,17 @@ body
     +bp($desktop)
       display: none
 
-  // Header search. Desktop only: the mobile overlay carries its own search form.
+  // The search control: an icon linking to the search page (see view/common/header-search-link.phtml). The hover
+  // state uses the icon set's active variant, so it follows the set's colour.
 
-  #nav-search
-    display: none
-    position: relative // anchors the clear button
-    flex: 0 1 300px
+  .header-search-link
+    display: block
+    flex: 0 0 auto
+    width: $ui_icon_size
+    height: $ui_icon_size
+    background: url(get_svg_url('icons/search-default')) no-repeat center
+    background-size: contain
 
-    +bp($desktop)
-      display: block
-
-    #search-form
-      margin-bottom: 0
+    &:hover, &:focus
+      background-image: url(get_svg_url('icons/search-active'))
 

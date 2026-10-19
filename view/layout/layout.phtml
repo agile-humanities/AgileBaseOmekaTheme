@@ -80,17 +80,14 @@ if (!empty($userBar)) {
                 <?php endif; ?>
               </a>
             </div>
-              <!--DESKTOP MENU START-->
-              <nav id="main-nav" class="desktop-nav" aria-label="Main navigation for <?= $escape($siteTitle) ?>">
-                  <?= $this->navigation($this->subNav)->menu()->renderMenu($container, $navOptions); ?>
-              </nav>
-              <!--DESKTOP MENU END-->
-
-              <!--HEADER SEARCH (desktop; the mobile overlay has its own) -->
-              <div id="nav-search" class="header-search">
-                <?= $this->partial('common/search-form'); ?>
-                <button class="search-form-clear" type="button" title="Clear search">x</button>
+              <!--DESKTOP MENU + SEARCH (one right-aligned group; the mobile overlay carries its own menu and search form) -->
+              <div id="header-nav" class="header-nav">
+                <nav id="main-nav" class="desktop-nav" aria-label="Main navigation for <?= $escape($siteTitle) ?>">
+                    <?= $this->navigation($this->subNav)->menu()->renderMenu($container, $navOptions); ?>
+                </nav>
+                <?= $this->partial('common/header-search-link'); ?>
               </div>
+              <!--DESKTOP MENU + SEARCH END-->
 
               <!--MOBILE MENU START-->
               <div id="mobile-menu" aria-label='Mobile Menu'>

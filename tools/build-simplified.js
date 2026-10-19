@@ -56,6 +56,7 @@ const TEMPLATES = [
   'layout/layout.phtml',
   'agile-item/card.phtml',
   'common/search-form.phtml',
+  'common/header-search-link.phtml',
   'common/linked-resources.phtml',
   'common/pagination.phtml',
   'common/pagination-mini.phtml',
@@ -102,6 +103,7 @@ const REWRITES = [
   { from: "$searchHelper = $this->plugin('agileSearchHelper');", to: "$searchHelper = null;", files: ['agile-item/card.phtml'] },
   { from: "$itemSet = $this->plugin('itemSetFacetHandler')->getItemSetById($id);", to: "$itemSet = $this->api()->searchOne('item_sets', ['id' => $id])->getContent();", files: ['common/search-form.phtml'] },
   // Advanced Search's main search page → core item browse with full-text search.
+  { from: "$searchConfig = $configId ? $this->api()->searchOne('search_configs', ['id' => $configId])->getContent() : null;", to: "$searchConfig = null; // Simplified theme: no Advanced Search", files: ['common/header-search-link.phtml'] },
   { from: "$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();", to: "$searchConfig = null; // Simplified theme: no Advanced Search", files: ['common/search-form.phtml'] },
   { from: "$searchAction = isset($searchAction) ? $searchAction : ($searchConfig ? $searchConfig->siteUrl() : '#');", to: "$searchAction = isset($searchAction) ? $searchAction : $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], [], true);", files: ['common/search-form.phtml'] },
   { from: "$searchValue = $this->escapeHtml($this->params()->fromQuery('q', ''));\n        $name='q';", to: "$searchValue = $this->escapeHtml($this->params()->fromQuery('fulltext_search', ''));\n        $name = 'fulltext_search';", files: ['common/search-form.phtml'] },

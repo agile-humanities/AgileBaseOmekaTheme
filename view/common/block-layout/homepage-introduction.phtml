@@ -12,7 +12,6 @@
 $escape = $this->plugin('escapeHtml');
 $partial = $this->plugin('sitePartial');
 $site = $this->currentSite();
-$container = $site->publicNav()->getContainer();
 $composition = $this->compositionClass ?: 'slide-viewer-with-title-default';
 
 // Theme setting "Site welcome banner logo". No logo is shown when it is empty.
@@ -26,9 +25,6 @@ $welcomeLogo = $this->themeSetting('welcome_logo') ? $this->themeSettingAssetUrl
           <img alt="<?= $escape($site->title()) ?>" class="welcome-logo" src="<?= $escape($welcomeLogo) ?>">
           <hr class="welcome-block-hr">
         <?php endif; ?>
-        <div class="welcome-menu">
-          <?= $this->navigation($this->subNav)->menu()->renderMenu($container, ['maxDepth' => 0]); ?>
-        </div>
         <div class='introductory-text'>
           <?php if (!empty($labelText)): ?>
             <div class='label'><?= $labelText; ?></div>

@@ -9,11 +9,13 @@
 
 
 ul.sf-menu
-  transform: translateX(#{$ui_padding}) // Shift to compensate for right padding of last menu item
 
   // Top-level menu styles
 
   margin-bottom: 0
+
+  +bp($tablet)
+    font-size: clamped(-2,-1)
 
   > li
     text-transform: uppercase
@@ -27,6 +29,7 @@ ul.sf-menu
       height: $ui_element_height
       display: flex
       align-items: center
+      font-weight: $bold
 
     // Drop down styles
 
@@ -59,14 +62,14 @@ ul.sf-menu
       left: initial
       margin-top: initial
       border: 0
-    +background_icon_right('accordion-expand')
+    +background_icon_right('accordion-expand', 20px) // a glyph beside the label, not an icon button
 
 a.sf-depth-2
   white-space: normal !important
 
 .sf-depth-1
   .sf-with-ul:after
-    +background_icon_right('accordion-expand')
+    +background_icon_right('accordion-expand', 20px)
 
 
 .sf-depth-2

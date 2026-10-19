@@ -1,0 +1,16 @@
+<?php
+/*
+ * Header search control: a search icon linking to the site's main Advanced Search page, or to Omeka's item browse
+ * when no search page is configured (design review B2). One element with its own id, so the search drawer planned
+ * for later (B3) can hang off it without changing the header again.
+ */
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$configId = $this->siteSetting('advancedsearch_main_config');
+$searchConfig = $configId ? $this->api()->searchOne('search_configs', ['id' => $configId])->getContent() : null;
+$url = $searchConfig
+    ? $searchConfig->siteUrl()
+    : $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true);
+$label = $translate('Search');
+?>
+<a id="header-search" class="header-search-link" href="<?= $escape($url) ?>" aria-label="<?= $escape($label) ?>" title="<?= $escape($label) ?>"></a>
