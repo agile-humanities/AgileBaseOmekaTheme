@@ -2,10 +2,11 @@
  *  @file _mobile_filter_panel.sass
  *  @group 40_ui/10_components
  *  @description Placeholders for the mobile search controls: %browser-mobile-toolbar (the fixed bottom bar with
- *    the Filters button, AgileThemeTools view/search/agile/mobile-browse-controls.phtml), %mobile-close-btn,
- *    %browser-mobile-paginator (unused). Applied in 60_site_elements/_search_page.sass.
+ *    the Filters button, AgileThemeTools view/search/agile/mobile-browse-controls.phtml) and %mobile-close-btn.
+ *    Applied in 60_site_elements/_search_page.sass.
  **/
 
+// The configured $ui_mobile_app_controls_footer_height ("$masthead_height" as a string) does not resolve here.
 $ui_mobile_app_controls_footer_height: 50px
 
 %mobile-close-btn
@@ -14,14 +15,13 @@ $ui_mobile_app_controls_footer_height: 50px
   top: rv($mobile_edge_padding_factor)
   right: rv($mobile_edge_padding_factor)
 
-
 %browser-mobile-toolbar
   position: fixed
   left: 0
   right: 0
   bottom: 0
-  height: 25px // formerly $mobile_filter_height
-  z-index: 4
+  height: $ui_mobile_app_controls_footer_height
+  z-index: 11
   display: flex
   flex-direction: row
   justify-content: space-between
@@ -30,6 +30,7 @@ $ui_mobile_app_controls_footer_height: 50px
   padding: rv($mobile_edge_padding_factor)
   padding-bottom: calc(#{rv($mobile_edge_padding_factor)} + env(safe-area-inset-bottom))
   border-top: 3px solid $on_dark
+  border-radius: 0 !important // Erroneously inherits a border radius in some contexts
   transform: translateZ(0)
 
   +bp($ui_mobile_app_controls_breakpoint)
@@ -52,37 +53,6 @@ $ui_mobile_app_controls_footer_height: 50px
 
   .pagination--label, .search-view-type
     color: $on_dark
-
-%browser-mobile-paginator
-  position: fixed
-  height: $ui_mobile_app_controls_footer_height
-  padding: rv($mobile_edge_padding_factor)
-  display: flex
-  justify-content: flex-end
-  align-items: center
-  bottom: 0
-
-  +bp($desktop)
-    display: none
-
-
-%browser-mobile-toolbar
-  position: fixed
-  left: 0
-  right: 0
-  bottom: 0
-  height: $ui_mobile_app_controls_footer_height
-  z-index: 11
-  display: flex
-  flex-direction: row
-  justify-content: space-between
-  align-items: center
-  background: $black
-  padding: rv($mobile_edge_padding_factor)
-  border-radius: 0 !important // Erroneously inherits a border radius in some contexts
-
-  +bp($ui_mobile_app_controls_breakpoint)
-    display: none
 
   .filter-btn
     color: $on_dark

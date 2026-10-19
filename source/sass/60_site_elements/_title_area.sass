@@ -3,21 +3,16 @@
    @category 60_site_elements
    @theme LOCAL
    @component main
-   @description Handles two title blocks – the standard one and the Regional Title block. */
+   @description The title blocks: the page title block (.title-block) and the Regional Title block
+     (.title-block.region, AgileThemeTools view/common/block-layout/regional-title.phtml, theme override adds
+     .reverse). A reversed or regional title block sits on the dark surface with light text, centred, with the
+     standard edge padding — the Southern Foodways treatment (commit c14be413), on the colour roles. */
 
 .title-block
-
-  +reversed
-    > div
-      +standard-edge-padding
 
   h1
     margin-top: 0
     color: $on_light
-
-  +reversed
-    h1, .deck, p, h2, h3
-      color: $on_dark
 
   *:last-child
     margin-bottom: 0
@@ -25,9 +20,23 @@
   a
     @extend %inline-anchor
 
-    +reversed
-      @extend %inline-anchor
-
   .deck > p
     @extend .deck
 
+  // Reversed (dark) title blocks — the Regional Title block, and a regional title placed in the splash or
+  // main-title region. The compound selector matters: the +reversed mixin produces descendant selectors
+  // (.reverse .title-block), which never match the block's own class.
+  &.reverse, &.reversed, #splash &.region, #main-title &.region
+    background-color: $surface_dark
+    color: $on_dark
+    text-align: center
+    +standard_edge_padding
+
+    > div
+      +standard_edge_padding
+
+    h1, h2, h3, p, .deck, .content-label
+      color: $on_dark
+
+    a
+      @extend %inline-anchor-reverse

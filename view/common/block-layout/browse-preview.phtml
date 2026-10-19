@@ -1,39 +1,25 @@
 <?php
-$translate = $this->plugin('translate');
-$partial = $this->plugin('sitePartial');
-$searchMainPage = $this->siteSetting('advancedsearch_main_config');
-/** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
-$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
-
+/**
+ * Browse preview (Omeka core block): the resources as cards, then the block's own link ("Browse all" text and
+ * query) to the core browse page. Theme override of Omeka's common/block-layout/browse-preview.phtml.
+ */
+$headingTerm = $this->siteSetting('browse_heading_property_term');
+$bodyTerm = $this->siteSetting('browse_body_property_term');
 ?>
 <!-- START TEMPLATE: /common/block-layout/browse-preview -->
 <div class="preview-block">
   <?php if ($this->heading): ?>
-  <h2><?php echo $this->heading; ?></h2>
+  <h2><?= $this->heading ?></h2>
   <?php endif; ?>
 
   <ul class="preview resource-list search-results-list grid">
-    <?php
-    $headingTerm = $this->siteSetting('browse_heading_property_term');
-    $bodyTerm = $this->siteSetting('browse_body_property_term');
-    foreach ($this->resources as $resource):
-    ?>
-          <?= $this->card($resource, ['containerElement' => 'li', 'classes' => $this->resourceType]) ?>
+    <?php foreach ($this->resources as $resource): ?>
+      <?= $this->card($resource, ['containerElement' => 'li', 'classes' => $this->resourceType]) ?>
     <?php endforeach; ?>
   </ul>
 
-  <?php
-  if ($this->linkText):
-      /*
-      echo $this->hyperlink($this->linkText, $this->url(
-          'site/resource', ['controller' => $this->resourceType, 'action' => 'browse'], ['query' => $this->query], true
-      ));
-      */
-    ?>
-
-    <div class="browse--collections"><a class="intro-browse--all" href="<?= $searchConfig->siteUrl() ?>">Browse all</a></div>
-  <?php
-  endif;
-  ?>
+  <?php if ($this->linkText): ?>
+    <div class="browse--collections"><?= $this->hyperlink($this->linkText, $this->url('site/resource', ['controller' => $this->resourceType, 'action' => 'browse'], ['query' => $this->query], true), ['class' => 'intro-browse--all']) ?></div>
+  <?php endif; ?>
 </div>
 <!-- END TEMPLATE: /common/block-layout/browse-preview -->

@@ -35,12 +35,14 @@ body
 
   .desktop-nav
     display: none
+    z-index: 3 // clears the splash block
 
     +bp($desktop)
       display: block
 
   #mobile-menu
     display: flex
+    z-index: 3
 
     +bp($desktop)
       display: none

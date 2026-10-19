@@ -87,11 +87,11 @@ try {
                 <?php else: ?>
                 <?php endif; ?>
                 <?php $itemSets = $item->itemSets(); ?>
-                <?php if (!empty($itemSets)): ?>
+                <?php if (!empty($itemSets)): $firstItemSet = reset($itemSets); ?>
                   <div class='metadata-item' data-term=''>
-                    <div class='label'>Collection</div>
+                    <div class='label'><?= $this->translate('Collection') ?></div>
                     <div class='value'>
-                      <a class='item-set-link' href="<?php echo $this->plugin('agile_search_helper')->siteSearchPath(); ?>?limit[item_set_ss][0]=<?php echo $itemSet->displayTitle(); ?>"><?php echo $itemSet->displayTitle(); ?></a>
+                      <a class='item-set-link' href="<?= $this->escapeHtml($firstItemSet->url()) ?>"><?= $this->escapeHtml($firstItemSet->displayTitle()) ?></a>
                     </div>
                   </div>
                 <?php endif; ?>

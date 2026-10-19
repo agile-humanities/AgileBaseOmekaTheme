@@ -1,16 +1,14 @@
 /*
- * @file _card
- * @group 40_ui/10_components/
- * @description Defines a basic list view. This particular design is more of a horizontal card than an minimal list.
+ * @file _list_item.sass
+ * @group 60_site_elements/cards
+ * @description %list-item: the list view of a card — the image as a full-height column on the left edge behind a
+ *   10px brand accent rule, the info beside it. Southern Foodways' layout (commit 022a1822), on the roles.
  */
-
-$list_item_figure_width: 125px
-
 
 %list-item
   width: 100%
-  border: 0
-
+  border-top-left-radius: 0 !important
+  border-bottom-left-radius: 0 !important
 
   > *
     width: 100%
@@ -19,34 +17,41 @@ $list_item_figure_width: 125px
     align-items: flex-start
     justify-content: flex-start
     text-decoration: none
+    background: $white
+    border: 0
+    border-left: 10px solid $surface_brand
     overflow: hidden
     position: relative
 
     &:hover
-      border-color: $brand_secondary
+      border-left-color: $brand_secondary
 
   figure
-    width: $list_item_figure_width
-    min-width: $list_item_figure_width
-    padding: rv($mobile_edge_padding_factor) 0 rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor)
+    width: auto
+    min-width: auto
+    padding: 0
+    margin: 0
+    position: absolute
+    top: 0
+    left: 0
+    right: calc(100% - #{$list_item_figure_width})
+    bottom: 0
 
-    +bp($ui_mobile_app_controls_breakpoint)
-      +proportional-height(125px,0.75)
+    &:before
+      content: none
 
     img
       width: 100%
       height: 100%
       object-fit: cover
 
-    &.figure-portrait
-      img
-        height: 100%
-        width: 100% // Portrait cards cover their containers and are cut off in this treatment.
-        margin: 0 auto
-        background-position: top
+    &.default
+      img.placeholder
+        object-fit: contain
+        padding: 18%
 
   .item-description
-    display: none
+    line-height: 1.5
 
   .metadata-list
     all: unset
@@ -71,17 +76,19 @@ $list_item_figure_width: 125px
       content: unset !important
 
     .license-img-wrapper
-      display: none  // need better solution
+      display: none
 
   h3
     font-size: clamped(0,1)
 
   .item-info
     border: 0 !important
-    padding: rv($mobile_edge_padding_factor) 0 0 rv($mobile_edge_padding_factor)
+    width: 100%
+    min-height: $list_item_figure_width
+    padding-left: calc(#{$list_item_figure_width} + #{rv($mobile_edge_padding_factor)})
 
-    +bp($ui_mobile_app_controls_breakpoint)
-     padding: rv($edge_padding_factor) 0 0 rv($edge_padding_factor)
+    +bp($tablet)
+      padding-left: calc(#{$list_item_figure_width} + #{rv($edge_padding_factor)})
 
     > *
-      margin-bottom: rv(-5) !important
+      margin-bottom: $text_element_spacing !important

@@ -152,6 +152,30 @@ $item_container_object_spacing: rv($edge_padding_factor)
           margin: rv($edge_padding_factor)
 
 
+    // The OHMS Embed viewer (an iframe to the module's ohms.js, by the module's renderer or Advanced Media's
+    // `ohms` player): a tall panel with its own scrolling transcript, not a 16:9 media frame.
+    .media-render.file:has(> iframe[src*="ohmsjs"]), .advancedmedia-ohms
+      display: block
+      background: none
+
+      &:before
+        content: none
+        display: none
+
+      > iframe
+        position: static
+        display: block
+        width: 100%
+        height: $ohms_viewer_height
+        border: 0
+
+    // A video is capped to the viewport below desktop; from desktop it is one column of two (Pitts 077a281).
+    .advancedmedia-video
+      --advancedmedia-video-max-height: 70vh
+
+      +bp($desktop)
+        --advancedmedia-video-max-height: none
+
     .media-container
       &.audio
         background-color: $circular_audio_background

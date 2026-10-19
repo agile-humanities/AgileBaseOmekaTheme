@@ -83,15 +83,17 @@ $pagination_bullet_size: rv(-3)
 
   li
     margin: 0 $pagination_ui_gap 0 0
+    display: inline-flex
+    align-items: center
 
     &:last-child
       margin-right: 0
 
   a
     content: ''
-    display: flex
+    display: inline-flex
     flex-direction: column
-    align-items: center
+    align-items: flex-end
     color: neutral(80)
     text-decoration: none
 

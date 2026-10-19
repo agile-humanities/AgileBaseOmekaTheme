@@ -9,15 +9,27 @@
 
 
 h1
+  font-weight: $heavy
+  letter-spacing: 0.02em
+
   &.display, &.title
     line-height: 1
+
+  &.display-compact
+    font-size: clamped(4,5)
+
 
 .subtitle
   font-size: clamped(0,1)
   line-height: 1
 
-h1, h2, h3, h4, h5, h6
+
+h2
   font-weight: $bold
+
+h3, h4, h5, h6
+  font-weight: $medium
+  letter-spacing: 0.01em
 
 h3
   margin-bottom: rv(-3)

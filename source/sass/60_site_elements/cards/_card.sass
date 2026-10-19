@@ -1,9 +1,8 @@
 /*
-   @file _cards.sass
-   @category 60_site_elements
+   @file _card.sass
+   @category 60_site_elements/cards
    @theme LOCAL
-   @component main
-   @description Handles card content blocks.  */
+   @description .card (the card display mode, every listing) and .list-item. See _card_base.sass for the look. */
 
 main
   .card, li > .card, li > a.card
@@ -14,15 +13,11 @@ main
 
 .card
   @extend %card
-  border: 0
 
   figure
-    border: 1px solid neutral(60)
-
     // No representative image: the placeholder set (img/svg/thumbnails/<name>.svg, name = DisplayMode\Card::placeholderType).
-    // First pass, for design review.
     &.default
-      background-color: neutral(5)
+      background-color: $surface_light
 
       img.placeholder
         object-fit: contain
@@ -30,45 +25,27 @@ main
         opacity: 0.8
 
   .item-info
-    border: 0
-    padding: rv($mobile_edge_padding_factor) 0 0 0
     display: flex
     flex-direction: column
 
-    +bp($tablet)
-      padding: rv($edge_padding_factor) 0 0 0
-    +bp($desktop)
-      padding: rv($edge_padding_factor) 0 0 0
-
-    // Some card treatments require inset info sections
-
-    @at-root .preview &
-      +standard_edge_padding()
-
-    @at-root .section-list-cards &
-      +standard_edge_padding()
-
-
     // Standardize element spacing
-
     > *:not(.item-label)
       margin-bottom: rv(-2)
 
       &:last-child
         margin-bottom: 0
+
     h3
       margin: 0
+      font-weight: $bold
 
       > a
-        text-decoration: underline
+        text-decoration: none
+
+        &:hover
+          text-decoration: underline
 
     .item-sublabel
-      margin-top: 0
-
-    .item-description
-      display: none
-
-    .more
       margin-top: 0
 
     .card--item-set-link
@@ -79,7 +56,6 @@ main
       margin-left: $license_label_shift // see 30_typography/_license
 
   .metadata-list
-
     > *
       margin-bottom: $text_element_spacing
 

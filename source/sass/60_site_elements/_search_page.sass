@@ -31,6 +31,16 @@
 .search-filter-container
   display: flex
   flex-wrap: wrap
+  align-items: center
+
+  .search-filters, .filter
+    display: inline-flex
+    flex-wrap: wrap
+    align-items: center
+    gap: rv(-3)
+
+  .lozenge
+    font-size: clamped(-2,-1)
 
   > *
     margin-right: $ui_element_spacing
@@ -89,37 +99,6 @@
   +bp($ui_mobile_app_controls_breakpoint)
     margin-top: rv($edge_padding_factor)
 
-  +bp($desktop)
-
-    .card
-      border-right: 1px solid neutral(10)
-      padding-right: rv($grid_gap_factor)
-
-      // current grid treatment creates uneven thumbnails, because the padding removal of the 3rd column
-      // slightly increases the size of the card, making the thumbnails look off.
-      // @todo: this sets the size of the thumbnails evenly. Calculate the grid column math to ensure that the
-      // cards are all the same size and the margins work.
-
-      figure:before
-        padding-top: 300px
-
-      &:nth-child(3n)
-        border-right: 0
-        padding-right: 0
-
-
-  /*      &:nth-child(3n-2)
-        padding-left: 0
-        padding-right: rv($grid_gap_factor)
-
-      &:nth-child(3n-1)
-        padding-left: rv($grid_gap_factor) * 0.5
-        padding-right: rv($grid_gap_factor) * 0.5
-
-        > *
-          padding-left: rv($grid_gap_factor) * 0.5
-          padding-right: rv($grid_gap_factor) * 0.5 */
-
 .search-results-list
   list-style-type: none
 
@@ -139,14 +118,15 @@
 aside
   @at-root .search-results-wrapper > &
     @extend %browser-sidebar
-    background-color: neutral(5)
+    background-color: $surface_light
+    color: $on_light
     border-radius: 0
 
     +bp($ui_mobile_app_controls_breakpoint)
       border-radius: $border_radius 0 0 $border_radius
 
     h2
-      font-family: $labelfont
+      font-family: $headingfont
       font-size: clamped(1,2)
       text-transform: uppercase
       font-weight: $bold

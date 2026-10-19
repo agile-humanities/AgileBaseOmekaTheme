@@ -1,31 +1,44 @@
 /*
- * @file _card
- * @group 40_ui/10_components/
- * @description Defines a basic card
+ * @file _card_base.sass
+ * @group 60_site_elements/cards
+ * @description %card: the card as Southern Foodways drew it — a white panel with a hairline border, a brand accent
+ *   band across the top, a 4:3 image, then the info block (label, title, subtitle, summary, metadata, "View").
+ *   Markup: AgileThemeTools' card display mode (theme view/common/display-mode/card.phtml):
+ *   .card > div > a > figure.item-thumbnail + .item-info. Colours are the roles only.
  */
-
 
 %card
   display: block
   background: $white
+  color: $on_light
   border: 1px solid $ui_border_color
   border-radius: $card-border-radius
   border-collapse: collapse
   overflow: hidden
 
+  // The accent band
+  > div, > a
+    border-top: 10px solid $surface_brand
+
   a
     text-decoration: none
+    color: inherit
 
     &:hover
-      color: $on_light
+      color: $brand_primary_on_light
+
+    +reversed
+      color: $on_dark
+
+      &:hover
+        color: $brand_primary_on_dark
 
   figure
     overflow: hidden
-    height: 100%
+    margin: 0
     +proportional_height(100%,0.75)
 
     @at-root .masonry-grid &
-
       &:before
         content: unset
 
@@ -39,7 +52,7 @@
       height: auto
       object-fit: initial
       position: relative
-      
+
       &.img-portrait
         object-fit: cover
         max-height: 600px
@@ -55,8 +68,9 @@
 
   .item-info
     padding: rv($mobile_edge_padding_factor)
-    border-top-width: 10px
-    border-top-style: solid
+
+    +bp($tablet)
+      padding: rv($edge_padding_factor)
 
   .item-sublabel
     margin: rv(-3) 0
@@ -66,4 +80,8 @@
     line-height: map-get($line_heights,'tight')
 
   .more
-    margin-top: rv($edge_padding_factor)
+    margin-top: rv($mobile_edge_padding_factor)
+
+    a
+      color: inherit
+      text-decoration: none

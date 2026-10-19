@@ -3,7 +3,7 @@
  * The card display mode, the Advanced theme's markup. The data arrives prepared by the module (DisplayMode\Card,
  * configured under Settings > Cards and the site's Settings > Cards); this template lays it out and nothing more.
  * The class vocabulary is the theme's (card, item-thumbnail, item-info, item-label, item-title, item-sublabel,
- * item-description, metadata-list …), so the SASS in 40_ui/10_components/_card.sass and 60_site_elements/_card.sass applies.
+ * item-description, metadata-list …), so the SASS in 60_site_elements/cards/ applies.
  *
  * @var string $containerElement
  * @var string $cardStyle          card | list-item | item …
@@ -69,6 +69,7 @@ $resourceClassName = 'resource-' . $type;
         <?php endif; ?>
       </div>
     <?php endif; ?>
+    <div class="more"><a href="<?= $escape($url) ?>"><?= $escape($translate('View')) ?></a></div>
   </div>
 </div>
 </<?= $containerElement ?>>

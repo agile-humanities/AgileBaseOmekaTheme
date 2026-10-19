@@ -21,7 +21,7 @@
     "masonry-layout": "^4.2.2",
     "path": "^0.12.7",
     "pdfjs-dist": "^4.10",
-    "stop14-themesystem-legacy": "^2.0",
+    "stop14-themesystem-legacy": "^3.0.0",
     "superfish": "^1.7.10",
     "yargs": "^16.2.0"
   }

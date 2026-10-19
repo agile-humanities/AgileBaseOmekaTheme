@@ -79,6 +79,9 @@ hr
   font-weight: $bold
   color: $brand_secondary_on_light
 
+  +reversed
+    color: $on_dark
+
   & + h1
     margin-top: rv(-2)
 
@@ -135,6 +138,9 @@ label, .label, .metadata-label
   font-family: $labelfont
   line-height: 1.25
   color: $value_color
+
+  a
+    overflow-wrap: anywhere // long URLs and identifiers wrap instead of overflowing
 
   @at-root .reversed &
     color: $value_reversed_color

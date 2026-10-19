@@ -11,8 +11,8 @@ $searchHelper = $this->plugin('agileSearchHelper');
 $valueDisplay = $this->plugin('valueDisplay');
 
 $searchMainPage = $this->siteSetting('advancedsearch_main_config');
-/** @var  \AdvancedSearch\Api\Representation\SearchConfigRepresentation $searchConfig */
-$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();
+/** @var \AdvancedSearch\Api\Representation\SearchConfigRepresentation|null $searchConfig The site's main search page, when Advanced Search is installed and one is set. */
+$searchConfig = $searchMainPage ? $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent() : null;
 
 $item = $resource;
 
@@ -25,20 +25,20 @@ $creator = $item->value('dcterms:creator');
   <div class='wayfinding'>
     <a class="wayfinding--breadcrumb icon-home" href="<?= $siteUrl; ?>"><span class="screen-reader-text">Home</span></a>
     <span>></span>
-    <a class="wayfinding--breadcrumb" href="<?= $searchConfig->siteUrl() ?>">Discover</a>
+    <?php if ($searchConfig): ?>
+    <a class="wayfinding--breadcrumb" href="<?= $searchConfig->siteUrl() ?>"><?= $this->translate('Discover') ?></a>
+    <?php endif; ?>
     <?php
     /** @var Omeka\Api\Representation\ItemSetRepresentation $itemSet */
-    $itemSets = $item->itemSets();
     $firstItemSet = null;
+    foreach ($item->itemSets() as $itemSet) {
+        if ($itemSet->isPublic()) {
+            $firstItemSet = $itemSet;
+            break;
+        }
+    }
     ?>
-    <span>></span>
-    <?php
-    foreach ($itemSets as $itemSet):
-      if ($itemSet->isPublic()) {
-        $firstItemSet = $itemSet;
-      }
-    endforeach;
-    ?>
+    <?php if ($searchConfig || $firstItemSet): ?><span>></span><?php endif; ?>
     <?php if ($firstItemSet): ?>
       <?= sprintf("<a class='wayfinding--breadcrumb key-item-set' href='%s'>%s</a>",$firstItemSet->url(),$firstItemSet->title()) ?>
     <?php endif; ?>

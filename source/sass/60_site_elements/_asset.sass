@@ -19,19 +19,20 @@
   img + .caption
     margin-top: rv($edge_padding_factor)
 
-  &.left
+  // Omeka 4 block alignment: the wrapper carries .block-layout-alignment-block-<left|right|center>.
+  @at-root .block-layout-alignment-block-left &
     +bp($tablet)
       width: 32.8%
       float: left
-      margin: 0 0 0 rv($edge_padding_factor)
+      margin: 0 rv($edge_padding_factor) rv($mobile_edge_padding_factor) 0
 
-  &.right
+  @at-root .block-layout-alignment-block-right &
     +bp($tablet)
       width: 32.8%
       float: right
-      margin: 0 rv($edge_padding_factor) 0 0
+      margin: 0 0 rv($mobile_edge_padding_factor) rv($edge_padding_factor)
 
-  &.center
+  @at-root .block-layout-alignment-block-center &
     +bp($tablet)
       width: 50%
       margin: 0 auto rv($edge_padding_factor) auto

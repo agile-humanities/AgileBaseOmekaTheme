@@ -1,5 +1,12 @@
 <?php
 /**
+ * LEGACY card partial. Not used by this theme (cards render through the module's card display mode and
+ * view/common/display-mode/card.phtml); kept because tools/build-simplified.js rewrites $this->card() calls to this
+ * partial for the Simplified theme, which runs without the module. Keep its look in step with display-mode/card.phtml.
+ */
+?>
+<?php
+/**
  * @file card.phtml
  * @description Displays a card view for a particular item. Use $this->plugin('cardViewer')->getCard($item) to invoke.
  * @var /Laminas/View/View $this

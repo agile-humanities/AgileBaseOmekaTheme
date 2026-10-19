@@ -2,13 +2,17 @@
  *  @file _callout.sass
  *  @category 60_site_elements
  *  @theme LOCAL
- *  @description  Handles styling of the callout block. */
+ *  @description  The Callout block (AgileThemeTools view/common/block-layout/callout.phtml, theme override):
+ *    .callout.callout-<left|right|centre> > .callout-text > .callout-shift + .primary-text. The pulled-out text
+ *    floats beside the body text from the tablet breakpoint; $callout_width and $callout_shift come from
+ *    _00_main_configuration.yml (a percentage width shifts by text alignment, a fixed width by translateX).
+ *    Ported from the Southern Foodways build (commit ca22e150). */
 
-$callout_shift: 70px
 $callout_mobile_max_width: 370px
 $callout_desktop_max_width: 500px
 
 .callout
+
   .callout-text
     position: relative
     width: 100%
@@ -19,19 +23,19 @@ $callout_desktop_max_width: 500px
 
     +bp($tablet)
       display: block
-      max-width: 370px
       padding: rv($edge_padding_factor) calc(#{rv($edge_padding_factor)}) rv($edge_padding_factor) rv($edge_padding_factor)
       width: $callout_width
       max-width: $callout_mobile_max_width
+
     +bp($desktop)
       max-width: $callout_desktop_max_width
+
     p
-      font-size: clamped(2,3)
       font-weight: $bold
-      marign-top: rv($mobile_edge_padding_factor)
+      margin-top: rv($mobile_edge_padding_factor)
       font-size: clamped(2, 3, 'sml', 'xlrg')
 
-    +bp($tablet)
+      +bp($tablet)
         margin-top: 0
 
 
@@ -43,20 +47,31 @@ $callout_desktop_max_width: 500px
 
 .callout-right
   .callout-text
-
     +bp($tablet)
       float: right
     +bp($desktop)
-      right: $callout_shift * -1
+      width: calc(#{$callout_width} - #{$callout_shift})
 
+  .callout-shift
+    +bp($desktop)
+      @if is-percentage($callout_width)
+        width: 100%
+        text-align: right
+      @else
+        width: $callout_width
 
 .callout-left
   .callout-text
     +bp($tablet)
-      text-align: right
+      width: calc(#{$callout_width} - #{$callout_shift})
       float: left
+      text-align: right
+      padding-left: 0
+
+  .callout-shift
     +bp($desktop)
-      left: callout_shift
-
-
-
+      @if is-percentage($callout_width)
+        width: 100%
+      @else
+        width: $callout_width
+        transform: translateX(calc(#{$callout_shift * -1} - #{rv($edge_padding_factor)} * 2))

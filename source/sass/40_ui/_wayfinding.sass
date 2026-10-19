@@ -12,27 +12,28 @@
     height: rv(0)
     width: auto
 
-  a
-    display: inline-flex
-    align-items: center
-    font-family: $labelfont
-    text-transform: uppercase
-    font-weight: $bold
-    line-height: 1
+.wayfinding--breadcrumb
+  display: inline-flex
+  font-family: $labelfont
+  +font-size(0)
+  align-items: center
+  text-transform: uppercase
+  font-weight: $bold
+  line-height: 1
 
-    &:first-child:before
-      display: none
+  &:first-child:before
+    display: none
 
-    &.icon-home
-      height: rv(-1)
-      width: rv(-1)
-      margin-right: $text_element_spacing
+  &.icon-home
+    height: rv(-1)
+    width: rv(-1)
+    margin-right: $text_element_spacing
 
-    &.key-item-set
-      color: $link_colour_active
-      text-decoration-color: $link_colour_active
+  &.key-item-set
+    color: $link_colour_active
+    text-decoration-color: $link_colour_active
 
-  // breadcrumb separator
-  .wayfinding--breadcrumb + span
-    margin: 0 $text_element_spacing
+// breadcrumb separator
+.wayfinding--breadcrumb + span
+  margin: 0 $text_element_spacing
 

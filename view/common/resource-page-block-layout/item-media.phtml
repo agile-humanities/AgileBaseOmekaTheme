@@ -11,7 +11,7 @@ $options = ['hasVtt'=>$hasVtt];
 ?>
 <!-- TEMPLATE BEGIN (theme) common/resource-page-block-layout/item-media.phtml -->
 <?php if ($resourceMedia): ?>
-  <div class="item-viewer media-embeds <?= $usePrimary ? 'primary-media' : '' ?>  <?= $hasVtt ? 'has-vtt' : '' ?>">
+  <div class="item-viewer media-embeds <?= $usePrimary ? 'primary-media' : '' ?> <?= !empty($primaryOnly) ? 'primary-only' : '' ?> <?= $hasVtt ? 'has-vtt' : '' ?>">
 
     <?php
       if ($useMirador):
@@ -27,7 +27,7 @@ $options = ['hasVtt'=>$hasVtt];
       <?php else: ?>
         <?php
           /** @var \Omeka\Api\Representation\MediaRepresentation $media */
-          foreach ($resourceMedia as $media): ?>
+          foreach ($displayMedia ?? $resourceMedia as $media): ?>
           <?php if ($hasVtt) {
             $options['label'] = sprintf("Transcript (%s)",$media->extension());
           }
@@ -42,8 +42,17 @@ $options = ['hasVtt'=>$hasVtt];
         <?php endforeach; ?>
       <?php endif; ?>
   </div>
+  <?php // A text alternative for viewers that carry none of their own (IIIF, PDF, video). ?>
+  <?php if (($useMirador || $useUV || ($usePrimary && $primaryMedia && !str_starts_with((string) $primaryMedia->mediaType(), 'text/'))) && $resource->value('dcterms:description')): ?>
+  <div id="viewer-support" class="screen-reader-text">
+    <div class="label"><?= $this->translate('Item description') ?></div>
+    <div id="viewer-description"><?= $this->escapeHtml((string) $resource->value('dcterms:description')) ?></div>
+  </div>
+  <?php endif; ?>
 <?php else: ?>
-  <?= $partial('common/resource-page-block-layout/item-media-placeholder') ?>
+  <div class="item-viewer viewer-none">
+    <?= $partial('common/resource-page-block-layout/item-media-placeholder') ?>
+  </div>
 <?php endif; ?>
 
 <!-- TEMPLATE END common/resource-page-block-layout/item-media.phtml -->

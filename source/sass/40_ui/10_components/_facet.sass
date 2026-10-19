@@ -6,17 +6,28 @@
  *   view/search/agile/facets-list.phtml, facet-checkboxes.phtml, facet-links.phtml.
  */
 %exposed-facet
+  background-color: $white
+  padding: rv($mobile_edge_padding_factor)
   margin-bottom: rv($mobile_block_spacing)
   font-size: clamped(-1,0)
+  border-radius: $border_radius
 
-  > h3
+  +bp($tablet)
+    margin-bottom: rv($block_spacing)
+
+  > h3, .facet-label
     margin-top: 0
     margin-bottom: rv(-3)
+    font-weight: $bold
 
   ul
     list-style-type: none
     padding-left: 0
     margin-bottom: 0
+
+  // Select and range-select facet types (Advanced Search's partials) fill the facet.
+  select, .select2-container, .chosen-container
+    width: 100%
 
   > ul
 

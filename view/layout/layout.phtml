@@ -106,6 +106,7 @@ if (!empty($userBar)) {
 
 
         <section id='splash' class='full empty'></section>
+        <section id='main-title' class='full empty' role="region"></section>
         <section id='primary-content' class='region'>
             <div>
                 <main id="main-content">
@@ -123,11 +124,6 @@ if (!empty($userBar)) {
         <section id='feature-tier-1' class='full' role="region" style="display:none">
           <div>
             <div id='feature-tier-1-content' class="tier-container"></div>
-          </div>
-        </section>
-        <section id='feature-tier-2' class='full' role="region" style="display:none">
-          <div>
-            <div id='feature-tier-2-content' class="tier-container"></div>
           </div>
         </section>
         <section id='feature-tier-2' class='full' role="region" style="display:none">
@@ -166,8 +162,17 @@ if (!empty($userBar)) {
                 <?= $this->themeSetting('footer_sponsor_html'); ?>
               </div>
             <?php endif; ?>
-
           </section>
+          <?php if (!empty($this->themeSetting('subfooter_html')) || !empty($this->themeSetting('copyright'))): ?>
+          <section id="sub-footer">
+            <?php if (!empty($this->themeSetting('subfooter_html'))): ?>
+            <div class="sub-footer--text"><?= $this->themeSetting('subfooter_html') ?></div>
+            <?php endif; ?>
+            <?php if (!empty($this->themeSetting('copyright'))): ?>
+            <div class="sub-footer--copyright"><?= $this->themeSetting('copyright') ?></div>
+            <?php endif; ?>
+          </section>
+          <?php endif; ?>
         </footer>
         <!-- Mobile overlay -->
         <div id="mobile-menu--container">

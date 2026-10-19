@@ -9,3 +9,6 @@
 /.DS_Store
 /.idea
 /.simplified-build
+
+# OHMS smoke-test fixture (dev-tools/ohms-test.php): sample files served to the test item; never ship
+/asset/ohms-test/

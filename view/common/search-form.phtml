@@ -53,9 +53,10 @@ switch ($searchType) {
  */
 ?>
 <form action="<?= $searchAction ?>" id="search-form">
+    <?php $placeholder = $this->themeSetting('search_placeholder') ?: $translate('Search the collection'); ?>
     <input type="text" name="<?= $name ?>" value="<?php echo $searchValue; ?>"
-           placeholder="<?php echo $translate('Search by collection, item name, or keyword'); ?>"
-           aria-label="<?php echo $translate('Search by collection, item name, or keyword'); ?>">
+           placeholder="<?= $this->escapeHtml($placeholder) ?>"
+           aria-label="<?= $this->escapeHtml($placeholder) ?>">
     <?php if ($hasFacet): // Add facets as hidden input if they exist ?>
         <?php foreach ($this->params()->fromQuery('facet', '') as $key => $value_array): ?>
             <?php foreach ($value_array as $value):  ?>

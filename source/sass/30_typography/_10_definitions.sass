@@ -46,12 +46,30 @@ $ribbon_padding_factor: -3
   border-bottom: 0
   @extend %underscore
 
+  &:hover, &:focus
+    color: $link_colour_active
+    text-decoration-color: $link_colour_active
+
+  +reversed
+    color: $link_colour_reversed
+
+    &:hover, &:focus
+      color: $link_colour_active_reversed
+      text-decoration-color: $link_colour_active_reversed
+
 %inline-anchor-block
   display: inline-block
   @extend %inline-anchor
 
+// A link on a dark surface, where the context class is not available.
 %inline-anchor-reverse
   @extend %inline-anchor
+  color: $link_colour_reversed
+  text-decoration-color: $link_colour_reversed
+
+  &:hover, &:focus
+    color: $link_colour_active_reversed
+    text-decoration-color: $link_colour_active_reversed
 
 // Extras
 
@@ -164,23 +182,31 @@ $ribbon_padding_factor: -3
     color: neutral(20)
     margin-right: rv(-2)
 
+// "More" links: a short label with a trailing arrow (Southern Foodways treatment).
 %more
-  display: flex
+  display: inline-flex
+  flex-direction: row
+  align-items: center
+  justify-content: flex-start
   font-family: $labelfont
   font-size: clamped(-1,0)
-  color: $on_light
-  font-weight: $bold
-  text-transform: uppercase
-  justify-content: flex-start
+  color: $link_colour
+  border-bottom: 0
   text-decoration: none
-  border-bottom: 1px solid $link_colour_active
-  padding-bottom: 5px
   width: fit-content
+  +background-icon-right('arrow',rv(-1))
 
   &:hover
+    border-bottom: 0
     text-decoration: none
     color: $link_colour_active
-    border-bottom: 1px solid $link_colour_active
+
+  +reversed
+    color: $link_colour_reversed
+    +background-icon-right('arrow',rv(-1),'reversed')
+
+    &:hover
+      color: $link_colour_active_reversed
 
   +reversed
     color: $link_colour_reversed

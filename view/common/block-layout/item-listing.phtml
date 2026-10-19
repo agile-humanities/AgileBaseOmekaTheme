@@ -15,7 +15,7 @@
                 </div>
             <?php endif; ?>
             <?php if ($this->hasButton): ?>
-                <?php printf('<button class="reversed"><a href="%s" alt="%s">%s</a>',$this->buttonPath,$this->buttonText,$this->buttonText); ?></button>
+                <?php printf('<a class="btn reversed" role="button" href="%s">%s</a>', $this->buttonPath, $this->buttonText); ?>
             <?php endif; ?>
         </div>
     <?php endif; ?>

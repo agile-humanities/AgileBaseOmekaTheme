@@ -2,7 +2,10 @@
  @file _media_embed.sass
  @category 60_site_elements
  @theme LOCAL
- @description  Handles the media embed block with wrap around text. */
+ @description The Media (file) block: theme override view/common/block-layout/file.phtml. Alignment follows Omeka 4's
+   .block-layout-alignment-block-* wrapper classes; sizing follows the thumbnail type (.large/.medium/.small, .square);
+   .layout-vertical limits the width to a reading column. Southern Foodways' layouts (ca22e150, c14be413) merged with
+   the generic sizing. */
 
 .file
   .attachments
@@ -10,9 +13,12 @@
     display: flex
     flex-direction: column
     align-items: center
+    padding-left: 0
+    padding-right: 0
+    margin-bottom: rv($mobile_edge_padding_factor)
 
-
-  // NO LONGER SUPPORTED BY OMEKA. Left for reference.
+    +bp($desktop)
+      margin-bottom: rv($edge_padding_factor)
 
   @at-root .block-layout-alignment-block-right &
     .attachments
@@ -22,13 +28,11 @@
     .attachments
       +callout-side('right')
 
-
-
-  // Set sizing
 .media-embed
-  &.square .attachment
+  .attachment
     width: 100%
 
+  &.square .attachment
     +bp($tablet)
       width: 50%
 
@@ -38,18 +42,44 @@
     .file
       +proportional_height(100%, 1)
 
-
-
-  &.large .attachment
-    width: 100%
-
   &.medium .attachment
     width: 50%
-
-  // Not an option right now
 
   &.small .attachment
     width: 33%
 
     +bp($desktop)
       width: 25%
+
+  // A portrait column: the media and its info stacked, no wider than two thirds of the reading width.
+  &.layout-vertical
+    .item
+      margin: 0 auto
+      max-width: $legible_inset_width * 0.66
+
+      .file
+        +proportional_height(100%, 1.33)
+
+      img
+        height: 100%
+        object-fit: cover
+
+    &.square .item .file
+      +proportional_height(100%, 1)
+
+  // Thumbnail only: no info panel.
+  &[class*=media-display-thumbnail]
+    .media-embed-info
+      display: none
+
+  .media-embed-info
+    padding: rv($mobile_edge_padding_factor)
+
+    +bp($desktop)
+      padding: rv($edge_padding_factor)
+
+    .item-title
+      margin-top: rv(-3)
+
+    .item-description
+      margin-bottom: rv(-2)

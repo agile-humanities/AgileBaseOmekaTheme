@@ -3,9 +3,16 @@
  *  @group 40_ui
  *  @target Bare form elements, theme level. The library's ui_element_base_v002 supplies the resets and the text
  *    input baseline; this file only adds sizing that every form shares. No design, no buttons (see _buttons.sass).
- *  @covers input[type=number].
+ *  @covers input[type=number], input[type=checkbox] (no flex shrink), select[multiple] (no indicator).
  **/
 
 input[type="number"]
   height: $ui_element_height
   min-height: $ui_element_height
+
+input[type="checkbox"]
+  flex-shrink: 0
+
+// A multiple select is a list, not a pulldown: no indicator icon.
+select[multiple]
+  background-image: none

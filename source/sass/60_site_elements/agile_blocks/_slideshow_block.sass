@@ -8,12 +8,24 @@
 
 .slideshow-block
 
+  // Block heights by context: a reading-column block in main, the configured viewport fractions in the splash.
+
   @at-root main &
     height: calc(#{$legible_inset_width} * 0.75)
+
+  @at-root #splash &
+    height: $slide_viewer_mobile_height
+
+    +bp($tablet)
+      height: $slide_viewer_tablet_height
+
+    +bp($desktop)
+      height: 100%
 
   slide-viewer
     background: transparent
     padding: 0
+    height: 100%
     max-height: 100%
     --sequential-nav-bottom: #{$sequential_nav_bottom}
 

@@ -35,15 +35,15 @@ slide-viewer,
 slide-viewer
   background-size: cover
   background-color: neutral(3)
-  height: 80vh
+  height: $slide_viewer_mobile_height
   --sequential-nav-justify-content: center
   --sequential-nav-top: #{$sequential_nav_top}
-  --sequential-nav-left: 0
-  --sequential-nav-right: 0
-  --sequential-nav-bottom: 0
+  --sequential-nav-left: #{$sequential_nav_left}
+  --sequential-nav-right: #{$sequential_nav_right}
+  --sequential-nav-bottom: #{$sequential_nav_bottom}
   --sequential-nav-transform: #{$sequential_nav_transform}
   --slide-nav-background: none
-  --sequential-nav-background: transparent
+  --sequential-nav-background: #{neutral(90)}
   --sequential-nav-border: 1px solid transparent
   --sequential-nav-border-radius: #{$ui_border_radius}
   --sequential-control-spacing: 5px
@@ -56,15 +56,16 @@ slide-viewer
   --slide-item-landscape-object-fit: cover
   --slide-nav-justify-content: left
 
+  @at-root #splash &
+    +bp($desktop)
+      height: 100%
+
   +bp($tablet)
-    --sequential-nav-bottom: #{$sequential_nav_bottom}
-    --sequential-nav-left: #{$sequential_nav_left}
-    --sequential-nav-right: #{$sequential_nav_right}
+    height: $slide_viewer_tablet_height
     --slide-nav-justify-content: center
 
   +bp($desktop)
     background-color: transparent
-    height: 100%
     --slide-item-landscape-object-fit: #{$slide_item_landscape_object_fit}
 
   .slick-slide > div, .slick-slide .card > a
