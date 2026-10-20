@@ -6,8 +6,8 @@
  *    submit / reset variants. Nothing here targets the bare <button> element: a form's target file applies these
  *    placeholders to its own buttons by class (.agile-button submit, emitted by AgileThemeTools' form-layout
  *    partials) or by container.
- *  @covers .agile-button (+ .submit .reset .ghost …), .btn (the module's block templates), %theme-button-submit and
- *    %theme-button-reset for _facets.sass, _form_advanced_search.sass and _form_omeka_core*.sass.
+ *  @covers .agile-button (+ .submit .submit-search .reset .ghost …), .btn (the module's block templates), %theme-button-submit,
+ *    %theme-button-search-submit and %theme-button-reset for _facets.sass, _form_advanced_search.sass and _form_omeka_core*.sass.
  **/
 
 // Theme variants of the library's submit and reset: a dark checkmark (the submit colour is light here), the reset
@@ -18,6 +18,13 @@
 
   &:before
     background-image: url(get_svg_url('icons/checkmark-default'))
+
+// The submit of a search form: the submit button with the search icon in place of the checkmark.
+%theme-button-search-submit
+  @extend %theme-button-submit
+
+  &:before
+    background-image: url(get_svg_url('icons/search-default'))
 
 %theme-button-reset
   @extend %button-reset
@@ -41,6 +48,11 @@ a.agile-button, a.btn
 
   &.reset
     @extend %theme-button-reset
+
+  // (Not ".search": the library gives .agile-button.search, .search-submit and button.search-submit its ghost
+  // search-box button, %button-search.)
+  &.submit-search
+    @extend %theme-button-search-submit
 
   // A text-only button that reads as a link (the facets' "More options").
   &.ghost

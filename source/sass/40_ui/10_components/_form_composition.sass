@@ -1,0 +1,316 @@
+/**
+ *  @file _form_composition.sass
+ *  @group 40_ui/10_components
+ *  @library stop14 — written here to graduate into stop14-themesystem-legacy (a_components/40_ui/form_composition).
+ *  @description The form composition system: containers that organise form elements (Omeka's `.field` row:
+ *    `.field-meta` + `.inputs` [+ `.field-description`] [+ `.field-messages`]) into aligned rows and columns.
+ *
+ *    .s14-form                       the composed form (a <form>, or any container composed as one)
+ *      .form-columns > .form-column  two columns from the tablet breakpoint, stacked below (left first)
+ *        .form-row                   1–6 cells, equal widths, one gap between cells, none at the edges
+ *          .field                    a cell; .form-cell--fit = content width; .form-cell--w<N> = N characters wide
+ *      .form-actions                 buttons: left-aligned, content width
+ *      .form-messages                the validation summary above the form (role="alert")
+ *
+ *    Alignment: a row is a grid; each cell is a subgrid spanning the row's four tracks — label, control,
+ *    description, messages — so labels align, controls align, a long description or an error message pushes the
+ *    whole row taller, and a cell without a label still puts its control on the control line. Browsers without
+ *    subgrid (before Firefox 71 / Safari 16 / Chrome 117) get the flex fallback: cells as columns with a one-line
+ *    label slot reserved.
+ *
+ *    Spacing: one column gap between cells; no row gutter in the tracks (an empty description or messages track takes
+    no space). The label, description and messages carry their spacing as margins ($form_cell_track_gap); lines of
+    cells (stacked or wrapped) are spaced by a margin on the cells that start a line; rows by .form-row + .form-row.
+
+    Cell counts: the writer (AgileThemeTools View\Helper\FormLayout) sets `--form-cells` and, for rows with fit
+ *    cells, `--form-row-columns`; hand-written rows are counted with :has(). Below the tablet breakpoint every row
+ *    stacks; from tablet, rows of 4–6 cells wrap two per line (and any row of more than $form_columns_max_cells
+ *    inside .form-columns); from desktop, as declared.
+ *
+ *    Tokens (yml): grid_gap_factor / mobile_grid_gap_factor (the one gap), ui_element_height, text_element_spacing,
+ *    form_columns_max_cells, error_colour.
+ **/
+
+$form_gap: rv($grid_gap_factor) !default
+$form_gap_mobile: rv($mobile_grid_gap_factor) !default
+$form_cell_track_gap: $text_element_spacing !default
+$form_label_line: 1.5em !default // the label slot reserved by the no-subgrid fallback
+$form_columns_max_cells: 2 !default
+$form_max_cells: 6
+
+// ---- rows -----------------------------------------------------------------------------------------------------
+
+=s14-form-row-columns($n)
+  grid-template-columns: repeat($n, minmax(0, 1fr))
+
+// The row's tracks carry no row gutter: a cell's empty tracks (no description, no message) then take no space. The
+// spacing between a cell's label, control, description and messages is their margins (%s14-form-cell); the spacing
+// between lines of cells (stacked below tablet, wrapped at tablet) is a margin on the cells that start a new line.
+%s14-form-row
+  display: grid
+  grid-template-columns: minmax(0, 1fr)
+  column-gap: $form_gap_mobile
+  row-gap: 0
+  align-items: start
+  width: 100%
+  min-width: 0
+
+  > *
+    margin: 0
+
+  > * + *
+    margin-top: $form_gap_mobile
+
+  +bp($tablet)
+    column-gap: $form_gap
+    grid-template-columns: var(--form-row-columns, repeat(var(--form-cells, 1), minmax(0, 1fr)))
+
+    > * + *
+      margin-top: 0
+
+// Rows of 4+ cells wrap two per line at tablet; rows inside the two-column form wrap above the column maximum.
+%s14-form-row-wrapped
+  +bp($tablet)
+    +s14-form-row-columns(2)
+
+    > :nth-child(n+3)
+      margin-top: $form_gap
+
+  +bp($desktop)
+    grid-template-columns: var(--form-row-columns, repeat(var(--form-cells, 1), minmax(0, 1fr)))
+
+    > :nth-child(n+3)
+      margin-top: 0
+
+%s14-form-row-wrapped-always
+  +bp($tablet)
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+
+    > :nth-child(n+3)
+      margin-top: $form_gap
+
+  // Declared again: a row of 4+ cells also extends %s14-form-row-wrapped, which resets the line margin at desktop.
+  +bp($desktop)
+    > :nth-child(n+3)
+      margin-top: $form_gap
+
+%s14-form-row-stacked
+  grid-template-columns: minmax(0, 1fr) !important
+
+  > * + *
+    margin-top: $form_gap_mobile !important
+
+    +bp($tablet)
+      margin-top: $form_gap !important
+
+// ---- cells ----------------------------------------------------------------------------------------------------
+
+// A cell adopts the row's four tracks. Children are pinned to their track, so a missing label or description leaves
+// its track empty and the rest still align. The tracks have no gutter (see %s14-form-row): each child carries its
+// own spacing as a margin, so an empty track is empty.
+%s14-form-cell
+  display: grid
+  grid-row: span 4
+  grid-template-rows: subgrid
+  row-gap: 0
+  align-content: start
+  min-width: 0
+
+  > .field-meta, > legend
+    grid-row: 1
+    align-self: end
+    margin: 0 0 $form_cell_track_gap
+
+  > .inputs
+    grid-row: 2
+    min-width: 0
+    margin: 0
+
+  > .field-description
+    grid-row: 3
+    margin: $form_cell_track_gap 0 0
+
+  > .field-messages, > .messages
+    grid-row: 4
+    margin: $form_cell_track_gap 0 0
+
+  // Groups (.field-group): the fieldset sits inside the control track (a fieldset cannot be a subgrid cell — its
+  // grid applies to its anonymous content box), its legend visually hidden, the visible label in .field-meta.
+  > .inputs > fieldset
+    display: contents
+
+  > .inputs > fieldset > legend
+    position: absolute
+    width: 1px
+    height: 1px
+    overflow: hidden
+    clip: rect(0 0 0 0)
+    white-space: nowrap
+
+// The fallback where subgrid is missing: a flex column with a one-line label slot, so controls still line up when
+// every label is one line. (The children's margins space them, as above.)
+@supports not (grid-template-rows: subgrid)
+  %s14-form-cell
+    display: flex
+    flex-direction: column
+
+    > .field-meta, > legend
+      min-height: $form_label_line
+
+%s14-form-cell-fit
+  width: auto
+  justify-self: start
+
+  > .inputs > *
+    width: auto
+    min-width: 0
+
+  // An enhanced select in a fit cell: its content width, with a floor so a short value is still a control.
+  > .inputs > .select2-container, > .inputs > .chosen-container
+    width: auto !important
+    min-width: 7em
+
+// The cell is the sizing authority: controls fill it. (Checkboxes and radios keep their size.)
+%s14-form-control-fill
+  > .inputs
+    > input:not([type=checkbox]):not([type=radio]):not([type=submit]):not([type=button]):not([type=reset]),
+    > select, > textarea, > .select2-container, > .chosen-container,
+    > .range-double, > .multi-text
+      width: 100%
+      max-width: none
+      min-width: 0
+
+    // Chosen writes its width inline at init; the cell decides.
+    > .chosen-container
+      width: 100% !important
+
+// A cell N characters wide (a year, a count): GOV.UK's width classes.
+=s14-form-cell-width($chars)
+  > .inputs
+    max-width: calc(#{$chars}ch + #{$ui_padding * 2} + 2px)
+
+// A group's options: inline and wrapping by default, stacked on request.
+// The options are the fieldset's children; with the fieldset as display: contents they lay out in .inputs.
+%s14-form-options-inline
+  > .inputs
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: $text_element_spacing rv(-2)
+    min-height: $ui_element_height
+
+    label, .inputs-item
+      display: inline-flex
+      align-items: center
+      gap: $text_element_spacing
+      margin: 0
+      padding: 0
+
+%s14-form-options-stacked
+  > .inputs
+    flex-direction: column
+    align-items: flex-start
+
+// A single checkbox: control then label, on the control line.
+%s14-form-checkbox-cell
+  > .inputs
+    display: flex
+    align-items: center
+    gap: $text_element_spacing
+    min-height: $ui_element_height
+
+    > label
+      margin: 0
+      padding: 0
+
+// ---- labels ---------------------------------------------------------------------------------------------------
+
+// A composed form's labels and legends: the label font, sentence case, one step below the body size. (The theme's
+// generic .field-meta label rule is uppercase, for Omeka's own forms.)
+%s14-form-label
+  font-family: $labelfont
+  font-weight: $semibold
+  font-size: clamped(-1,0)
+  text-transform: none
+  letter-spacing: 0
+  color: $label_color
+  line-height: 1.3
+
+// ---- columns and actions ------------------------------------------------------------------------------------
+
+%s14-form-columns
+  display: grid
+  grid-template-columns: minmax(0, 1fr)
+  gap: $form_gap_mobile
+
+  +bp($tablet)
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+    gap: $form_gap
+
+%s14-form-column
+  display: flex
+  flex-direction: column
+  gap: $form_gap_mobile
+  min-width: 0
+
+  +bp($tablet)
+    gap: $form_gap
+
+%s14-form-actions
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  justify-content: flex-start
+  gap: $ui_element_spacing
+
+  > *
+    flex: 0 0 auto
+    width: auto
+    margin: 0
+
+// ---- validation -----------------------------------------------------------------------------------------------
+
+// An invalid control: the element is outlined in the error colour; its message sits in the messages track.
+%s14-form-invalid-control
+  border-color: $error_colour !important
+  box-shadow: 0 0 0 1px $error_colour
+
+%s14-form-error-message
+  color: $error_colour
+  font-family: $labelfont
+  font-size: clamped(-2,-1)
+  line-height: 1.4
+  padding: 0
+  list-style: none
+
+// The summary above the form: a list of the invalid fields, each a link to its cell.
+%s14-form-messages
+  border: 1px solid $error_colour
+  border-left-width: 4px
+  border-radius: $border_radius
+  padding: rv($mobile_edge_padding_factor)
+  margin-bottom: $form_gap
+  color: $on_light
+  background: $white
+
+  > .form-messages-title
+    font-family: $labelfont
+    font-weight: $bold
+    color: $error_colour
+    margin: 0 0 $text_element_spacing
+
+  ul
+    margin: 0
+    padding-left: 1.2em
+
+  a
+    color: $error_colour
+    text-decoration: underline
+
+// A track list of $n copies of $track, for --form-row-columns (custom properties cannot use repeat() with a
+// calc() count).
+@function repeat-track($track, $n)
+  $out: ''
+  @for $i from 1 through $n
+    $out: $out + ' ' + $track
+  @return unquote($out)

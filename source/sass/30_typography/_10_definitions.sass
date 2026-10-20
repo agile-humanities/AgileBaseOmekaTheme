@@ -188,13 +188,12 @@ $ribbon_padding_factor: -3
   flex-direction: row
   align-items: center
   justify-content: flex-start
-  font-family: $labelfont
   font-size: clamped(-1,0)
   color: $link_colour
   border-bottom: 0
   text-decoration: none
   width: fit-content
-  +background-icon-right('arrow',rv(-1))
+  +background-icon-right('arrow',$ui_icon_size)
 
   &:hover
     border-bottom: 0

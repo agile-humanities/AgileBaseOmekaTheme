@@ -1,31 +1,16 @@
 /**
  *  @file _form_advanced_search.sass
  *  @group 40_ui
- *  @target The Advanced Search module's search form (AdvancedSearch 3.4.64), both the stock form
- *    (view/search/search-form-main.phtml) and the Agile adapter's form (AgileThemeTools
- *    view/search/agile/form.phtml) — they share the ids and classes below until the split in the design pass.
- *  @covers form#form-search; .agile-search-bar (the "q" search bar, outside the filter panel); #advanced-search-form-wrapper
- *    (the filter panel); #form-search > fieldset#form-search > * (the fields: a column grid, the filter collection
- *    full width); .range-double (the date range, 10_components/_range_double); .select2-container; #search-filters
- *    .filter rows, .search-filter-plus, .search-filter-action (AdvancedSearch asset/js/search.js adds rows from the
- *    template row); .search-form-buttons.
+ *  @target The Advanced Search module's search form (AdvancedSearch 3.4.64): the Agile adapter's form (AgileThemeTools
+ *    view/search/agile/form.phtml, composed into stop14 form rows by View\Helper\FormLayout) and, for a site that
+ *    keeps it, the stock form (view/search/search-form-main.phtml).
+ *  @covers form#form-search; .agile-search-bar (the "q" search bar, outside the filter panel);
+ *    .advanced-search-filters (the <details> disclosure around the panel); #advanced-search-form-wrapper (the filter panel); .range-double (the date range, 10_components/_range_double);
+ *    #form-search > fieldset#form-search > * (the STOCK form's fields: a column grid — the Agile form has no such
+ *    fieldset, its rows come from the composition); #search-filters .filter rows (joiner | field | type | value |
+ *    action, a composed row with fit columns), .search-filter-plus, .search-filter-action (AdvancedSearch
+ *    asset/js/search.js adds rows from the template row); .search-form-buttons (the actions row).
  **/
-/*
- * Notes:
- *
- * This implementation provides a more compact view of the advanced search form. It should be considered provisional,
- * as much of the styling is supplied by the Advanced Search module via the form collection or supporting JavaScript
- * and is liable to change in future releaseds.
- *
- * The search box (q) is pulled out of the fieldset by the Agile form template (AgileThemeTools
- * view/search/agile/form.phtml) and sits above the filter panel as .agile-search-bar; the filter collection
- * (.field-name-filter) takes the full width; the other elements are arranged in a flexbox with set widths at
- * different breakpoints.
- *
- * Also note that the Advanced Search module duplicates the form identifier (#form-search), which is applied to both
- * the <form> tag and the interior <fieldset>. This styling isolates the two.
- *
- */
 
 // The search bar: the "q" field and its submit in one bordered box, above the filter panel (design review I6).
 .agile-search-bar
@@ -45,11 +30,39 @@
     @extend %search-form-submit
     margin-left: auto
 
-// The filter panel.
+// The filter panel, collapsed under a disclosure (design review: "Advanced Search Filters"). The template opens it
+// when the query carries a filter value.
+.advanced-search-filters
+  margin-bottom: rv($edge_padding_factor)
+
+  > summary
+    @extend %s14-form-label
+    +background-icon-right('accordion-expand', $ui_icon_size)
+    font-size: clamped(-1,0)
+    justify-content: space-between
+    list-style: none
+    padding: $text_element_spacing 0
+    margin-bottom: 0
+    width: fit-content
+
+    &::-webkit-details-marker
+      display: none
+
+    &:after
+      transform: rotate(90deg)
+
+    &:after:hover
+      animation: none
+
+  &[open] > summary
+    margin-bottom: rv($mobile_grid_gap_factor)
+
+    &:after
+      transform: rotate(0deg)
+
 #advanced-search-form-wrapper
   +standard_edge_padding()
-  background-color: set-color(2,5)
-  margin-bottom: rv($edge_padding_factor)
+  background-color: $surface-light
 
   // Corrects iconfont issue
   .search-filter-minus::before
@@ -61,6 +74,8 @@
     font-weight: $heavy
 
 #form-search
+  @extend %advanced_search_filter_ui
+
   fieldset
     margin: 0
     padding: 0
@@ -68,20 +83,18 @@
   .range-double
     @extend %range-double
 
-  // The date range in the Agile form (fields stack at their own widths; the column rules below apply to the stock
-  // form's fieldset): the slider and its From / To inputs at a text field's width, not the whole row.
+  // The date range at a text field's width, not the whole row.
   .field-type-range-double
     max-width: $ui_max_text_width
 
+  // The STOCK module form (a site that keeps Advanced Search's own template): its fieldset lays the fields out as
+  // columns. Assumes the first element is the search box and the filter collection spans the row.
   > fieldset#form-search
     margin-top: rv($mobile_edge_padding_factor)
     margin-bottom: 0
-
     display: flex
     flex-direction: row
     flex-wrap: wrap
-
-    // Sets the number of columns for Advanced search elements via percentrages
 
     > *
       padding-right: rv($grid_gap_factor)
@@ -99,10 +112,12 @@
       .inputs, span, select
         width: 100%
 
-      // The filter collection (the repeatable property filter rows) spans the row.
-      &.field-name-filter, &.field-type-collection
+      &:nth-child(1), &.field-name-filter, &.field-type-collection
         width: 100%
         padding-right: 0
+
+    input[name=q]
+      background-color: $white
 
     .select2-container, .select2-container + input
       margin-bottom: rv($mobile_edge_padding_factor)
@@ -117,39 +132,32 @@
   > fieldset
     margin-bottom: 0
 
-  .filter
-    display: flex
-    flex-direction: column
-
-    +bp($desktop)
-      flex-direction: row
-      margin-bottom: rv($mobile_edge_padding_factor)
-
-    > *
-      margin-right: rv($grid_gap_factor)
-
-      &:last-child
-        margin-right: 0
-
-      // Currently the boolean selector
-
-      &:first-child
-        width: 100px
-        min-width: 100px
-
-    // Currently the field selector and the operation selector
-
-    > span:nth-of-type(2), > span:nth-of-type(3)
-        width: 200px !important // Overrides javascript-set width
-
-    > input[type=text]
-      +bp($tablet)
-        width: 300px
-      +bp($desktop)
-        width: 400px
-
   > legend
     visibility: hidden
+    height: 0
+    padding: 0
+    margin: 0
+
+  // A filter row: joiner | field | type | value (flexible) | action (fit) — a composed row with fit columns. The
+  // selects are plain (Advanced Search's script clones the row), so the tracks size to their content with a floor.
+  .filter
+    @extend %s14-form-row
+    --form-cells: 5
+    --form-row-columns: minmax(6em, max-content) minmax(10em, max-content) minmax(9em, max-content) minmax(0, 1fr) auto
+    align-items: center
+    margin-bottom: rv($mobile_grid_gap_factor)
+
+    +bp($tablet)
+      margin-bottom: rv($grid_gap_factor)
+
+    > select, > .select2-container, > input[type=text]
+      width: 100%
+      min-width: 0
+
+    // The action's wrapper field: the control line only.
+    > .field
+      > .field-meta
+        display: none
 
   .search-filter-plus
     margin-top: rv($grid_gap_factor)
@@ -157,55 +165,12 @@
 
   .search-filter-action
     @extend %button
-    font-family: $labelfont
     font-weight: $bold
     width: $ui_element_height
     min-width: $ui_element_height
 
+// The actions row: the submit (the search variant of the submit button, .agile-button.submit-search in _buttons) first, the
+// reset beside it, left-aligned at content width. The template prints them in that order.
 .search-form-buttons
-  +horizontal-list(0)
-  flex-direction: row-reverse
-  justify-content: flex-end
+  @extend %s14-form-actions
   margin-top: rv($grid_gap_factor)
-
-  > *
-    &:last-child
-      margin-right: rv($grid_gap_factor)
-
-  // PHASE C HOLD: the list spacing above zeroes the buttons' padding; the submit used to get it back from the
-  // library's button[type=submit] rule (higher specificity), which library 3.0.0 no longer has. Revisit in the
-  // design pass together with the layout rules.
-  > .agile-button
-    padding-top: nth($btn_padding, 1)
-    padding-bottom: nth($btn_padding, 1)
-    padding-left: nth($btn_padding, 2)
-
-
-
-// Moved from 60_site_elements/_search_page.sass (Phase A2): the filter fieldset reset.
-
-#form-search
-  @extend %advanced_search_filter_ui
-
-// PHASE B HOLD (form refactor, 2026-10-08). The Agile adapter's form now renders in Omeka's row vocabulary
-// (.field > .field-meta + .inputs, see AgileThemeTools view/common/form-layout/field.phtml), so the theme's generic
-// row rules — the sibling spacing in 30_typography/_general.sass and its uppercase .field-meta label — started to
-// apply to it. These rules hold the pre-refactor look of the faceted browse interface until the design pass
-// restyles every form through _form_row.sass. Remove them then.
-
-.agile-search-form
-  .field + .field, fieldset + .field, span + .field, .field + fieldset
-    margin-top: 0
-
-  .field-meta label
-    text-transform: none
-    +font-size(-1)
-    font-weight: inherit
-    color: $label_color
-
-// Select widths (library 3.0.0: no global <select> width). Select2 reads the element's width when it initialises.
-
-#form-search select, .search-results-part select
-  width: $ui_select_width
-  min-width: $ui_select_min_width
-  max-width: $ui_select_max_width

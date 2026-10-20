@@ -77,6 +77,9 @@ brand_secondary_on_light: "ensure-contrast($brand_secondary, $surface_light)"
 brand_secondary_on_dark: "ensure-contrast($brand_secondary, $surface_dark)"
 # Brand colours as surfaces (decision 2026-10-06): explicit roles with an automatically picked text colour.
 surface_brand: $brand_primary
+# Validation: the error colour must read on $white and $surface_light; a dark variant for dark surfaces.
+error_colour: "#B42318"
+error_colour_on_dark: "#F97066"
 on_brand: "on-colour($surface_brand)"
 surface_brand_secondary: $brand_secondary
 on_brand_secondary: "on-colour($surface_brand_secondary)"
@@ -177,12 +180,14 @@ h5fontsize: "map-get($sizefactors,'h5')"
 h6fontsize: "map-get($sizefactors,'h6')"
 
 ## 04 UI | Needs an overhaul
-ui_icon_size: 25px
+ui_icon_size: 15px
 ui_padding: 10px
 ui_element_height: 40px
 ui_minheight: $ui_element_height
 ui_maxheight: 40px
 ui_compactheight: 40px
+# Form composition (40_ui/10_components/_form_composition): the most cells a row may hold inside a two-column form
+form_columns_max_cells: 2
 facet_control_height: 32px
 reference_letter_size: 2rem   # the alphabet letters of the Reference block's index (compact circles)   # text, number and select controls inside a facet and the date range (one step below the UI element height)
 ui_largeheight: 80px
@@ -215,7 +220,7 @@ btn_width: 280px
 btn_compactwidth: 180px
 btn_largewidth: 280px
 btn_max_width: 375px
-btn_icon_size: 25px
+btn_icon_size: 20px
 
 btn_fontsize: "clamped(0,1)"
 btn_compact_fontsize: "clamped(-1,0)"

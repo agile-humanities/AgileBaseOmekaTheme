@@ -1,0 +1,108 @@
+/**
+ *  @file _form_composition.sass
+ *  @group 40_ui
+ *  @target Any form composed with the stop14 form composition vocabulary (10_components/_form_composition): the
+ *    Agile search form (AgileThemeTools view/search/agile/form.phtml, through View\Helper\FormLayout), the forms
+ *    fixture page, and any form a template wraps in .s14-form.
+ *  @covers .s14-form, .form-columns, .form-column, .form-row (+ .form-row--N, --fit-first, --fit-last, --stack),
+ *    .field as a cell (+ .form-cell--fit, --w<N>, --options-stacked), .form-actions, .form-messages,
+ *    .field-has-error, .field-messages.
+ **/
+
+.s14-form
+  // Rows and cells
+  .form-row
+    @extend %s14-form-row
+
+    > .field, > .form-field
+      @extend %s14-form-cell
+      @extend %s14-form-control-fill
+
+    > .field-type-checkbox
+      @extend %s14-form-checkbox-cell
+
+    > .field-type-multi-checkbox, > .field-type-radio, > .field-group
+      @extend %s14-form-options-inline
+
+      &.form-cell--options-stacked
+        @extend %s14-form-options-stacked
+
+    > .form-cell--fit
+      @extend %s14-form-cell-fit
+
+    @each $chars in 2, 4, 6, 8, 12, 20
+      > .form-cell--w#{$chars}
+        +s14-form-cell-width($chars)
+
+    // Cell counts, when the writer did not set --form-cells: counted by :has().
+    @for $n from 2 through $form_max_cells
+      &.form-row--#{$n}, &:has(> :nth-child(#{$n}):last-child)
+        --form-cells: #{$n}
+
+    // Rows of 4+ cells wrap two per line at tablet.
+    &.form-row--4, &.form-row--5, &.form-row--6, &:has(> :nth-child(4))
+      @extend %s14-form-row-wrapped
+
+    // Fit cells for hand-written rows: the first or last cell at its content width.
+    @for $n from 2 through $form_max_cells
+      &.form-row--#{$n}.form-row--fit-last
+        --form-row-columns: #{repeat-track(minmax(0, 1fr), $n - 1)} auto
+
+      &.form-row--#{$n}.form-row--fit-first
+        --form-row-columns: auto #{repeat-track(minmax(0, 1fr), $n - 1)}
+
+    &.form-row--stack
+      @extend %s14-form-row-stacked
+
+  // Rows without a .form-row wrapper (a form rendered by the plain element-by-element path): one per line.
+  > .field + .field, > .form-fieldset + .field, > .field + .form-fieldset
+    margin-top: $form_gap_mobile
+
+    +bp($tablet)
+      margin-top: $form_gap
+
+  .form-row + .form-row, .form-row + .form-actions, .form-actions + .form-row, .form-messages + .form-row
+    margin-top: $form_gap_mobile
+
+    +bp($tablet)
+      margin-top: $form_gap
+
+  // Columns
+  .form-columns
+    @extend %s14-form-columns
+
+    .form-column
+      @extend %s14-form-column
+
+      .form-row + .form-row
+        margin-top: 0 // the column's gap spaces its rows
+
+      // Inside a column, rows above the column maximum wrap two per line at every width from tablet.
+      @for $n from $form_columns_max_cells + 1 through $form_max_cells
+        .form-row--#{$n}, .form-row:has(> :nth-child(#{$n}):last-child)
+          @extend %s14-form-row-wrapped-always
+
+  // Labels and legends
+  .field-meta label, .field-meta .label, .field-label, legend.field-label
+    @extend %s14-form-label
+
+  // Actions
+  .form-actions
+    @extend %s14-form-actions
+
+  // Validation
+  .field-has-error
+    > .inputs
+      input, select, textarea, .select2-selection, .chosen-single, .chosen-choices
+        @extend %s14-form-invalid-control
+
+  .field-messages, .messages
+    @extend %s14-form-error-message
+
+  .form-messages
+    @extend %s14-form-messages
+
+// Omeka's own row rendering puts the description inside .field-meta; composed forms put it after the control.
+.s14-form .field > .field-description
+  @extend %small-text
+  color: neutral(70)
