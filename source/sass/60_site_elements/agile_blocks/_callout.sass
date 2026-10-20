@@ -13,13 +13,16 @@ $callout_desktop_max_width: 500px
 
 .callout
 
+  // Mobile: the pulled text is a centred band with no side inset (design review E2); from the tablet breakpoint it
+  // floats beside the body text, flush left when it sits at the right and flush right when it sits at the left.
   .callout-text
     position: relative
     width: 100%
-    padding: rv($mobile_edge_padding_factor)
+    padding: rv($mobile_edge_padding_factor) 0
     display: flex
     flex-direction: column
     align-items: center
+    text-align: center
 
     +bp($tablet)
       display: block
@@ -43,12 +46,14 @@ $callout_desktop_max_width: 500px
   .callout-text
     max-width: none
     margin: 0 0 rv($edge_padding_factor) 0
+    text-align: center
 
 
 .callout-right
   .callout-text
     +bp($tablet)
       float: right
+      text-align: left
     +bp($desktop)
       width: calc(#{$callout_width} - #{$callout_shift})
 
@@ -56,7 +61,6 @@ $callout_desktop_max_width: 500px
     +bp($desktop)
       @if is-percentage($callout_width)
         width: 100%
-        text-align: right
       @else
         width: $callout_width
 

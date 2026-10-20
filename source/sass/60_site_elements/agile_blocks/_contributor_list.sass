@@ -1,0 +1,37 @@
+/**
+ *  @file _contributor_list.sass
+ *  @category 60_site_elements/agile_blocks
+ *  @description The Contributor List block (AgileThemeTools view/common/block-layout/contributor-list.phtml):
+ *    .contributor-list > .contributor-entry > label.contributor + ul.contributor-items > li. A grid of entries —
+ *    2 columns on mobile, 3 at tablet, 4 at desktop (the separated-row grid) — each a name with its items beneath,
+ *    no bullets, the list's default spacing, no gap between the name and the items (design review E3). */
+
+.contributor-list
+  +separated-row(2, $mobile_grid_gap_factor)
+
+  +bp($tablet)
+    +separated-row(3, $grid_gap_factor)
+
+  +bp($desktop)
+    +separated-row(4, $grid_gap_factor)
+
+  .contributor-entry
+    margin-bottom: rv($mobile_block_spacing)
+
+  .contributor
+    display: block
+    font-family: $labelfont
+    font-weight: $bold
+    font-style: normal
+    margin: 0
+
+  .contributor-items
+    list-style: none
+    padding-left: 0
+    margin: 0
+
+    li
+      margin: 0
+
+    a
+      @extend %inline-anchor

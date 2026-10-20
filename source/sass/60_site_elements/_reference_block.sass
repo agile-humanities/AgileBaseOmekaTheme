@@ -25,23 +25,35 @@
 		.pagination-list
 			background: $white
 
+			// Every letter is the same compact box, centred, so active (a) and inactive (span) letters line up; an active
+			// letter is a circle on the light surface, no border (design review F2). The module's reference.css sets the
+			// border and padding this overrides.
 			li.pagination-range
 				display: inline-block
+				margin-right: 2px
 
-				a
+				a, span
 					display: inline-flex
 					justify-content: center
 					align-items: center
-					height: rv(3)
-					width: rv(3)
-					padding: rv(-3)
-					padding-top: calc(#{rv(-3)} + 4px) // Vertical centering off. Will take too much to refactor original styling to fix.
-					color: neutral(80)
-					border-color: neutral(80)
-					border-radius: 3px
-					transform: translateX(1px)
+					height: $reference_letter_size
+					width: $reference_letter_size
+					padding: 0
+					line-height: 1
+					font-family: $labelfont
+					border: 0
+					border-radius: 50%
+					vertical-align: middle
 
-				a:hover
+				span
+					color: neutral(50)
+
+				a
+					color: $on_light
+					background: $surface_light
+					text-decoration: none
+
+				a:hover, a:focus
 					color: $on_brand_secondary
 					background: $surface_brand_secondary
 					

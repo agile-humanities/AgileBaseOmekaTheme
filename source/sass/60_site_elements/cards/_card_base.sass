@@ -1,8 +1,9 @@
 /*
  * @file _card_base.sass
  * @group 60_site_elements/cards
- * @description %card: the card as Southern Foodways drew it — a white panel with a hairline border, a brand accent
- *   band across the top, a 4:3 image, then the info block (label, title, subtitle, summary, metadata, "View").
+ * @description %card: the card as Southern Foodways drew it — a white panel with a hairline border, a 4:3 image,
+ *   then the info block (label, title, subtitle, summary, metadata, "View"). No accent band on the grid card (design
+ *   review C1: a band fights the rounded corners); the list view keeps its brand rule (_list_item.sass).
  *   Markup: AgileThemeTools' card display mode (theme view/common/display-mode/card.phtml):
  *   .card > div > a > figure.item-thumbnail + .item-info. Colours are the roles only.
  */
@@ -15,10 +16,6 @@
   border-radius: $card-border-radius
   border-collapse: collapse
   overflow: hidden
-
-  // The accent band
-  > div, > a
-    border-top: 10px solid $surface_brand
 
   a
     text-decoration: none

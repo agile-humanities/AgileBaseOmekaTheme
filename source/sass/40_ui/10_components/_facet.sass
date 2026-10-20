@@ -9,7 +9,7 @@
   background-color: $white
   padding: rv($mobile_edge_padding_factor)
   margin-bottom: rv($mobile_block_spacing)
-  font-size: clamped(-1,0)
+  font-size: clamped(-2,-1) // one step below the body text (design review I2)
   border-radius: $border_radius
 
   +bp($tablet)
@@ -19,6 +19,14 @@
     margin-top: 0
     margin-bottom: rv(-3)
     font-weight: $bold
+    font-size: clamped(0,1) // one step below the h3 default
+
+  // The facet's own controls (a search box, a select, the range's numbers) are compact.
+  input[type=text], input[type=search], input[type=number], select
+    height: $facet_control_height
+    min-height: $facet_control_height // the element reset sets min-height to the UI element height
+    font-size: inherit
+    padding: 0 rv(-4)
 
   ul
     list-style-type: none

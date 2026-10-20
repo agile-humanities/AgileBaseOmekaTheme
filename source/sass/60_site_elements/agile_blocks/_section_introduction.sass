@@ -8,10 +8,11 @@
 
 .section-intro-block:not(.region-splash)
 
+  // In the main content the title area is a light surface (design review E6); the splash version below is dark.
   .title-area
     +standard_edge_padding()
-    background-color: $surface_brand_secondary
-    color: $on_brand_secondary
+    background-color: $surface_light
+    color: $on_light
 
   figure
     position: relative
@@ -50,19 +51,19 @@
     &.left
       flex-direction: row-reverse
 
+    // No explicit height on the flex children: an explicit height disables the row's stretch, which is what makes
+    // the title area the full height of the block (design review E6).
     > *:nth-child(1)
       flex-grow: 1
       display: flex
       flex-direction: column
       justify-content: flex-end
-      height: 100%
       padding-bottom: rv($edge_padding_factor) * 3
       border-right: 2px solid $on_dark
 
     > *:nth-child(2)
       flex-shrink: 0
       width: 61.8%
-      height: 100%
 
 
     .item

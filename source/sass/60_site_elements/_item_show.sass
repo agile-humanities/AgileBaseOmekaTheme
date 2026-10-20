@@ -26,6 +26,15 @@ $item_container_object_spacing: rv($edge_padding_factor)
   h1 + .description, .subtitle + .description
     margin-top: rv($item_show_spacing_factor)
 
+  // The heading reads as one unit: label, title, subtitle and the contributor line (design review G2). The base
+  // h1 carries a 1.5rem bottom margin; here the deck follows the title closely and keeps its own space below.
+  .item-heading
+    header h1
+      margin-bottom: rv(-4)
+
+    .subtitle, .deck
+      margin-top: 0
+
   .key-metadata
 
     .metadata-list

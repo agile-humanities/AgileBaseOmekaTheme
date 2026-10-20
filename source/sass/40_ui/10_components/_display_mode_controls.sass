@@ -69,3 +69,22 @@
 
   .vat-tab
     @extend %control-icon
+
+  // The search page's list / grid toggle: a small uppercase label with the icon at its right; the active state
+  // (and hover) takes the icon set's active variant (design review I4, the Southern Foodways look).
+  .search-view-type
+    font-family: $labelfont
+    font-size: clamped(-3,-2)
+    text-transform: uppercase
+    text-decoration: none
+    color: neutral(60)
+    white-space: nowrap
+
+    &:hover, &.active
+      color: $on_light
+
+  .search-view-type-list
+    +icon-with-label-right('list',$btn_icon_size,'neutral','active')
+
+  .search-view-type-grid
+    +icon-with-label-right('grid',$btn_icon_size,'neutral','active')

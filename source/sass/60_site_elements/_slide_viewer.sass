@@ -56,6 +56,16 @@ slide-viewer
   --slide-item-landscape-object-fit: cover
   --slide-nav-justify-content: left
 
+  // Below the tablet breakpoint the page markers give way to a "3 / 12" counter between the arrows (design review
+  // E9): any number of slides fits, where a row of markers wrapped at five. The component exposes both as custom
+  // properties; the counter sits on the sequential nav's light surface.
+  --slide-nav-display: none
+  --slide-counter-display: inline-flex
+  // The nav pill is neutral(90), a dark surface; the padding insets the arrows from the pill's edge.
+  --slide-counter-color: #{$on_dark}
+  --slide-counter-font: #{$semibold} #{$slide_counter_font_size} #{$labelfont}
+  --sequential-nav-padding: #{rv(-4)} #{rv(-3)}
+
   @at-root #splash &
     +bp($desktop)
       height: 100%
@@ -63,6 +73,9 @@ slide-viewer
   +bp($tablet)
     height: $slide_viewer_tablet_height
     --slide-nav-justify-content: center
+    --slide-nav-display: flex
+    --slide-counter-display: none
+    --sequential-nav-padding: 0
 
   +bp($desktop)
     background-color: transparent

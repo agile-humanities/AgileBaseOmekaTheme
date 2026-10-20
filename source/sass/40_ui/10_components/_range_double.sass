@@ -1,0 +1,155 @@
+/*
+ * @file _range_double.sass
+ * @group 40_ui/10_components
+ * @description %range-double: Advanced Search's double range (a date range in the search form or a facet): two
+ *   native range inputs stacked on one invisible track, a visible progress bar between the thumbs, and the numeric
+ *   From / To inputs on one row (design review I3). The module's own stylesheet (asset/css/search.css) draws this
+ *   but is not loaded by the Agile search page, so this is its rule set on the theme's tokens. The module's
+ *   search.js sets --from / --to on .range-progress. The vendor pseudo-element rules must stay separate and in
+ *   this order (the module's note: merged, Chrome breaks).
+ */
+
+$range_double_track_colour: neutral(20) !default
+$range_double_progress_colour: $brand_primary !default
+$range_double_thumb_colour: $brand_primary !default
+$range_double_thumb_size: 1em !default
+
+%range-double
+  display: flex
+  flex-direction: column
+  gap: rv(-3)
+  margin: rv(-3) 0
+
+  .range-sliders
+    position: relative
+    height: $range_double_thumb_size
+    display: flex
+    align-items: center
+
+  // Invisible tracks keep the thumbs interactive; the progress bar below is what shows.
+  input[type=range]
+    -webkit-appearance: none
+    appearance: none
+    height: 0
+    width: 100%
+    position: absolute
+    margin: 0
+    background: transparent
+    pointer-events: none
+
+  @supports selector(input::-webkit-slider-thumb)
+    .range-sliders input[type="range"]
+      margin-top: -#{$range_double_thumb_size}
+
+  input[type=range]::-moz-range-track
+    pointer-events: all
+    cursor: pointer
+    background: transparent
+    height: 0
+    border: 0
+
+  input[type=range]::-webkit-slider-runnable-track
+    pointer-events: all
+    cursor: pointer
+    background: transparent
+    height: 0
+    border: 0
+
+  input[type=range]::-moz-range-thumb
+    -webkit-appearance: none
+    appearance: none
+    pointer-events: all
+    cursor: pointer
+    height: $range_double_thumb_size
+    width: $range_double_thumb_size
+    border-radius: 50%
+    background: $range_double_thumb_colour
+    border: 2px solid $white
+
+  input[type=range]::-webkit-slider-thumb
+    -webkit-appearance: none
+    appearance: none
+    pointer-events: all
+    cursor: pointer
+    height: $range_double_thumb_size
+    width: $range_double_thumb_size
+    border-radius: 50%
+    background: $range_double_thumb_colour
+    border: 2px solid $white
+
+  input.range-slider-from[type=range]
+    z-index: 1
+
+  input.range-slider-to[type=range]
+    z-index: 0
+
+  .range-progress
+    position: absolute
+    left: 0
+    right: 0
+    height: 0.25em
+    border-radius: 0.125em
+    background: $range_double_track_colour
+    overflow: hidden
+
+    &::before
+      content: ''
+      position: absolute
+      height: 100%
+      left: var(--from, 0%)
+      right: calc(100% - var(--to, 100%))
+      background: $range_double_progress_colour
+
+  &[data-scale-ticks="1"] .range-sliders
+    padding-bottom: 2em
+
+  .range-ticks
+    position: absolute
+    left: 0
+    right: 0
+    top: 1.4em
+    height: 1em
+    pointer-events: none
+    font-size: 0.75em
+    color: neutral(60)
+
+  .range-tick
+    position: absolute
+    transform: translateX(-50%)
+    white-space: nowrap
+
+    &::before
+      content: ''
+      position: absolute
+      left: 50%
+      top: -0.4em
+      width: 1px
+      height: 0.4em
+      background: neutral(50)
+
+  // From / To on one row.
+  .range-numerics
+    display: flex
+    flex-wrap: nowrap
+    justify-content: space-between
+    gap: rv(-3)
+
+  .range-numeric
+    display: inline-flex
+    align-items: center
+    gap: rv(-4)
+    flex: 1 1 0
+    min-width: 0
+
+    > input[type=number]
+      width: 100%
+      min-width: 0
+      height: $facet_control_height
+      min-height: $facet_control_height // the element reset sets min-height to the UI element height
+      padding: 0 rv(-4)
+      font-size: inherit
+
+  .range-numeric-label
+    @extend %labels-controls
+    margin: 0
+    white-space: nowrap

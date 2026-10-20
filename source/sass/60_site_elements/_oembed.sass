@@ -1,0 +1,37 @@
+/*
+ *  @file _oembed.sass
+ *  @category 60_site_elements
+ *  @description Embedded video from oEmbed: Omeka's oEmbed page block (.block-oembed > div > iframe) and an oEmbed
+ *    media wherever core renders it (.media-render.oembed, from the Media view helper). The same frame as the item
+ *    page's video (AdvancedMedia html5-video.css): full container width, a fixed proportion with the iframe fitted
+ *    inside, a dark surface; the proportion and the height cap are custom properties (design review D1). */
+
+$oembed_ratio: "4 / 3" !default
+$oembed_background: $black !default
+
+.block-oembed > div, .media-render.oembed
+  --agile-oembed-ratio: #{unquote($oembed_ratio)}
+  --agile-oembed-background: #{$oembed_background}
+  --agile-oembed-max-height: 70vh
+
+  position: relative
+  width: 100%
+  min-width: 0
+  aspect-ratio: var(--agile-oembed-ratio)
+  max-height: var(--agile-oembed-max-height)
+  overflow: hidden
+  background: var(--agile-oembed-background)
+  margin-bottom: rv($mobile_edge_padding_factor)
+
+  +bp($desktop)
+    --agile-oembed-max-height: none
+    margin-bottom: rv($edge_padding_factor)
+
+  iframe, video, embed, object
+    position: absolute
+    top: 0
+    left: 0
+    display: block
+    width: 100%
+    height: 100%
+    border: 0

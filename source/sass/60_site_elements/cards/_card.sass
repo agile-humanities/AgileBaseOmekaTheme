@@ -30,7 +30,7 @@ main
 
     // Standardize element spacing
     > *:not(.item-label)
-      margin-bottom: rv(-2)
+      margin-bottom: rv($mobile_edge_padding_factor)
 
       &:last-child
         margin-bottom: 0
@@ -57,10 +57,7 @@ main
 
   .metadata-list
     > *
-      margin-bottom: $text_element_spacing
-
-      &:last-child
-        margin-bottom: 0
+      margin-top: $text_element_spacing * 3
 
   .license
     .value

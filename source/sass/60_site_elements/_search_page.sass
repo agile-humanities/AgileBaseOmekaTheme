@@ -64,32 +64,34 @@
     border-radius: $border_radius
     padding: 0
 
-.search--tier-one
+// The results header row (AgileThemeTools view/search/agile/results-header-footer.phtml): count, per page, sort,
+// list / grid, right-aligned on one line (design review I4, I5 — the Southern Foodways arrangement).
+
+.search-results-controls
   display: flex
-  justify-content: space-between
+  flex-wrap: wrap
+  align-items: center
+  justify-content: flex-end
+  gap: $ui_element_spacing
   width: 100%
 
-  +bp($ui_mobile_app_controls_breakpoint)
-    padding-bottom: calc((#{$tab_marker_distance} - #{$tab_size}) - 1px) // See 40_ui/_tab_ui
-    border-bottom: 1px solid neutral(60)
-    margin-bottom: rv($edge_padding_factor)
+  > *
+    display: flex
+    align-items: center
 
-.search--tier-two
-  display: flex
-  flex-direction: column-reverse
-  justify-content: space-between
-  width: 100%
-  margin-top: $ui_element_spacing
+  label
+    @extend %labels-controls
+    font-size: clamped(-2,-1)
+    white-space: nowrap
 
-  +bp($tablet)
-    flex-direction: row
+  select, .select2-container
+    min-width: $btn_compactwidth
 
-  .search-sort
-    flex-direction: column
-    margin: rv($edge_padding_factor)
-
-    +bp($tablet)
-      flex-direction: row
+.search-results-count-total
+  font-family: $labelfont
+  font-size: clamped(-2,-1)
+  font-weight: $semibold
+  white-space: nowrap
 
 
 #collection-list
@@ -167,20 +169,11 @@ aside
     top: initial
     left: initial
     right: initial
-    padding: 0 0 $mobile_overlay_spacing 0
+    padding: 0 0 $ui_element_spacing 0
     justify-content: flex-start
-    align-items: flex-start
-
-  > *
-    +bp($ui_mobile_app_controls_breakpoint)
-      display: flex
-      flex-direction: column
-      align-items: flex-start
-      justify-content: flex-start
-      margin-left: $ui_element_spacing
-
-      &:first-child
-        margin-left: 0
+    align-items: stretch
+    border-bottom: 1px solid neutral(20)
+    margin-bottom: rv($edge_padding_factor)
 
   label
     @extend %labels-controls
@@ -200,14 +193,12 @@ aside
   +bp($ui_mobile_app_controls_breakpoint)
     display: none
 
-// Template: search/results-header-footer
+// Template: search/agile/results-header-footer
 
-.search-sort
+.search-sort, .search-pagination-per-page
   display: flex
   align-items: center
-
-label[for="sort"]
-  margin: 0 $text_element_spacing 0 0
+  gap: $text_element_spacing
 
 .search-results-display
   @extend %ui-display-mode-controls

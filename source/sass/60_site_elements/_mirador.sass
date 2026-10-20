@@ -20,3 +20,21 @@
     .mejs__overlay
       width: 100% !important
       height: 100% !important
+
+
+// The IIIF presentation page block (AgileThemeTools Site\BlockLayout\IiifPresentation): the viewer needs a height of
+// its own here — on item pages the item layout gives it one.
+.iiif-presentation
+  margin-bottom: rv($mobile_edge_padding_factor)
+
+  +bp($desktop)
+    margin-bottom: rv($edge_padding_factor)
+
+  > .mirador.viewer, > .uv, > iframe
+    display: block
+    width: 100%
+    height: $iiif_block_height
+    border: 0
+
+    +bp($desktop)
+      height: $iiif_block_height_desktop

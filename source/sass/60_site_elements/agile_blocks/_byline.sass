@@ -2,17 +2,25 @@
  *  @file _byline.sass
  *  @category 60_site_elements
  *  @theme LOCAL
- *  @description Styles the exhibit byline. */
+ *  @description The Byline block (AgileThemeTools view/common/block-layout/byline.phtml: .byline > h6 + p). Plain
+ *    text in the label font, the body text colour, no uppercase (design review E1). */
 
 .byline
   font-family: $labelfont
   font-style: unset
   font-weight: $bold
   text-decoration: none
-  text-transform: uppercase
+  text-transform: none
   font-size: clamped(0,1)
+  color: $on_light
 
-  > p
+  > h6, > p
     font-family: inherit
     font-style: inherit
     font-size: inherit
+    color: inherit
+    text-transform: none
+    margin-top: 0
+
+  > p
+    font-weight: $normal

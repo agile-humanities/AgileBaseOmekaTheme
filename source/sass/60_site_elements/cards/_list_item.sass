@@ -34,7 +34,10 @@
     position: absolute
     top: 0
     left: 0
-    right: calc(100% - #{$list_item_figure_width})
+    right: calc(100% - #{$list_item_figure_width_mobile})
+
+    +bp($tablet)
+      right: calc(100% - #{$list_item_figure_width})
     bottom: 0
 
     &:before
@@ -84,10 +87,11 @@
   .item-info
     border: 0 !important
     width: 100%
-    min-height: $list_item_figure_width
-    padding-left: calc(#{$list_item_figure_width} + #{rv($mobile_edge_padding_factor)})
+    min-height: $list_item_figure_width_mobile
+    padding-left: calc(#{$list_item_figure_width_mobile} + #{rv($mobile_edge_padding_factor)})
 
     +bp($tablet)
+      min-height: $list_item_figure_width
       padding-left: calc(#{$list_item_figure_width} + #{rv($edge_padding_factor)})
 
     > *

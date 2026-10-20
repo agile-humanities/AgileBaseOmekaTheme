@@ -4,10 +4,11 @@
  *  @target The Advanced Search module's search form (AdvancedSearch 3.4.64), both the stock form
  *    (view/search/search-form-main.phtml) and the Agile adapter's form (AgileThemeTools
  *    view/search/agile/form.phtml) — they share the ids and classes below until the split in the design pass.
- *  @covers form#form-search, #form-search > fieldset#form-search > * (the fields, laid out by POSITION — see the
- *    note), input[name=q], .select2-container; #search-filters .filter rows, .search-filter-plus,
- *    .search-filter-action (AdvancedSearch asset/js/search.js adds rows from the template row); .search-form-buttons;
- *    #advanced-search-form-wrapper (the wrapper and the iconfont fix for the plus/minus buttons).
+ *  @covers form#form-search; .agile-search-bar (the "q" search bar, outside the filter panel); #advanced-search-form-wrapper
+ *    (the filter panel); #form-search > fieldset#form-search > * (the fields: a column grid, the filter collection
+ *    full width); .range-double (the date range, 10_components/_range_double); .select2-container; #search-filters
+ *    .filter rows, .search-filter-plus, .search-filter-action (AdvancedSearch asset/js/search.js adds rows from the
+ *    template row); .search-form-buttons.
  **/
 /*
  * Notes:
@@ -16,28 +17,61 @@
  * as much of the styling is supplied by the Advanced Search module via the form collection or supporting JavaScript
  * and is liable to change in future releaseds.
  *
- * It assumes that the first element is the search box (q) and the second is an advanced search form. Both get 100%
- * width treatments. Other elements are arranged in a flexbox with set widths at different breakpoints. Particular
- * configurations may require that this be adjusted.
+ * The search box (q) is pulled out of the fieldset by the Agile form template (AgileThemeTools
+ * view/search/agile/form.phtml) and sits above the filter panel as .agile-search-bar; the filter collection
+ * (.field-name-filter) takes the full width; the other elements are arranged in a flexbox with set widths at
+ * different breakpoints.
  *
  * Also note that the Advanced Search module duplicates the form identifier (#form-search), which is applied to both
  * the <form> tag and the interior <fieldset>. This styling isolates the two.
  *
  */
 
-form#form-search
+// The search bar: the "q" field and its submit in one bordered box, above the filter panel (design review I6).
+.agile-search-bar
+  @extend %search-form-container
+  margin-bottom: rv($mobile_edge_padding_factor)
+
+  +bp($tablet)
+    margin-bottom: rv($edge_padding_factor)
+
+  input[name='q']
+    @extend %search-form-textfield
+    width: 100%
+    border: 0
+    background: none
+
+  button.search-submit
+    @extend %search-form-submit
+    margin-left: auto
+
+// The filter panel.
+#advanced-search-form-wrapper
   +standard_edge_padding()
   background-color: set-color(2,5)
+  margin-bottom: rv($edge_padding_factor)
+
+  // Corrects iconfont issue
+  .search-filter-minus::before
+    content: '—'
+    font-weight: $heavy
+
+  .search-filter-plus:before
+    content: '+'
+    font-weight: $heavy
 
 #form-search
   fieldset
     margin: 0
     padding: 0
 
-    // all: unset
+  .range-double
+    @extend %range-double
 
-  label[for="q"]
-    visibility: hidden
+  // The date range in the Agile form (fields stack at their own widths; the column rules below apply to the stock
+  // form's fieldset): the slider and its From / To inputs at a text field's width, not the whole row.
+  .field-type-range-double
+    max-width: $ui_max_text_width
 
   > fieldset#form-search
     margin-top: rv($mobile_edge_padding_factor)
@@ -65,22 +99,10 @@ form#form-search
       .inputs, span, select
         width: 100%
 
-      // Assumed to be the search box, which is 100% at all breakpoints.
-      &:nth-child(1)
+      // The filter collection (the repeatable property filter rows) spans the row.
+      &.field-name-filter, &.field-type-collection
         width: 100%
         padding-right: 0
-
-      // Assumed to be the Advanced Search form. This may need to change as it can affect non-advanced search form
-      // implementations.
-
-      &:nth-child(2)
-        +bp($desktop)
-          padding-right: 0
-          width: 100%
-
-
-    input[name=q]
-      background-color: $white
 
     .select2-container, .select2-container + input
       margin-bottom: rv($mobile_edge_padding_factor)
@@ -160,20 +182,7 @@ form#form-search
 
 
 
-// Moved from 60_site_elements/_search_page.sass (Phase A2): the form wrapper and the filter fieldset reset.
-
-#advanced-search-form-wrapper
-  margin-bottom: rv($edge_padding_factor)
-
-
-  // Corrects iconfont issue
-  .search-filter-minus::before
-    content: '—'
-    font-weight: $heavy
-
-  .search-filter-plus:before
-    content: '+'
-    font-weight: $heavy
+// Moved from 60_site_elements/_search_page.sass (Phase A2): the filter fieldset reset.
 
 #form-search
   @extend %advanced_search_filter_ui

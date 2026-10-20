@@ -28,20 +28,22 @@ $ui_mobile_app_controls_footer_height: 50px // Explicit value: the configured on
 // The container must carry .with-sidebar (the module adds it when the configuration has facets) for the
 // two-column grid to apply; without it the results take the full width.
 
+// minmax(0, 1fr) rather than 1fr: a grid track's default minimum is its content's min-content width, so one rigid
+// element in the results (a licence label, a long word) would widen the whole page past a phone's viewport.
 %browser-container-grid
   display: grid
   grid-column-gap: rv(1)
-  grid-template-columns: 1fr
+  grid-template-columns: minmax(0, 1fr)
 
   &.with-sidebar
 
     // Includes <aside>, which is hidden on mobile
     +bp($ui_mobile_app_controls_breakpoint)
-      grid-template-columns: minmax(min-content,#{$left_sidebar_width}) 1fr
+      grid-template-columns: minmax(min-content,#{$left_sidebar_width}) minmax(0, 1fr)
 
     &.sidebar-after
       +bp($ui_mobile_app_controls_breakpoint)
-        grid-template-columns: 1fr minmax(min-content,#{$right_sidebar_width})
+        grid-template-columns: minmax(0, 1fr) minmax(min-content,#{$right_sidebar_width})
 
 
 // Apply to sidebars with facet browsers. Turns them into overlay controls on

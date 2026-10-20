@@ -183,6 +183,8 @@ ui_element_height: 40px
 ui_minheight: $ui_element_height
 ui_maxheight: 40px
 ui_compactheight: 40px
+facet_control_height: 32px
+reference_letter_size: 2rem   # the alphabet letters of the Reference block's index (compact circles)   # text, number and select controls inside a facet and the date range (one step below the UI element height)
 ui_largeheight: 80px
 ui_max_text_width: 500px
 ui_element_spacing: "rv($mobile_edge_padding_factor)"
@@ -298,6 +300,7 @@ welcome_block_bg: $black
 welcome_block_color: $on_dark
 menu_color: $on_light
 list_item_figure_width: 200px
+list_item_figure_width_mobile: 120px   # the list card's image column below the tablet breakpoint (a 200px column leaves too little for the text on a phone)
 
 # 06 Slide Viewer
 default_next_btn: "'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNi4yNCAzMCI+PGRlZnM+PHN0eWxlPi5ie2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9ImIiIGQ9Ik0xNi4yNCwxNWMwLC4zMi0uMTIsLjYzLS4zNiwuODdMMi4xMSwyOS42NGMtLjQ4LC40OC0xLjI3LC40OC0xLjc1LDAtLjQ4LS40OC0uNDgtMS4yNywwLTEuNzVMMTMuMjUsMTUsLjM2LDIuMTFDLS4xMiwxLjYzLS4xMiwuODQsLjM2LC4zNiwuODQtLjEyLDEuNjMtLjEyLDIuMTEsLjM2TDE1Ljg3LDE0LjEzYy4yNCwuMjQsLjM2LC41NiwuMzYsLjg3WiIvPjwvc3ZnPg=='"
@@ -311,6 +314,7 @@ slide_viewer_midpoint: "50%"
 slide_viewer_background: $black
 slide_viewer_mobile_height: 60vh   # slideshow height below the tablet breakpoint (in the splash it fills the viewport from desktop)
 slide_viewer_tablet_height: 60vh
+slide_counter_font_size: 0.875rem   # the "3 / 12" counter that replaces the page markers below the tablet breakpoint
 
 page_marker_background: "neutral(30)"
 page_marker_background_hover: $brand_secondary
@@ -407,6 +411,10 @@ ui_display_controls_icon_size: "$ui_mobile_app_controls_footer_height * 0.6"
 
 # OHMS viewer (OHMS Embed module's iframe, on item pages)
 ohms_viewer_height: 800px
+
+# IIIF presentation page block (Mirador / Universal Viewer for a manifest URL)
+iiif_block_height: 70vh
+iiif_block_height_desktop: 640px
 
 #mirador
 mirador_height_mobile: 60vh

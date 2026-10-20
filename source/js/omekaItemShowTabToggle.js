@@ -12,16 +12,21 @@
       const tabs = container.find('a.tab-ui--control');
       const panels = {};
 
+      const present = [];
       panelNames.forEach(function(name) {
         panels[name] = container.find('.' + name + '-panel');
+        if (panels[name].length) {
+          present.push(name);
+        }
       });
 
-      if (panels.metadata.length === 0) {
+      // A single panel (the Summary alone) has no tab bar and nothing to switch.
+      if (present.length < 2) {
         return;
       }
 
       function showPanel(name) {
-        panelNames.forEach(function(panelName) {
+        present.forEach(function(panelName) {
           panels[panelName].toggle(panelName === name);
         });
         tabs.each(function() {

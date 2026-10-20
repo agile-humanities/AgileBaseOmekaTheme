@@ -39,10 +39,14 @@
 
   &.has-three-cards
     +bp($desktop)
+      // The intro spans the row, centred, at a legible width — no side padding (design review E8).
       .site-link-cards-intro
         grid-column: 1 / span 3
         text-align: center
-        padding: 0 rv(15)
+        width: 100% // auto margins would otherwise shrink the grid item to its content
+        max-width: $legible_inset_width
+        margin-left: auto
+        margin-right: auto
 
         .site-link-cards-img
           margin: 0 auto
