@@ -74,7 +74,7 @@ const STEP = 64;             // how far a colour input is moved, per channel
 const TOLERANCE = 0.006;     // how much the three channels may disagree about a proportion
 
 // The font roles of the theme system and the variables the theme exports for them.
-const FONT_VARIABLES = { basefont: '--font-base', headingfont: '--font-heading', altfont: '--font-alt', labelfont: '--font-label', listfont: '--font-list', codefont: '--font-code' };
+const FONT_VARIABLES = { basefont: '--font-base', headingfont: '--font-heading', altfont: '--font-alt', compactfont: '--font-compact', listfont: '--font-list', codefont: '--font-code' };
 
 // ---------------------------------------------------------------------------------------------- colours
 
@@ -508,7 +508,7 @@ const declarations = (root) => { const list = []; root.walkDecls((d) => list.pus
       out(`    ${input.variable}: ${builtRootValues.get(input.variable) || input.base};${roles.length ? `  /* ${input.key}; also ${roles.join(', ')} */` : `  /* ${input.key} */`}`);
     });
     inputs.filter((i) => i.kind === 'font').forEach((input) => {
-      // Font roles defined as another role (labelfont: $basefont) follow it; say so.
+      // Font roles defined as another role (compactfont: $basefont) follow it; say so.
       Object.keys(FONT_VARIABLES).forEach((role) => {
         if (String(config[role] ?? '').trim() === `$${input.key}` && builtRootValues.has(FONT_VARIABLES[role])) {
           out(`    /* ${FONT_VARIABLES[role]} follows ${input.variable} (${role}: $${input.key}); set it only to separate them. */`);

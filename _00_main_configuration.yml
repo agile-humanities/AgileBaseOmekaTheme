@@ -18,7 +18,7 @@ legible_inset_width: 920px
 basefont: "Roboto, Tahoma, Arial, sans-serif"
 headingfont: "Roboto, Tahoma, Arial, sans-serif"
 altfont: "Georgia, serif"
-labelfont: $basefont
+compactfont: $basefont
 listfont: $basefont
 codefont: "'IBM Plex Mono', Monaco, Courier New, monospace"
 
