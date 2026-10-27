@@ -1,19 +1,23 @@
 <?php
+/**
+ * The item search page (Omeka's item controller, search action; Agile Theme Tools routes it here). The fields come
+ * from Omeka's common/advanced-search partials, overridden by Advanced Search when it is installed; the form is
+ * composed by the stop14 form composition (.s14-form) as one stacked row, see the theme's
+ * 40_ui/_form_omeka_core.sass. The Advanced theme carries an identical copy, which the Simplified generator
+ * publishes as omeka/site/item/search.phtml.
+ */
 $translate = $this->plugin('translate');
 $this->htmlElement('body')->appendAttribute('class', 'items search');
 ?>
 <!-- TEMPLATE BEGIN agile-theme-tools/agile-item/search.phtml -->
-
 <h2><?php echo $translate('Advanced item search'); ?></h2>
-<form id="advanced-search" method="get" action="<?php echo $this->escapeHtml($this->url(null, ['action' => 'browse'], true)); ?>">
+<form id="advanced-search" class="s14-form" method="get" action="<?php echo $this->escapeHtml($this->url(null, ['action' => 'browse'], true)); ?>">
     <?php echo $this->partial(
-      'common/advanced-search',
-      ['query' => $this->params()->fromQuery(), 'resourceType' => 'item']
+        'common/advanced-search',
+        ['query' => $this->params()->fromQuery(), 'resourceType' => 'item']
     ); ?>
-    <div id="page-actions">
-        <input class="search-submit agile-button search" type="submit" name="submit" value="<?php echo $this->escapeHtml($translate('Search')); ?>">
+    <div id="page-actions" class="form-actions">
+        <input type="submit" class="agile-button submit-search" name="submit" value="<?php echo $this->escapeHtml($translate('Search')); ?>">
     </div>
 </form>
-</div>
 <!-- TEMPLATE END agile-theme-tools/agile-item/search.phtml -->
-

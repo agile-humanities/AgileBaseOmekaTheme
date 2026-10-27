@@ -4,8 +4,9 @@
  *  @target Omeka core public forms, as overridden by this theme (Omeka S 4.2).
  *  @covers #search-form + button.search-form-clear (theme view/common/search-form.phtml: the header and welcome
  *    search box); #fulltext_search, input[name=q] (view/common/advanced-search/fulltext.phtml); #advanced-search
- *    .inputs, #property-queries .value-fields / input / textarea (view/common/advanced-search/properties*.phtml,
- *    the item/item-set advanced search page omeka/site/item/search.phtml).
+ *    .inputs, #property-queries .value-fields / input / textarea (view/common/advanced-search/properties*.phtml);
+ *    #advanced-search.s14-form (the item search page agile-theme-tools/agile-item/search.phtml, composed as one
+ *    stacked row of the partials' fields).
  **/
 #search-form
   @extend %search-form-container
@@ -88,7 +89,75 @@ button.search-form-clear
     margin: 0
     min-height: calc(#{$ui_element_height} - #{$ui_padding * 2})
 
-// omeka/site/item/search.phtml (core template, no class hook): the page's submit.
+// The item search page (agile-theme-tools/agile-item/search.phtml, module canonical + theme copy; the Simplified
+// theme gets it as omeka/site/item/search.phtml): form#advanced-search.s14-form. Its fields come from Omeka's and
+// Advanced Search's partials (common/advanced-search/*), every one a multi-value group or a full-width control, so
+// the page is one stacked row of cells: the composition supplies the label, control and description tracks, the
+// spacing and the control sizing; the module's advanced-search-form.css keeps the row behaviour inside .value.
 
-#advanced-search #page-actions input[type="submit"]
-  @extend %theme-button-submit
+#advanced-search.s14-form
+  .advanced-search-content
+    @extend %s14-form-row
+    @extend %s14-form-row-stacked
+
+    > .field
+      @extend %s14-form-cell
+      @extend %s14-form-control-fill
+
+      // Advanced Search's keyword partial names its control box .inputs-keyword.
+      > .inputs-keyword
+        grid-row: 2
+        min-width: 0
+
+      // The label line carries the add button and the expand link (core markup); the description wraps under it.
+      > .field-meta
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        gap: $text_element_spacing
+
+        .collapsible
+          flex-basis: 100%
+
+      // Controls share the control line: a lone control fills it, a pair (the sort selects) splits it.
+      > .inputs
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        gap: $ui_element_spacing
+
+        > select, > input:not([type=checkbox]):not([type=radio])
+          flex: 1 1 12em
+          width: auto
+
+      // The module's multi-value rows (.value, .value-fields: its stylesheet lays them out as flex rows): no control
+      // sets the row's width by its intrinsic size — a long option list is as wide as the row allows.
+      .value, .value-fields
+        min-width: 0
+        max-width: 100%
+
+        > select, > input[type=text], > .chosen-container
+          flex: 1 1 8em
+          min-width: 0
+          max-width: 100%
+          width: auto
+
+  // Advanced Search's filter row (#filter-queries .value-fields: one line, the type select at its natural width, by
+  // its stylesheet with two ids): the type may shrink when the row is short of space, and the row wraps, so on a
+  // phone the value gets a line of its own. Neither changes a row that fits.
+  .inputs > .value .value-fields
+    flex-wrap: wrap
+    align-items: center
+
+  // The module's stylesheet gives every control in a row a 0.25rem margin all round; the row's gap spaces them.
+  .inputs > .value > *, .inputs > .value .value-fields > *
+    margin-top: 0
+    margin-bottom: 0
+
+  #filter-queries .query-type
+    flex: 0 1 auto
+    min-width: 0
+    max-width: 100%
+
+  .form-actions
+    margin-top: rv($grid_gap_factor)

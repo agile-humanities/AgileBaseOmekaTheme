@@ -2,11 +2,12 @@
  *  @file _form_composition.sass
  *  @group 40_ui
  *  @target Any form composed with the stop14 form composition vocabulary (10_components/_form_composition): the
- *    Agile search form (AgileThemeTools view/search/agile/form.phtml, through View\Helper\FormLayout), the forms
- *    fixture page, and any form a template wraps in .s14-form.
- *  @covers .s14-form, .form-columns, .form-column, .form-row (+ .form-row--N, --fit-first, --fit-last, --stack),
- *    .field as a cell (+ .form-cell--fit, --w<N>, --options-stacked), .form-actions, .form-messages,
- *    .field-has-error, .field-messages.
+ *    Agile search form (AgileThemeTools view/search/agile/form.phtml, through View\Helper\FormLayout), the core
+ *    item search page, the sort selector, the facets form (_form_omeka_core, _form_omeka_core_browse, _facets),
+ *    the forms fixture page, and any form a template wraps in .s14-form.
+ *  @covers .s14-form, .form-columns, .form-column, .form-row (+ .form-row--N, --fit, --fit-first, --fit-last,
+ *    --stack), .field as a cell (+ .form-cell--fit, --w<N>, --options-stacked), .form-actions (+ --stacked),
+ *    .form-messages, .field-has-error, .field-messages; the plain text inputs and selects inside .s14-form.
  **/
 
 .s14-form
@@ -54,6 +55,9 @@
     &.form-row--stack
       @extend %s14-form-row-stacked
 
+    &.form-row--fit
+      @extend %s14-form-row-fit
+
   // Rows without a .form-row wrapper (a form rendered by the plain element-by-element path): one per line.
   > .field + .field, > .form-fieldset + .field, > .field + .form-fieldset
     margin-top: $form_gap_mobile
@@ -89,6 +93,17 @@
   // Actions
   .form-actions
     @extend %s14-form-actions
+
+    &.form-actions--stacked
+      @extend %s14-form-actions-stacked
+
+  // Plain controls. A select an enhancer will take over is skinned too: Select2 and Chosen hide the original, and
+  // Chosen does not run on phones, where the plain select is what shows. A multiple select is a list.
+  input[type=text], input[type=search], input[type=number], input[type=email], input[type=url], input[type=date], textarea
+    @extend %s14-form-text-control
+
+  select:not([multiple])
+    @extend %s14-form-select
 
   // Validation
   .field-has-error

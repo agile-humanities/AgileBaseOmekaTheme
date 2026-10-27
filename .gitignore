@@ -1,7 +1,12 @@
-# Ignore build files
+# Ignore build dependencies. The compiled /asset folder is committed so the theme works out of the box:
+# rebuild it (gulp build) and commit the result with the source change that caused it.
 
-/asset
 /node_modules
+
+# Alternative-config builds (gulp build --config name) and pre-2.0 per-site builds: asset-<name>/. Site builds
+# now live in files/theme-assets/.
+
+/asset-*/
 
 # Ignore Mac file system
 

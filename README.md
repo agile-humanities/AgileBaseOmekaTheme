@@ -44,7 +44,7 @@ Agile Humanities is also available for custom design and installation. Contact u
 - Remove existing GIT information. Your theme folder is tied to the AgileBaseOmekaTheme repository. To make your own, you must remove the .git folder from the theme.
   - Run `rm -rf .git` in the theme folder. If you encounter permissions problems, you’ll need to be sudo or root user to do this. Try `sudo rm -rf .git’
 - Optionally you can now create your own git repository if desired. 
-  - IMPORTANT NOTE:  The /asset folder, which contains the core css and js files, is volatile and will be deleted and rebuild after running gulp build. It will also be ignored by default in any git repository. If you are using .git DO NOT modify the files in the asset folder directly. Always modify main 00\_main\_configuration.yml file, and/or the files the /source folder, which will then build your new css and js assets.
+  - IMPORTANT NOTE:  The /asset folder, which contains the core css and js files, is volatile and will be deleted and rebuild after running gulp build. It is committed, so the theme works out of the box; commit a rebuilt /asset together with the source change that caused it. DO NOT modify the files in the asset folder directly. Always modify main 00\_main\_configuration.yml file, and/or the files the /source folder, which will then build your new css and js assets.
 - Modify theme config (themefolder/config/theme.ini) with your new theme info.
 
 

@@ -16,7 +16,7 @@ The two share one source: this one. Fix things here, then regenerate.
 
 | Build | Who runs it, when | Command | Writes to |
 |---|---|---|---|
-| Default build | A developer, before a release | `gulp build` | `./asset/` — ignored by git, shipped in the release zip |
+| Default build | A developer, before a release | `gulp build` | `./asset/` — committed, and shipped in the release zip |
 | Variable-driven build | A developer, when the output must take CSS variables | `gulp build --variables` | `./asset/`, rewritten by `tools/css-variables.js` |
 | Alternative configs | A developer working on several looks | `gulp build --config name`, `gulp build --all` | `./asset-<name>/` (legacy; still served if present) |
 | Per-site build | An admin (Theme page or Easy Admin), or `build-site-themes.php` on the server | the module's build manager | `files/theme-assets/<theme>/<site>/…` |

@@ -1,0 +1,107 @@
+/**
+ *  @file _select_chosen.sass
+ *  @group 40_ui
+ *  @target The Chosen skin (chosen-js, loaded by Advanced Search for its .chosen-select elements: the item search
+ *    page's improved partials, the stock Advanced Search form when a site keeps it). The control is drawn as the
+ *    theme's text input with its select indicator; the dropdown takes the UI tokens. Select2 has its own skin
+ *    (_select_select2).
+ *  @covers .chosen-container (--single .chosen-single, --multi .chosen-choices, .chosen-drop, .chosen-results).
+ **/
+
+.chosen-container
+  font-family: $basefont
+  font-size: $btn_fontsize
+
+  .chosen-single, .chosen-choices
+    @extend %input-text
+    display: flex
+    align-items: center
+    min-height: $ui_element_height
+    height: auto
+    max-width: none
+    background-image: none
+    box-shadow: none
+    line-height: 1.2
+    color: $on_light
+
+    span
+      margin: 0
+
+  // The single select: the theme's indicator in place of Chosen's sprite.
+  .chosen-single
+    padding-right: calc(#{$ui_padding * 2} + #{$btn_icon_size})
+    background-image: url(get_svg_url('icons/accordion-expand-neutral'))
+    background-size: $btn_icon_size
+    background-repeat: no-repeat
+    background-position: right $ui_padding center
+
+    div
+      display: none
+
+  &.chosen-container-active .chosen-single, &:hover .chosen-single
+    background-image: url(get_svg_url('icons/accordion-expand-default'))
+    border-color: $ui_hover_border_color
+
+  &.chosen-container-active.chosen-with-drop .chosen-single
+    border-radius: $ui_border_radius $ui_border_radius 0 0
+
+  &.chosen-disabled
+    opacity: 0.6
+
+  // The multiple select: the choices wrap inside the control.
+  .chosen-choices
+    flex-wrap: wrap
+    gap: $text_element_spacing
+    padding-top: $text_element_spacing
+    padding-bottom: $text_element_spacing
+
+    li.search-field
+      margin: 0
+
+      input[type=text]
+        font-family: $basefont
+        font-size: $btn_fontsize
+        height: auto
+        min-height: 0
+        margin: 0
+        padding: 0
+        border: 0
+
+    li.search-choice
+      position: relative
+      margin: 0
+      padding: 2px 22px 2px 8px
+      border: 1px solid $ui_border_color
+      border-radius: $ui_border_radius
+      background: $surface_light
+      box-shadow: none
+      font-size: clamped(-1,0)
+      line-height: 1.4
+
+  .chosen-drop
+    border: 1px solid $ui_border_color
+    border-top: 0
+    border-radius: 0 0 $ui_border_radius $ui_border_radius
+    box-shadow: 0 4px 12px rgba($black, 0.08)
+
+  .chosen-results
+    font-size: clamped(-1,0)
+
+    li
+      padding: $text_element_spacing $ui_padding
+      line-height: 1.4
+
+      &.highlighted
+        background: $brand_primary
+        color: on-colour($brand_primary)
+
+      &.group-result
+        font-family: $compactfont
+        font-weight: $semibold
+        color: neutral(70)
+
+  .chosen-search input[type=text]
+    @extend %input-text
+    max-width: none
+    width: 100%
+    background-image: none

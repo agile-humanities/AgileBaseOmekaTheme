@@ -47,6 +47,24 @@ rows render as declared.
 The cell is the sizing authority: text inputs, selects, textareas, Select2 and Chosen containers fill it. Checkboxes
 and radios keep their size.
 
+## Hand-written forms
+
+A form the writer does not produce composes with the same classes. The vocabulary covers the cases met so far:
+
+- **A row of fit cells** (`.form-row.form-row--fit`, every cell `.form-cell--fit`): the sort selector on the browse
+  pages (`common/sort-selector.phtml`: sort by | order | Sort). Each column takes its content width; a cell without
+  a label puts its control on the control line.
+- **Stacked actions** (`.form-actions.form-actions--stacked`, or the mixin `s14-form-actions-stacked` from a
+  breakpoint): the facets form's Apply / Reset in the sidebar column (`_facets.sass`).
+- **A stacked row of foreign fields**: the item search page (`agile-item/search.phtml`, `form#advanced-search.s14-form`).
+  Its fields come from Omeka's and Advanced Search's partials, so the theme makes `.advanced-search-content` a stacked
+  row and each `.field` a cell (`_form_omeka_core.sass`); the module's own stylesheet keeps the row behaviour inside
+  `.value`, with two overrides so a phone does not overflow (the type select may shrink; the row wraps).
+- **Plain controls**: inside `.s14-form`, text inputs and selects take the theme's control skin (`%s14-form-text-control`,
+  `%s14-form-select`: the text-input baseline, the select with the theme's indicator). A select an enhancer will replace
+  is skinned too, since Select2 and Chosen hide the original and Chosen does not run on phones. Chosen itself is skinned
+  in `_select_chosen.sass`.
+
 ## The writer
 
 AgileThemeTools' `formLayout($form)` composes a Laminas form into this vocabulary (`View\Helper\FormLayout`,

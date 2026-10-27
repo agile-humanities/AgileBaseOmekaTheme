@@ -1,8 +1,8 @@
 /*
  *  @file _facets.sass
  *  @group 40_ui
- *  @description The facets form in the search page sidebar: actions, refine box, facet blocks (%facet), facet
- *    item lists (links and checkboxes). Moved from 60_site_elements/_search_page.sass (Phase A2); the sidebar
+ *  @description The facets form in the search page sidebar (#form-facets.s14-form): actions (a composed actions row,
+ *    stacked in the column), refine box, facet blocks (%facet), facet item lists (links and checkboxes). Moved from 60_site_elements/_search_page.sass (Phase A2); the sidebar
  *    itself (placement, background) stays there.
  */
 
@@ -18,18 +18,15 @@ aside
       list-style: none
       padding: 0
 
-  .facets-actions
-    display: flex
+  // The actions (facets-list.phtml: .facets-actions.form-actions): a row in the mobile drawer, stacked in the
+  // sidebar column from the app-controls breakpoint. (Both classes in the selector: the stack must outrank the
+  // composition's row rule, .s14-form .form-actions.)
+  .facets-actions.form-actions
+    @extend %s14-form-actions
+    margin-bottom: $ui_element_spacing
 
     +bp($ui_mobile_app_controls_breakpoint)
-      flex-direction: column
-
-    button
-      margin-right: $ui_element_spacing
-      margin-bottom: $ui_element_spacing
-
-      +bp($ui_mobile_app_controls_breakpoint)
-        width: 100%
+      +s14-form-actions-stacked
 
   // Facets
 

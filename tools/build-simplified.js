@@ -71,6 +71,9 @@ const TEMPLATES = [
   'omeka/site/index/search.phtml',
   'omeka/site/item/browse.phtml',
   'omeka/site/page/show.phtml',
+  // Published under another path: the item search page, which Agile Theme Tools routes to agile-item/search in the
+  // Advanced theme and core resolves as omeka/site/item/search without the module.
+  { from: 'agile-theme-tools/agile-item/search.phtml', to: 'omeka/site/item/search.phtml' },
 ];
 
 // Exact replacements. `files` limits a rule to those templates; a rule listed for a file MUST match there, so a
@@ -176,9 +179,11 @@ if (!templatesOnly) {
 
 const out = {};
 const problems = [];
-for (const rel of TEMPLATES) {
-  const src = path.join(theme, 'view', rel);
-  if (!fs.existsSync(src)) { problems.push(rel + ': missing in the Advanced theme'); continue; }
+for (const entry of TEMPLATES) {
+  const from = typeof entry === 'string' ? entry : entry.from;
+  const rel = typeof entry === 'string' ? entry : entry.to;
+  const src = path.join(theme, 'view', from);
+  if (!fs.existsSync(src)) { problems.push(from + ': missing in the Advanced theme'); continue; }
   let text = fs.readFileSync(src, 'utf8');
   for (const rule of REWRITES) {
     const applies = !rule.files || rule.files.includes(rel);

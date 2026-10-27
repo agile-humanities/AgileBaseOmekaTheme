@@ -94,6 +94,10 @@ $form_max_cells: 6
     > :nth-child(n+3)
       margin-top: $form_gap
 
+// A row of fit cells only (a sort selector: select | select | button): every column at its content width.
+%s14-form-row-fit
+  --form-row-columns: repeat(var(--form-cells, 1), max-content)
+
 %s14-form-row-stacked
   grid-template-columns: minmax(0, 1fr) !important
 
@@ -223,6 +227,29 @@ $form_max_cells: 6
       margin: 0
       padding: 0
 
+// ---- bare controls --------------------------------------------------------------------------------------------
+
+// A composed form's plain controls (the library styles no element by type): the text-input baseline, and a select
+// drawn as one with the theme's indicator. Enhanced selects (Select2, Chosen) keep their skins; a multiple select
+// is a list.
+%s14-form-text-control
+  @extend %input-text
+  max-width: none
+
+%s14-form-select
+  @extend %input-text
+  max-width: none
+  appearance: none
+  padding-right: calc(#{$ui_padding * 2} + #{$btn_icon_size})
+  background-image: url(get_svg_url('icons/accordion-expand-neutral'))
+  background-size: $btn_icon_size
+  background-repeat: no-repeat
+  background-position: right $ui_padding center
+  cursor: pointer
+
+  &:hover
+    background-image: url(get_svg_url('icons/accordion-expand-default'))
+
 // ---- labels ---------------------------------------------------------------------------------------------------
 
 // A composed form's labels and legends: the label font, sentence case, one step below the body size. (The theme's
@@ -267,6 +294,19 @@ $form_max_cells: 6
     flex: 0 0 auto
     width: auto
     margin: 0
+
+// Stacked actions (a narrow column such as the facets sidebar): one button per line, each the column's width. The
+// mixin is for a stack that applies from a breakpoint (@extend cannot cross a media query).
+=s14-form-actions-stacked
+  flex-direction: column
+  align-items: stretch
+
+  > *
+    width: 100%
+    min-width: 0
+
+%s14-form-actions-stacked
+  +s14-form-actions-stacked
 
 // ---- validation -----------------------------------------------------------------------------------------------
 

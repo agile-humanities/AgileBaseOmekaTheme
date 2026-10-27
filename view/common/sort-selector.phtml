@@ -29,20 +29,33 @@ if (!isset($sortBy)) {
 }
 ?>
 <!-- BEGIN TEMPLATE common/sort-selector -->
-<form class="sorting" action="">
+<?php // A composed row of fit cells (stop14 form composition): sort by | order | Sort. ?>
+<form class="sorting s14-form" action="">
     <?php echo $this->queryToHiddenInputs(['sort_by', 'sort_order']); ?>
-    <select name="sort_by" class="agile-select" aria-label="<?php echo $translate('Sort by'); ?>">
-        <?php foreach($sortBy as $sortByHeading): ?>
-            <?php $selected = ($sortByQuery === $sortByHeading['value']) ? 'selected' : ''; ?>
-            <option value="<?php echo $escape($sortByHeading['value']); ?>" <?php echo $selected; ?>><?php echo $sortByHeading['label']; ?></option>
-        <?php endforeach; ?>
-    </select>
-    <div class="sort-block">
-        <select name="sort_order" class="agile-select" aria-label="<?php echo $translate('Sort order'); ?>">
-            <option value="asc" <?php echo ($sortOrderQuery === 'asc') ? 'selected' : ''; ?>><?php echo $translate('Sort Ascending'); ?></option>
-            <option value="desc" <?php echo ($sortOrderQuery === 'desc') ? 'selected' : ''; ?>><?php echo $translate('Sort Descending'); ?></option>
-        </select>
-        <button type="submit" class="agile-button submit"><?php echo $translate('Sort'); ?></button>
+    <div class="form-row form-row--3 form-row--fit">
+        <div class="field field-type-select field-name-sort_by form-cell--fit">
+            <div class="inputs">
+                <select name="sort_by" class="agile-select" aria-label="<?php echo $translate('Sort by'); ?>">
+                    <?php foreach($sortBy as $sortByHeading): ?>
+                        <?php $selected = ($sortByQuery === $sortByHeading['value']) ? 'selected' : ''; ?>
+                        <option value="<?php echo $escape($sortByHeading['value']); ?>" <?php echo $selected; ?>><?php echo $sortByHeading['label']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div class="field field-type-select field-name-sort_order form-cell--fit">
+            <div class="inputs">
+                <select name="sort_order" class="agile-select" aria-label="<?php echo $translate('Sort order'); ?>">
+                    <option value="asc" <?php echo ($sortOrderQuery === 'asc') ? 'selected' : ''; ?>><?php echo $translate('Sort Ascending'); ?></option>
+                    <option value="desc" <?php echo ($sortOrderQuery === 'desc') ? 'selected' : ''; ?>><?php echo $translate('Sort Descending'); ?></option>
+                </select>
+            </div>
+        </div>
+        <div class="field field-type-button form-cell--fit">
+            <div class="inputs">
+                <button type="submit" class="agile-button submit"><?php echo $translate('Sort'); ?></button>
+            </div>
+        </div>
     </div>
 </form>
 <!-- END TEMPLATE common/sort-selector -->
