@@ -1,0 +1,8 @@
+<?php
+/**
+ * Advanced Search's "search/results" template, rendered as the Agile one. Every search configuration on a site
+ * using this theme, whichever form adapter or results template it is set to, gets the Agile search page: the
+ * theme styles that page and nothing else. The templates live in Agile Theme Tools (view/search/agile) so there is
+ * one implementation; this file only forwards the variables Advanced Search passes. See the theme's docs/SEARCH.md.
+ */
+echo $this->partial('search/agile/results', $this->vars()->getArrayCopy());

@@ -211,8 +211,10 @@ const imageARScope = 'body > header, body > footer, main, #splash, #title';
         $('select.agile-select').not('.no-select2, .chosen-select').each(function() {
           const select = $(this);
           if (select.data('select2')) { return; }
+          // 100%, never a pixel width measured at init: the container follows its cell when the window is
+          // resized or the phone rotated (the form composition library sets fit cells' widths in CSS).
           select.select2({
-            width: 'element',
+            width: '100%',
             minimumResultsForSearch: 40
           });
         });

@@ -184,8 +184,9 @@ $form_max_cells: 6
       max-width: none
       min-width: 0
 
-    // Chosen writes its width inline at init; the cell decides.
-    > .chosen-container
+    // Chosen and Select2 write their width inline at init (Select2 "width: auto" for a multiple select with no
+    // value, a pixel width when initialised with "element"); the cell decides.
+    > .chosen-container, > .select2-container
       width: 100% !important
 
 // A cell N characters wide (a year, a count): GOV.UK's width classes.
