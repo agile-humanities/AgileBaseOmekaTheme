@@ -27,14 +27,18 @@ rules — with notes on which to change.
 ## With the Agile Theme Tools module
 
 The theme declares itself to the module (`agile_base = "agile-base-simplified"` in `theme.ini`). With the module
-installed, its **Colours and fonts** page and its custom-CSS layers (global and per site) work with this theme too.
-The module's own blocks render with their basic styles; the Advanced theme is the one that styles them fully.
+installed, its **Colours and fonts** page and its custom-CSS layers (global and per site) work with this theme too,
+and the module's pages, blocks and partials — the item browse and item pages, the Agile page blocks, the resource
+page blocks, the card display mode — use the Advanced theme's templates, which this theme carries and its stylesheet
+was compiled for. With Advanced Search as well, search pages are the Agile search page; without the module they are
+Advanced Search's own. What the module adds beyond that (per-site builds, the theme styling form) needs the Advanced
+theme.
 
 ## What it covers
 
 Core Omeka pages — home, site pages and the core page blocks, item browse and search results, item sets, the
 item page with Omeka's resource page blocks — in the Advanced theme's layout, typography and cards. Pages and
-blocks from other modules are not styled by this theme.
+blocks from modules other than Agile Theme Tools and Advanced Search are not styled by this theme.
 
 ## Versions
 

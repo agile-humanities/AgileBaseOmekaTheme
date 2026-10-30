@@ -13,6 +13,12 @@
  *      property helpers, Advanced Search's search pages) into plain Omeka equivalents. Every rewrite is a listed,
  *      exact replacement; the generator refuses to write a template that still names a module helper, so the result
  *      is guaranteed to run on a stock Omeka install.
+ *      Then copy, verbatim, the templates the Advanced theme provides for Agile Theme Tools' own pages, blocks and
+ *      partials (MODULE_TEMPLATES). Omeka only resolves those when the module is active (its item controller, its
+ *      block layouts, its view helpers), so a stock install never reads them, and a site that has the module gets
+ *      the markup this theme's stylesheet was compiled for instead of the module's plainer default templates.
+ *      Advanced Search's templates are forwarded to the module's Agile search page when the module is active and
+ *      fall back to Advanced Search's own templates when it is not.
  *   4. Write theme.ini from simplified/theme.ini (version synced with this theme), README.md, a custom.css for the
  *      themer if none exists, and GENERATED.json describing the run.
  *
@@ -69,11 +75,43 @@ const TEMPLATES = [
   'common/block-layout/line-break.phtml',
   'common/block-layout/page-date-time.phtml',
   'omeka/site/index/search.phtml',
-  'omeka/site/item/browse.phtml',
   'omeka/site/page/show.phtml',
-  // Published under another path: the item search page, which Agile Theme Tools routes to agile-item/search in the
-  // Advanced theme and core resolves as omeka/site/item/search without the module.
+  // Published under another path: the item browse and search pages, which Agile Theme Tools routes to
+  // agile-theme-tools/agile-item/* in the Advanced theme and core resolves as omeka/site/item/* without the module.
+  // (Omeka renders an item set's page with the item browse template too.) The Advanced theme's own
+  // omeka/site/item/browse.phtml is an older template that nothing renders any more; it is not carried over.
+  { from: 'agile-theme-tools/agile-item/browse.phtml', to: 'omeka/site/item/browse.phtml' },
   { from: 'agile-theme-tools/agile-item/search.phtml', to: 'omeka/site/item/search.phtml' },
+  // Advanced Search's templates: the Advanced theme forwards each to the module's Agile search page (search/agile/*).
+  // Here each forwarder is guarded (see REWRITES): the Agile page with the module, Advanced Search's own template
+  // without it.
+  'search/facet-actives.phtml',
+  'search/facet-checkboxes.phtml',
+  'search/facet-links.phtml',
+  'search/facets-list.phtml',
+  'search/results-header-footer.phtml',
+  'search/results.phtml',
+  'search/search-form-main-headers.phtml',
+  'search/search-form-main.phtml',
+  'search/search.phtml',
+];
+
+// Templates for Agile Theme Tools' own pages, blocks and partials, copied verbatim: Omeka resolves them only when the
+// module is active, and they may use the module's helpers freely. Every block-layout template except the core blocks
+// listed above, the module's resource-page blocks, its card display mode, the slide partials, and the item pages
+// under the module's controller. A new block template in the Advanced theme is picked up at the next run.
+const CORE_BLOCKS = ['asset.phtml', 'browse-preview.phtml', 'item-with-metadata.phtml', 'line-break.phtml', 'page-date-time.phtml'];
+const listDir = (rel, keep) => fs.readdirSync(path.join(theme, 'view', rel)).filter((n) => /\.phtml$/.test(n) && (!keep || keep(n))).sort().map((n) => rel + '/' + n);
+const MODULE_TEMPLATES = [
+  ...listDir('common/block-layout', (n) => !CORE_BLOCKS.includes(n)),
+  ...listDir('common/resource-page-block-layout'),
+  ...listDir('common/display-mode'),
+  'agile-item/slide-item.phtml',
+  'agile-item/slide-item-attachments-home.phtml',
+  'agile-item/download-item-block.phtml',
+  'agile-theme-tools/agile-item/browse.phtml',
+  'agile-theme-tools/agile-item/search.phtml',
+  'agile-theme-tools/agile-item/show.phtml',
 ];
 
 // Exact replacements. `files` limits a rule to those templates; a rule listed for a file MUST match there, so a
@@ -110,6 +148,23 @@ const REWRITES = [
   { from: "$searchConfig = $this->api()->searchOne('search_configs', ['id' => $searchMainPage])->getContent();", to: "$searchConfig = null; // Simplified theme: no Advanced Search", files: ['common/search-form.phtml'] },
   { from: "$searchAction = isset($searchAction) ? $searchAction : ($searchConfig ? $searchConfig->siteUrl() : '#');", to: "$searchAction = isset($searchAction) ? $searchAction : $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], [], true);", files: ['common/search-form.phtml'] },
   { from: "$searchValue = $this->escapeHtml($this->params()->fromQuery('q', ''));\n        $name='q';", to: "$searchValue = $this->escapeHtml($this->params()->fromQuery('fulltext_search', ''));\n        $name = 'fulltext_search';", files: ['common/search-form.phtml'] },
+  // The item browse page without the module: no Solr redirect for item sets, the item set's items on the core browse
+  // page, and no mobile browse controls (the module's template).
+  { from: "$searchHelper = $this->plugin('agileSearchHelper');", to: "$searchHelper = null; // Simplified theme without the module: core item browse", files: ['omeka/site/item/browse.phtml'] },
+  { from: " <?php if ($itemSetShow): ?>data-redirect=\"<?= $searchHelper->getSolrItemSetUrl($itemSet->id()) ?>\" <?php endif; ?>", to: "", files: ['omeka/site/item/browse.phtml'] },
+  { from: "$url = $searchHelper->getSolrItemSetUrl($itemSet->id())\n                                ?: $searchHelper->getAdvancedSearchUrl() . '?' . http_build_query(['item_set_id' => [$itemSet->id()]]);", to: "$url = $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], ['query' => ['item_set_id' => [$itemSet->id()]]], true);", files: ['omeka/site/item/browse.phtml'] },
+  { from: "<?= $partial('search/agile/mobile-browse-controls'); ?>", to: "<?php /* The mobile browse controls are the module's; none without it. */ ?>", files: ['omeka/site/item/browse.phtml'] },
+  // Advanced Search's templates: the Agile search page with the module, Advanced Search's own template without it.
+  // The include runs in the template's scope, so the variables Advanced Search passed are there as they would be.
+  { regex: /^echo \$this->partial\('search\/agile\/([a-z-]+)', \$this->vars\(\)->getArrayCopy\(\)\);$/m, to: (m, name) => [
+      "// Simplified theme: the Agile search page when Agile Theme Tools is active, otherwise Advanced Search's own template.",
+      "if ($this->getHelperPluginManager()->has('agileSearchHelper')) {",
+      "    echo $this->partial('search/agile/" + name + "', $this->vars()->getArrayCopy());",
+      "} else {",
+      "    $advancedSearchTemplate = OMEKA_PATH . '/modules/AdvancedSearch/view/' . __TEMPLATE__;",
+      "    if (is_file($advancedSearchTemplate)) { include $advancedSearchTemplate; }",
+      "}",
+    ].join('\n'), files: ['search/facet-actives.phtml', 'search/facet-checkboxes.phtml', 'search/facet-links.phtml', 'search/facets-list.phtml', 'search/results-header-footer.phtml', 'search/results.phtml', 'search/search-form-main-headers.phtml', 'search/search-form-main.phtml', 'search/search.phtml'] },
   // The module's card display mode → the theme's standalone card partial (same option names), which the Simplified
   // theme carries as agile-item/card.phtml with the module helpers shimmed out.
   { regex: /\$this->card\(([^,()]+?)(?:,\s*(\[[^\]]*\]))?\)/g, to: (m, thing, opts) => "$this->partial('agile-item/card', ['item' => " + thing.trim() + "] + " + (opts || '[]') + ")" },
@@ -188,7 +243,11 @@ for (const entry of TEMPLATES) {
   for (const rule of REWRITES) {
     const applies = !rule.files || rule.files.includes(rel);
     if (!applies) continue;
-    if (rule.regex) { text = text.replace(rule.regex, rule.to); continue; }
+    if (rule.regex) {
+      if (rule.files && !rule.regex.test(text)) { problems.push(rel + ': expected pattern not found, the Advanced template changed:\n      ' + rule.regex.source.slice(0, 80)); continue; }
+      text = text.replace(rule.regex, rule.to).split('__TEMPLATE__').join("'" + rel + "'");
+      continue;
+    }
     if (!text.includes(rule.from)) {
       if (rule.files) problems.push(rel + ': expected line not found, the Advanced template changed:\n      ' + rule.from.split('\n')[0]);
       continue;
@@ -203,6 +262,12 @@ for (const entry of TEMPLATES) {
   }
   out[rel] = '<?php /* Generated from the Advanced Agile Base Theme by tools/build-simplified.js — edit the source there, not this file. */ ?>\n' + text;
 }
+for (const rel of MODULE_TEMPLATES) {
+  const src = path.join(theme, 'view', rel);
+  if (!fs.existsSync(src)) { problems.push(rel + ': missing in the Advanced theme'); continue; }
+  if (out[rel]) { problems.push(rel + ': listed as both a core and a module template'); continue; }
+  out[rel] = '<?php /* Copied from the Advanced Agile Base Theme by tools/build-simplified.js — edit the source there, not this file. Rendered only when the Agile Theme Tools module is active. */ ?>\n' + fs.readFileSync(src, 'utf8');
+}
 if (problems.length) fail('Templates not generated:\n  ' + problems.join('\n  '));
 
 fs.rmSync(path.join(target, 'view'), { recursive: true, force: true });
@@ -212,7 +277,7 @@ for (const [rel, text] of Object.entries(out)) {
   fs.writeFileSync(dst, text);
   written.push('view/' + rel);
 }
-log(Object.keys(out).length + ' templates generated.');
+log((Object.keys(out).length - MODULE_TEMPLATES.length) + ' templates generated, ' + MODULE_TEMPLATES.length + ' module templates copied.');
 
 // ---------------------------------------------------------------------------------------------------------------
 // 4. theme.ini, README, custom.css, LICENSE, manifest
@@ -243,7 +308,7 @@ if (!fs.existsSync(path.join(target, 'custom.js'))) fs.writeFileSync(path.join(t
 
 let commit = null;
 try { commit = String(spawnSync('git', ['rev-parse', 'HEAD'], { cwd: theme }).stdout).trim() || null; } catch (e) { /* no git */ }
-fs.writeFileSync(path.join(target, 'GENERATED.json'), JSON.stringify({ generatedAt: new Date().toISOString(), source: 'AgileBaseOmekaTheme', sourceVersion: version, sourceCommit: commit, generator: 'tools/build-simplified.js', templates: Object.keys(out), assetsFrom: templatesOnly ? null : (scratch ? 'gulp build --variables' + (container ? ' in ' + container : '') : builtAssets) }, null, 2) + '\n');
+fs.writeFileSync(path.join(target, 'GENERATED.json'), JSON.stringify({ generatedAt: new Date().toISOString(), source: 'AgileBaseOmekaTheme', sourceVersion: version, sourceCommit: commit, generator: 'tools/build-simplified.js', templates: Object.keys(out).filter((t) => !MODULE_TEMPLATES.includes(t)), moduleTemplates: MODULE_TEMPLATES, assetsFrom: templatesOnly ? null : (scratch ? 'gulp build --variables' + (container ? ' in ' + container : '') : builtAssets) }, null, 2) + '\n');
 written.push('GENERATED.json');
 
 if (scratch && !flag('keep-build')) fs.rmSync(scratch, { recursive: true, force: true });

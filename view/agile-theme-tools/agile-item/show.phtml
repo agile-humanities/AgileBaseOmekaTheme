@@ -6,13 +6,21 @@ $filterLocale = (bool) $this->siteSetting('filter_locale_values');
 $lang = $this->lang();
 $valueLang = $filterLocale ? [$lang, ''] : null;
 ?>
+<?php
+// The regions' blocks, keyed by block name. The title is the Item heading block's; when no region has a heading
+// block (core blocks only, as on a Simplified site before its item pages are set up), print the title here.
+$above = $this->resourcePageBlocks($item, 'above')->getBlocksArray();
+$main = $this->resourcePageBlocks($item, 'main')->getBlocksArray();
+$hasHeading = isset($above['itemHeading']) || isset($main['itemHeading']) || isset($above['itemHeader']) || isset($main['itemHeader']);
+?>
 <?php // $this->trigger('view.show.before'); ?>
-<?php if ($this->resourcePageBlocks($item, 'above')->hasBlocks()): ?>
+<?php if (!$hasHeading): ?>
+  <?= $this->pageTitle($item->displayTitle(), 1); ?>
+<?php endif; ?>
+<?php if ($above): ?>
   <div id="above" class="item-container">
-    <?= $this->resourcePageBlocks($item,'above')->getBlocks(); ?>
+    <?= implode('', $above); ?>
   </div>
 <?php endif; ?>
-<?php if ($this->resourcePageBlocks($item, 'main')->hasBlocks()): ?>
-  <?= $this->resourcePageBlocks($item,'main')->getBlocks(); ?>
-<?php endif; ?>
+<?= implode('', $main); ?>
 <?php // $this->trigger('view.show.after'); ?>

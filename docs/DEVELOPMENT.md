@@ -63,12 +63,23 @@ path; nothing is generated inside `source/`). Two rules the build will not warn 
 
 ## Deriving the Simplified theme
 
-Planned (requirement D6 of the generic distribution); the pieces that exist are marked.
+Requirement D6 of the generic distribution: `tools/build-simplified.js` (header comment for the options).
 
 1. `gulp build --variables` — the plain build, then `tools/css-variables.js` rewrites the stylesheet so palette
-   and fonts read from CSS variables, and writes `theme-variables.css` for themers. *Exists.*
-2. A generator copies into the Simplified repository: `asset/` (CSS, scripts, fonts, images), the template
-   subset, and a `theme.ini` declaring `agile_base = "agile-base-simplified"`. *To build.*
+   and fonts read from CSS variables, and writes `theme-variables.css` for themers.
+2. The generator copies into the Simplified repository: `asset/` (CSS, scripts, fonts, images), the templates, and
+   `config/theme.ini` from `simplified/theme.ini` (declaring `agile_base = "agile-base-simplified"`, with core blocks
+   as the item page defaults). Templates come in two kinds:
+   - **Core pages and blocks** (`TEMPLATES`): rewritten so they run on a stock Omeka, through listed exact
+     replacements (`REWRITES`); a template still naming a module helper stops the run (`FORBIDDEN`). Advanced
+     Search's templates become guarded forwarders: the module's Agile search page when Agile Theme Tools is active,
+     Advanced Search's own template otherwise.
+   - **Module templates** (`MODULE_TEMPLATES`): this theme's templates for Agile Theme Tools' item pages, page
+     blocks, resource page blocks, card display mode and slide partials, copied verbatim. Omeka resolves them only
+     when the module is active, so a stock install never reads them; with the module, a Simplified site renders the
+     same markup as an Advanced one, which is what the compiled stylesheet targets (the module's own default
+     templates are plainer and would not match it). Every `common/block-layout/*.phtml` that is not a core block is
+     included automatically.
 3. The Simplified repository commits `asset/` — there it is the product — and releases a zip.
 
 End users of the Simplified theme never build. They use the module's "Colours and fonts" page (output in
