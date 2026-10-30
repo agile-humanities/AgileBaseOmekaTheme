@@ -3,3 +3,4 @@
 /.tx/ export-ignore
 /language/*.pot export-ignore
 /language/*.po export-ignore
+/screenshots/ export-ignore

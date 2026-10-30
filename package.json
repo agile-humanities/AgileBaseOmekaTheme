@@ -14,7 +14,7 @@
     "url": "https://github.com/agile-humanities/AgileBaseOmekaTheme.git"
   },
   "author": "Agile Humanities Agency",
-  "license": "MIT",
+  "license": "CECILL-2.1",
   "dependencies": {
     "fs": "^0.0.1-security",
     "gulp-if": "^3.0.0",
