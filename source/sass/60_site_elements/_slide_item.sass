@@ -56,6 +56,14 @@ slide-item
     img
       border-radius: $card-border-radius
 
+    // The title slide's panel: no image for now (slideshow.phtml), so one dark surface across the whole slide,
+    // the viewer's own (the blackpoint), with no gradient to split it. Regular slides keep the gradient below.
+    [slot="slide-content"]
+      background: $black
+
+      &:before
+        display: none
+
   .more
     margin-top: rv($mobile_edge_padding_factor)
 

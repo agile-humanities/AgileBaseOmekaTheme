@@ -368,6 +368,12 @@ var lintScripts = function (done) {
   // Make sure this feature is activated before running
   if (!settings.scripts) return done();
 
+  // The lint rules live in a dotfile. A packaged or deployed theme without it still builds; it just is not linted.
+  if (!fs.existsSync('./.eslintrc')) {
+    console.log('lintScripts: no .eslintrc in the theme directory, skipping the lint.');
+    return done();
+  }
+
   // Lint scripts
   return src(paths.scripts.input)
     .pipe(eslint({

@@ -150,25 +150,13 @@ aside
       display: block
 
 .search-results-header
-  position: fixed
-  z-index: 12
-  top: calc(#{$masthead_height} + #{rv($mobile_edge_padding_factor)})
-  left: 0
-  right: 0
-  padding: 0 rv($mobile_edge_padding_factor) $mobile_overlay_spacing rv($mobile_edge_padding_factor)
-  width: 100%
-  flex-direction: row
-  justify-content: space-between
-  align-items: center
+  // Below the mobile-controls breakpoint search-support.js moves the header into the facets panel, where it is the
+  // panel's first section (the list / grid buttons are on the toolbar instead); on the results it stays hidden.
   display: none
 
   +bp($ui_mobile_app_controls_breakpoint)
     display: flex
     flex-direction: column
-    position: initial
-    top: initial
-    left: initial
-    right: initial
     padding: 0 0 $ui_element_spacing 0
     justify-content: flex-start
     align-items: stretch
@@ -177,6 +165,19 @@ aside
 
   label
     @extend %labels-controls
+
+  @at-root #browser-sidebar &
+    display: flex
+    flex-direction: column
+    padding: 0 0 rv($mobile_edge_padding_factor) 0
+    margin-bottom: rv($mobile_edge_padding_factor)
+    border-bottom: 1px solid neutral(30)
+
+    .search-results-controls
+      justify-content: flex-start
+
+    .search-results-display
+      display: none
 
 .search-results-footer
   padding-top: rv($mobile_edge_padding_factor)

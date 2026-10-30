@@ -9,11 +9,17 @@
 // The configured $ui_mobile_app_controls_footer_height ("$masthead_height" as a string) does not resolve here.
 $ui_mobile_app_controls_footer_height: 50px
 
+// The panel's Close control: the first line of the panel, kept in view while it scrolls.
 %mobile-close-btn
   +icon_with_label_right('close')
-  position: fixed
-  top: rv($mobile_edge_padding_factor)
-  right: rv($mobile_edge_padding_factor)
+  position: sticky
+  top: 0
+  z-index: 1
+  display: flex
+  justify-content: flex-end
+  width: 100%
+  padding-bottom: rv($mobile_edge_padding_factor)
+  background: inherit
 
 %browser-mobile-toolbar
   position: fixed
@@ -36,24 +42,46 @@ $ui_mobile_app_controls_footer_height: 50px
   +bp($ui_mobile_app_controls_breakpoint)
     display: none
 
-  // Filter menu
+  gap: rv(-1)
 
-  > a
-    display: flex
-    color: $on_dark
-    height: 100%
-    flex-direction: row
-    align-items: center
-    width: 50vw
-
-    img
-      width: auto
-      height: rv(1)
-      margin-right: rv(-1)
-
-  .pagination--label, .search-view-type
-    color: $on_dark
-
+  // The Filter button, at the left; its hover and open states take the impact colour, like the icon's active variant.
   .filter-btn
+    display: flex
+    align-items: center
+    height: 100%
     color: $on_dark
+    text-decoration: none
+    border: 0
     +icon_with_label('filter',$btn_icon_size, 'reversed','active','left')
+
+    &:hover, &.active
+      color: $visual_impact
+
+  .pagination--label
+    color: $on_dark
+
+  // The list / grid buttons, at the right, centred on the bar's line.
+  .mobile-view-types
+    margin-left: auto
+    display: flex
+    align-items: center
+    gap: rv(-1)
+
+    // The same label-and-icon controls as the results header (_display_mode_controls), in the bar's reversed
+    // colours; hover and the active view take the impact colour, the icon set's active variant.
+    .search-view-type
+      font-family: $compactfont
+      font-size: clamped(-3,-2)
+      text-transform: uppercase
+      text-decoration: none
+      white-space: nowrap
+      color: $on_dark
+
+      &:hover, &.active
+        color: $visual_impact
+
+    .search-view-type-list
+      +icon-with-label-right('list',$btn_icon_size,'reversed','active')
+
+    .search-view-type-grid
+      +icon-with-label-right('grid',$btn_icon_size,'reversed','active')

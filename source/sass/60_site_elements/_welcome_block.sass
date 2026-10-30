@@ -101,6 +101,15 @@ $welcome_box_min_width_bp: 1049px
       flex: 1 1 auto
       position: relative
 
+  // "Browse our collection" beneath the search box: the more-link, in the panel's text colour.
+  .intro-browse
+    margin-top: rv(-1)
+
+    a.intro-browse--all
+      @extend %more
+      color: $on_dark
+      border-bottom: 0
+
 
   .search-suggestions
     ul

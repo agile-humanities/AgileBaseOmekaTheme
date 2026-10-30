@@ -37,6 +37,9 @@
             <?php
             if (!empty($this->itemFields[$i]["thumbnailUrl"])):
               printf('<figure><img src="%s" alt="%s" /></figure>',$this->itemFields[$i]["thumbnailUrl"],$this->itemFields[$i]["title"] . " Thumbnail");
+            elseif (!empty($this->itemFields[$i]["representativeMedia"])):
+              // The linked page's representative image (resolved by the block when the link is a page of this site).
+              echo "<figure>" . $this->thumbnail($this->itemFields[$i]["representativeMedia"], $this->thumbnailType) . "</figure>";
             elseif ($item):
               $media = $attachments[$i]->media() ?: $item->primaryMedia();
               if ($media):

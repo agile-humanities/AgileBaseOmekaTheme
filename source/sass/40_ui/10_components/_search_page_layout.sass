@@ -11,7 +11,6 @@
 // it to be manually set. See js/01_masonryCardGrid.js
 
 $grid_gap_size: rv($grid_gap_factor)
-$mobile_sidebar_content_clearance: 150px // The browser <aside> contents need to clear some absolutely positioned controls.
 $ui_mobile_app_controls_footer_height: 50px // Explicit value: the configured one does not resolve here.
 
 \:root
@@ -49,25 +48,23 @@ $ui_mobile_app_controls_footer_height: 50px // Explicit value: the configured on
 // Apply to sidebars with facet browsers. Turns them into overlay controls on
 // mobile. Works with js/processExposedFacetsSidebar.js (currently in theme)
 
+// Below the mobile-controls breakpoint the sidebar is a full-screen panel above the toolbar, opened with .open
+// (search-support.js); the close button and the results header (moved in by the script) lead its one scrolling
+// column, so there is no clearance to leave for anything positioned over it.
 %browser-sidebar
-  display: none // Hidden by default. Managed by js at this viewport
+  display: none
   position: fixed
   top: 0
-  bottom: $ui_mobile_app_controls_footer_height
+  bottom: calc(#{$ui_mobile_app_controls_footer_height} + env(safe-area-inset-bottom))
   left: 0
   right: 0
   z-index: 20 // Above the page header, below the admin bar
-  overflow-y: scroll
-  transition: height $heartbeat ease-in // Manage transition when filter button is tapped
-  padding: $mobile_sidebar_content_clearance rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor) rv($mobile_edge_padding_factor)
+  overflow-y: auto
+  -webkit-overflow-scrolling: touch
+  padding: rv($mobile_edge_padding_factor)
 
-  // Previous implementation had fly-up animation that proved buggy. @todo: revisit
-  //height: 0
-  //padding: 0 // padding must be set to zero so that it doesn't force open the height. See https://stackoverflow.com/posts/20827604/revisions
-
-  // &.active
-  //  height: calc(100vh - #{$masthead_height} - #{$ui_mobile_app_controls_footer_height})
-  //  padding: rv($mobile_edge_padding_factor)
+  &.open
+    display: block
 
   +bp($ui_mobile_app_controls_breakpoint)
     display: initial
@@ -77,10 +74,8 @@ $ui_mobile_app_controls_footer_height: 50px // Explicit value: the configured on
     left: initial
     right: initial
     z-index: unset
+    overflow: visible
     padding: rv($edge_padding_factor)
-
-    &.active
-      height: auto
 
   input, button
     max-width: 100%
@@ -91,15 +86,13 @@ $ui_mobile_app_controls_footer_height: 50px // Explicit value: the configured on
     font-weight: normal
     margin-top: 0
 
+  // The panel scrolls as one column (see above): the facets list and form have no scrolling of their own.
   .search-facets-list
-    overflow: scroll
-
-    +bp($desktop)
-      overflow: auto
+    overflow: visible
 
   #form-facets
-    height: calc(100vh - 50px) // formerly $mobile_filter_height. Value corresponds with _browser_mobile_base
-    overflow-y: scroll
+    height: auto
+    overflow-y: visible
 
     +bp($desktop)
       height: auto

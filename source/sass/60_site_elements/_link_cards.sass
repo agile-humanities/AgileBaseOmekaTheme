@@ -7,6 +7,13 @@
 
 .link-card
   padding: 0 rv($mobile_edge_padding_factor)
+  // The same panel as the other cards (cards/_card_base): white, a hairline border, rounded, clipped.
+  background: $white
+  border: 1px solid $ui_border_color
+  border-radius: $card-border-radius
+  overflow: hidden
+  &:hover
+    border-color: $brand_secondary
 
 
   > a

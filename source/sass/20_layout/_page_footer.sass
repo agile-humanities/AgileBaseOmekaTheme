@@ -140,3 +140,13 @@ body
       .sub-footer--copyright
         +bp($tablet)
           text-align: right
+
+// A page with the search toolbar fixed to the bottom of the viewport (40_ui/_mobile_filter_panel): the footer
+// carries the toolbar's height as extra bottom padding, so its content and logo end above the bar. (The body has a
+// fixed height, so padding on it adds nothing to the scrollable page. A top-level rule: nesting it under the footer
+// would swallow the footer's own children in the indented syntax.)
+body:has(#mobile-browse-controls) > footer
+  padding-bottom: calc(#{rv($mobile_edge_padding_factor)} + 50px + env(safe-area-inset-bottom)) // the toolbar's height
+
+  +bp($ui_mobile_app_controls_breakpoint)
+    padding-bottom: rv($edge_padding_factor)

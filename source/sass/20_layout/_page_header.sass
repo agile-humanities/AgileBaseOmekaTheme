@@ -46,6 +46,18 @@ body
   .desktop-nav
     z-index: 3
 
+    // The menu sits at the right of the header, so a menu too long for one line wraps as right-aligned lines
+    // (Superfish floats its items left; as flex items the floats are ignored).
+    > ul.sf-menu
+      display: flex
+      flex-wrap: wrap
+      justify-content: flex-end
+      row-gap: 0
+
+      // Compact lines, so a wrapped menu's rows sit close together (the library gives each link the control height).
+      > li > a
+        height: calc(#{$ui_element_height} * 0.75)
+
   #mobile-menu
     display: flex
     z-index: 3

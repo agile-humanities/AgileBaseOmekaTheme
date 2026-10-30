@@ -16,6 +16,18 @@ $composition = $this->compositionClass ?: 'slide-viewer-with-title-default';
 
 // Theme setting "Site welcome banner logo". No logo is shown when it is empty.
 $welcomeLogo = $this->themeSetting('welcome_logo') ? $this->themeSettingAssetUrl('welcome_logo') : null;
+
+// "Browse our collection" beneath the search box: the site's main Advanced Search page (the site setting the
+// module's presets and Advanced Search's admin both write), else the item browse page.
+$browseUrl = $this->url('site/resource', ['site-slug' => $site->slug(), 'controller' => 'item', 'action' => 'browse']);
+try {
+    $mainSearchConfig = (int) $this->siteSetting('advancedsearch_main_config');
+    if ($mainSearchConfig) {
+        $browseUrl = $this->api()->read('search_configs', $mainSearchConfig)->getContent()->siteUrl($site->slug());
+    }
+} catch (\Throwable $e) {
+    // Advanced Search absent, or the configuration gone: the item browse page.
+}
 ?>
 <!-- BEGIN common/block-layout/homepage-introduction.phtml -->
 <div id="block-<?= $this->blockId; ?>" class="homepage-introduction <?= $escape($composition) ?> viewer slideviewer-container region <?= $this->regionClass; ?>" data-target-region-id="<?= $this->targetID; ?>">
@@ -44,6 +56,9 @@ $welcomeLogo = $this->themeSetting('welcome_logo') ? $this->themeSettingAssetUrl
             <?= $this->partial('common/search-form'); ?>
             <button class="search-form-clear" type="button" title="Clear search">x</button>
           </div>
+        </div>
+        <div class="intro-browse">
+          <a class="intro-browse--all more" href="<?= $escape($browseUrl) ?>"><?= $escape($this->translate('Browse our collection')) ?></a>
         </div>
         <?php if (!empty($buttonText) && $hasAttachments): ?>
           <a class='slickNext next-slide btn'><?= $buttonText; ?></a>

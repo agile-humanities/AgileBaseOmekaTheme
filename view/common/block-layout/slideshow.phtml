@@ -15,17 +15,10 @@ $thumbnailer = $plugins->get('thumbnail');
             <div slot='slides'>
                   <?php if ($useTitleSlide): ?>
                       <slide-item class="title-slide">
-                          <div slot='slide-content'>
-                              <?php
-                                  if ($titleSlideMedia):
-                                      echo $thumbnailer($titleSlideMedia, $thumbnailType);
-                                  endif;?>
-                          </div>
+                          <?php // The title slide carries no image for now (punch list 2026-10-28): the panel is the dark
+                                // surface under the title text (_slide_item.sass). $titleSlideMedia stays available. ?>
+                          <div slot='slide-content'></div>
                           <div slot='slide-caption'>
-                            <?php
-                                  if ($titleSlideMedia):
-                                    echo $thumbnailer($titleSlideMedia, $thumbnailType);
-                                  endif;?>
                               <div class="slide-title-content">
 
                                   <?php if (!empty($labelText)): ?>

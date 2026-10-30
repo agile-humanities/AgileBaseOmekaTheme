@@ -15,7 +15,8 @@
                 </div>
             <?php endif; ?>
             <?php if ($this->hasButton): ?>
-                <?php printf('<a class="btn reversed" role="button" href="%s">%s</a>', $this->buttonPath, $this->buttonText); ?>
+                <?php // A more-link ("Browse all items →"), not a button: the listing's call to action is a navigation. ?>
+                <?php printf('<a class="more" href="%s">%s</a>', $this->buttonPath, $this->buttonText); ?>
             <?php endif; ?>
         </div>
     <?php endif; ?>

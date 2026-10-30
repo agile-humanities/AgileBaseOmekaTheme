@@ -7,7 +7,7 @@ logo_path: "map-get($asset_dirs,'svg') + $subdir_marks + '/logo.svg'"
 
 # KEY VALUES
 rootsize: "100%"
-base_line_height: 1.5
+base_line_height: 1.4
 scale: 1.25
 max_width: 1900px
 legible_inset_width: 920px
@@ -23,11 +23,11 @@ listfont: $basefont
 codefont: "'IBM Plex Mono', Monaco, Courier New, monospace"
 
 # Font sizing / Fluid type
-basetypesize: 1.1rem
+basetypesize: 0.97rem
 default-min-bp: sml
 default-max-bp: xlrg
 min_sizefactors: "(base: -1, h1: 3, h2: 2, h3: 1, h4: 0, h5: -1, h6: -1)"
-sizefactors: "(base: 0, h1: 7, h2: 3, h3: 2, h4: 1, h5: 0, h6: 0)"
+sizefactors: "(base: 0, h1: 5, h2: 3, h3: 2, h4: 1, h5: 0, h6: 0)"
 line_heights: "(base: $base_line_height, h1: 1.1, h2: 1.25, h3: 1.25, h4: $base_line_height, h5: $base_line_height, h6: $base_line_height)"
 typescale: "(base: 1, xsml: 1, sml: 1, med:1, lrg: 1, xlrg: 1, xxlrg: 1)"
 paragraph_spacing: "clamped(map-get($min_sizefactors,'base'),map-get($sizefactors,'base'),$default-min-bp,$default-max-bp,map-get($line_heights,base))"
