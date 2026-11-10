@@ -1,19 +1,21 @@
 # Simplified Agile Base Theme
 
-A drop-in Omeka S theme by Agile Humanities Agency. It works on any Omeka S 4.2 site, needs no modules and no
-build step, and is configured through ordinary theme settings and CSS.
+## Who is this theme for?
+This theme is recommended for all Omeka-S site administrators. It offers a clean, minimalist, responsive design with a colour palette inteded for customization through the Theme Settings user interface.
 
-**This theme is generated.** Its stylesheet, scripts, templates and `config/theme.ini` are produced from the
-Advanced Agile Base Theme ([AgileBaseOmekaTheme](https://github.com/agile-humanities/AgileBaseOmekaTheme)) by
-`tools/build-simplified.js` in that repository, and should not be edited here: changes belong in the Advanced
-theme's sources. `GENERATED.json` records which version they came from. The files that are yours to edit are
-`custom.css` and `custom.js`, which the generator never overwrites.
+## Why are there two Agile Base Themes?
+The Agile Advanced Base Theme is the foundation for Agile’s customized themes and is intended for experienced developers. 
+
+This Simplified theme is intended as a drop-in Omeka-S theme. It needs no modules and no build step, and is configured through ordinary theme settings and CSS. It is derived from the Agile Advanced Base Theme and will evolve alongside it.
+
+## Who made this theme?
+This theme was designed and developed by Bill Kennedy at Agile Humanities Agency. It was supported by the [Pitts Theological Library](https://digital.pitts.emory.edu) and the (Creativity and COVID-19)[https://creativityandcovid19.org] project at the Michigan State University.
+
 
 ## Setting it up
 
 1. Copy the folder into `themes/` and choose the theme on the site's **Theme** page.
-2. Under **Settings** on that page: upload a logo, pick colours for the palette slots (each slot has a role, described
-   beside it), set fonts if the bundled ones do not suit, and fill in the footer.
+2. Under **Settings** on that page: upload a logo, pick colours for the palette slots (each slot has a role, described beside it), set fonts if the bundled ones do not suit, and fill in the footer.
 3. Colour and font changes apply at once: the stylesheet reads them as CSS variables.
 
 Browsers older than early 2023 cannot mix colours in CSS and show the theme's built-in palette instead of yours.
@@ -36,13 +38,8 @@ theme.
 
 ## What it covers
 
-Core Omeka pages — home, site pages and the core page blocks, item browse and search results, item sets, the
-item page with Omeka's resource page blocks — in the Advanced theme's layout, typography and cards. Pages and
+Core Omeka pages — home, site pages and the core page blocks, item browse and search results, item sets, the item page with Omeka's resource page blocks — in the Advanced theme's layout, typography and cards. Pages and
 blocks from modules other than Agile Theme Tools and Advanced Search are not styled by this theme.
-
-## Versions
-
-Simplified and Advanced carry the same version number ({{version}}), aligned with Agile Theme Tools 2.x.
 
 ## Licence
 
